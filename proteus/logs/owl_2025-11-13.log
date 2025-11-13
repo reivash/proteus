@@ -1,0 +1,13 @@
+[2025-11-13 22:57:32] [SYSTEM] ============================================================
+[2025-11-13 22:57:32] [SYSTEM] OWL AGENT STARTED
+[2025-11-13 22:57:32] [SYSTEM] Nudge interval: 5 minutes
+[2025-11-13 22:57:32] [SYSTEM] ============================================================
+[2025-11-13 22:57:32] [INFO] 
+[2025-11-13 22:57:32] [INFO] Press Ctrl+C to stop gracefully
+[2025-11-13 22:57:32] [INFO] 
+[2025-11-13 22:57:32] [CYCLE] Starting cycle #1
+[2025-11-13 22:57:32] [SUCCESS] Nudge #1 written to proteus\data\current_nudge.txt
+[2025-11-13 22:57:32] [ACTION] Read proteus/data/current_nudge.txt in PowerShell Claude
+[2025-11-13 22:57:32] [INFO] Waiting for next nudge interval...
+[2025-11-13 22:57:32] [INFO] Next nudge in 5 minutes
+[2025-11-13 22:57:32] [INFO] ------------------------------------------------------------
