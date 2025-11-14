@@ -320,6 +320,51 @@
 
 ---
 
+### ✅ **Universe Optimization (Review AAPL/CVX) - KEEP 10-STOCK UNIVERSE**
+
+**Objective:** Review marginal performers (AAPL 60% win, CVX 60% win) for potential removal
+
+**Solution Tested:** Compare 10-stock universe (current) vs 8-stock universe (remove AAPL, CVX)
+
+#### Results - NUANCED TRADE-OFF (2022-2025 Period)
+
+**Portfolio-Level Comparison:**
+
+| Metric | 10-Stock (Current) | 8-Stock (Remove AAPL/CVX) | Change |
+|--------|-------------------|---------------------------|--------|
+| **Avg Win Rate** | **77.3%** | **80.4%** | **+3.1%** ✅ |
+| **Portfolio Return** | **116.83%** | **114.58%** | **-2.25%** ❌ |
+| **Avg Return/Stock** | **11.68%** | **14.32%** | **+2.64%** ✅ |
+| **Avg Sharpe Ratio** | **6.35** | **7.25** | **+0.91** ✅ |
+
+**AAPL & CVX Contribution:**
+- AAPL: -0.25% return, -0.13 Sharpe (NEGATIVE contributor)
+- CVX: +2.50% return, 2.68 Sharpe (POSITIVE contributor)
+- Combined: **+2.25% portfolio return**
+
+**Decision:** **KEEP 10-stock universe** (prioritize absolute returns and diversification)
+
+**Why Keep:**
+- +2.25% portfolio return is meaningful ($2,250 on $100K portfolio)
+- 77.3% win rate still excellent (only 3.1% lower than 8-stock)
+- Sharpe 6.35 still very good (only 0.91 lower)
+- Diversification benefits outweigh quality metric improvements
+- Even marginal performers contribute to portfolio total returns
+
+**Trade-off:**
+- **8-stock wins on quality:** Higher win rate (+3.1%), better Sharpe (+0.91)
+- **10-stock wins on returns:** Higher absolute portfolio return (+2.25%)
+
+**Philosophy:** Accept marginal performers if they contribute to absolute returns and diversification
+
+**Monitoring:** Watch AAPL (negative return) and CVX (marginal). Consider removal if either deteriorates further.
+
+**Status:** ✅ 10-stock universe CONFIRMED as optimal (maximize returns + diversification)
+
+**Report:** `docs/experiments/EXP008_UNIVERSE_OPTIMIZATION_REPORT.md`
+
+---
+
 ## ❌ **FAILED: EXP-007 Multi-Timeframe Prediction**
 
 ### Hypothesis Tested
@@ -390,6 +435,7 @@
 6. ✅ **VIX filter testing → NOT recommended (-3.91% return), optional module available**
 7. ✅ **FOMC filter testing → STRONGLY NOT recommended (-8.06% return, worst filter tested)**
 8. ✅ **Dynamic position sizing → NOT recommended (-3.17% return), equal weighting optimal**
+9. ✅ **Universe optimization → 10-stock CONFIRMED (keep AAPL/CVX despite being marginal)**
 
 ### Mean Reversion Strategy v4.0 (PRODUCTION-READY)
 
@@ -423,9 +469,9 @@
 
 ### Remaining Priorities
 1. **Paper trading setup** for live validation before production deployment
-2. **Review AAPL/CVX** (both marginal at 60% win, consider removal if underperform)
-3. **Production deployment** (automated trading system with alerts)
-4. **Performance monitoring** (track live vs backtested performance)
+2. **Production deployment** (automated trading system with alerts and live execution)
+3. **Performance monitoring** (track live vs backtested performance, quarterly review)
+4. **AAPL/CVX monitoring** (watch for deterioration, remove if returns drop further)
 
 ### Future Research
 - Sentiment analysis integration (Reddit, Twitter)
