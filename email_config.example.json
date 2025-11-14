@@ -1,0 +1,11 @@
+{
+  "enabled": true,
+  "recipient_email": "your-email@gmail.com",
+  "smtp_server": "smtp.gmail.com",
+  "smtp_port": 587,
+  "sender_email": "your-gmail@gmail.com",
+  "sender_password": "your-app-password",
+  "send_on_signals_only": false,
+  "send_daily_summary": true,
+  "notification_times": ["09:35", "13:35", "17:35"]
+}
