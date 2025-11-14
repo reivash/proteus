@@ -143,7 +143,8 @@ class MeanReversionBacktester:
         initial_capital=10000,
         profit_target=2.0,  # % gain to take profit
         stop_loss=-2.0,     # % loss to cut losses
-        max_hold_days=2     # Maximum days to hold position
+        max_hold_days=2,    # Maximum days to hold position
+        position_size_multiplier=1.0  # Position size multiplier (0.5-1.0 for dynamic sizing)
     ):
         """
         Initialize backtester.
@@ -153,10 +154,12 @@ class MeanReversionBacktester:
             profit_target: % gain to exit with profit
             stop_loss: % loss to exit with loss
             max_hold_days: Max days to hold before forced exit
+            position_size_multiplier: Position size multiplier (default 1.0 for full position)
         """
         self.initial_capital = initial_capital
         self.profit_target = profit_target
         self.stop_loss = stop_loss
+        self.position_size_multiplier = position_size_multiplier
         self.max_hold_days = max_hold_days
 
     def backtest(self, df: pd.DataFrame) -> Dict:
@@ -178,13 +181,16 @@ class MeanReversionBacktester:
             # ENTRY: Look for panic sell signals (BUY opportunity)
             if row['panic_sell'] == 1 and position is None:
                 entry_price = row['Close']
-                shares = capital / entry_price
+                # Apply position sizing multiplier
+                position_capital = capital * self.position_size_multiplier
+                shares = position_capital / entry_price
                 position = {
                     'entry_idx': i,
                     'entry_date': row['Date'],
                     'entry_price': entry_price,
                     'shares': shares,
-                    'type': 'long'  # Buying the dip
+                    'type': 'long',  # Buying the dip
+                    'position_size': self.position_size_multiplier
                 }
 
             # EXIT: Check exit conditions if in position

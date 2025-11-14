@@ -276,6 +276,50 @@
 
 ---
 
+### ❌ **Dynamic Position Sizing - TESTED, NOT RECOMMENDED**
+
+**Objective:** Allocate larger positions to higher-performing stocks (tier-based sizing)
+
+**Solution Implemented:** Position sizing framework with 3 tiers
+- Tier 1 (80%+ win): 1.0x position (NVDA, TSLA, AMZN, JPM, JNJ, UNH)
+- Tier 2 (65-75% win): 0.75x position (MSFT, INTC)
+- Tier 3 (60-65% win): 0.5x position (AAPL, CVX)
+
+#### Results - NEGATIVE IMPACT (2022-2025 Period)
+
+**Portfolio-Level Comparison:**
+
+| Metric | Fixed (Equal Weight) | Dynamic (Tier-Based) | Change |
+|--------|----------------------|----------------------|--------|
+| Avg Win Rate | 77.3% | 77.3% | +0.0% |
+| **Portfolio Return** | **116.83%** | **113.65%** | **-3.17%** ❌ |
+| Avg Return Per Stock | 11.68% | 11.37% | -0.32% |
+| Avg Sharpe Ratio | 6.35 | 6.35 | +0.00 |
+
+**Stock-by-Stock Impact:**
+- Tier 1 stocks: No change (already 1.0x in both approaches)
+- Tier 2 stocks: Returns reduced (MSFT -0.48%, INTC -1.62%)
+- Tier 3 stocks: Returns reduced (CVX -1.23%, AAPL +0.16%)
+
+**Decision:** **NOT recommended for production**
+
+**Why It Fails:**
+- Current universe already well-balanced (all stocks 60%+ win rate)
+- Diversification benefits outweigh concentration
+- Tier 2/3 stocks still contribute positively to portfolio
+- No improvement in win rate or Sharpe ratio to justify reduced diversification
+- Reducing position size on "marginal" stocks loses their contribution
+
+**Key Finding:** Equal weighting (1.0x for all stocks) is OPTIMAL for current 10-stock universe
+
+**Recommendation:** Continue with **equal-weighted portfolio** - all stocks deserve full allocation
+
+**Status:** ❌ NOT recommended (equal weighting superior)
+
+**Report:** `docs/experiments/EXP008_POSITION_SIZING_REPORT.md`
+
+---
+
 ## ❌ **FAILED: EXP-007 Multi-Timeframe Prediction**
 
 ### Hypothesis Tested
@@ -345,6 +389,7 @@
 5. ✅ **Sector diversification → Added JPM, JNJ, UNH, INTC, CVX (+100% universe size, 60% tech)**
 6. ✅ **VIX filter testing → NOT recommended (-3.91% return), optional module available**
 7. ✅ **FOMC filter testing → STRONGLY NOT recommended (-8.06% return, worst filter tested)**
+8. ✅ **Dynamic position sizing → NOT recommended (-3.17% return), equal weighting optimal**
 
 ### Mean Reversion Strategy v4.0 (PRODUCTION-READY)
 
@@ -352,6 +397,7 @@
 1. Market regime filter (prevents bear market trades)
 2. Earnings date filter (avoids fundamental events)
 3. Stock-specific parameters (optimized per stock)
+4. Equal-weighted portfolio (1.0x for all stocks - dynamic sizing reduces returns)
 
 **Trading Universe (10 stocks across 4 sectors):**
 
@@ -376,10 +422,10 @@
 **Configuration:** `src/config/mean_reversion_params.py` (10 stocks optimized)
 
 ### Remaining Priorities
-1. **Dynamic position sizing** (larger positions for higher confidence stocks based on performance tier)
-2. **Paper trading setup** for live validation
-3. **Review AAPL/CVX** (both marginal at 60% win, consider removal or re-optimization)
-4. **Alternative approaches** (optional: dynamic position sizing based on VIX, stock-specific filters)
+1. **Paper trading setup** for live validation before production deployment
+2. **Review AAPL/CVX** (both marginal at 60% win, consider removal if underperform)
+3. **Production deployment** (automated trading system with alerts)
+4. **Performance monitoring** (track live vs backtested performance)
 
 ### Future Research
 - Sentiment analysis integration (Reddit, Twitter)
