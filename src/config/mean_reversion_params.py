@@ -55,6 +55,55 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 66.7%, Return: +2.06%, Sharpe: 1.71'
     },
 
+    # FINANCE SECTOR
+    'JPM': {
+        'z_score_threshold': 1.0,  # Looser for catching signals
+        'rsi_oversold': 32,  # Tight RSI
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'STAR PERFORMER! Finance sector. Excellent win rate and returns.',
+        'performance': 'Win rate: 80.0%, Return: +18.63%, Sharpe: 8.19'
+    },
+
+    # HEALTHCARE SECTOR
+    'JNJ': {
+        'z_score_threshold': 1.0,  # Looser for catching signals
+        'rsi_oversold': 32,  # Tight RSI
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'EXCELLENT! Healthcare sector. High win rate with outstanding Sharpe ratio.',
+        'performance': 'Win rate: 83.3%, Return: +13.21%, Sharpe: 12.46'
+    },
+
+    'UNH': {
+        'z_score_threshold': 1.5,  # Moderate threshold
+        'rsi_oversold': 40,  # Looser RSI
+        'volume_multiplier': 1.7,
+        'price_drop_threshold': -3.0,  # Stricter drop requirement
+        'notes': 'EXCELLENT! Healthcare sector. Very high win rate with solid returns.',
+        'performance': 'Win rate: 85.7%, Return: +5.45%, Sharpe: 4.71'
+    },
+
+    # TECH - SEMICONDUCTOR
+    'INTC': {
+        'z_score_threshold': 1.75,  # Tighter threshold
+        'rsi_oversold': 32,  # Tight RSI
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -2.5,  # Moderate drop requirement
+        'notes': 'Good performer. Semiconductor sector adds volatility diversification.',
+        'performance': 'Win rate: 66.7%, Return: +6.46%, Sharpe: 5.07'
+    },
+
+    # ENERGY SECTOR
+    'CVX': {
+        'z_score_threshold': 1.0,  # Looser for catching signals
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.7,
+        'price_drop_threshold': -1.5,
+        'notes': 'Acceptable. Energy sector diversification. Marginal performance, monitor closely.',
+        'performance': 'Win rate: 60.0%, Return: +2.50%, Sharpe: 2.68'
+    },
+
     # Default fallback for unknown stocks
     # Updated from original universal parameters based on optimization learnings
     'DEFAULT': {
