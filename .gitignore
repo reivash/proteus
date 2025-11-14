@@ -51,6 +51,8 @@ logs/experiments/
 .env
 .venv
 api_keys.txt
+config.json
+email_config.json
 
 # IDE
 .vscode/
