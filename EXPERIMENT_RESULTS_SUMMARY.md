@@ -6,7 +6,7 @@
 
 ## 🏆 **WINNER: EXP-008 Mean Reversion Strategy**
 
-### Performance Highlights
+### Performance Highlights (Bull Market 2023-2025)
 
 | Stock | Win Rate | Return (2yr) | Sharpe Ratio | Trades |
 |-------|----------|--------------|--------------|--------|
@@ -22,9 +22,47 @@
 
 **Strategy:** Buy panic sells (z-score < -1.5, RSI < 35, volume spike), hold 1-2 days, exit at +2%/-2% or 2-day timeout
 
-**Status:** ✅ PRODUCTION-READY for volatile AI/GPU stocks
+**Status:** ✅ PRODUCTION-READY for volatile AI/GPU stocks **WITH REGIME FILTER**
 
-**Report:** `docs/experiments/EXP008_MEAN_REVERSION_REPORT.md`
+**Reports:**
+- `docs/experiments/EXP008_MEAN_REVERSION_REPORT.md`
+- `docs/experiments/EXP008_OPTIMIZATION_REPORT.md` ⭐ NEW
+
+---
+
+### ⚠️ **CRITICAL UPDATE: Regime Filter Required**
+
+**Problem Discovered:** Strategy FAILS in bear markets
+
+#### Bear Market Performance (2022)
+
+| Stock | Win Rate | Return | Analysis |
+|-------|----------|--------|----------|
+| NVIDIA | 0% | -2.08% | ❌ Failed |
+| **Tesla** | **40%** | **-21.23%** | ❌❌❌ **DISASTER** |
+| Apple | 100% | +3.19% | Lucky |
+| **Average** | **42.9%** | **-6.71%** | **STRATEGY FAILED** |
+
+**Why:** In bear markets, "panic sells" are often JUSTIFIED (deteriorating fundamentals), not overcorrections.
+
+#### Solution: Market Regime Filter ✅
+
+**Implemented:** `src/data/features/market_regime.py`
+- Classifies markets as BULL / BEAR / SIDEWAYS
+- Disables trading in bear markets
+- Uses 50/200 SMA + 60-day momentum
+
+#### Results WITH Filter (Full 2022-2025 Period)
+
+| Stock | Win Rate | Return | Signals Blocked |
+|-------|----------|--------|-----------------|
+| NVIDIA | 83.3% | +34.02% | 1 (avoided -2%) |
+| **Tesla** | **70.0%** | **+8.47%** | **4 (avoided -21%!)** ⭐ |
+| Apple | 50.0% | -4.35% | 2 |
+
+**Impact:** Prevented -21% Tesla disaster by blocking bear market trades!
+
+**Recommendation:** **ALWAYS** use regime filter for mean reversion.
 
 ---
 
