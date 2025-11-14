@@ -1,9 +1,16 @@
 {
   "permissions": {
     "allow": [
-      "Bash"
+      "Bash",
+      "Bash(timeout 3 echo:*)",
+      "Bash(timeout 25 echo:*)",
+      "Bash(taskkill:*)",
+      "Bash(git push)",
+      "Bash(findstr /V \"�\")",
+      "Bash(findstr:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "bypassPermissions"
   }
 }

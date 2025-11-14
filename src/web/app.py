@@ -26,14 +26,25 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
 from src.trading.performance_tracker import PerformanceTracker
-from src.notifications.email_notifier import EmailNotifier
+
+# Try to import notification options (user can choose which to use)
+try:
+    from src.notifications.windows_notifier import WindowsNotifier
+    windows_notifier = WindowsNotifier()
+except:
+    windows_notifier = None
+
+try:
+    from src.notifications.email_notifier import EmailNotifier
+    email_notifier = EmailNotifier()
+except:
+    email_notifier = None
 
 app = Flask(__name__)
 
 # Global state
 scanner = SignalScanner()
 tracker = PerformanceTracker()
-email_notifier = EmailNotifier()
 last_scan_time = None
 current_signals = []
 scan_status = "Not started"
@@ -79,13 +90,20 @@ def run_daily_scan():
         # Save to file
         save_status()
 
-        # Send email notification
+        # Send notifications (try Windows toast first, then email)
         try:
-            if email_notifier.is_enabled():
-                performance = tracker.get_stats_summary()
+            performance = tracker.get_stats_summary()
+
+            # Windows notifications (simplest - no password needed)
+            if windows_notifier and windows_notifier.is_enabled():
+                windows_notifier.send_scan_notification(scan_status, current_signals, performance)
+
+            # Email notifications (if configured)
+            if email_notifier and email_notifier.is_enabled():
                 email_notifier.send_scan_notification(scan_status, current_signals, performance)
-        except Exception as email_error:
-            print(f"[WARN] Email notification failed: {email_error}")
+
+        except Exception as notification_error:
+            print(f"[WARN] Notification failed: {notification_error}")
 
     except Exception as e:
         scan_status = f"Error: {str(e)}"
@@ -198,11 +216,22 @@ if __name__ == '__main__':
     # Setup scheduler
     scheduler = setup_scheduler()
 
-    # Check email configuration
-    if email_notifier.is_enabled():
-        print(f"[EMAIL] Notifications enabled - sending to {email_notifier.config['recipient_email']}")
+    # Check notification methods
+    print("\nNotification Methods:")
+    if windows_notifier and windows_notifier.is_enabled():
+        print("  ✓ Windows Notifications: Enabled (NO PASSWORD NEEDED!)")
     else:
-        print("[EMAIL] Notifications disabled - configure email_config.json to enable")
+        print("  - Windows Notifications: Not available (pip install windows-toasts)")
+
+    if email_notifier and email_notifier.is_enabled():
+        print(f"  ✓ Email Notifications: Enabled → {email_notifier.config['recipient_email']}")
+    else:
+        print("  - Email Notifications: Not configured (see EMAIL_NOTIFICATIONS_SETUP.md)")
+
+    if not (windows_notifier and windows_notifier.is_enabled()) and not (email_notifier and email_notifier.is_enabled()):
+        print("\n  [!] No notifications configured - dashboard will work but you won't get alerts")
+        print("  [!] Quickest option: pip install windows-toasts (no password needed!)")
+    print()
 
     # Run initial scan
     if last_scan_time is None or (datetime.now() - last_scan_time).days >= 1:

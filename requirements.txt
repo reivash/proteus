@@ -30,6 +30,10 @@ python-dotenv>=1.0.0
 flask>=3.0.0
 apscheduler>=3.10.0
 
+# Notifications (Optional - choose one or more)
+# windows-toasts>=1.0.0  # Windows notifications - NO PASSWORD! (Recommended)
+# sendgrid>=6.11.0        # SendGrid email API (simpler than SMTP)
+
 # Testing
 pytest>=7.4.0
 pytest-cov>=4.1.0
