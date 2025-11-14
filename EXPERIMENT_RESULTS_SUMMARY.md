@@ -122,6 +122,40 @@
 
 ---
 
+### ⭐ **NEW: Stock Universe Expansion**
+
+**Objective:** Expand trading universe from 3 to 5+ stocks using parameter optimization
+
+**Stocks Tested:** MSFT, GOOGL, META, AMZN
+
+#### Results - Universe Expanded to 5 Stocks
+
+| Stock | Win Rate | Return | Sharpe | Decision |
+|-------|----------|--------|--------|----------|
+| **AMZN** | **80.0%** | **+10.20%** | **4.06** | ✅ **ADDED - Star performer!** ⭐⭐⭐ |
+| **MSFT** | **66.7%** | **+2.06%** | **1.71** | ✅ **ADDED - Solid performer** |
+| META | 62.5% | -3.46% | -1.24 | ❌ REJECTED (negative return) |
+| GOOGL | 66.7% | +4.00% | N/A | ❌ REJECTED (only 3 trades) |
+
+**New Trading Universe (5 stocks):**
+1. NVDA: 87.5% win, +45.75% return, Sharpe 12.22
+2. TSLA: 87.5% win, +12.81% return, Sharpe 7.22
+3. **AMZN: 80.0% win, +10.20% return, Sharpe 4.06** ⭐ NEW
+4. **MSFT: 66.7% win, +2.06% return, Sharpe 1.71** (NEW)
+5. AAPL: 60.0% win, -0.25% return, Sharpe -0.13
+
+**Key Finding:** Amazon is hidden gem - 80% win rate matches top performers!
+
+**Optimal Parameters Found:**
+- AMZN: z=1.0, RSI=32, volume=1.5x (loose z-score + tight RSI works perfectly)
+- MSFT: z=1.75, RSI=35, volume=1.3x (tighter threshold for moderate volatility)
+
+**Diversification:** +67% universe size, more trading opportunities, reduced concentration risk
+
+**Report:** `docs/experiments/EXP008_EXPANDED_UNIVERSE_REPORT.md`
+
+---
+
 ## ❌ **FAILED: EXP-007 Multi-Timeframe Prediction**
 
 ### Hypothesis Tested
@@ -187,24 +221,27 @@
 1. ✅ Test on 2022 bear market data → Regime filter implemented (prevented -21% TSLA disaster)
 2. ✅ Add earnings date filter → +5% win rate on TSLA
 3. ✅ **Stock-specific parameter tuning → +8.9% win rate** ⭐ **MAJOR WIN**
+4. ✅ **Expand stock universe → Added AMZN (80% win!) and MSFT (+67% universe size)**
 
-### Mean Reversion Strategy v3.0 (PRODUCTION-READY)
+### Mean Reversion Strategy v3.1 (PRODUCTION-READY)
 
 **Filters applied:**
 1. Market regime filter (prevents bear market trades)
 2. Earnings date filter (avoids fundamental events)
 3. Stock-specific parameters (optimized per stock)
 
-**Performance (2022-2025):**
-- NVDA: 87.5% win rate, +45.75% return
-- TSLA: 87.5% win rate, +12.81% return
-- Average: 78.3% win rate, +19.44% return
+**Trading Universe (5 stocks):**
+- NVDA: 87.5% win, +45.75% return, Sharpe 12.22
+- TSLA: 87.5% win, +12.81% return, Sharpe 7.22
+- **AMZN: 80.0% win, +10.20% return, Sharpe 4.06** ⭐
+- MSFT: 66.7% win, +2.06% return, Sharpe 1.71
+- AAPL: 60.0% win, -0.25% return, Sharpe -0.13
 
-**Configuration:** `src/config/mean_reversion_params.py`
+**Configuration:** `src/config/mean_reversion_params.py` (5 stocks optimized)
 
 ### Remaining Priorities
-1. **VIX filter** (disable trading when VIX > 30)
-2. **Expand stock universe** (MSFT, GOOGL, META, AMZN with optimized params)
+1. **Sector diversification** (expand to energy, finance, healthcare stocks)
+2. **VIX filter** (disable trading when VIX > 30)
 3. **FOMC meeting filter** (similar to earnings filter)
 4. **Paper trading setup** for live validation
 

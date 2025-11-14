@@ -37,6 +37,24 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 60.0%, Return: -0.25%, Sharpe: -0.13'
     },
 
+    'AMZN': {
+        'z_score_threshold': 1.0,  # LOOSER for catching signals
+        'rsi_oversold': 32,  # Tight RSI threshold
+        'volume_multiplier': 1.5,
+        'price_drop_threshold': -1.5,
+        'notes': 'EXCELLENT performer! Strong mean reversion with 80% win rate. Low z-score works well.',
+        'performance': 'Win rate: 80.0%, Return: +10.20%, Sharpe: 4.06'
+    },
+
+    'MSFT': {
+        'z_score_threshold': 1.75,  # Tighter threshold
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'Moderate volatility mega-cap. Good performance with tighter z-score threshold.',
+        'performance': 'Win rate: 66.7%, Return: +2.06%, Sharpe: 1.71'
+    },
+
     # Default fallback for unknown stocks
     # Updated from original universal parameters based on optimization learnings
     'DEFAULT': {
