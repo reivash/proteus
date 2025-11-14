@@ -238,6 +238,44 @@
 
 ---
 
+### ❌ **FOMC Meeting Filter - TESTED, NOT RECOMMENDED** (WORST FILTER)
+
+**Objective:** Disable trading around FOMC meetings (1 day before + 1 day after) to avoid Fed policy-driven volatility
+
+**Solution Implemented:** FOMC calendar fetcher that blocks signals near Fed meetings
+
+#### Results - SIGNIFICANT NEGATIVE IMPACT (2020-2025 Period)
+
+| Stock | Signals Blocked | Win Rate Change | Return Change | Assessment |
+|-------|-----------------|-----------------|---------------|------------|
+| NVDA | 2 | -1.3% | **-17.25%** | **VERY NEGATIVE** |
+| TSLA | 0 | +0.0% | +0.00% | Neutral (no signals blocked) |
+| JPM | 5 | -1.1% | -7.96% | NEGATIVE |
+| JNJ | 1 | -2.3% | -7.02% | NEGATIVE |
+
+**Average Impact:** Blocks 2.0 signals, -1.2% win rate, **-8.06% return** ❌❌
+
+**Key Findings:**
+- **WORST filter tested** (worse than VIX: -8.06% vs -3.91%)
+- Blocks FEW signals (2.0 average) but they are HIGH QUALITY trades
+- NVDA severely impacted: -17.25% return from blocking 2 signals
+- JPM most signals blocked (5), -7.96% return
+- No win rate improvement (-1.2% negative change)
+
+**Decision:** **STRONGLY NOT recommended for production**
+
+**Why It Fails:**
+- Mean reversion works even during Fed policy events
+- Signals near FOMC are often highly profitable overcorrections
+- Blocks only 6.6% of trading days but removes best opportunities
+- Regime + earnings filters already provide sufficient protection
+
+**Status:** ❌ REJECTED - Worst performer, not recommended for any use case
+
+**Report:** `docs/experiments/EXP008_FOMC_FILTER_REPORT.md`
+
+---
+
 ## ❌ **FAILED: EXP-007 Multi-Timeframe Prediction**
 
 ### Hypothesis Tested
@@ -306,6 +344,7 @@
 4. ✅ **Expand stock universe → Added AMZN (80% win!) and MSFT (+67% universe size)**
 5. ✅ **Sector diversification → Added JPM, JNJ, UNH, INTC, CVX (+100% universe size, 60% tech)**
 6. ✅ **VIX filter testing → NOT recommended (-3.91% return), optional module available**
+7. ✅ **FOMC filter testing → STRONGLY NOT recommended (-8.06% return, worst filter tested)**
 
 ### Mean Reversion Strategy v4.0 (PRODUCTION-READY)
 
@@ -337,11 +376,10 @@
 **Configuration:** `src/config/mean_reversion_params.py` (10 stocks optimized)
 
 ### Remaining Priorities
-1. **FOMC meeting filter** (similar to earnings filter, avoid Fed-driven moves)
-2. **Dynamic position sizing** (larger positions for higher confidence stocks)
-3. **Paper trading setup** for live validation
-4. **Review AAPL/CVX** (both marginal at 60% win, consider removal)
-5. **Alternative VIX approaches** (optional: dynamic position sizing based on VIX, stock-specific VIX thresholds)
+1. **Dynamic position sizing** (larger positions for higher confidence stocks based on performance tier)
+2. **Paper trading setup** for live validation
+3. **Review AAPL/CVX** (both marginal at 60% win, consider removal or re-optimization)
+4. **Alternative approaches** (optional: dynamic position sizing based on VIX, stock-specific filters)
 
 ### Future Research
 - Sentiment analysis integration (Reddit, Twitter)
