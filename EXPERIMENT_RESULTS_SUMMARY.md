@@ -202,6 +202,42 @@
 
 ---
 
+### ❌ **VIX Filter - TESTED, NOT RECOMMENDED**
+
+**Objective:** Disable trading during extreme market fear (VIX > 30) to protect against tail risk events
+
+**Solution Implemented:** VIX fetcher module that blocks signals when VIX > 30
+
+#### Results - MIXED/NEGATIVE IMPACT (2020-2025 Period)
+
+| Stock | Signals Blocked | Win Rate Change | Return Change | Assessment |
+|-------|-----------------|-----------------|---------------|------------|
+| **TSLA** | 3 | +0.0% | **+17.26%** | **POSITIVE** |
+| JNJ | 7 | +8.3% | -15.87% | Mixed (better win rate, worse return) |
+| NVDA | 2 | -1.3% | -5.54% | Slightly negative |
+| **JPM** | **11** | **-11.1%** | **-11.50%** | **VERY NEGATIVE** |
+
+**Average Impact:** Blocks 5.8 signals (23.5%), -1.0% win rate, **-3.91% return** ❌
+
+**Key Findings:**
+- VIX filter helps TSLA significantly (+17.26% return improvement)
+- VIX filter destroys JPM performance (11 signals blocked, -11.50% return)
+- Overall negative impact on portfolio returns
+- Test period already includes COVID crash (VIX 85) and 2022 bear market (VIX 30-35)
+
+**Decision:** **NOT included in production v4.0** due to negative overall impact
+
+**Trade-off Analysis:**
+- Benefits: Tail risk protection, helps extreme volatility stocks (TSLA)
+- Costs: -3.91% return, blocks 23.5% of signals, hurts finance stocks (JPM)
+- Conclusion: Regime + earnings filters already provide sufficient protection
+
+**Status:** ❌ NOT recommended for v4.0 (available as optional module for risk-averse traders)
+
+**Report:** `docs/experiments/EXP008_VIX_FILTER_REPORT.md`
+
+---
+
 ## ❌ **FAILED: EXP-007 Multi-Timeframe Prediction**
 
 ### Hypothesis Tested
@@ -269,6 +305,7 @@
 3. ✅ **Stock-specific parameter tuning → +8.9% win rate** ⭐ **MAJOR WIN**
 4. ✅ **Expand stock universe → Added AMZN (80% win!) and MSFT (+67% universe size)**
 5. ✅ **Sector diversification → Added JPM, JNJ, UNH, INTC, CVX (+100% universe size, 60% tech)**
+6. ✅ **VIX filter testing → NOT recommended (-3.91% return), optional module available**
 
 ### Mean Reversion Strategy v4.0 (PRODUCTION-READY)
 
@@ -300,11 +337,11 @@
 **Configuration:** `src/config/mean_reversion_params.py` (10 stocks optimized)
 
 ### Remaining Priorities
-1. **VIX filter** (disable trading when VIX > 30 for extreme fear protection)
-2. **FOMC meeting filter** (similar to earnings filter, avoid Fed-driven moves)
-3. **Dynamic position sizing** (larger positions for higher confidence stocks)
-4. **Paper trading setup** for live validation
-5. **Review AAPL/CVX** (both marginal at 60% win, consider removal)
+1. **FOMC meeting filter** (similar to earnings filter, avoid Fed-driven moves)
+2. **Dynamic position sizing** (larger positions for higher confidence stocks)
+3. **Paper trading setup** for live validation
+4. **Review AAPL/CVX** (both marginal at 60% win, consider removal)
+5. **Alternative VIX approaches** (optional: dynamic position sizing based on VIX, stock-specific VIX thresholds)
 
 ### Future Research
 - Sentiment analysis integration (Reddit, Twitter)
