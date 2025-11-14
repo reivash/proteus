@@ -186,7 +186,9 @@ class SignalScanner:
         spy_data = fetcher.fetch_stock_data('SPY', start_date=start_date, end_date=end_date)
         regime = detector.detect_regime(spy_data)
 
-        return regime.iloc[-1] if not regime.empty else 'UNKNOWN'
+        if not regime.empty and 'regime' in regime.columns:
+            return regime['regime'].iloc[-1].upper()
+        return 'UNKNOWN'
 
 
 if __name__ == "__main__":

@@ -361,6 +361,11 @@ class PaperTrader:
             Performance dictionary
         """
         if self.total_trades == 0:
+            # Calculate equity even with no trades
+            positions_value = sum(pos.shares * pos.current_price for pos in self.positions.values())
+            total_equity = self.capital + positions_value
+            total_return = ((total_equity - self.initial_capital) / self.initial_capital) * 100
+
             return {
                 'total_trades': 0,
                 'winning_trades': 0,
@@ -368,8 +373,10 @@ class PaperTrader:
                 'win_rate': 0.0,
                 'total_pnl': 0.0,
                 'avg_pnl': 0.0,
-                'total_return': 0.0,
+                'total_return': total_return,
                 'current_capital': self.capital,
+                'current_equity': total_equity,
+                'positions_value': positions_value,
                 'current_positions': len(self.positions)
             }
 
