@@ -117,7 +117,12 @@ class XGBoostStockClassifier:
 
         if verbose:
             print(f"\nTraining complete!")
-            print(f"Best iteration: {self.model.best_iteration}")
+            # Only show best iteration if early stopping was used
+            if hasattr(self.model, 'best_iteration'):
+                try:
+                    print(f"Best iteration: {self.model.best_iteration}")
+                except AttributeError:
+                    pass
 
         return self
 

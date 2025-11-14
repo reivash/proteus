@@ -184,11 +184,18 @@ def run_multi_timeframe_experiment(ticker="^GSPC", ticker_name="S&P 500"):
     print(f"\n[6/6] Analyzing feature importance for {best_horizon}-day predictions...")
 
     best_model = results_by_horizon[best_horizon]['model']
-    feature_importance = best_model.get_feature_importance()
+    # feature_importance is a DataFrame with 'feature' and 'importance' columns, already sorted
+    feature_importance = best_model.feature_importance
 
     print(f"\n      Top 10 Most Important Features:")
-    for i, (feature, importance) in enumerate(feature_importance[:10], 1):
-        print(f"      {i:2}. {feature:<30} {importance:.4f}")
+    try:
+        for i in range(min(10, len(feature_importance))):
+            feature = feature_importance.iloc[i]['feature']
+            importance = feature_importance.iloc[i]['importance']
+            if feature is not None:
+                print(f"      {i+1:2}. {feature:<30} {importance:.4f}")
+    except Exception as e:
+        print(f"      [WARN] Could not display feature importance: {e}")
 
     # Prepare results for saving
     experiment_results = {
@@ -219,8 +226,11 @@ def run_multi_timeframe_experiment(ticker="^GSPC", ticker_name="S&P 500"):
             'lift': float(best_accuracy - results_by_horizon[best_horizon]['baseline_accuracy'])
         },
         'top_features': [
-            {'feature': f, 'importance': float(i)}
-            for f, i in feature_importance[:20]
+            {
+                'feature': feature_importance.iloc[i]['feature'],
+                'importance': float(feature_importance.iloc[i]['importance'])
+            }
+            for i in range(min(20, len(feature_importance)))
         ],
         'comparison_to_exp002': {
             'exp002_1day_accuracy': 58.94,
