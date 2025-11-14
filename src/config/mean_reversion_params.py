@@ -1,0 +1,152 @@
+"""
+Stock-Specific Mean Reversion Parameters
+
+Optimized parameters for mean reversion strategy per stock.
+Parameters tuned on 2022-2025 data with regime + earnings filters.
+
+Last Updated: 2025-11-14
+Optimization: EXP-008-PARAMS
+"""
+
+# Optimized parameters by stock ticker
+MEAN_REVERSION_PARAMS = {
+    'NVDA': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'High volatility GPU/AI stock. Lower volume threshold catches more quality signals.',
+        'performance': 'Win rate: 87.5%, Return: +45.75%, Sharpe: 12.22'
+    },
+
+    'TSLA': {
+        'z_score_threshold': 1.75,  # TIGHTER than default
+        'rsi_oversold': 32,  # TIGHTER than default
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'EXTREME volatility. Tighter thresholds filter noise and catch only true panic sells.',
+        'performance': 'Win rate: 87.5%, Return: +12.81%, Sharpe: 7.22'
+    },
+
+    'AAPL': {
+        'z_score_threshold': 1.0,  # LOOSER than default
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.7,
+        'price_drop_threshold': -1.5,
+        'notes': 'Low volatility mega-cap. Looser z-score catches signals. Performance still weak (60% win rate).',
+        'performance': 'Win rate: 60.0%, Return: -0.25%, Sharpe: -0.13'
+    },
+
+    # Default fallback for unknown stocks
+    # Updated from original universal parameters based on optimization learnings
+    'DEFAULT': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,  # Lowered from 1.5 (universal too conservative)
+        'price_drop_threshold': -1.5,  # Changed from -2.0 (universal too strict)
+        'notes': 'Updated default parameters. Use for moderate volatility stocks.',
+        'performance': 'Average across stocks: Win rate ~70%, reasonable for medium volatility'
+    }
+}
+
+
+def get_params(ticker):
+    """
+    Get optimized parameters for a ticker.
+
+    Args:
+        ticker: Stock ticker symbol (e.g., 'NVDA', 'TSLA')
+
+    Returns:
+        Dictionary with mean reversion parameters
+
+    Example:
+        >>> params = get_params('TSLA')
+        >>> detector = MeanReversionDetector(
+        ...     z_score_threshold=params['z_score_threshold'],
+        ...     rsi_oversold=params['rsi_oversold'],
+        ...     volume_multiplier=params['volume_multiplier'],
+        ...     price_drop_threshold=params['price_drop_threshold']
+        ... )
+    """
+    return MEAN_REVERSION_PARAMS.get(ticker, MEAN_REVERSION_PARAMS['DEFAULT'])
+
+
+def get_all_tickers():
+    """
+    Get list of all tickers with optimized parameters.
+
+    Returns:
+        List of ticker symbols (excluding DEFAULT)
+    """
+    return [ticker for ticker in MEAN_REVERSION_PARAMS.keys() if ticker != 'DEFAULT']
+
+
+def print_params_summary():
+    """Print summary of all optimized parameters."""
+    print("=" * 70)
+    print("STOCK-SPECIFIC MEAN REVERSION PARAMETERS")
+    print("=" * 70)
+    print()
+
+    for ticker in get_all_tickers():
+        params = MEAN_REVERSION_PARAMS[ticker]
+        print(f"{ticker}:")
+        print(f"  Z-score: {params['z_score_threshold']}")
+        print(f"  RSI: {params['rsi_oversold']}")
+        print(f"  Volume: {params['volume_multiplier']}x")
+        print(f"  Drop: {params['price_drop_threshold']}%")
+        print(f"  Performance: {params['performance']}")
+        print(f"  Notes: {params['notes']}")
+        print()
+
+    print("DEFAULT (fallback):")
+    default = MEAN_REVERSION_PARAMS['DEFAULT']
+    print(f"  Z-score: {default['z_score_threshold']}")
+    print(f"  RSI: {default['rsi_oversold']}")
+    print(f"  Volume: {default['volume_multiplier']}x")
+    print(f"  Drop: {default['price_drop_threshold']}%")
+    print(f"  Notes: {default['notes']}")
+    print()
+    print("=" * 70)
+
+
+# Guidelines for adding new stocks
+PARAMETER_SELECTION_GUIDELINES = """
+ADDING NEW STOCKS:
+
+1. Measure historical volatility:
+   - Calculate 30-day ATR / Price ratio
+   - Calculate 30-day standard deviation of returns
+
+2. Classify volatility:
+   - High (>3% daily): Use TSLA parameters (z=1.75, RSI=32)
+   - Medium (1.5-3% daily): Use NVDA parameters (z=1.5, RSI=35)
+   - Low (<1.5% daily): Use AAPL parameters (z=1.0, RSI=35) or skip
+
+3. Backtest with regime + earnings filters:
+   - Test on 2-3 year period
+   - Verify win rate > 60%
+   - Check Sharpe ratio > 1.0
+
+4. Fine-tune if needed:
+   - Run parameter optimization (exp008_parameter_optimization.py)
+   - Test 400 combinations
+   - Select best by win rate, Sharpe, return
+
+5. Monitor in production:
+   - Track win rate, return, Sharpe
+   - Re-optimize every 6-12 months
+   - Remove if consistently underperforms
+
+NOTES:
+- Mean reversion works best on volatile stocks (NVDA, TSLA)
+- Stable mega-caps (AAPL) may not be suitable
+- Parameters should match stock's volatility profile
+"""
+
+
+if __name__ == "__main__":
+    print_params_summary()
+    print()
+    print(PARAMETER_SELECTION_GUIDELINES)
