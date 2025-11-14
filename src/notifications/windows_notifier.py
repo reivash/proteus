@@ -72,10 +72,7 @@ class WindowsNotifier:
                     'Open dashboard for details'
                 ]
 
-            # Add button to open dashboard
-            toast.AddAction('Open Dashboard', 'http://localhost:5000')
-
-            # Show notification
+            # Show notification (no actions - simpler)
             self.toaster.show_toast(toast)
 
             print(f"[NOTIFICATION] Sent Windows toast: {toast.text_fields[0]}")
@@ -93,20 +90,18 @@ class WindowsNotifier:
         try:
             toast = Toast()
             toast.text_fields = [
-                '✓ Proteus Notifications Working!',
+                'Proteus Notifications Working!',
                 'No passwords needed - just local Windows notifications',
                 f'Test sent at {datetime.now().strftime("%H:%M:%S")}'
             ]
 
-            toast.AddAction('Open Dashboard', 'http://localhost:5000')
-
             self.toaster.show_toast(toast)
 
-            print("✓ Test notification sent!")
+            print("[OK] Test notification sent!")
             return True
 
         except Exception as e:
-            print(f"✗ Test failed: {e}")
+            print(f"[FAIL] Test failed: {e}")
             return False
 
 
