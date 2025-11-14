@@ -26,12 +26,14 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
 from src.trading.performance_tracker import PerformanceTracker
+from src.notifications.email_notifier import EmailNotifier
 
 app = Flask(__name__)
 
 # Global state
 scanner = SignalScanner()
 tracker = PerformanceTracker()
+email_notifier = EmailNotifier()
 last_scan_time = None
 current_signals = []
 scan_status = "Not started"
@@ -76,6 +78,14 @@ def run_daily_scan():
 
         # Save to file
         save_status()
+
+        # Send email notification
+        try:
+            if email_notifier.is_enabled():
+                performance = tracker.get_stats_summary()
+                email_notifier.send_scan_notification(scan_status, current_signals, performance)
+        except Exception as email_error:
+            print(f"[WARN] Email notification failed: {email_error}")
 
     except Exception as e:
         scan_status = f"Error: {str(e)}"
@@ -187,6 +197,12 @@ if __name__ == '__main__':
 
     # Setup scheduler
     scheduler = setup_scheduler()
+
+    # Check email configuration
+    if email_notifier.is_enabled():
+        print(f"[EMAIL] Notifications enabled - sending to {email_notifier.config['recipient_email']}")
+    else:
+        print("[EMAIL] Notifications disabled - configure email_config.json to enable")
 
     # Run initial scan
     if last_scan_time is None or (datetime.now() - last_scan_time).days >= 1:
