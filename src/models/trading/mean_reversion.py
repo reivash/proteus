@@ -1,10 +1,16 @@
 """
-Mean Reversion Strategy - Detect and trade stock overcorrections.
+Mean Reversion Strategy v5.0 - Detect and trade stock overcorrections.
 
 Based on user observation: "When stock jumps down or up suddenly,
 it tends to normalize in 1-2 days because the jump made no sense."
 
-Strategy: Buy panic sells, sell panic buys, hold 1-2 days.
+Strategy: Buy panic sells, sell panic buys, hold 1-3 days with time-decay exits.
+
+VERSION HISTORY:
+- v5.0: Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%, max 3d)
+        Performance: +12.35pp portfolio return, +6.1pp win rate vs v4.0
+- v4.0: Fixed exits (±2%, 2d max hold)
+- v3.0: Stock-specific parameters + regime + earnings filters
 """
 
 import pandas as pd
@@ -141,9 +147,10 @@ class MeanReversionBacktester:
     def __init__(
         self,
         initial_capital=10000,
-        profit_target=2.0,  # % gain to take profit
-        stop_loss=-2.0,     # % loss to cut losses
-        max_hold_days=2,    # Maximum days to hold position
+        exit_strategy='time_decay',  # 'time_decay' or 'fixed'
+        profit_target=2.0,  # % gain to take profit (used for 'fixed' strategy)
+        stop_loss=-2.0,     # % loss to cut losses (used for 'fixed' strategy)
+        max_hold_days=3,    # Maximum days to hold position (v5.0: increased from 2 to 3)
         position_size_multiplier=1.0  # Position size multiplier (0.5-1.0 for dynamic sizing)
     ):
         """
@@ -151,16 +158,26 @@ class MeanReversionBacktester:
 
         Args:
             initial_capital: Starting capital
-            profit_target: % gain to exit with profit
-            stop_loss: % loss to exit with loss
-            max_hold_days: Max days to hold before forced exit
+            exit_strategy: 'time_decay' (v5.0 default) or 'fixed' (v4.0 legacy)
+            profit_target: % gain to exit with profit (only for 'fixed' strategy)
+            stop_loss: % loss to exit with loss (only for 'fixed' strategy)
+            max_hold_days: Max days to hold before forced exit (v5.0: 3 days)
             position_size_multiplier: Position size multiplier (default 1.0 for full position)
         """
         self.initial_capital = initial_capital
+        self.exit_strategy = exit_strategy
         self.profit_target = profit_target
         self.stop_loss = stop_loss
         self.position_size_multiplier = position_size_multiplier
         self.max_hold_days = max_hold_days
+
+        # Time-decay exit targets (v5.0)
+        if exit_strategy == 'time_decay':
+            self.time_decay_targets = {
+                0: (2.0, -2.0),   # Day 0: ±2%
+                1: (1.5, -1.5),   # Day 1: ±1.5%
+                2: (1.0, -1.0),   # Day 2+: ±1%
+            }
 
     def backtest(self, df: pd.DataFrame) -> Dict:
         """
@@ -202,10 +219,21 @@ class MeanReversionBacktester:
                 # Calculate return
                 return_pct = (current_price / entry_price - 1) * 100
 
-                # Exit conditions
-                hit_profit = return_pct >= self.profit_target
-                hit_stop = return_pct <= self.stop_loss
-                timeout = days_held >= self.max_hold_days
+                # Exit conditions based on strategy
+                if self.exit_strategy == 'time_decay':
+                    # Time-decay exits (v5.0): Tighter targets as hold time increases
+                    profit_target, stop_loss = self.time_decay_targets.get(
+                        days_held,
+                        (1.0, -1.0)  # Default for day 2+
+                    )
+                    hit_profit = return_pct >= profit_target
+                    hit_stop = return_pct <= stop_loss
+                    timeout = days_held >= self.max_hold_days
+                else:
+                    # Fixed exits (v4.0 legacy)
+                    hit_profit = return_pct >= self.profit_target
+                    hit_stop = return_pct <= self.stop_loss
+                    timeout = days_held >= self.max_hold_days
 
                 if hit_profit or hit_stop or timeout:
                     # Close position

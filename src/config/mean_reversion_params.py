@@ -1,11 +1,16 @@
 """
-Stock-Specific Mean Reversion Parameters
+Stock-Specific Mean Reversion Parameters - v5.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
-Last Updated: 2025-11-14
-Optimization: EXP-008-PARAMS
+Last Updated: 2025-11-15
+Optimization: EXP-008-PARAMS (stock parameters)
+Exit Strategy: EXP-010-EXIT (time-decay exits)
+
+VERSION: 5.0
+- Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
+- Performance improvement: +12.35pp portfolio return, +6.1pp win rate vs v4.0
 """
 
 # Optimized parameters by stock ticker
