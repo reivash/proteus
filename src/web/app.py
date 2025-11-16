@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
 from src.trading.performance_tracker import PerformanceTracker
+from src.utils.scan_logger import ScanLogger
 
 # Try to import notification options (user can choose which to use)
 try:
@@ -59,6 +60,7 @@ app = Flask(__name__)
 # Global state
 scanner = SignalScanner()
 tracker = PerformanceTracker()
+scan_logger = ScanLogger()
 last_scan_time = None
 current_signals = []
 scan_status = "Not started"
@@ -71,12 +73,17 @@ SIGNALS_FILE = os.path.join(DATA_DIR, 'current_signals.json')
 STATUS_FILE = os.path.join(DATA_DIR, 'scan_status.json')
 
 
-def run_daily_scan():
-    """Run signal scanner and update dashboard data."""
+def run_daily_scan(scan_type='scheduled'):
+    """Run signal scanner and update dashboard data.
+
+    Args:
+        scan_type: 'scheduled' or 'manual'
+    """
     global last_scan_time, current_signals, scan_status
 
     try:
-        print(f"[{datetime.now()}] Running scheduled scan...")
+        scan_time = datetime.now()
+        print(f"[{scan_time}] Running {scan_type} scan...")
         scan_status = "Scanning..."
 
         # Check market regime
@@ -85,13 +92,13 @@ def run_daily_scan():
         if regime == 'BEAR':
             scan_status = "Complete (BEAR market - no trading)"
             current_signals = []
-            last_scan_time = datetime.now()
+            last_scan_time = scan_time
         else:
             # Scan for signals
             signals = scanner.scan_all_stocks()
 
             current_signals = signals
-            last_scan_time = datetime.now()
+            last_scan_time = scan_time
             scan_status = f"Complete - Found {len(signals)} signal(s)"
 
             print(f"  Regime: {regime}")
@@ -101,20 +108,32 @@ def run_daily_scan():
                 for sig in signals:
                     print(f"    {sig['ticker']}: ${sig['price']:.2f}, Z={sig['z_score']:.2f}, RSI={sig['rsi']:.1f}")
 
+        # Get performance data
+        performance = tracker.get_stats_summary()
+
+        # LOG EVERYTHING to text files
+        log_file = scan_logger.log_scan(
+            scan_type=scan_type,
+            regime=regime,
+            signals=current_signals,
+            scan_status=scan_status,
+            performance=performance
+        )
+        print(f"  Logged to: {log_file}")
+
         # Save to file
         save_status()
 
-        # Send notifications (try Windows toast first, then email)
+        # Send notifications (ALWAYS, for both scheduled and manual scans)
         try:
-            performance = tracker.get_stats_summary()
-
-            # Windows notifications (simplest - no password needed)
+            # Windows notifications
             if windows_notifier and windows_notifier.is_enabled():
                 windows_notifier.send_scan_notification(scan_status, current_signals, performance)
 
-            # Email notifications (if configured)
+            # Email notifications
             if email_notifier and email_notifier.is_enabled():
                 email_notifier.send_scan_notification(scan_status, current_signals, performance)
+                print(f"  Email sent to {email_notifier.config['recipient_email']}")
 
         except Exception as notification_error:
             print(f"[WARN] Notification failed: {notification_error}")
@@ -175,9 +194,9 @@ def api_status():
 
 @app.route('/api/scan')
 def api_scan():
-    """Manual scan trigger."""
-    run_daily_scan()
-    return jsonify({'status': 'Scan initiated'})
+    """Manual scan trigger - logs, emails, and updates UI."""
+    run_daily_scan(scan_type='manual')
+    return jsonify({'status': 'Manual scan initiated - check email and logs'})
 
 
 @app.route('/api/performance')
@@ -188,30 +207,32 @@ def api_performance():
 
 
 def setup_scheduler():
-    """Setup scheduled scans."""
+    """Setup scheduled scans.
+
+    Scans at 10:00 AM EST (16:00 ZRH) - 1 hour after market open.
+    """
     scheduler = BackgroundScheduler()
 
-    # Schedule daily scan at 9:30 AM EST (market open)
-    # Adjust timezone as needed
+    # Schedule daily scan at 10:00 AM EST (16:00 ZRH - 1h after market open)
     scheduler.add_job(
-        run_daily_scan,
+        lambda: run_daily_scan(scan_type='scheduled'),
         'cron',
-        hour=9,
-        minute=30,
-        id='daily_scan'
+        hour=10,
+        minute=0,
+        id='daily_scan_1000'
     )
 
-    # Also scan every 4 hours during trading day (in case of intraday opportunities)
+    # Optional: Add end-of-day scan at 3:30 PM EST (21:30 ZRH - after market close)
     scheduler.add_job(
-        run_daily_scan,
+        lambda: run_daily_scan(scan_type='scheduled'),
         'cron',
-        hour='9,13,17',
+        hour=15,
         minute=30,
-        id='intraday_scans'
+        id='eod_scan'
     )
 
     scheduler.start()
-    print("[SCHEDULER] Started - scanning at 9:30 AM, 1:30 PM, 5:30 PM daily")
+    print("[SCHEDULER] Started - scanning at 10:00 AM EST (16:00 ZRH), 3:30 PM EST (21:30 ZRH)")
 
     return scheduler
 

@@ -296,11 +296,11 @@
                 </div>
                 <div class="metric">
                     <div class="metric-label">Scan Frequency</div>
-                    <div class="metric-value">3x daily</div>
+                    <div class="metric-value">2x daily</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-label">Scan Times</div>
-                    <div class="metric-value" style="font-size: 1em;">9:30 AM, 1:30 PM, 5:30 PM</div>
+                    <div class="metric-label">Scan Times (EST / ZRH)</div>
+                    <div class="metric-value" style="font-size: 0.9em;">10:00 AM / 16:00, 3:30 PM / 21:30</div>
                 </div>
                 <div class="metric">
                     <div class="metric-label">Email Alerts</div>
@@ -336,7 +336,7 @@
         <!-- Footer -->
         <div class="footer">
             <p>Proteus Mean Reversion Strategy</p>
-            <p style="font-size: 0.9em; margin-top: 5px;">Automated scanning at 9:30 AM, 1:30 PM, 5:30 PM daily</p>
+            <p style="font-size: 0.9em; margin-top: 5px;">Automated scanning at 10:00 AM EST (16:00 ZRH), 3:30 PM EST (21:30 ZRH) daily</p>
         </div>
     </div>
 
@@ -346,9 +346,8 @@
         function calculateNextScan() {
             const now = new Date();
             const scanTimes = [
-                {hour: 9, minute: 30, label: '9:30 AM'},
-                {hour: 13, minute: 30, label: '1:30 PM'},
-                {hour: 17, minute: 30, label: '5:30 PM'}
+                {hour: 10, minute: 0, label: '10:00 AM EST (16:00 ZRH)'},
+                {hour: 15, minute: 30, label: '3:30 PM EST (21:30 ZRH)'}
             ];
 
             // Find next scan time today
@@ -377,10 +376,10 @@
             // If no more scans today, show tomorrow's first scan
             const tomorrow = new Date(now);
             tomorrow.setDate(tomorrow.getDate() + 1);
-            tomorrow.setHours(9, 30, 0, 0);
+            tomorrow.setHours(10, 0, 0, 0);
             const diffMs = tomorrow - now;
             const diffHours = Math.floor(diffMs / 3600000);
-            document.getElementById('nextScan').textContent = `${diffHours}h (Tomorrow 9:30 AM)`;
+            document.getElementById('nextScan').textContent = `${diffHours}h (Tomorrow 10:00 AM EST)`;
         }
 
         function updateDashboard() {
