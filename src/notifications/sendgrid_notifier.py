@@ -206,6 +206,14 @@ class SendGridNotifier:
             html += f"""
     <h3>Performance Summary</h3>
     <div class="performance">
+        <div class="metric"><strong>Algorithm:</strong> Mean Reversion v5.0 with Time-Decay Exits</div>
+        <div class="metric"><strong>Strategy:</strong> Panic sell detection using Z-score, RSI, volume spikes, and price drops</div>
+        <div class="metric"><strong>Exit Rules:</strong> Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1% (time-decay)</div>
+        <div class="metric"><strong>Filters:</strong> Market regime (no trading in bear markets) + Earnings exclusion (±3 days)</div>
+        <div class="metric" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;"><strong>Backtest Period:</strong> 2022-2025 (3 years)</div>
+        <div class="metric"><strong>Optimization:</strong> EXP-008 (stock-specific parameters) + EXP-010 (time-decay exits)</div>
+        <div class="metric"><strong>Tested Symbols:</strong> NVDA, TSLA, AAPL, AMZN, MSFT, JPM, JNJ, UNH, INTC, CVX, QQQ</div>
+        <div class="metric" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;"><strong>Current Performance:</strong></div>
         <div class="metric">Total Trades: <strong>{performance.get('total_trades', 0)}</strong></div>
         <div class="metric">Win Rate: <strong>{performance.get('win_rate', 0):.1f}%</strong> (Target: 77.3%)</div>
         <div class="metric">Total Return: <strong>{performance.get('total_return', 0):+.2f}%</strong></div>
