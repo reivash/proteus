@@ -1,123 +1,76 @@
 """
-Stock-Specific Mean Reversion Parameters - v5.0
+Stock-Specific Mean Reversion Parameters - v6.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
-Last Updated: 2025-11-15
-Optimization: EXP-008-PARAMS (stock parameters)
+Last Updated: 2025-11-16
+Optimization: EXP-014 (stock selection optimization)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 
-VERSION: 5.0
+VERSION: 6.0
+- Selective trading: Only Tier A stocks (>70% win rate)
+- Stock selection based on 3-year backtests (EXP-014)
+- Expected improvement: +15.99pp return, +17.23pp win rate vs trading all
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
-- Performance improvement: +12.35pp portfolio return, +6.1pp win rate vs v4.0
 """
 
-# Optimized parameters by stock ticker
+# ============================================================================
+# TIER A STOCKS (>70% win rate) - ACTIVELY MONITORED
+# Based on EXP-014 3-year backtests (2022-2025)
+# ============================================================================
+
 MEAN_REVERSION_PARAMS = {
+    # TIER A: TOP PERFORMER - 87.5% win rate
     'NVDA': {
         'z_score_threshold': 1.5,
         'rsi_oversold': 35,
         'volume_multiplier': 1.3,
         'price_drop_threshold': -1.5,
-        'notes': 'High volatility GPU/AI stock. Lower volume threshold catches more quality signals.',
-        'performance': 'Win rate: 87.5%, Return: +45.75%, Sharpe: 12.22'
+        'tier': 'A',
+        'notes': 'BEST PERFORMER! GPU/AI leader. Exceptionally strong mean reversion characteristics.',
+        'performance': 'Win rate: 87.5%, Return: +49.70%, Sharpe: 19.58, Avg gain: 6.35%'
     },
 
-    'TSLA': {
-        'z_score_threshold': 1.75,  # TIGHTER than default
-        'rsi_oversold': 32,  # TIGHTER than default
-        'volume_multiplier': 1.3,
-        'price_drop_threshold': -1.5,
-        'notes': 'EXTREME volatility. Tighter thresholds filter noise and catch only true panic sells.',
-        'performance': 'Win rate: 87.5%, Return: +12.81%, Sharpe: 7.22'
-    },
-
-    'AAPL': {
-        'z_score_threshold': 1.0,  # LOOSER than default
-        'rsi_oversold': 35,
-        'volume_multiplier': 1.7,
-        'price_drop_threshold': -1.5,
-        'notes': 'Low volatility mega-cap. Looser z-score catches signals. Performance still weak (60% win rate).',
-        'performance': 'Win rate: 60.0%, Return: -0.25%, Sharpe: -0.13'
-    },
-
-    'AMZN': {
-        'z_score_threshold': 1.0,  # LOOSER for catching signals
-        'rsi_oversold': 32,  # Tight RSI threshold
-        'volume_multiplier': 1.5,
-        'price_drop_threshold': -1.5,
-        'notes': 'EXCELLENT performer! Strong mean reversion with 80% win rate. Low z-score works well.',
-        'performance': 'Win rate: 80.0%, Return: +10.20%, Sharpe: 4.06'
-    },
-
-    'MSFT': {
-        'z_score_threshold': 1.75,  # Tighter threshold
+    # TIER A: PAYMENTS - 75.0% win rate
+    'V': {
+        'z_score_threshold': 1.5,
         'rsi_oversold': 35,
         'volume_multiplier': 1.3,
         'price_drop_threshold': -1.5,
-        'notes': 'Moderate volatility mega-cap. Good performance with tighter z-score threshold.',
-        'performance': 'Win rate: 66.7%, Return: +2.06%, Sharpe: 1.71'
+        'tier': 'A',
+        'notes': 'EXCELLENT! Payments leader. Reliable mean reversion with strong consistency.',
+        'performance': 'Win rate: 75.0%, Return: +7.33%, Sharpe: 7.03, Avg gain: 2.09%'
     },
 
-    # FINANCE SECTOR
-    'JPM': {
-        'z_score_threshold': 1.0,  # Looser for catching signals
-        'rsi_oversold': 32,  # Tight RSI
-        'volume_multiplier': 1.3,
-        'price_drop_threshold': -1.5,
-        'notes': 'STAR PERFORMER! Finance sector. Excellent win rate and returns.',
-        'performance': 'Win rate: 80.0%, Return: +18.63%, Sharpe: 8.19'
-    },
-
-    # HEALTHCARE SECTOR
-    'JNJ': {
-        'z_score_threshold': 1.0,  # Looser for catching signals
-        'rsi_oversold': 32,  # Tight RSI
-        'volume_multiplier': 1.3,
-        'price_drop_threshold': -1.5,
-        'notes': 'EXCELLENT! Healthcare sector. High win rate with outstanding Sharpe ratio.',
-        'performance': 'Win rate: 83.3%, Return: +13.21%, Sharpe: 12.46'
-    },
-
-    'UNH': {
-        'z_score_threshold': 1.5,  # Moderate threshold
-        'rsi_oversold': 40,  # Looser RSI
-        'volume_multiplier': 1.7,
-        'price_drop_threshold': -3.0,  # Stricter drop requirement
-        'notes': 'EXCELLENT! Healthcare sector. Very high win rate with solid returns.',
-        'performance': 'Win rate: 85.7%, Return: +5.45%, Sharpe: 4.71'
-    },
-
-    # TECH - SEMICONDUCTOR
-    'INTC': {
-        'z_score_threshold': 1.75,  # Tighter threshold
-        'rsi_oversold': 32,  # Tight RSI
-        'volume_multiplier': 1.3,
-        'price_drop_threshold': -2.5,  # Moderate drop requirement
-        'notes': 'Good performer. Semiconductor sector adds volatility diversification.',
-        'performance': 'Win rate: 66.7%, Return: +6.46%, Sharpe: 5.07'
-    },
-
-    # ENERGY SECTOR
-    'CVX': {
-        'z_score_threshold': 1.0,  # Looser for catching signals
-        'rsi_oversold': 35,
-        'volume_multiplier': 1.7,
-        'price_drop_threshold': -1.5,
-        'notes': 'Acceptable. Energy sector diversification. Marginal performance, monitor closely.',
-        'performance': 'Win rate: 60.0%, Return: +2.50%, Sharpe: 2.68'
-    },
-
-    # ETF - NASDAQ-100
-    'QQQ': {
-        'z_score_threshold': 1.5,  # Moderate threshold for ETF
+    # TIER A: PAYMENTS - 71.4% win rate
+    'MA': {
+        'z_score_threshold': 1.5,
         'rsi_oversold': 35,
         'volume_multiplier': 1.3,
         'price_drop_threshold': -1.5,
-        'notes': 'Nasdaq-100 ETF. Tech-heavy, moderate volatility. Diversified exposure to top tech stocks.',
-        'performance': 'New addition - monitoring performance'
+        'tier': 'A',
+        'notes': 'EXCELLENT! Payments leader. Strong mean reversion alongside V.',
+        'performance': 'Win rate: 71.4%, Return: +5.99%, Sharpe: 6.92, Avg gain: 2.02%'
     },
+
+    # ========================================================================
+    # TIER B STOCKS (55-70% win rate) - NOT MONITORED (marginal performance)
+    # Removed from active monitoring based on EXP-014 results
+    # ========================================================================
+    # 'CVX': 66.7% win rate, +6.99% return - Energy sector, acceptable but not top tier
+    # 'HD': 62.5% win rate, +5.63% return - Retail, moderate performance
+    # 'BAC': 60.0% win rate, -5.86% return - Finance, LOSING strategy despite 60% win rate
+    # 'JPM': 55.6% win rate, +3.65% return - Finance, marginal performance
+
+    # ========================================================================
+    # TIER C STOCKS (<55% win rate) - AVOID (poor performance)
+    # These stocks do NOT work well with mean reversion strategy
+    # ========================================================================
+    # 'AAPL': 50.0% win rate, +13.22% return - Coin flip, returns from luck not skill
+    # 'GS': 50.0% win rate, -2.75% return - Finance, coin flip with losses
+    # 'TSLA': 46.7% win rate, -29.84% return - WORST PERFORMER, extreme volatility
+    # 'QQQ': 42.9% win rate, +1.15% return - ETF, poor mean reversion characteristics
 
     # Default fallback for unknown stocks
     # Updated from original universal parameters based on optimization learnings
@@ -193,38 +146,63 @@ def print_params_summary():
     print("=" * 70)
 
 
-# Guidelines for adding new stocks
+# Guidelines for adding new stocks (updated based on EXP-014)
 PARAMETER_SELECTION_GUIDELINES = """
-ADDING NEW STOCKS:
+ADDING NEW STOCKS - EXP-014 METHODOLOGY:
 
-1. Measure historical volatility:
-   - Calculate 30-day ATR / Price ratio
-   - Calculate 30-day standard deviation of returns
+1. Run 3-year backtest using exp014_stock_selection_optimization.py:
+   - Tests panic sell detection with time-decay exits
+   - Measures: win rate, total return, Sharpe ratio, avg gain/loss
+   - Compares against existing stocks
 
-2. Classify volatility:
-   - High (>3% daily): Use TSLA parameters (z=1.75, RSI=32)
-   - Medium (1.5-3% daily): Use NVDA parameters (z=1.5, RSI=35)
-   - Low (<1.5% daily): Use AAPL parameters (z=1.0, RSI=35) or skip
+2. Tier classification (based on win rate):
+   - Tier A (>70% win rate): TRADE AGGRESSIVELY
+     * Add to MEAN_REVERSION_PARAMS
+     * Enable daily monitoring
+     * Expected: High returns, excellent risk-adjusted performance
 
-3. Backtest with regime + earnings filters:
-   - Test on 2-3 year period
-   - Verify win rate > 60%
-   - Check Sharpe ratio > 1.0
+   - Tier B (55-70% win rate): CONSIDER CAUTIOUSLY
+     * Marginal performance
+     * May add if diversification needed
+     * Monitor closely for degradation
 
-4. Fine-tune if needed:
-   - Run parameter optimization (exp008_parameter_optimization.py)
-   - Test 400 combinations
-   - Select best by win rate, Sharpe, return
+   - Tier C (<55% win rate): AVOID
+     * Mean reversion doesn't work on these stocks
+     * DO NOT trade, regardless of other metrics
 
-5. Monitor in production:
-   - Track win rate, return, Sharpe
-   - Re-optimize every 6-12 months
-   - Remove if consistently underperforms
+3. Parameter selection:
+   - Start with DEFAULT parameters (z=1.5, RSI=35, vol=1.3, drop=-1.5)
+   - Run backtest to verify performance
+   - Only optimize if Tier A candidate needs tuning
 
-NOTES:
-- Mean reversion works best on volatile stocks (NVDA, TSLA)
-- Stable mega-caps (AAPL) may not be suitable
-- Parameters should match stock's volatility profile
+4. Performance requirements for Tier A:
+   - Win rate: >70% (CRITICAL)
+   - Total return: >5% over 3 years (minimum)
+   - Sharpe ratio: >5.0 (preferred)
+   - Avg gain: >2% per trade (minimum)
+
+5. Production deployment:
+   - Add to MEAN_REVERSION_PARAMS with tier='A'
+   - Update performance notes with actual backtest results
+   - Monitor monthly, re-evaluate quarterly
+   - Remove if win rate drops below 65% for 6+ months
+
+KEY LEARNINGS (EXP-014):
+- Trading ONLY Tier A stocks improves returns by +15.99pp
+- Win rate improvement of +17.23pp vs trading all stocks
+- Quality over quantity: 3 excellent stocks > 11 mixed stocks
+- Mean reversion is stock-specific, not universal
+
+CURRENT TIER A STOCKS:
+- NVDA: 87.5% win rate, +49.70% return (BEST)
+- V: 75.0% win rate, +7.33% return (EXCELLENT)
+- MA: 71.4% win rate, +5.99% return (EXCELLENT)
+
+AVOID THESE STOCKS (confirmed losers):
+- TSLA: 46.7% win rate, -29.84% return
+- QQQ: 42.9% win rate, +1.15% return
+- GS: 50.0% win rate, -2.75% return
+- AAPL: 50.0% win rate (coin flip)
 """
 
 
