@@ -133,8 +133,12 @@ class SentimentEnhancedDetector:
             return baseline_signals
 
         # Step 2: Merge sentiment data
+        # Convert sentiment date to match price_data Date format (with timezone)
+        sentiment_data_copy = sentiment_data.copy()
+        sentiment_data_copy['date'] = pd.to_datetime(sentiment_data_copy['date']).dt.tz_localize('America/New_York')
+
         signals_with_sentiment = baseline_signals.merge(
-            sentiment_data,
+            sentiment_data_copy,
             left_on='Date',
             right_on='date',
             how='left'
@@ -197,26 +201,46 @@ def collect_sentiment_data(ticker: str, start_date: str, end_date: str) -> pd.Da
     Returns:
         DataFrame with daily sentiment scores
     """
-    if not SENTIMENT_AVAILABLE:
-        print("[WARN] Sentiment collectors not yet available")
-        print("[INFO] Returning mock sentiment data for testing")
+    # Try to use real News API first
+    try:
+        from src.data.sentiment.news_collector import NewsCollector, aggregate_daily_news
 
-        # Create mock sentiment data for testing
-        date_range = pd.date_range(start=start_date, end=end_date, freq='D')
-        mock_data = pd.DataFrame({
-            'date': date_range,
-            'social_sentiment': np.random.uniform(-0.5, 0.5, len(date_range)),
-            'news_sentiment': np.random.uniform(-0.5, 0.5, len(date_range)),
-            'sentiment_velocity': np.random.uniform(-0.2, 0.2, len(date_range))
-        })
-        return mock_data
+        print(f"      [INFO] Collecting news sentiment data...")
+        collector = NewsCollector()
 
-    # TODO: Real implementation when collectors are ready
-    # twitter_data = TwitterSentimentCollector().collect(ticker, start_date, end_date)
-    # reddit_data = RedditSentimentCollector().collect(ticker, start_date, end_date)
-    # news_data = NewsCollector().collect(ticker, start_date, end_date)
-    # combined_sentiment = combine_sentiment_sources(twitter_data, reddit_data, news_data)
-    # return combined_sentiment
+        if collector.is_enabled():
+            news = collector.collect_for_date_range(ticker, start_date, end_date)
+
+            if not news.empty:
+                daily_news = aggregate_daily_news(news)
+
+                # Convert to expected format
+                sentiment_data = pd.DataFrame({
+                    'date': daily_news['date'],
+                    'social_sentiment': 0.0,  # No social data yet (Twitter/Reddit)
+                    'news_sentiment': daily_news['news_sentiment'],
+                    'sentiment_velocity': daily_news['news_sentiment'].diff().fillna(0),
+                    'has_news_data': True,
+                    'has_social_data': False
+                })
+
+                print(f"      [OK] Collected news sentiment for {len(sentiment_data)} days")
+                return sentiment_data
+    except Exception as e:
+        print(f"      [WARN] Could not collect news data: {e}")
+
+    # Fall back to mock data
+    print("      [INFO] Using mock sentiment data")
+    date_range = pd.date_range(start=start_date, end=end_date, freq='D')
+    mock_data = pd.DataFrame({
+        'date': date_range,
+        'social_sentiment': np.random.uniform(-0.5, 0.5, len(date_range)),
+        'news_sentiment': np.random.uniform(-0.5, 0.5, len(date_range)),
+        'sentiment_velocity': np.random.uniform(-0.2, 0.2, len(date_range)),
+        'has_news_data': False,
+        'has_social_data': False
+    })
+    return mock_data
 
 
 def run_sentiment_enhanced_backtest(ticker: str = "NVDA",
