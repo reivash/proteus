@@ -1,21 +1,24 @@
 """
-Stock-Specific Mean Reversion Parameters - v10.0
+Stock-Specific Mean Reversion Parameters - v11.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
 Last Updated: 2025-11-16
-Optimization: EXP-026 (mid-cap expansion)
+Optimization: EXP-027 (mid-cap expansion - batch 2)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 10.0
-- Expanded Tier A from 14 to 18 stocks (14 large-cap + 4 mid-cap)
-- EXP-026: Found 4 new Tier A mid-caps (FTNT: 77.8%, MLM: 81.8%, IDXX: 76.9%, DXCM: 72.2%)
-- Trade frequency improvement: +29% opportunities (14 → 18 stocks)
-- Avg win rate: 77.4% across Tier A portfolio
-- Avg return: +23.95% per stock over 3 years
-- Market cap diversification: Large-cap (14) + Mid-cap (4)
+VERSION: 11.0
+- Expanded Tier A from 18 to 20 stocks (14 large-cap + 6 mid-cap)
+- EXP-026: Found 4 mid-cap Tier A stocks (FTNT, MLM, IDXX, DXCM)
+- EXP-027: Found 2 more mid-cap Tier A stocks (EXR: 85.7%, INVH: 77.8%)
+- Trade frequency improvement: +11% (18 → 20 stocks, ~90 → ~100 trades/year)
+- Avg win rate: 77.6% across Tier A portfolio
+- Avg return: +23.42% per stock over 3 years
+- Market cap diversification: Large-cap (14) + Mid-cap (6)
+- Sector diversification: Added REITs for real estate exposure
+- Mid-cap cumulative hit rate: 14.3% (6 found from 42 tested)
 - FTNT delivers +48.74% return (rivals NVDA's +49.70%)
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
 - Lookback period: 60 days (optimal for stable indicators)
@@ -229,6 +232,28 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 72.2%, Return: +35.12%, Sharpe: 9.43, Avg gain: 3.41%'
     },
 
+    # TIER A: REIT - SELF-STORAGE (MID-CAP) - 85.7% win rate (EXP-027)
+    'EXR': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OUTSTANDING! Extra Space Storage. BEST mid-cap performer (85.7% win rate).',
+        'performance': 'Win rate: 85.7%, Return: +18.95%, Sharpe: 12.48, Avg gain: 3.73%'
+    },
+
+    # TIER A: REIT - RESIDENTIAL (MID-CAP) - 77.8% win rate (EXP-027)
+    'INVH': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Invitation Homes. Residential REIT, strong mean reversion.',
+        'performance': 'Win rate: 77.8%, Return: +15.04%, Sharpe: 11.85, Avg gain: 2.68%'
+    },
+
     # ========================================================================
     # TIER B STOCKS (55-70% win rate) - NOT MONITORED (marginal performance)
     # Removed from active monitoring based on EXP-014 results
@@ -368,7 +393,8 @@ KEY LEARNINGS (EXP-014):
 - Quality over quantity: 3 excellent stocks > 11 mixed stocks
 - Mean reversion is stock-specific, not universal
 
-CURRENT TIER A STOCKS (v9.0 - 14 stocks):
+CURRENT TIER A STOCKS (v11.0 - 20 stocks):
+LARGE-CAP (14 stocks):
 Semiconductors (4):
 - NVDA: 87.5% win rate, +49.70% return (BEST PERFORMER)
 - AVGO: 87.5% win rate, +24.52% return ⭐ EXP-021
@@ -395,11 +421,26 @@ Finance (1):
 Energy (1):
 - EOG: 81.8% win rate, +17.98% return ⭐ EXP-025
 
-Portfolio stats (v9.0):
+MID-CAP (6 stocks):
+Materials (1):
+- MLM: 81.8% win rate, +25.71% return ⭐ EXP-026
+
+Cybersecurity (1):
+- FTNT: 77.8% win rate, +48.74% return ⭐ EXP-026 (RIVALS NVDA!)
+
+Healthcare/Medical Devices (2):
+- IDXX: 76.9% win rate, +24.89% return ⭐ EXP-026
+- DXCM: 72.2% win rate, +35.12% return ⭐ EXP-026
+
+REITs (2):
+- EXR: 85.7% win rate, +18.95% return ⭐ EXP-027 (BEST mid-cap!)
+- INVH: 77.8% win rate, +15.04% return ⭐ EXP-027
+
+Portfolio stats (v11.0):
 - Average win rate: 77.6%
-- Average return: +22.07%
-- Trade frequency: ~70 trades/year (+27% vs v8.0)
-- Full sector diversification across 6 major sectors
+- Average return: +23.42%
+- Trade frequency: ~100 trades/year (+11% vs v10.0)
+- Full sector diversification across 8 sectors (added REITs + Materials)
 
 AVOID THESE STOCKS (confirmed poor performers):
 EXP-014 tested:
