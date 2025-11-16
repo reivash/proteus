@@ -319,6 +319,10 @@
                     <div class="metric-value">10 stocks</div>
                 </div>
                 <div class="metric">
+                    <div class="metric-label">Instruments</div>
+                    <div class="metric-value" id="scannedTickers" style="font-size: 0.85em;">Loading...</div>
+                </div>
+                <div class="metric">
                     <div class="metric-label">Expected Win Rate</div>
                     <div class="metric-value">77.3%</div>
                 </div>
@@ -415,6 +419,11 @@
 
                     // Update signal count
                     document.getElementById('signalCount').textContent = data.signal_count;
+
+                    // Update scanned tickers if available
+                    if (data.scanned_tickers && data.scanned_tickers.length > 0) {
+                        document.getElementById('scannedTickers').textContent = data.scanned_tickers.join(', ');
+                    }
 
                     // Update signals list
                     const signalsList = document.getElementById('signalsList');
