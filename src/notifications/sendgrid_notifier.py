@@ -127,11 +127,11 @@ class SendGridNotifier:
     def _create_subject(self, signals: List[Dict]) -> str:
         """Create email subject."""
         if len(signals) == 0:
-            return "📊 Proteus Daily Scan - No Signals"
+            return "Proteus Daily Scan - No Signals"
         elif len(signals) == 1:
-            return f"🚨 Proteus Alert - BUY Signal: {signals[0]['ticker']}"
+            return f"ALERT: Proteus BUY Signal - {signals[0]['ticker']}"
         else:
-            return f"🚨 Proteus Alert - {len(signals)} BUY Signals!"
+            return f"ALERT: Proteus - {len(signals)} BUY Signals!"
 
     def _create_body(self, scan_status: str, signals: List[Dict], performance: Dict = None) -> str:
         """Create email body - full HTML template."""
@@ -158,7 +158,7 @@ class SendGridNotifier:
 </head>
 <body>
     <div class="header">
-        <h2>📈 Proteus Trading Dashboard</h2>
+        <h2>Proteus Trading Dashboard</h2>
         <p>Mean Reversion Strategy v4.0</p>
         <p style="font-size: 0.9em;">{now}</p>
     </div>
@@ -171,7 +171,7 @@ class SendGridNotifier:
         # Add signals section
         if len(signals) > 0:
             html += f"""
-    <h3>🚨 Active Buy Signals ({len(signals)})</h3>
+    <h3>Active Buy Signals ({len(signals)})</h3>
 """
             for signal in signals:
                 expected_return = signal.get('expected_return', 0)
@@ -186,7 +186,7 @@ class SendGridNotifier:
 """
         else:
             html += """
-    <h3>💤 No Signals Detected</h3>
+    <h3>No Signals Detected</h3>
     <div class="status">
         <p>No panic sell opportunities found. Strategy is waiting for the right moment.</p>
     </div>
@@ -195,7 +195,7 @@ class SendGridNotifier:
         # Add performance
         if performance:
             html += f"""
-    <h3>📊 Performance Summary</h3>
+    <h3>Performance Summary</h3>
     <div class="performance">
         <div class="metric">Total Trades: <strong>{performance.get('total_trades', 0)}</strong></div>
         <div class="metric">Win Rate: <strong>{performance.get('win_rate', 0):.1f}%</strong> (Target: 77.3%)</div>
