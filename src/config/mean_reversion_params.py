@@ -1,21 +1,22 @@
 """
-Stock-Specific Mean Reversion Parameters - v9.0
+Stock-Specific Mean Reversion Parameters - v10.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
 Last Updated: 2025-11-16
-Optimization: EXP-025 (expanded Tier A universe - Round 3)
+Optimization: EXP-026 (mid-cap expansion)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 9.0
-- Expanded Tier A from 10 to 14 stocks
-- EXP-025: Found 4 new Tier A stocks (EOG: 81.8%, TXN: 80.0%, GILD: 80.0%, INTU: 76.9%)
-- Trade frequency improvement: +27% opportunities (10 → 14 stocks)
-- Avg win rate: 77.6% across Tier A portfolio
-- Avg return: +22.07% per stock over 3 years
-- Full sector diversification: Semiconductors (4), Tech/Software (3), Healthcare/Pharma (3), Payments (2), Finance (1), Energy (1)
+VERSION: 10.0
+- Expanded Tier A from 14 to 18 stocks (14 large-cap + 4 mid-cap)
+- EXP-026: Found 4 new Tier A mid-caps (FTNT: 77.8%, MLM: 81.8%, IDXX: 76.9%, DXCM: 72.2%)
+- Trade frequency improvement: +29% opportunities (14 → 18 stocks)
+- Avg win rate: 77.4% across Tier A portfolio
+- Avg return: +23.95% per stock over 3 years
+- Market cap diversification: Large-cap (14) + Mid-cap (4)
+- FTNT delivers +48.74% return (rivals NVDA's +49.70%)
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
 - Lookback period: 60 days (optimal for stable indicators)
 """
@@ -178,6 +179,54 @@ MEAN_REVERSION_PARAMS = {
         'tier': 'A',
         'notes': 'EXCELLENT! Intuit. Financial software leader with high returns.',
         'performance': 'Win rate: 76.9%, Return: +29.81%, Sharpe: 7.54, Avg gain: 3.82%'
+    },
+
+    # ========================================================================
+    # MID-CAP TIER A STOCKS (EXP-026)
+    # ========================================================================
+
+    # TIER A: MATERIALS (MID-CAP) - 81.8% win rate (EXP-026)
+    'MLM': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Martin Marietta. Materials/construction sector, exceptional Sharpe.',
+        'performance': 'Win rate: 81.8%, Return: +25.71%, Sharpe: 17.33, Avg gain: 2.95%'
+    },
+
+    # TIER A: CYBERSECURITY (MID-CAP) - 77.8% win rate (EXP-026)
+    'FTNT': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OUTSTANDING! Fortinet. RIVALS NVDA with +48.74% return. Cybersecurity leader.',
+        'performance': 'Win rate: 77.8%, Return: +48.74%, Sharpe: 9.19, Avg gain: 7.24%'
+    },
+
+    # TIER A: HEALTHCARE (MID-CAP) - 76.9% win rate (EXP-026)
+    'IDXX': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! IDEXX Laboratories. Veterinary diagnostics, strong mid-cap performer.',
+        'performance': 'Win rate: 76.9%, Return: +24.89%, Sharpe: 7.90, Avg gain: 3.46%'
+    },
+
+    # TIER A: MEDICAL DEVICES (MID-CAP) - 72.2% win rate (EXP-026)
+    'DXCM': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! DexCom. Diabetes/CGM devices, high returns with mid-cap volatility.',
+        'performance': 'Win rate: 72.2%, Return: +35.12%, Sharpe: 9.43, Avg gain: 3.41%'
     },
 
     # ========================================================================
