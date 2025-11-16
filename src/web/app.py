@@ -266,30 +266,35 @@ def api_performance():
 def setup_scheduler():
     """Setup scheduled scans.
 
-    Scans at 10:00 AM EST (16:00 ZRH) - 1 hour after market open.
+    OPTIMIZED SCHEDULE (based on EXP-020 findings):
+    - 9:45 AM EST: Morning scan (15 min after open, monitor positions)
+    - 3:45 PM EST: Afternoon scan (15 min before close, optimal entry timing)
     """
     scheduler = BackgroundScheduler()
 
-    # Schedule daily scan at 10:00 AM EST (16:00 ZRH - 1h after market open)
+    # Morning scan at 9:45 AM EST (15 minutes after market open)
+    # Purpose: Monitor existing positions, check overnight gaps
     scheduler.add_job(
         lambda: run_daily_scan(scan_type='scheduled'),
         'cron',
-        hour=10,
-        minute=0,
-        id='daily_scan_1000'
+        hour=9,
+        minute=45,
+        id='morning_scan_945'
     )
 
-    # Optional: Add end-of-day scan at 3:30 PM EST (21:30 ZRH - after market close)
+    # Afternoon scan at 3:45 PM EST (15 minutes before market close)
+    # Purpose: Detect panic sells, execute trades before close
+    # EXP-020: Panic day close entry is optimal (+49.70% vs +22.55% next day)
     scheduler.add_job(
         lambda: run_daily_scan(scan_type='scheduled'),
         'cron',
         hour=15,
-        minute=30,
-        id='eod_scan'
+        minute=45,
+        id='afternoon_scan_345'
     )
 
     scheduler.start()
-    print("[SCHEDULER] Started - scanning at 10:00 AM EST (16:00 ZRH), 3:30 PM EST (21:30 ZRH)")
+    print("[SCHEDULER] Started - scanning at 9:45 AM EST, 3:45 PM EST (optimal entry timing)")
 
     return scheduler
 

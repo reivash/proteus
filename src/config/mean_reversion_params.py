@@ -1,18 +1,21 @@
 """
-Stock-Specific Mean Reversion Parameters - v6.0
+Stock-Specific Mean Reversion Parameters - v7.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
 Last Updated: 2025-11-16
-Optimization: EXP-014 (stock selection optimization)
+Optimization: EXP-021 (expanded Tier A universe)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
+Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 6.0
-- Selective trading: Only Tier A stocks (>70% win rate)
-- Stock selection based on 3-year backtests (EXP-014)
-- Expected improvement: +15.99pp return, +17.23pp win rate vs trading all
+VERSION: 7.0
+- Expanded Tier A from 3 to 5 stocks (NVDA, V, MA, AVGO, AXP)
+- EXP-021: Found 2 new Tier A stocks (AVGO: 87.5%, AXP: 71.4%)
+- Expected improvement: +67% more opportunities (3 → 5 stocks)
+- Avg win rate: 78.7% across Tier A portfolio
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
+- Lookback period: 60 days (optimal for stable indicators)
 """
 
 # ============================================================================
@@ -52,6 +55,28 @@ MEAN_REVERSION_PARAMS = {
         'tier': 'A',
         'notes': 'EXCELLENT! Payments leader. Strong mean reversion alongside V.',
         'performance': 'Win rate: 71.4%, Return: +5.99%, Sharpe: 6.92, Avg gain: 2.02%'
+    },
+
+    # TIER A: SEMICONDUCTORS - 87.5% win rate (EXP-021)
+    'AVGO': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Broadcom - matches NVDA performance. Semiconductor sector diversification.',
+        'performance': 'Win rate: 87.5%, Return: +24.52%, Sharpe: 12.65, Avg gain: 3.98%'
+    },
+
+    # TIER A: FINANCE - 71.4% win rate (EXP-021)
+    'AXP': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! American Express. Highest return (+29.21%) in finance sector.',
+        'performance': 'Win rate: 71.4%, Return: +29.21%, Sharpe: 7.61, Avg gain: 3.92%'
     },
 
     # ========================================================================
@@ -193,16 +218,30 @@ KEY LEARNINGS (EXP-014):
 - Quality over quantity: 3 excellent stocks > 11 mixed stocks
 - Mean reversion is stock-specific, not universal
 
-CURRENT TIER A STOCKS:
+CURRENT TIER A STOCKS (v7.0 - 5 stocks):
 - NVDA: 87.5% win rate, +49.70% return (BEST)
+- AVGO: 87.5% win rate, +24.52% return (EXCELLENT) ⭐ NEW (EXP-021)
 - V: 75.0% win rate, +7.33% return (EXCELLENT)
 - MA: 71.4% win rate, +5.99% return (EXCELLENT)
+- AXP: 71.4% win rate, +29.21% return (EXCELLENT) ⭐ NEW (EXP-021)
 
-AVOID THESE STOCKS (confirmed losers):
-- TSLA: 46.7% win rate, -29.84% return
+Portfolio stats:
+- Average win rate: 78.7%
+- Average return: +23.35%
+- Diversification: Tech (NVDA, AVGO), Payments (V, MA), Finance (AXP)
+
+AVOID THESE STOCKS (confirmed poor performers):
+EXP-014 tested:
+- TSLA: 46.7% win rate, -29.84% return (WORST)
 - QQQ: 42.9% win rate, +1.15% return
 - GS: 50.0% win rate, -2.75% return
 - AAPL: 50.0% win rate (coin flip)
+
+EXP-021 tested:
+- INTC: 38.9% win rate, -26.79% return (VERY POOR)
+- COST: 28.6% win rate, -5.13% return (WORST)
+- PYPL: 42.9% win rate, +2.83% return
+- WFC: 46.2% win rate, -15.44% return
 """
 
 

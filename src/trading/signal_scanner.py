@@ -31,12 +31,13 @@ class SignalScanner:
     Scan all stocks in universe for mean reversion signals.
     """
 
-    def __init__(self, lookback_days=90):
+    def __init__(self, lookback_days=60):
         """
         Initialize signal scanner.
 
         Args:
             lookback_days: Days of historical data to fetch for indicator calculation
+                         Default: 60 days (optimal for stable indicators without excess lag)
         """
         self.lookback_days = lookback_days
         self.tickers = get_all_tickers()
