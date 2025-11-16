@@ -109,6 +109,16 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 60.0%, Return: +2.50%, Sharpe: 2.68'
     },
 
+    # ETF - NASDAQ-100
+    'QQQ': {
+        'z_score_threshold': 1.5,  # Moderate threshold for ETF
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'notes': 'Nasdaq-100 ETF. Tech-heavy, moderate volatility. Diversified exposure to top tech stocks.',
+        'performance': 'New addition - monitoring performance'
+    },
+
     # Default fallback for unknown stocks
     # Updated from original universal parameters based on optimization learnings
     'DEFAULT': {

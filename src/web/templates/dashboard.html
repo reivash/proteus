@@ -250,6 +250,17 @@
             <div class="status-item">
                 <button class="button" onclick="manualScan()">Scan Now</button>
             </div>
+            <div class="status-item">
+                <button class="button" onclick="sendLatestReport()" style="background: #10b981;">Send Latest Report</button>
+            </div>
+        </div>
+
+        <!-- Monitored Instruments -->
+        <div class="card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; margin-bottom: 20px;">
+            <h2 style="color: #92400e; margin-bottom: 15px;">📊 Monitored Instruments (<span id="instrumentCount">--</span>)</h2>
+            <div id="instrumentsList" style="font-size: 1.1em; font-weight: 500; color: #78350f; line-height: 1.8;">
+                Loading instruments...
+            </div>
         </div>
 
         <!-- Main Cards -->
@@ -420,8 +431,11 @@
                     // Update signal count
                     document.getElementById('signalCount').textContent = data.signal_count;
 
-                    // Update scanned tickers if available
+                    // Update monitored instruments (PROMINENT DISPLAY)
                     if (data.scanned_tickers && data.scanned_tickers.length > 0) {
+                        document.getElementById('instrumentCount').textContent = data.scanned_tickers.length;
+                        document.getElementById('instrumentsList').textContent = data.scanned_tickers.join(' • ');
+                        // Also update old location for backwards compatibility
                         document.getElementById('scannedTickers').textContent = data.scanned_tickers.join(', ');
                     }
 
@@ -494,6 +508,35 @@
                     console.error('Error triggering scan:', error);
                     statusEl.textContent = 'Scan failed';
                     isScanning = false;
+                });
+        }
+
+        function sendLatestReport() {
+            const statusEl = document.getElementById('status');
+            const originalStatus = statusEl.textContent;
+            statusEl.innerHTML = 'Sending report email...<span class="loading"></span>';
+
+            fetch('/api/test-email')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        statusEl.textContent = '✓ Report email sent!';
+                        alert(`Latest report email sent successfully!\n\n${data.message}`);
+                    } else {
+                        statusEl.textContent = '✗ Email failed';
+                        alert(`Failed to send report email:\n${data.message}`);
+                    }
+                    setTimeout(() => {
+                        statusEl.textContent = originalStatus;
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error sending report email:', error);
+                    statusEl.textContent = '✗ Email failed';
+                    alert('Failed to send report email. Check console for details.');
+                    setTimeout(() => {
+                        statusEl.textContent = originalStatus;
+                    }, 3000);
                 });
         }
 

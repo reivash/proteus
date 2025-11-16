@@ -89,6 +89,12 @@ def run_daily_scan(scan_type='scheduled'):
         # Check market regime
         regime = scanner.get_market_regime()
 
+        # Get list of tickers we're scanning
+        from src.config.mean_reversion_params import get_all_tickers
+        scanned_tickers = get_all_tickers()
+
+        print(f"  Scanning {len(scanned_tickers)} instruments: {', '.join(scanned_tickers)}")
+
         if regime == 'BEAR':
             scan_status = "Complete (BEAR market - no trading)"
             current_signals = []
@@ -107,17 +113,20 @@ def run_daily_scan(scan_type='scheduled'):
             if signals:
                 for sig in signals:
                     print(f"    {sig['ticker']}: ${sig['price']:.2f}, Z={sig['z_score']:.2f}, RSI={sig['rsi']:.1f}")
+            else:
+                print(f"    No signals found across {len(scanned_tickers)} stocks")
 
         # Get performance data
         performance = tracker.get_stats_summary()
 
-        # LOG EVERYTHING to text files
+        # LOG EVERYTHING to text files (including what was scanned)
         log_file = scan_logger.log_scan(
             scan_type=scan_type,
             regime=regime,
             signals=current_signals,
             scan_status=scan_status,
-            performance=performance
+            performance=performance,
+            scanned_tickers=scanned_tickers
         )
         print(f"  Logged to: {log_file}")
 
@@ -130,9 +139,9 @@ def run_daily_scan(scan_type='scheduled'):
             if windows_notifier and windows_notifier.is_enabled():
                 windows_notifier.send_scan_notification(scan_status, current_signals, performance)
 
-            # Email notifications
+            # Email notifications (pass scanned_tickers so email shows what was scanned)
             if email_notifier and email_notifier.is_enabled():
-                email_notifier.send_scan_notification(scan_status, current_signals, performance)
+                email_notifier.send_scan_notification(scan_status, current_signals, performance, scanned_tickers)
                 print(f"  Email sent to {email_notifier.config['recipient_email']}")
 
         except Exception as notification_error:
@@ -147,11 +156,14 @@ def run_daily_scan(scan_type='scheduled'):
 
 def save_status():
     """Save current status to file."""
+    from src.config.mean_reversion_params import get_all_tickers
+
     status = {
         'last_scan': last_scan_time.isoformat() if last_scan_time else None,
         'status': scan_status,
         'signals': current_signals,
-        'signal_count': len(current_signals)
+        'signal_count': len(current_signals),
+        'scanned_tickers': get_all_tickers()
     }
 
     with open(STATUS_FILE, 'w') as f:
@@ -183,12 +195,14 @@ def index():
 @app.route('/api/status')
 def api_status():
     """API endpoint for current status."""
+    from src.config.mean_reversion_params import get_all_tickers
     return jsonify({
         'last_scan': last_scan_time.isoformat() if last_scan_time else None,
         'status': scan_status,
         'signals': current_signals,
         'signal_count': len(current_signals),
-        'server_time': datetime.now().isoformat()
+        'server_time': datetime.now().isoformat(),
+        'scanned_tickers': get_all_tickers()
     })
 
 
@@ -197,6 +211,37 @@ def api_scan():
     """Manual scan trigger - logs, emails, and updates UI."""
     run_daily_scan(scan_type='manual')
     return jsonify({'status': 'Manual scan initiated - check email and logs'})
+
+
+@app.route('/api/test-email')
+def api_test_email():
+    """Send latest report email with current signals and performance."""
+    try:
+        from src.config.mean_reversion_params import get_all_tickers
+        scanned_tickers = get_all_tickers()
+
+        if email_notifier and email_notifier.is_enabled():
+            # Send full scan notification with current data
+            email_notifier.send_scan_notification(
+                scan_status=scan_status,
+                signals=current_signals,
+                performance=tracker.get_stats_summary(),
+                scanned_tickers=scanned_tickers
+            )
+            return jsonify({
+                'status': 'success',
+                'message': f'Latest report sent to {email_notifier.config["recipient_email"]}'
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': 'Email notifications not configured'
+            })
+    except Exception as e:
+        return jsonify({
+            'status': 'error',
+            'message': f'Failed to send report: {str(e)}'
+        })
 
 
 @app.route('/api/performance')
@@ -250,6 +295,12 @@ if __name__ == '__main__':
 
     # Setup scheduler
     scheduler = setup_scheduler()
+
+    # Show what instruments we're monitoring
+    from src.config.mean_reversion_params import get_all_tickers
+    scanned_tickers = get_all_tickers()
+    print(f"\nMonitoring {len(scanned_tickers)} instruments:")
+    print(f"  {', '.join(scanned_tickers)}")
 
     # Check notification methods
     print("\nNotification Methods:")

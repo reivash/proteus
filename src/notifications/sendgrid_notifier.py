@@ -56,7 +56,7 @@ class SendGridNotifier:
         return self.config.get('enabled', False) and SENDGRID_AVAILABLE
 
     def send_scan_notification(self, scan_status: str, signals: List[Dict],
-                              performance: Dict = None) -> bool:
+                              performance: Dict = None, scanned_tickers: List[str] = None) -> bool:
         """Send email via SendGrid."""
         if not self.is_enabled():
             return False
@@ -66,7 +66,7 @@ class SendGridNotifier:
             return False
 
         subject = self._create_subject(signals)
-        html_content = self._create_body(scan_status, signals, performance)
+        html_content = self._create_body(scan_status, signals, performance, scanned_tickers)
 
         message = Mail(
             from_email=Email(self.config.get('sender_email', 'proteus@trading.local')),
@@ -91,7 +91,8 @@ class SendGridNotifier:
         if not self.is_enabled():
             return False
 
-        subject = "🧪 Proteus - SendGrid Test"
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        subject = f"🧪 Proteus - SendGrid Test - {timestamp}"
         html = """
 <html>
 <body style="font-family: Arial, sans-serif;">
@@ -125,15 +126,17 @@ class SendGridNotifier:
             return False
 
     def _create_subject(self, signals: List[Dict]) -> str:
-        """Create email subject."""
-        if len(signals) == 0:
-            return "Proteus Daily Scan - No Signals"
-        elif len(signals) == 1:
-            return f"ALERT: Proteus BUY Signal - {signals[0]['ticker']}"
-        else:
-            return f"ALERT: Proteus - {len(signals)} BUY Signals!"
+        """Create email subject with timestamp to prevent threading."""
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    def _create_body(self, scan_status: str, signals: List[Dict], performance: Dict = None) -> str:
+        if len(signals) == 0:
+            return f"Proteus Daily Scan - No Signals - {timestamp}"
+        elif len(signals) == 1:
+            return f"ALERT: Proteus BUY Signal - {signals[0]['ticker']} - {timestamp}"
+        else:
+            return f"ALERT: Proteus - {len(signals)} BUY Signals! - {timestamp}"
+
+    def _create_body(self, scan_status: str, signals: List[Dict], performance: Dict = None, scanned_tickers: List[str] = None) -> str:
         """Create email body - full HTML template."""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -152,6 +155,7 @@ class SendGridNotifier:
         .performance {{ background: #f0fdf4; padding: 15px; border-radius: 5px; margin: 15px 0; }}
         .metric {{ margin: 8px 0; }}
         .success {{ color: #10b981; }}
+        .scanned {{ background: #fef3c7; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #f59e0b; }}
         .footer {{ color: #666; font-size: 0.85em; margin-top: 30px; padding-top: 20px;
                   border-top: 1px solid #ddd; }}
     </style>
@@ -165,6 +169,11 @@ class SendGridNotifier:
 
     <div class="status">
         <strong>Scan Status:</strong> {scan_status}
+    </div>
+
+    <div class="scanned">
+        <strong>Instruments Scanned ({len(scanned_tickers) if scanned_tickers else 0}):</strong><br>
+        <span style="font-size: 0.95em;">{', '.join(scanned_tickers) if scanned_tickers else 'Not specified'}</span>
     </div>
 """
 
