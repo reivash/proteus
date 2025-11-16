@@ -280,6 +280,40 @@
             <!-- Performance Card -->
             <div class="card">
                 <h2>Performance</h2>
+
+                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px;">Algorithm Details</h3>
+                <div class="metric">
+                    <div class="metric-label">Version</div>
+                    <div class="metric-value" style="font-size: 0.95em;">Mean Reversion v5.0</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Strategy</div>
+                    <div class="metric-value" style="font-size: 0.85em;">Panic sell detection: Z-score, RSI, volume spikes, price drops</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Exit Rules</div>
+                    <div class="metric-value" style="font-size: 0.85em;">Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Filters</div>
+                    <div class="metric-value" style="font-size: 0.85em;">Regime (no bear markets) + Earnings (±3 days)</div>
+                </div>
+
+                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 15px;">Backtest Details</h3>
+                <div class="metric">
+                    <div class="metric-label">Period</div>
+                    <div class="metric-value" style="font-size: 0.95em;">2022-2025 (3 years)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Optimization</div>
+                    <div class="metric-value" style="font-size: 0.85em;">EXP-008 (parameters) + EXP-010 (exits)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Tested Symbols</div>
+                    <div class="metric-value" style="font-size: 0.8em;">NVDA, TSLA, AAPL, AMZN, MSFT, JPM, JNJ, UNH, INTC, CVX, QQQ</div>
+                </div>
+
+                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 15px;">Current Performance</h3>
                 <div class="metric">
                     <div class="metric-label">Total Trades</div>
                     <div class="metric-value" id="totalTrades">0</div>
