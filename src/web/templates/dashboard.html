@@ -287,6 +287,30 @@
                 </div>
             </div>
 
+            <!-- Schedule Card -->
+            <div class="card">
+                <h2>Scan Schedule</h2>
+                <div class="metric">
+                    <div class="metric-label">Next Scan</div>
+                    <div class="metric-value" id="nextScan" style="color: #667eea;">--</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Scan Frequency</div>
+                    <div class="metric-value">3x daily</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Scan Times</div>
+                    <div class="metric-value" style="font-size: 1em;">9:30 AM, 1:30 PM, 5:30 PM</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Email Alerts</div>
+                    <div class="metric-value" id="emailStatus">Enabled</div>
+                </div>
+                <div class="auto-refresh">
+                    Auto-refreshing every 60 seconds
+                </div>
+            </div>
+
             <!-- Info Card -->
             <div class="card">
                 <h2>Strategy Info</h2>
@@ -306,9 +330,6 @@
                     <div class="metric-label">Position Size</div>
                     <div class="metric-value">10% per trade</div>
                 </div>
-                <div class="auto-refresh">
-                    🔄 Auto-refreshing every 60 seconds
-                </div>
             </div>
         </div>
 
@@ -322,8 +343,51 @@
     <script>
         let isScanning = false;
 
+        function calculateNextScan() {
+            const now = new Date();
+            const scanTimes = [
+                {hour: 9, minute: 30, label: '9:30 AM'},
+                {hour: 13, minute: 30, label: '1:30 PM'},
+                {hour: 17, minute: 30, label: '5:30 PM'}
+            ];
+
+            // Find next scan time today
+            for (let scan of scanTimes) {
+                const scanTime = new Date();
+                scanTime.setHours(scan.hour, scan.minute, 0, 0);
+
+                if (scanTime > now) {
+                    const diffMs = scanTime - now;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    const diffHours = Math.floor(diffMins / 60);
+                    const mins = diffMins % 60;
+
+                    let timeStr = '';
+                    if (diffHours > 0) {
+                        timeStr = `${diffHours}h ${mins}m (${scan.label})`;
+                    } else {
+                        timeStr = `${mins}m (${scan.label})`;
+                    }
+
+                    document.getElementById('nextScan').textContent = timeStr;
+                    return;
+                }
+            }
+
+            // If no more scans today, show tomorrow's first scan
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(9, 30, 0, 0);
+            const diffMs = tomorrow - now;
+            const diffHours = Math.floor(diffMs / 3600000);
+            document.getElementById('nextScan').textContent = `${diffHours}h (Tomorrow 9:30 AM)`;
+        }
+
         function updateDashboard() {
             if (isScanning) return;
+
+            // Update next scan time
+            calculateNextScan();
 
             fetch('/api/status')
                 .then(response => response.json())
