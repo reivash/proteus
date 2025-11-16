@@ -6,6 +6,14 @@ Applies multiple quality filters for ultra-high win rate:
 - Regime filter (market conditions)
 - Earnings filter (avoid unpredictable volatility)
 - Quality scoring filter (v15.0 - top 60% signals only)
+- VIX regime filter (v16.0 - skip low volatility periods)
+
+v16.0 Enhancement:
+VIX regime adaptation for 89.9% win rate (EXP-034)
+- Skip trading when VIX < 15 (low volatility = weak mean reversion)
+- Trade normally when VIX >= 15
+- Expected: +1.2pp improvement (88.7% -> 89.9%)
+- Philosophy: Trade when edge is strongest
 
 v15.0 Enhancement:
 Signal quality scoring for 88.7% win rate (EXP-033)
@@ -31,6 +39,7 @@ from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
 from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
 from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
+from src.data.features.vix_regime import VixRegimeDetector, add_vix_filter_to_signals
 from src.models.trading.mean_reversion import MeanReversionDetector
 from src.models.trading.signal_quality import SignalQualityScorer
 from src.config.mean_reversion_params import get_params, get_all_tickers
@@ -151,6 +160,10 @@ class SignalScanner:
         quality_scorer = SignalQualityScorer(min_quality_threshold=60)
         signals = quality_scorer.add_quality_scores_to_signals(signals)
         signals = quality_scorer.filter_low_quality_signals(signals, 'panic_sell')
+
+        # Apply VIX regime filter (v16.0 enhancement)
+        # Skip trading when VIX < 15 (low volatility = weak mean reversion)
+        signals = add_vix_filter_to_signals(signals, 'panic_sell')
 
         # Check if signal on target date
         try:
