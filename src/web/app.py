@@ -34,11 +34,25 @@ try:
 except:
     windows_notifier = None
 
+# Try SendGrid first (simpler than SMTP), fall back to SMTP
+email_notifier = None
 try:
-    from src.notifications.email_notifier import EmailNotifier
-    email_notifier = EmailNotifier()
+    from src.notifications.sendgrid_notifier import SendGridNotifier
+    email_notifier = SendGridNotifier()
+    if not email_notifier.is_enabled():
+        email_notifier = None
 except:
-    email_notifier = None
+    pass
+
+# If SendGrid not available, try SMTP email
+if email_notifier is None:
+    try:
+        from src.notifications.email_notifier import EmailNotifier
+        email_notifier = EmailNotifier()
+        if not email_notifier.is_enabled():
+            email_notifier = None
+    except:
+        pass
 
 app = Flask(__name__)
 

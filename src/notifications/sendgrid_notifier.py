@@ -134,10 +134,84 @@ class SendGridNotifier:
             return f"🚨 Proteus Alert - {len(signals)} BUY Signals!"
 
     def _create_body(self, scan_status: str, signals: List[Dict], performance: Dict = None) -> str:
-        """Create email body (reuse from email_notifier)."""
-        # Same HTML template as email_notifier
-        # (Keeping this short - full implementation would match email_notifier._create_body)
-        return f"<html><body><h2>Scan Status: {scan_status}</h2><p>Signals: {len(signals)}</p></body></html>"
+        """Create email body - full HTML template."""
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        html = f"""
+<html>
+<head>
+    <style>
+        body {{ font-family: Arial, sans-serif; color: #333; line-height: 1.6; }}
+        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                 color: white; padding: 20px; border-radius: 5px; margin-bottom: 20px; }}
+        .status {{ background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0; }}
+        .signal {{ background: #e0f2fe; padding: 15px; margin: 10px 0;
+                 border-left: 4px solid #667eea; border-radius: 3px; }}
+        .signal-header {{ font-size: 1.2em; font-weight: bold; color: #667eea; margin-bottom: 10px; }}
+        .signal-detail {{ margin: 5px 0; }}
+        .performance {{ background: #f0fdf4; padding: 15px; border-radius: 5px; margin: 15px 0; }}
+        .metric {{ margin: 8px 0; }}
+        .success {{ color: #10b981; }}
+        .footer {{ color: #666; font-size: 0.85em; margin-top: 30px; padding-top: 20px;
+                  border-top: 1px solid #ddd; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>📈 Proteus Trading Dashboard</h2>
+        <p>Mean Reversion Strategy v4.0</p>
+        <p style="font-size: 0.9em;">{now}</p>
+    </div>
+
+    <div class="status">
+        <strong>Scan Status:</strong> {scan_status}
+    </div>
+"""
+
+        # Add signals section
+        if len(signals) > 0:
+            html += f"""
+    <h3>🚨 Active Buy Signals ({len(signals)})</h3>
+"""
+            for signal in signals:
+                expected_return = signal.get('expected_return', 0)
+                html += f"""
+    <div class="signal">
+        <div class="signal-header">{signal['ticker']}</div>
+        <div class="signal-detail"><strong>Entry Price:</strong> ${signal['price']:.2f}</div>
+        <div class="signal-detail"><strong>Z-Score:</strong> {signal['z_score']:.2f}</div>
+        <div class="signal-detail"><strong>RSI:</strong> {signal['rsi']:.1f}</div>
+        <div class="signal-detail"><strong>Expected Return:</strong> <span class="success">+{expected_return:.2f}%</span></div>
+    </div>
+"""
+        else:
+            html += """
+    <h3>💤 No Signals Detected</h3>
+    <div class="status">
+        <p>No panic sell opportunities found. Strategy is waiting for the right moment.</p>
+    </div>
+"""
+
+        # Add performance
+        if performance:
+            html += f"""
+    <h3>📊 Performance Summary</h3>
+    <div class="performance">
+        <div class="metric">Total Trades: <strong>{performance.get('total_trades', 0)}</strong></div>
+        <div class="metric">Win Rate: <strong>{performance.get('win_rate', 0):.1f}%</strong> (Target: 77.3%)</div>
+        <div class="metric">Total Return: <strong>{performance.get('total_return', 0):+.2f}%</strong></div>
+    </div>
+"""
+
+        html += """
+    <div class="footer">
+        <p><em>Automated notification from Proteus Trading Dashboard</em></p>
+        <p><em>Dashboard: <a href="http://localhost:5000">http://localhost:5000</a></em></p>
+    </div>
+</body>
+</html>
+"""
+        return html
 
 
 if __name__ == '__main__':

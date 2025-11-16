@@ -7,7 +7,8 @@
       "Bash(taskkill:*)",
       "Bash(git push)",
       "Bash(findstr /V \"�\")",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(start daily_report_preview.html)"
     ],
     "deny": [],
     "ask": [],
