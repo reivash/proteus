@@ -16,6 +16,11 @@ echo ======================================================================
 echo.
 
 cd /d "%~dp0"
+
+REM Open browser after short delay (in background)
+start "" cmd /c "timeout /t 3 /nobreak >nul && start http://localhost:5000"
+
+REM Start the dashboard server (this keeps the window open)
 python src\web\app.py
 
 pause

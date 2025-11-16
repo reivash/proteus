@@ -1,0 +1,18 @@
+{
+  "last_scan": "2025-11-16T16:59:02.168585",
+  "status": "Complete - Found 0 signal(s)",
+  "signals": [],
+  "signal_count": 0,
+  "scanned_tickers": [
+    "NVDA",
+    "TSLA",
+    "AAPL",
+    "AMZN",
+    "MSFT",
+    "JPM",
+    "JNJ",
+    "UNH",
+    "INTC",
+    "CVX"
+  ]
+}

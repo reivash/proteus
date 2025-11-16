@@ -54,6 +54,14 @@ api_keys.txt
 config.json
 email_config.json
 
+# API Credentials (EXP-011 Sentiment Analysis)
+twitter_config.json
+reddit_config.json
+news_config.json
+*_config.json
+*_credentials.json
+*.env
+
 # IDE
 .vscode/
 .idea/

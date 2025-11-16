@@ -31,7 +31,7 @@ class ScanLogger:
         os.makedirs(self.summary_dir, exist_ok=True)
 
     def log_scan(self, scan_type: str, regime: str, signals: List[Dict],
-                 scan_status: str, performance: Dict = None) -> str:
+                 scan_status: str, performance: Dict = None, scanned_tickers: List[str] = None) -> str:
         """
         Log a complete scan result.
 
@@ -41,6 +41,7 @@ class ScanLogger:
             signals: List of signal dictionaries
             scan_status: Status message
             performance: Optional performance stats
+            scanned_tickers: List of all tickers scanned
 
         Returns:
             Path to log file created
@@ -61,6 +62,16 @@ class ScanLogger:
             f.write(f"Type: {scan_type.upper()}\n")
             f.write(f"Market Regime: {regime}\n")
             f.write(f"Status: {scan_status}\n")
+            f.write("\n")
+
+            # Always show what was scanned
+            if scanned_tickers:
+                f.write(f"INSTRUMENTS SCANNED ({len(scanned_tickers)}):\n")
+                f.write(f"  {', '.join(scanned_tickers)}\n")
+            else:
+                f.write("INSTRUMENTS SCANNED: Not specified\n")
+            f.write("\n")
+
             f.write(f"Signals Found: {len(signals)}\n")
             f.write("\n")
 
@@ -98,6 +109,7 @@ class ScanLogger:
             'type': scan_type,
             'regime': regime,
             'status': scan_status,
+            'scanned_tickers': scanned_tickers or [],
             'signals': signals,
             'signal_count': len(signals),
             'performance': performance

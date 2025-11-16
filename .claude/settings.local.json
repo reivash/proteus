@@ -8,7 +8,11 @@
       "Bash(git push)",
       "Bash(findstr /V \"�\")",
       "Bash(findstr:*)",
-      "Bash(start daily_report_preview.html)"
+      "Bash(start daily_report_preview.html)",
+      "Bash(start start_dashboard_minimized.vbs)",
+      "Bash(nul)",
+      "Bash(start \"Proteus Trading Dashboard\" start_dashboard.bat)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": [],

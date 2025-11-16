@@ -1,0 +1,13 @@
+{
+  "_comment": "Alpha Vantage News API Configuration Template",
+  "_instructions": [
+    "1. Go to: https://www.alphavantage.co/support/#api-key",
+    "2. Enter your email and click 'GET FREE API KEY'",
+    "3. Copy the API key from the confirmation page",
+    "4. Rename this file to: news_config.json",
+    "5. Paste your API key below",
+    "NOTE: Free tier = 25 API calls per day (sufficient for daily scans)"
+  ],
+  "alphavantage_api_key": "YOUR_API_KEY_HERE",
+  "enabled": true
+}

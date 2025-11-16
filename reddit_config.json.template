@@ -1,0 +1,16 @@
+{
+  "_comment": "Reddit API Configuration Template",
+  "_instructions": [
+    "1. Go to: https://www.reddit.com/prefs/apps",
+    "2. Click 'create app' or 'create another app'",
+    "3. Choose type: 'script'",
+    "4. Fill in name and description",
+    "5. Copy client_id (under app name) and client_secret",
+    "6. Rename this file to: reddit_config.json",
+    "7. Fill in your credentials below"
+  ],
+  "client_id": "YOUR_CLIENT_ID_HERE",
+  "client_secret": "YOUR_CLIENT_SECRET_HERE",
+  "user_agent": "proteus-trading-bot/1.0",
+  "enabled": true
+}
