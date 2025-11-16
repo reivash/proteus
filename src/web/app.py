@@ -246,8 +246,20 @@ def api_test_email():
 
 @app.route('/api/performance')
 def api_performance():
-    """Get performance metrics."""
+    """Get performance metrics and trade history."""
     stats = tracker.get_stats_summary()
+
+    # Add recent trades (last 10)
+    recent_trades = tracker._get_recent_trades(10) if hasattr(tracker, 'trade_log') else []
+    stats['recent_trades'] = recent_trades
+
+    # Add open positions from latest snapshot
+    if tracker.daily_snapshots:
+        latest = tracker.daily_snapshots[-1]
+        stats['open_positions'] = latest.get('positions', [])
+    else:
+        stats['open_positions'] = []
+
     return jsonify(stats)
 
 

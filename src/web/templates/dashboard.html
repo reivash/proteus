@@ -13,45 +13,86 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 50%, #ec4899 100%);
+            background-attachment: fixed;
             color: #333;
             padding: 20px;
             min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .header {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.3);
             margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header-logo {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.4));
+        }
+
+        .header-content {
+            flex: 1;
         }
 
         .header h1 {
-            color: #667eea;
-            font-size: 2.5em;
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.8em;
             margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .header .subtitle {
-            color: #666;
+            color: #6b7280;
             font-size: 1.1em;
+            font-weight: 500;
         }
 
         .status-bar {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .status-item {
@@ -72,11 +113,11 @@
         }
 
         .status-item.success .value {
-            color: #10b981;
+            color: #8b5cf6;
         }
 
         .status-item.warning .value {
-            color: #f59e0b;
+            color: #ec4899;
         }
 
         .status-item.danger .value {
@@ -91,16 +132,35 @@
         }
 
         .card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 28px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
         }
 
         .card h2 {
-            color: #667eea;
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 15px;
             font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .card h3 {
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .signal-list {
@@ -108,17 +168,26 @@
         }
 
         .signal-item {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
             padding: 15px;
             margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #667eea;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+            transition: all 0.2s ease;
+        }
+
+        .signal-item:hover {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+            border-left-width: 6px;
         }
 
         .signal-item .ticker {
             font-size: 1.2em;
             font-weight: bold;
-            color: #667eea;
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 5px;
         }
 
@@ -144,37 +213,48 @@
         }
 
         .button {
-            background: #667eea;
+            background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 100%);
             color: white;
             border: none;
             padding: 12px 24px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
-            transition: background 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
 
         .button:hover {
-            background: #5568d3;
+            background: linear-gradient(135deg, #4c5fd7 0%, #ec4899 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
         }
 
         .button:active {
-            background: #4c5fc7;
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
 
         .footer {
             text-align: center;
-            color: white;
+            color: rgba(255, 255, 255, 0.9);
             margin-top: 30px;
             padding: 20px;
+            font-weight: 500;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer p {
+            margin: 5px 0;
         }
 
         .loading {
             display: inline-block;
             width: 12px;
             height: 12px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #667eea;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid #8b5cf6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-left: 10px;
@@ -183,6 +263,15 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .header-logo {
+            animation: float 3s ease-in-out infinite;
         }
 
         .auto-refresh {
@@ -223,14 +312,25 @@
             background: #fee2e2;
             color: #991b1b;
         }
+
+        .signal-item .price {
+            font-weight: bold;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>Proteus Trading Dashboard</h1>
-            <p class="subtitle">Mean Reversion Strategy v4.0 - Automated Signal Monitoring</p>
+            <img src="/static/proteus-logo.png" alt="Proteus Logo" class="header-logo" onerror="this.style.display='none'">
+            <div class="header-content">
+                <h1>Proteus Trading Dashboard</h1>
+                <p class="subtitle">Mean Reversion Strategy v5.0 - Automated Signal Monitoring</p>
+            </div>
         </div>
 
         <!-- Status Bar -->
@@ -251,14 +351,14 @@
                 <button class="button" onclick="manualScan()">Scan Now</button>
             </div>
             <div class="status-item">
-                <button class="button" onclick="sendLatestReport()" style="background: #10b981;">Send Latest Report</button>
+                <button class="button" onclick="sendLatestReport()" style="background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%);">Send Latest Report</button>
             </div>
         </div>
 
         <!-- Monitored Instruments -->
-        <div class="card" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 5px solid #f59e0b; margin-bottom: 20px;">
-            <h2 style="color: #92400e; margin-bottom: 15px;">📊 Monitored Instruments (<span id="instrumentCount">--</span>)</h2>
-            <div id="instrumentsList" style="font-size: 1.1em; font-weight: 500; color: #78350f; line-height: 1.8;">
+        <div class="card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%), rgba(255, 255, 255, 0.9); border-left: 5px solid #8b5cf6; margin-bottom: 20px;">
+            <h2 style="margin-bottom: 15px;">📊 Monitored Instruments (<span id="instrumentCount">--</span>)</h2>
+            <div id="instrumentsList" style="font-size: 1.1em; font-weight: 600; background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 50%, #ec4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.8;">
                 Loading instruments...
             </div>
         </div>
@@ -281,7 +381,7 @@
             <div class="card">
                 <h2>Performance</h2>
 
-                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px;">Algorithm Details</h3>
+                <h3 style="font-size: 1.1em; margin-top: 15px; margin-bottom: 10px;">🔬 Algorithm Details</h3>
                 <div class="metric">
                     <div class="metric-label">Version</div>
                     <div class="metric-value" style="font-size: 0.95em;">Mean Reversion v5.0</div>
@@ -299,7 +399,7 @@
                     <div class="metric-value" style="font-size: 0.85em;">Regime (no bear markets) + Earnings (±3 days)</div>
                 </div>
 
-                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 15px;">Backtest Details</h3>
+                <h3 style="font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #e5e7eb; padding-top: 15px;">📊 Backtest Details</h3>
                 <div class="metric">
                     <div class="metric-label">Period</div>
                     <div class="metric-value" style="font-size: 0.95em;">2022-2025 (3 years)</div>
@@ -313,7 +413,11 @@
                     <div class="metric-value" style="font-size: 0.8em;">NVDA, TSLA, AAPL, AMZN, MSFT, JPM, JNJ, UNH, INTC, CVX, QQQ</div>
                 </div>
 
-                <h3 style="color: #667eea; font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #ddd; padding-top: 15px;">Current Performance</h3>
+                <h3 style="font-size: 1.1em; margin-top: 15px; margin-bottom: 10px; border-top: 1px solid #e5e7eb; padding-top: 15px;">📈 Live Performance (Out-of-Sample)</h3>
+                <div class="metric">
+                    <div class="metric-label">Test Period</div>
+                    <div class="metric-value" style="font-size: 0.85em;">November 2025 - Present (Live Trading)</div>
+                </div>
                 <div class="metric">
                     <div class="metric-label">Total Trades</div>
                     <div class="metric-value" id="totalTrades">0</div>
@@ -329,6 +433,25 @@
                 <div class="metric">
                     <div class="metric-label">Days Tracked</div>
                     <div class="metric-value" id="daysTracked">0</div>
+                </div>
+                <div class="metric" style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #f3f4f6; font-size: 0.85em; color: #6b7280;">
+                    <em>Note: This is live out-of-sample performance, separate from the 2022-2025 training/optimization period</em>
+                </div>
+
+                <!-- Open Positions -->
+                <div id="openPositions" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                    <h4 style="font-size: 0.95em; margin-bottom: 10px; color: #374151;">📍 Open Positions</h4>
+                    <div id="openPositionsList" style="font-size: 0.85em; color: #666;">
+                        Loading...
+                    </div>
+                </div>
+
+                <!-- Recent Trades -->
+                <div id="recentTrades" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb;">
+                    <h4 style="font-size: 0.95em; margin-bottom: 10px; color: #374151;">📋 Recent Trades</h4>
+                    <div id="recentTradesList" style="font-size: 0.85em; color: #666;">
+                        Loading...
+                    </div>
                 </div>
             </div>
 
@@ -378,6 +501,180 @@
                 <div class="metric">
                     <div class="metric-label">Position Size</div>
                     <div class="metric-value">10% per trade</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div style="margin: 50px 0 30px 0; border-top: 3px solid rgba(255, 255, 255, 0.3); position: relative;">
+            <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 50%, #ec4899 100%); color: white; padding: 8px 20px; border-radius: 20px; font-weight: 600; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);">
+                🔬 RESEARCH & EXPERIMENTS
+            </div>
+        </div>
+
+        <!-- Research & Experiments Section -->
+        <div style="margin-top: 40px;">
+            <div class="card">
+                <h2>🏆 Current Strategy: Mean Reversion v5.0</h2>
+                <div class="metric">
+                    <div class="metric-label">Experiments</div>
+                    <div class="metric-value" style="font-size: 0.9em;">EXP-008 (Mean Reversion) + EXP-010 (Time-Decay Exits)</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Performance</div>
+                    <div class="metric-value" style="font-size: 0.85em;">77.3% win rate, +116.83% portfolio return (2022-2025), Sharpe 6.35</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-label">Key Innovation</div>
+                    <div class="metric-value" style="font-size: 0.85em;">Panic sell detection + Time-decay exits + Regime & Earnings filters</div>
+                </div>
+            </div>
+
+            <div class="cards" style="margin-top: 20px;">
+                <!-- Successful Optimizations -->
+                <div class="card">
+                    <h2>✅ Successful Optimizations</h2>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-010: Exit Optimization</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> +12.35% return, +6.1pp win rate<br>
+                        <strong>Solution:</strong> Time-decay exits (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)<br>
+                        <strong>Status:</strong> ✅ IMPLEMENTED in v5.0
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-008: Stock-Specific Parameters</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> +8.9% win rate, TSLA 75%→87.5%<br>
+                        <strong>Solution:</strong> Optimize Z-score, RSI, volume per stock<br>
+                        <strong>Status:</strong> ✅ IMPLEMENTED in v5.0
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-008: Sector Diversification</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> 10 stocks (60% tech, 40% other sectors)<br>
+                        <strong>Added:</strong> JPM (80% win, +18.63%), JNJ, UNH, INTC, CVX<br>
+                        <strong>Status:</strong> ✅ IMPLEMENTED in v5.0
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-008: Regime Filter</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> Prevented -21% TSLA disaster in 2022 bear<br>
+                        <strong>Solution:</strong> No trading in bear markets (50/200 SMA)<br>
+                        <strong>Status:</strong> ✅ IMPLEMENTED in v5.0
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-008: Earnings Filter</h3>
+                    <div style="font-size: 0.85em; color: #666;">
+                        <strong>Result:</strong> +5% win rate on TSLA<br>
+                        <strong>Solution:</strong> Exclude ±3 days around earnings<br>
+                        <strong>Status:</strong> ✅ IMPLEMENTED in v5.0
+                    </div>
+                </div>
+
+                <!-- Tested but Rejected -->
+                <div class="card">
+                    <h2>❌ Tested but Rejected</h2>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">VIX Filter</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> -3.91% return, -1.0pp win rate<br>
+                        <strong>Issue:</strong> Blocks 23.5% signals, hurts JPM (-11.5%)<br>
+                        <strong>Decision:</strong> NOT recommended
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">FOMC Filter (WORST)</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> -8.06% return, NVDA -17.25%<br>
+                        <strong>Issue:</strong> Blocks high-quality trades<br>
+                        <strong>Decision:</strong> STRONGLY NOT recommended
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">Dynamic Position Sizing</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> -3.17% return vs equal weighting<br>
+                        <strong>Issue:</strong> Tier-based sizing reduces diversification<br>
+                        <strong>Decision:</strong> Equal weighting optimal
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">Universe Reduction (8 stocks)</h3>
+                    <div style="font-size: 0.85em; color: #666;">
+                        <strong>Result:</strong> +3.1pp win rate BUT -2.25% return<br>
+                        <strong>Issue:</strong> AAPL/CVX still contribute +2.25%<br>
+                        <strong>Decision:</strong> Keep 10-stock universe
+                    </div>
+                </div>
+
+                <!-- Earlier Failed Experiments -->
+                <div class="card">
+                    <h2>❌ Failed Approaches</h2>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-007: Multi-Timeframe Prediction</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> 38-53% accuracy (worse than baseline)<br>
+                        <strong>Issue:</strong> Tech indicators insufficient for long horizons<br>
+                        <strong>Status:</strong> ABANDONED
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-001 to EXP-006: ML Classification</h3>
+                    <div style="font-size: 0.85em; color: #666;">
+                        <strong>Tested:</strong> MA Crossover, XGBoost, LSTM, Ensembles<br>
+                        <strong>Result:</strong> 41-59% accuracy (not profitable)<br>
+                        <strong>Issue:</strong> Directional prediction too difficult<br>
+                        <strong>Status:</strong> ABANDONED - Mean reversion superior
+                    </div>
+                </div>
+
+                <!-- Validation & Research -->
+                <div class="card">
+                    <h2>📋 Validation & Research</h2>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">EXP-009: Paper Trading Validation</h3>
+                    <div style="font-size: 0.85em; color: #666; margin-bottom: 12px;">
+                        <strong>Result:</strong> ALL TESTS PASSED<br>
+                        <strong>Validated:</strong> Signal scanner, trader logic, performance tracking<br>
+                        <strong>Status:</strong> ✅ APPROVED for live validation
+                    </div>
+
+                    <h3 style="font-size: 1em; margin-top: 10px; margin-bottom: 8px;">Research Papers</h3>
+                    <div style="font-size: 0.85em; color: #666;">
+                        <strong>RR001:</strong> Deep Learning Stock Prediction (Literature review)<br>
+                        <strong>RR002:</strong> Multi-Timeframe & Mean Reversion Analysis<br>
+                        <strong>Status:</strong> Informing strategy development
+                    </div>
+                </div>
+            </div>
+
+            <!-- Experiment Summary Stats -->
+            <div class="card" style="margin-top: 20px; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%), rgba(255, 255, 255, 0.95);">
+                <h2>📊 Research Summary</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 15px;">
+                    <div>
+                        <div class="metric-label">Total Experiments</div>
+                        <div class="metric-value">18+</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Successful Optimizations</div>
+                        <div class="metric-value" style="color: #10b981;">5 ✅</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Rejected Filters</div>
+                        <div class="metric-value" style="color: #ef4444;">4 ❌</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Failed Approaches</div>
+                        <div class="metric-value" style="color: #f59e0b;">7 ❌</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Research Papers</div>
+                        <div class="metric-value">2 📄</div>
+                    </div>
+                    <div>
+                        <div class="metric-label">Current Version</div>
+                        <div class="metric-value" style="background: linear-gradient(135deg, #4c5fd7 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">v5.0</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb; font-size: 0.85em; color: #6b7280;">
+                    <strong>Documentation:</strong> Full experiment reports available in <code style="background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px;">docs/experiments/</code> and <code style="background: rgba(139, 92, 246, 0.1); padding: 2px 6px; border-radius: 4px;">EXPERIMENT_RESULTS_SUMMARY.md</code>
                 </div>
             </div>
         </div>
@@ -516,6 +813,65 @@
                     document.getElementById('winRate').textContent = data.win_rate ? data.win_rate.toFixed(1) + '%' : '--';
                     document.getElementById('totalReturn').textContent = data.total_return ? data.total_return.toFixed(2) + '%' : '--';
                     document.getElementById('daysTracked').textContent = data.days_tracked || 0;
+
+                    // Update open positions
+                    const openPositionsList = document.getElementById('openPositionsList');
+                    if (data.open_positions && data.open_positions.length > 0) {
+                        let html = '<table style="width: 100%; border-collapse: collapse; margin-top: 8px;">';
+                        html += '<tr style="border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151;">';
+                        html += '<td style="padding: 6px 8px;">Ticker</td>';
+                        html += '<td style="padding: 6px 8px;">Entry Date</td>';
+                        html += '<td style="padding: 6px 8px;">Entry Price</td>';
+                        html += '<td style="padding: 6px 8px;">Current</td>';
+                        html += '<td style="padding: 6px 8px;">Return</td>';
+                        html += '<td style="padding: 6px 8px;">Days</td>';
+                        html += '</tr>';
+                        data.open_positions.forEach(pos => {
+                            const returnColor = pos.current_return >= 0 ? '#10b981' : '#ef4444';
+                            html += '<tr style="border-bottom: 1px solid #f3f4f6;">';
+                            html += `<td style="padding: 6px 8px; font-weight: 600;">${pos.ticker}</td>`;
+                            html += `<td style="padding: 6px 8px;">${pos.entry_date}</td>`;
+                            html += `<td style="padding: 6px 8px;">$${pos.entry_price.toFixed(2)}</td>`;
+                            html += `<td style="padding: 6px 8px;">$${pos.current_price.toFixed(2)}</td>`;
+                            html += `<td style="padding: 6px 8px; color: ${returnColor}; font-weight: 600;">${pos.current_return >= 0 ? '+' : ''}${pos.current_return.toFixed(2)}%</td>`;
+                            html += `<td style="padding: 6px 8px;">${pos.hold_days}d</td>`;
+                            html += '</tr>';
+                        });
+                        html += '</table>';
+                        openPositionsList.innerHTML = html;
+                    } else {
+                        openPositionsList.innerHTML = '<div style="color: #9ca3af; font-style: italic; padding: 8px 0;">No open positions</div>';
+                    }
+
+                    // Update recent trades
+                    const recentTradesList = document.getElementById('recentTradesList');
+                    if (data.recent_trades && data.recent_trades.length > 0) {
+                        let html = '<table style="width: 100%; border-collapse: collapse; margin-top: 8px;">';
+                        html += '<tr style="border-bottom: 1px solid #e5e7eb; font-weight: 600; color: #374151;">';
+                        html += '<td style="padding: 6px 8px;">Ticker</td>';
+                        html += '<td style="padding: 6px 8px;">Entry</td>';
+                        html += '<td style="padding: 6px 8px;">Exit</td>';
+                        html += '<td style="padding: 6px 8px;">Return</td>';
+                        html += '<td style="padding: 6px 8px;">P&L</td>';
+                        html += '<td style="padding: 6px 8px;">Reason</td>';
+                        html += '</tr>';
+                        data.recent_trades.forEach(trade => {
+                            const returnColor = trade.return >= 0 ? '#10b981' : '#ef4444';
+                            const pnlColor = trade.pnl >= 0 ? '#10b981' : '#ef4444';
+                            html += '<tr style="border-bottom: 1px solid #f3f4f6;">';
+                            html += `<td style="padding: 6px 8px; font-weight: 600;">${trade.ticker}</td>`;
+                            html += `<td style="padding: 6px 8px;">${trade.entry_date}</td>`;
+                            html += `<td style="padding: 6px 8px;">${trade.exit_date}</td>`;
+                            html += `<td style="padding: 6px 8px; color: ${returnColor}; font-weight: 600;">${trade.return >= 0 ? '+' : ''}${trade.return.toFixed(2)}%</td>`;
+                            html += `<td style="padding: 6px 8px; color: ${pnlColor}; font-weight: 600;">$${trade.pnl >= 0 ? '+' : ''}${trade.pnl.toFixed(2)}</td>`;
+                            html += `<td style="padding: 6px 8px; font-size: 0.85em;">${trade.exit_reason}</td>`;
+                            html += '</tr>';
+                        });
+                        html += '</table>';
+                        recentTradesList.innerHTML = html;
+                    } else {
+                        recentTradesList.innerHTML = '<div style="color: #9ca3af; font-style: italic; padding: 8px 0;">No completed trades yet</div>';
+                    }
                 })
                 .catch(error => {
                     console.error('Error updating performance:', error);
