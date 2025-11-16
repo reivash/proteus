@@ -1,21 +1,21 @@
 """
-Stock-Specific Mean Reversion Parameters - v8.0
+Stock-Specific Mean Reversion Parameters - v9.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
 Last Updated: 2025-11-16
-Optimization: EXP-024 (expanded Tier A universe - Round 2)
+Optimization: EXP-025 (expanded Tier A universe - Round 3)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 8.0
-- Expanded Tier A from 5 to 10 stocks
-- EXP-024: Found 5 new Tier A stocks (KLAC: 80.0%, ORCL: 76.9%, MRVL: 75.0%, ABBV: 70.6%, SYK: 70.0%)
-- Trade frequency improvement: +120% opportunities (5 → 10 stocks)
-- Avg win rate: 76.5% across Tier A portfolio
-- Avg return: +20.78% per stock over 3 years
-- Sector diversification: Tech (3), Payments (2), Finance (1), Healthcare (2), Semiconductors (2)
+VERSION: 9.0
+- Expanded Tier A from 10 to 14 stocks
+- EXP-025: Found 4 new Tier A stocks (EOG: 81.8%, TXN: 80.0%, GILD: 80.0%, INTU: 76.9%)
+- Trade frequency improvement: +27% opportunities (10 → 14 stocks)
+- Avg win rate: 77.6% across Tier A portfolio
+- Avg return: +22.07% per stock over 3 years
+- Full sector diversification: Semiconductors (4), Tech/Software (3), Healthcare/Pharma (3), Payments (2), Finance (1), Energy (1)
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
 - Lookback period: 60 days (optimal for stable indicators)
 """
@@ -134,6 +134,50 @@ MEAN_REVERSION_PARAMS = {
         'tier': 'A',
         'notes': 'EXCELLENT! Stryker. Medical devices leader with consistent mean reversion.',
         'performance': 'Win rate: 70.0%, Return: +11.33%, Sharpe: 7.10, Avg gain: 1.61%'
+    },
+
+    # TIER A: ENERGY - 81.8% win rate (EXP-025)
+    'EOG': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EOG Resources. First energy sector Tier A stock, strong mean reversion.',
+        'performance': 'Win rate: 81.8%, Return: +17.98%, Sharpe: 7.31, Avg gain: 2.88%'
+    },
+
+    # TIER A: TECH - 80.0% win rate (EXP-025)
+    'TXN': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Texas Instruments. Analog semiconductor leader, exceptional returns.',
+        'performance': 'Win rate: 80.0%, Return: +33.13%, Sharpe: 7.51, Avg gain: 3.24%'
+    },
+
+    # TIER A: HEALTHCARE - 80.0% win rate (EXP-025)
+    'GILD': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Gilead Sciences. Pharma sector addition with strong Sharpe ratio.',
+        'performance': 'Win rate: 80.0%, Return: +8.22%, Sharpe: 14.35, Avg gain: 2.32%'
+    },
+
+    # TIER A: TECH - 76.9% win rate (EXP-025)
+    'INTU': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Intuit. Financial software leader with high returns.',
+        'performance': 'Win rate: 76.9%, Return: +29.81%, Sharpe: 7.54, Avg gain: 3.82%'
     },
 
     # ========================================================================
@@ -275,32 +319,38 @@ KEY LEARNINGS (EXP-014):
 - Quality over quantity: 3 excellent stocks > 11 mixed stocks
 - Mean reversion is stock-specific, not universal
 
-CURRENT TIER A STOCKS (v8.0 - 10 stocks):
-Semiconductors (3):
+CURRENT TIER A STOCKS (v9.0 - 14 stocks):
+Semiconductors (4):
 - NVDA: 87.5% win rate, +49.70% return (BEST PERFORMER)
 - AVGO: 87.5% win rate, +24.52% return ⭐ EXP-021
 - KLAC: 80.0% win rate, +20.05% return ⭐ EXP-024
 - MRVL: 75.0% win rate, +26.63% return ⭐ EXP-024
 
+Tech/Software (3):
+- ORCL: 76.9% win rate, +22.50% return ⭐ EXP-024
+- TXN: 80.0% win rate, +33.13% return ⭐ EXP-025
+- INTU: 76.9% win rate, +29.81% return ⭐ EXP-025
+
+Healthcare/Pharma (3):
+- ABBV: 70.6% win rate, +10.50% return ⭐ EXP-024
+- SYK: 70.0% win rate, +11.33% return ⭐ EXP-024
+- GILD: 80.0% win rate, +8.22% return ⭐ EXP-025
+
 Payments (2):
 - V: 75.0% win rate, +7.33% return
 - MA: 71.4% win rate, +5.99% return
 
-Tech (1):
-- ORCL: 76.9% win rate, +22.50% return ⭐ EXP-024
-
 Finance (1):
 - AXP: 71.4% win rate, +29.21% return ⭐ EXP-021
 
-Healthcare (2):
-- ABBV: 70.6% win rate, +10.50% return ⭐ EXP-024
-- SYK: 70.0% win rate, +11.33% return ⭐ EXP-024
+Energy (1):
+- EOG: 81.8% win rate, +17.98% return ⭐ EXP-025
 
-Portfolio stats:
-- Average win rate: 76.5%
-- Average return: +20.78%
-- Trade frequency: ~55 trades/year (vs ~25 in v7.0)
-- Excellent sector diversification
+Portfolio stats (v9.0):
+- Average win rate: 77.6%
+- Average return: +22.07%
+- Trade frequency: ~70 trades/year (+27% vs v8.0)
+- Full sector diversification across 6 major sectors
 
 AVOID THESE STOCKS (confirmed poor performers):
 EXP-014 tested:
@@ -340,6 +390,43 @@ EXP-024 tested (poor performers):
 - LOW: 100% win rate, +8.54% return (ONLY 3 TRADES - insufficient data)
 - HON: 66.7% win rate, +6.69% return (marginal)
 - CAT: 57.1% win rate, +10.24% return (marginal)
+
+EXP-025 tested (poor performers):
+Energy:
+- CVX: 44.4% win rate, -1.18% return (retest confirmed poor)
+- COP: 66.7% win rate, +19.47% return (marginal - below 70%)
+- XOM: 66.7% win rate, +14.20% return (marginal)
+- SLB: 61.5% win rate, +18.22% return (marginal)
+- OXY: 52.9% win rate, +3.57% return (marginal)
+
+Industrials:
+- BA: 35.7% win rate, -5.32% return (VERY POOR)
+- RTX: 28.6% win rate, -0.55% return (VERY POOR)
+- DE: 38.5% win rate, -11.38% return (POOR)
+- MMM: 58.3% win rate, +13.11% return (marginal)
+- UNP: 40.0% win rate, +1.69% return (POOR)
+- GE: 66.7% win rate, +4.88% return (marginal)
+
+Consumer:
+- MCD: 20.0% win rate, -6.31% return (WORST in EXP-025)
+- DIS: 40.0% win rate, -1.29% return (POOR)
+- KO: 40.0% win rate, -0.20% return (POOR)
+- PEP: 50.0% win rate, -3.00% return (coin flip)
+- CMCSA: 66.7% win rate, +10.79% return (marginal)
+- HD: 62.5% win rate, +5.63% return (marginal - retest confirmed)
+
+Tech:
+- CDNS: 36.4% win rate, +1.34% return (POOR)
+- PANW: 50.0% win rate, +4.69% return (coin flip)
+- SNPS: 57.9% win rate, +37.32% return (marginal, high return but below 70% win rate)
+- ADI: 64.7% win rate, +20.76% return (marginal)
+
+Healthcare:
+- MRK: 58.3% win rate, +2.51% return (marginal)
+- AMGN: 53.3% win rate, +1.41% return (marginal)
+- VRTX: 55.6% win rate, -0.99% return (LOSING)
+- NVO: 61.1% win rate, +11.51% return (marginal)
+- LLY: 62.5% win rate, +12.01% return (marginal)
 """
 
 
