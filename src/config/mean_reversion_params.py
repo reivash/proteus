@@ -1,25 +1,27 @@
 """
-Stock-Specific Mean Reversion Parameters - v11.0
+Stock-Specific Mean Reversion Parameters - v12.0
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with regime + earnings filters.
 
 Last Updated: 2025-11-16
-Optimization: EXP-027 (mid-cap expansion - batch 2)
+Optimization: EXP-028 (small-cap exploration)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 11.0
-- Expanded Tier A from 18 to 20 stocks (14 large-cap + 6 mid-cap)
+VERSION: 12.0
+- Expanded Tier A from 20 to 22 stocks (14 large-cap + 6 mid-cap + 2 small-cap)
 - EXP-026: Found 4 mid-cap Tier A stocks (FTNT, MLM, IDXX, DXCM)
-- EXP-027: Found 2 more mid-cap Tier A stocks (EXR: 85.7%, INVH: 77.8%)
-- Trade frequency improvement: +11% (18 → 20 stocks, ~90 → ~100 trades/year)
-- Avg win rate: 77.6% across Tier A portfolio
-- Avg return: +23.42% per stock over 3 years
-- Market cap diversification: Large-cap (14) + Mid-cap (6)
-- Sector diversification: Added REITs for real estate exposure
-- Mid-cap cumulative hit rate: 14.3% (6 found from 42 tested)
-- FTNT delivers +48.74% return (rivals NVDA's +49.70%)
+- EXP-027: Found 2 mid-cap REIT Tier A stocks (EXR, INVH)
+- EXP-028: Found 2 small-cap Tier A stocks (INSM: 72.7%, ROAD: 88.9%)
+- Trade frequency: ~110 trades/year (+10% vs v11.0)
+- Avg win rate: 77.7% across Tier A portfolio
+- Avg return: +28.84% per stock over 3 years
+- Market cap diversification: Large (14) + Mid (6) + Small (2)
+- Sector diversification: 9 sectors (added Construction + Rare Disease Biotech)
+- INSM delivers +142.03% return - BEST PERFORMER IN ENTIRE SYSTEM (beats NVDA!)
+- ROAD delivers 88.9% win rate - matches NVDA's consistency
+- Small-cap hit rate: 10% (lower than mid-cap but 2 exceptional finds)
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
 - Lookback period: 60 days (optimal for stable indicators)
 """
@@ -255,6 +257,32 @@ MEAN_REVERSION_PARAMS = {
     },
 
     # ========================================================================
+    # SMALL-CAP TIER A STOCKS (EXP-028)
+    # ========================================================================
+
+    # TIER A: CONSTRUCTION (SMALL-CAP) - 88.9% win rate (EXP-028)
+    'ROAD': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OUTSTANDING! Construction Partners. Infrastructure/asphalt, matches NVDA win rate.',
+        'performance': 'Win rate: 88.9%, Return: +18.15%, Sharpe: 17.06, Avg gain: 2.44%'
+    },
+
+    # TIER A: BIOTECH/RARE DISEASE (SMALL-CAP) - 72.7% win rate (EXP-028)
+    'INSM': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': '🔥 BEST PERFORMER EVER! Insmed. Rare disease treatment, +142% return beats NVDA!',
+        'performance': 'Win rate: 72.7%, Return: +142.03%, Sharpe: 5.51, Avg gain: 17.73%'
+    },
+
+    # ========================================================================
     # TIER B STOCKS (55-70% win rate) - NOT MONITORED (marginal performance)
     # Removed from active monitoring based on EXP-014 results
     # ========================================================================
@@ -393,10 +421,10 @@ KEY LEARNINGS (EXP-014):
 - Quality over quantity: 3 excellent stocks > 11 mixed stocks
 - Mean reversion is stock-specific, not universal
 
-CURRENT TIER A STOCKS (v11.0 - 20 stocks):
+CURRENT TIER A STOCKS (v12.0 - 22 stocks):
 LARGE-CAP (14 stocks):
 Semiconductors (4):
-- NVDA: 87.5% win rate, +49.70% return (BEST PERFORMER)
+- NVDA: 87.5% win rate, +49.70% return
 - AVGO: 87.5% win rate, +24.52% return ⭐ EXP-021
 - KLAC: 80.0% win rate, +20.05% return ⭐ EXP-024
 - MRVL: 75.0% win rate, +26.63% return ⭐ EXP-024
@@ -426,21 +454,29 @@ Materials (1):
 - MLM: 81.8% win rate, +25.71% return ⭐ EXP-026
 
 Cybersecurity (1):
-- FTNT: 77.8% win rate, +48.74% return ⭐ EXP-026 (RIVALS NVDA!)
+- FTNT: 77.8% win rate, +48.74% return ⭐ EXP-026
 
 Healthcare/Medical Devices (2):
 - IDXX: 76.9% win rate, +24.89% return ⭐ EXP-026
 - DXCM: 72.2% win rate, +35.12% return ⭐ EXP-026
 
 REITs (2):
-- EXR: 85.7% win rate, +18.95% return ⭐ EXP-027 (BEST mid-cap!)
+- EXR: 85.7% win rate, +18.95% return ⭐ EXP-027
 - INVH: 77.8% win rate, +15.04% return ⭐ EXP-027
 
-Portfolio stats (v11.0):
-- Average win rate: 77.6%
-- Average return: +23.42%
-- Trade frequency: ~100 trades/year (+11% vs v10.0)
-- Full sector diversification across 8 sectors (added REITs + Materials)
+SMALL-CAP (2 stocks):
+Construction (1):
+- ROAD: 88.9% win rate, +18.15% return ⭐ EXP-028 (matches NVDA!)
+
+Biotech/Rare Disease (1):
+- INSM: 72.7% win rate, +142.03% return ⭐ EXP-028 (🔥 BEST PERFORMER EVER!)
+
+Portfolio stats (v12.0):
+- Average win rate: 77.7%
+- Average return: +28.84%
+- Trade frequency: ~110 trades/year (+10% vs v11.0)
+- Full sector diversification across 9 sectors
+- INSM is new system-wide champion (+142% beats NVDA's +49%)
 
 AVOID THESE STOCKS (confirmed poor performers):
 EXP-014 tested:
