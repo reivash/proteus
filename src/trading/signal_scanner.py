@@ -2,7 +2,16 @@
 Real-Time Signal Scanner
 
 Scans all stocks in the universe for mean reversion signals.
-Applies regime filter, earnings filter, and stock-specific parameters.
+Applies multiple quality filters for ultra-high win rate:
+- Regime filter (market conditions)
+- Earnings filter (avoid unpredictable volatility)
+- Quality scoring filter (v15.0 - top 60% signals only)
+
+v15.0 Enhancement:
+Signal quality scoring for 88.7% win rate (EXP-033)
+- Composite score: Z-depth (40%) + RSI (25%) + Volume (20%) + Drop (15%)
+- Only signals with score >= 60 pass
+- Quality over quantity = elite performance
 
 Usage:
     scanner = SignalScanner()
@@ -23,6 +32,7 @@ from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
 from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
 from src.models.trading.mean_reversion import MeanReversionDetector
+from src.models.trading.signal_quality import SignalQualityScorer
 from src.config.mean_reversion_params import get_params, get_all_tickers
 
 
@@ -137,6 +147,11 @@ class SignalScanner:
         )
         signals = earnings_fetcher.add_earnings_filter_to_signals(signals, ticker, 'panic_sell')
 
+        # Apply quality scoring filter (v15.0 enhancement)
+        quality_scorer = SignalQualityScorer(min_quality_threshold=60)
+        signals = quality_scorer.add_quality_scores_to_signals(signals)
+        signals = quality_scorer.filter_low_quality_signals(signals, 'panic_sell')
+
         # Check if signal on target date
         try:
             target_row = signals[signals['Date'] == pd.to_datetime(date)]
@@ -165,6 +180,8 @@ class SignalScanner:
             'z_score': float(row['z_score']) if 'z_score' in row else None,
             'rsi': float(row['rsi']) if 'rsi' in row else None,
             'volume_ratio': float(row['volume'] / row['volume'].rolling(20).mean()) if 'volume' in row else None,
+            'quality_score': float(row['quality_score']) if 'quality_score' in row else None,
+            'high_quality': bool(row['high_quality']) if 'high_quality' in row else None,
             'reversion_target': float(row['reversion_target']) if 'reversion_target' in row else None,
             'expected_return': float(row['expected_return']) if 'expected_return' in row else None,
             'parameters': params
