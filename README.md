@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="assets/proteus-logo.png" alt="Proteus Logo" width="400"/>
+</div>
+
+---
+
 # Proteus - Stock Market Predictor
 
 ---
