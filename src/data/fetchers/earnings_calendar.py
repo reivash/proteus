@@ -13,6 +13,8 @@ Exclude trades within 3 days before and after earnings announcements.
 
 import pandas as pd
 import yfinance as yf
+import json
+import os
 from datetime import datetime, timedelta
 from typing import List, Set, Optional
 
@@ -22,17 +24,26 @@ class EarningsCalendarFetcher:
     Fetch earnings dates for stocks and create exclusion windows.
     """
 
-    def __init__(self, exclusion_days_before=3, exclusion_days_after=3):
+    def __init__(self, exclusion_days_before=3, exclusion_days_after=3,
+                 cache_dir='data/earnings_cache', cache_ttl_days=7):
         """
         Initialize earnings calendar fetcher.
 
         Args:
             exclusion_days_before: Days before earnings to stop trading
             exclusion_days_after: Days after earnings to stop trading
+            cache_dir: Directory for persistent cache (default: data/earnings_cache)
+            cache_ttl_days: Cache time-to-live in days (default: 7)
         """
         self.exclusion_days_before = exclusion_days_before
         self.exclusion_days_after = exclusion_days_after
-        self._earnings_cache = {}
+        self.cache_dir = cache_dir
+        self.cache_ttl_days = cache_ttl_days
+        self._earnings_cache = {}  # In-memory cache
+
+        # Create cache directory
+        if cache_dir:
+            os.makedirs(cache_dir, exist_ok=True)
 
     def fetch_earnings_dates(self, ticker: str) -> pd.DataFrame:
         """
@@ -44,9 +55,33 @@ class EarningsCalendarFetcher:
         Returns:
             DataFrame with earnings dates
         """
-        # Check cache first
+        # Check in-memory cache first
         if ticker in self._earnings_cache:
             return self._earnings_cache[ticker]
+
+        # Check persistent disk cache
+        if self.cache_dir:
+            cache_file = os.path.join(self.cache_dir, f"{ticker}_earnings.json")
+            if os.path.exists(cache_file):
+                try:
+                    with open(cache_file, 'r') as f:
+                        cache_data = json.load(f)
+
+                    # Check if cache is still fresh
+                    cache_date = datetime.fromisoformat(cache_data['cached_at'])
+                    if datetime.now() - cache_date < timedelta(days=self.cache_ttl_days):
+                        # Cache is fresh, load it
+                        earnings_dates = [pd.to_datetime(d).tz_localize(None) if hasattr(pd.to_datetime(d), 'tz_localize')
+                                         else pd.to_datetime(d) for d in cache_data['earnings_dates']]
+                        df = pd.DataFrame({'earnings_date': earnings_dates})
+                        df['earnings_date'] = pd.to_datetime(df['earnings_date'])
+                        # Ensure timezone-naive
+                        if df['earnings_date'].dt.tz is not None:
+                            df['earnings_date'] = df['earnings_date'].dt.tz_localize(None)
+                        self._earnings_cache[ticker] = df  # Store in memory too
+                        return df
+                except Exception as e:
+                    print(f"[WARN] Error reading cache for {ticker}: {e}")
 
         try:
             stock = yf.Ticker(ticker)
@@ -54,18 +89,37 @@ class EarningsCalendarFetcher:
             # Get earnings dates from calendar
             earnings_dates = []
 
-            # Try to get earnings calendar
+            # Try to get earnings calendar (handles both dict and DataFrame formats)
             try:
                 calendar = stock.calendar
-                if calendar is not None and 'Earnings Date' in calendar.index:
-                    # Upcoming earnings
-                    upcoming = calendar.loc['Earnings Date']
-                    if isinstance(upcoming, pd.Series):
-                        for date in upcoming:
-                            if pd.notna(date):
-                                earnings_dates.append(pd.to_datetime(date))
-                    elif pd.notna(upcoming):
-                        earnings_dates.append(pd.to_datetime(upcoming))
+                if calendar is not None:
+                    # Handle new dict format (yfinance >= 0.2.0)
+                    if isinstance(calendar, dict):
+                        if 'Earnings Date' in calendar:
+                            date_val = calendar['Earnings Date']
+                            # Can be a list of dates or single date
+                            if isinstance(date_val, list):
+                                for d in date_val:
+                                    try:
+                                        earnings_dates.append(pd.to_datetime(d))
+                                    except:
+                                        pass
+                            else:
+                                try:
+                                    earnings_dates.append(pd.to_datetime(date_val))
+                                except:
+                                    pass
+
+                    # Handle legacy DataFrame/Series format
+                    elif isinstance(calendar, (pd.DataFrame, pd.Series)):
+                        if 'Earnings Date' in calendar.index:
+                            upcoming = calendar.loc['Earnings Date']
+                            if isinstance(upcoming, pd.Series):
+                                for date in upcoming:
+                                    if pd.notna(date):
+                                        earnings_dates.append(pd.to_datetime(date))
+                            elif pd.notna(upcoming):
+                                earnings_dates.append(pd.to_datetime(upcoming))
             except Exception as e:
                 pass  # Calendar might not be available
 
@@ -76,7 +130,11 @@ class EarningsCalendarFetcher:
                     # Add all historical earnings dates
                     for date in earnings_history.index:
                         if pd.notna(date):
-                            earnings_dates.append(pd.to_datetime(date))
+                            dt = pd.to_datetime(date)
+                            # Ensure timezone-naive
+                            if hasattr(dt, 'tz_localize') and dt.tz is not None:
+                                dt = dt.tz_localize(None)
+                            earnings_dates.append(dt)
             except Exception as e:
                 pass  # Earnings history might not be available
 
@@ -88,6 +146,21 @@ class EarningsCalendarFetcher:
                 # Strip timezone for consistent comparison
                 df['earnings_date'] = pd.to_datetime(df['earnings_date']).dt.tz_localize(None)
                 self._earnings_cache[ticker] = df
+
+                # Save to persistent cache
+                if self.cache_dir:
+                    try:
+                        cache_file = os.path.join(self.cache_dir, f"{ticker}_earnings.json")
+                        cache_data = {
+                            'ticker': ticker,
+                            'cached_at': datetime.now().isoformat(),
+                            'earnings_dates': [d.isoformat() for d in df['earnings_date']]
+                        }
+                        with open(cache_file, 'w') as f:
+                            json.dump(cache_data, f, indent=2)
+                    except Exception as e:
+                        print(f"[WARN] Could not save cache for {ticker}: {e}")
+
                 return df
             else:
                 # Return empty DataFrame if no earnings data
