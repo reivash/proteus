@@ -125,6 +125,45 @@ class SendGridNotifier:
             print(f"✗ SendGrid test failed: {e}")
             return False
 
+    def send_experiment_report(self, experiment_id: str, results: Dict) -> bool:
+        """
+        Send experiment completion report email.
+
+        Args:
+            experiment_id: Experiment identifier (e.g., 'EXP-024')
+            results: Dictionary containing experiment results
+
+        Returns:
+            True if email sent successfully, False otherwise
+        """
+        if not self.is_enabled():
+            print("[INFO] Email not enabled, skipping experiment report")
+            return False
+
+        if not SENDGRID_AVAILABLE:
+            print("[ERROR] SendGrid not installed. Run: pip install sendgrid")
+            return False
+
+        timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        subject = f"📊 Proteus Experiment Complete - {experiment_id} - {timestamp}"
+        html_content = self._create_experiment_body(experiment_id, results)
+
+        message = Mail(
+            from_email=Email(self.config.get('sender_email', 'proteus@trading.local')),
+            to_emails=To(self.config['recipient_email']),
+            subject=subject,
+            html_content=Content("text/html", html_content)
+        )
+
+        try:
+            sg = SendGridAPIClient(self.config['sendgrid_api_key'])
+            response = sg.send(message)
+            print(f"[EMAIL] Experiment report sent via SendGrid: {experiment_id}")
+            return True
+        except Exception as e:
+            print(f"[ERROR] SendGrid experiment report failed: {e}")
+            return False
+
     def _create_subject(self, signals: List[Dict]) -> str:
         """Create email subject with timestamp to prevent threading."""
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -223,6 +262,138 @@ class SendGridNotifier:
         html += """
     <div class="footer">
         <p><em>Automated notification from Proteus Trading Dashboard</em></p>
+        <p><em>Dashboard: <a href="http://localhost:5000">http://localhost:5000</a></em></p>
+    </div>
+</body>
+</html>
+"""
+        return html
+
+    def _create_experiment_body(self, experiment_id: str, results: Dict) -> str:
+        """Create HTML email body for experiment report."""
+        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        # Extract key information from results
+        symbols_tested = results.get('symbols_tested', 0)
+        tier_a = results.get('new_test_results', {}).get('tier_a', [])
+        tier_b = results.get('new_test_results', {}).get('tier_b', [])
+        period = results.get('period', '3y')
+
+        # Get tier A count
+        tier_a_count = len(tier_a) if tier_a else 0
+
+        html = f"""
+<html>
+<head>
+    <style>
+        body {{ font-family: Arial, sans-serif; color: #333; line-height: 1.6; }}
+        .header {{ background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                 color: white; padding: 25px; border-radius: 8px; margin-bottom: 25px; }}
+        .summary {{ background: #f0fdf4; padding: 20px; border-radius: 8px; margin: 20px 0;
+                   border-left: 5px solid #10b981; }}
+        .tier-section {{ background: #e0f2fe; padding: 18px; margin: 15px 0;
+                        border-left: 5px solid #0284c7; border-radius: 5px; }}
+        .tier-a {{ background: #dcfce7; border-left-color: #16a34a; }}
+        .tier-b {{ background: #fef3c7; border-left-color: #f59e0b; }}
+        .stock {{ margin: 12px 0; padding: 12px; background: white; border-radius: 4px; }}
+        .stock-name {{ font-weight: bold; color: #0284c7; font-size: 1.1em; }}
+        .metric {{ margin: 6px 0; font-size: 0.95em; }}
+        .success {{ color: #16a34a; font-weight: bold; }}
+        .warning {{ color: #f59e0b; font-weight: bold; }}
+        .footer {{ color: #666; font-size: 0.85em; margin-top: 30px; padding-top: 20px;
+                  border-top: 1px solid #ddd; }}
+        .highlight {{ background: #fef3c7; padding: 2px 6px; border-radius: 3px; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>📊 Experiment Complete: {experiment_id}</h2>
+        <p style="font-size: 1.1em; margin-top: 10px;">Proteus Trading System Research Report</p>
+        <p style="font-size: 0.9em; opacity: 0.9;">{now}</p>
+    </div>
+
+    <div class="summary">
+        <h3 style="margin-top: 0; color: #059669;">Experiment Summary</h3>
+        <div class="metric"><strong>Symbols Tested:</strong> {symbols_tested}</div>
+        <div class="metric"><strong>Backtest Period:</strong> {period}</div>
+        <div class="metric"><strong>New Tier A Stocks Found:</strong> <span class="success">{tier_a_count}</span></div>
+    </div>
+"""
+
+        # Add Tier A results
+        if tier_a and tier_a_count > 0:
+            html += f"""
+    <div class="tier-section tier-a">
+        <h3 style="margin-top: 0; color: #16a34a;">✅ Tier A Stocks ({tier_a_count}) - Win Rate >70%</h3>
+"""
+            for stock in tier_a:
+                ticker = stock.get('ticker', 'N/A')
+                win_rate = stock.get('win_rate', 0)
+                total_return = stock.get('total_return', 0)
+                sharpe = stock.get('sharpe_ratio', 0)
+                trades = stock.get('total_trades', 0)
+
+                html += f"""
+        <div class="stock">
+            <div class="stock-name">{ticker}</div>
+            <div class="metric">Win Rate: <span class="success">{win_rate:.1f}%</span></div>
+            <div class="metric">Total Return: <span class="{'success' if total_return > 0 else 'warning'}">{total_return:+.2f}%</span></div>
+            <div class="metric">Sharpe Ratio: {sharpe:.2f}</div>
+            <div class="metric">Trades: {trades}</div>
+        </div>
+"""
+            html += """
+    </div>
+"""
+        else:
+            html += """
+    <div class="tier-section">
+        <h3 style="margin-top: 0;">No Tier A Stocks Found</h3>
+        <p>None of the tested symbols met the Tier A criteria (>70% win rate, >5% return).</p>
+    </div>
+"""
+
+        # Add Tier B results if any
+        tier_b_count = len(tier_b) if tier_b else 0
+        if tier_b and tier_b_count > 0:
+            html += f"""
+    <div class="tier-section tier-b">
+        <h3 style="margin-top: 0; color: #f59e0b;">⚠️ Tier B Stocks ({tier_b_count}) - Win Rate 55-70%</h3>
+        <p style="font-size: 0.95em; margin-bottom: 15px;">These stocks show marginal performance and are monitored but not actively traded.</p>
+"""
+            for stock in tier_b[:5]:  # Limit to first 5 to keep email concise
+                ticker = stock.get('ticker', 'N/A')
+                win_rate = stock.get('win_rate', 0)
+                total_return = stock.get('total_return', 0)
+                trades = stock.get('total_trades', 0)
+
+                html += f"""
+        <div class="stock">
+            <div class="stock-name">{ticker}</div>
+            <div class="metric">Win Rate: <span class="warning">{win_rate:.1f}%</span></div>
+            <div class="metric">Total Return: {total_return:+.2f}%</div>
+            <div class="metric">Trades: {trades}</div>
+        </div>
+"""
+            if tier_b_count > 5:
+                html += f"""
+        <p style="font-size: 0.9em; margin-top: 10px; color: #666;"><em>... and {tier_b_count - 5} more Tier B stocks (see full report in logs/experiments/)</em></p>
+"""
+            html += """
+    </div>
+"""
+
+        # Add recommendation section
+        recommendation = results.get('recommendation', 'See full experiment results for details')
+        html += f"""
+    <div class="summary" style="background: #eff6ff; border-left-color: #0284c7;">
+        <h3 style="margin-top: 0; color: #0284c7;">💡 Recommendation</h3>
+        <p>{recommendation}</p>
+    </div>
+
+    <div class="footer">
+        <p><strong>Results saved to:</strong> logs/experiments/{experiment_id.lower().replace('-', '_')}_*.json</p>
+        <p><em>Automated experiment report from Proteus Trading System</em></p>
         <p><em>Dashboard: <a href="http://localhost:5000">http://localhost:5000</a></em></p>
     </div>
 </body>

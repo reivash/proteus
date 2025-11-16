@@ -219,6 +219,20 @@ def run_exp024_expand_tier_a_round2(period: str = "3y"):
 
     print(f"Results saved to: {results_file}")
 
+    # Send experiment report email if configured
+    try:
+        sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+        from src.notifications.sendgrid_notifier import SendGridNotifier
+
+        notifier = SendGridNotifier()
+        if notifier.is_enabled():
+            print("\nSending experiment report email...")
+            notifier.send_experiment_report('EXP-024', combined_results)
+        else:
+            print("\n[INFO] Email notifications not configured (see email_config.json)")
+    except Exception as e:
+        print(f"\n[WARNING] Could not send experiment report email: {e}")
+
     return combined_results
 
 
