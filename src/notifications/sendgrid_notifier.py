@@ -28,6 +28,20 @@ try:
 except ImportError:
     ML_TRACKING_AVAILABLE = False
 
+# ML Plotting Utilities
+try:
+    from src.utils.ml_plot_utils import (
+        create_prediction_plot,
+        create_roc_curve_plot,
+        create_calibration_plot,
+        create_feature_importance_plot,
+        create_performance_timeline,
+        create_experiment_comparison_plot
+    )
+    ML_PLOTTING_AVAILABLE = True
+except ImportError:
+    ML_PLOTTING_AVAILABLE = False
+
 
 class SendGridNotifier:
     """Send email notifications via SendGrid API (simpler than SMTP)."""
@@ -317,6 +331,145 @@ class SendGridNotifier:
         else:
             return f"ALERT: Proteus - {len(signals)} BUY Signals! - {timestamp}"
 
+    def _generate_ml_prediction_plots_html(self, ml_results: Dict) -> str:
+        """
+        Generate ML prediction visualization plots for email.
+
+        Args:
+            ml_results: Dictionary containing ML prediction data with keys:
+                - 'y_true': Actual labels (numpy array)
+                - 'y_pred': Predicted labels (numpy array)
+                - 'y_pred_proba': Predicted probabilities (numpy array, optional)
+                - 'auc_score': AUC score (float, optional)
+                - 'feature_names': List of feature names (optional)
+                - 'feature_importance': Feature importance values (optional)
+
+        Returns:
+            HTML string with embedded prediction plots or empty string if plotting unavailable
+        """
+        if not ML_PLOTTING_AVAILABLE:
+            return ""
+
+        try:
+            import numpy as np
+
+            y_true = ml_results.get('y_true')
+            y_pred = ml_results.get('y_pred')
+            y_pred_proba = ml_results.get('y_pred_proba')
+            auc_score = ml_results.get('auc_score')
+            feature_names = ml_results.get('feature_names')
+            feature_importance = ml_results.get('feature_importance')
+
+            # Must have at least predictions to generate plots
+            if y_true is None or y_pred is None:
+                return ""
+
+            # Convert to numpy if needed
+            if not isinstance(y_true, np.ndarray):
+                y_true = np.array(y_true)
+            if not isinstance(y_pred, np.ndarray):
+                y_pred = np.array(y_pred)
+            if y_pred_proba is not None and not isinstance(y_pred_proba, np.ndarray):
+                y_pred_proba = np.array(y_pred_proba)
+
+            html = """
+    <div class="section" style="background: #f8fafc; border-left-color: #8b5cf6;">
+        <h3 style="color: #8b5cf6;">📊 ML Model Performance Visualization</h3>
+        <p style="color: #666; margin-bottom: 20px;">Visual analysis of prediction accuracy and model calibration</p>
+"""
+
+            # 1. Main prediction plot (confusion matrix + probability distribution)
+            try:
+                prediction_plot_b64 = create_prediction_plot(
+                    y_true=y_true,
+                    y_pred=y_pred,
+                    y_pred_proba=y_pred_proba,
+                    title="Model Predictions vs Actual Outcomes"
+                )
+                html += f"""
+        <div style="margin: 20px 0;">
+            <h4 style="color: #6b21a8; margin-bottom: 10px;">Confusion Matrix & Probability Distribution</h4>
+            <img src="data:image/png;base64,{prediction_plot_b64}"
+                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+"""
+            except Exception as e:
+                print(f"[WARNING] Failed to generate prediction plot: {e}")
+
+            # 2. ROC curve (if probabilities and AUC available)
+            if y_pred_proba is not None and auc_score is not None:
+                try:
+                    roc_plot_b64 = create_roc_curve_plot(
+                        y_true=y_true,
+                        y_pred_proba=y_pred_proba,
+                        auc_score=auc_score
+                    )
+                    html += f"""
+        <div style="margin: 20px 0;">
+            <h4 style="color: #6b21a8; margin-bottom: 10px;">ROC Curve - Model Discrimination</h4>
+            <img src="data:image/png;base64,{roc_plot_b64}"
+                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+"""
+                except Exception as e:
+                    print(f"[WARNING] Failed to generate ROC curve: {e}")
+
+            # 3. Calibration plot (if probabilities available)
+            if y_pred_proba is not None:
+                try:
+                    calibration_plot_b64 = create_calibration_plot(
+                        y_true=y_true,
+                        y_pred_proba=y_pred_proba,
+                        n_bins=10
+                    )
+                    html += f"""
+        <div style="margin: 20px 0;">
+            <h4 style="color: #6b21a8; margin-bottom: 10px;">Calibration Curve - Probability Accuracy</h4>
+            <p style="color: #666; font-size: 0.95em; margin-bottom: 10px;">
+                Shows if predicted probabilities match actual win rates. Perfect calibration = diagonal line.
+            </p>
+            <img src="data:image/png;base64,{calibration_plot_b64}"
+                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+"""
+                except Exception as e:
+                    print(f"[WARNING] Failed to generate calibration plot: {e}")
+
+            # 4. Feature importance (if available)
+            if feature_names is not None and feature_importance is not None:
+                try:
+                    if not isinstance(feature_importance, np.ndarray):
+                        feature_importance = np.array(feature_importance)
+
+                    importance_plot_b64 = create_feature_importance_plot(
+                        feature_names=feature_names,
+                        importance_values=feature_importance,
+                        top_n=15
+                    )
+                    html += f"""
+        <div style="margin: 20px 0;">
+            <h4 style="color: #6b21a8; margin-bottom: 10px;">Top Feature Importance - What Drives Predictions?</h4>
+            <img src="data:image/png;base64,{importance_plot_b64}"
+                 style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+"""
+                except Exception as e:
+                    print(f"[WARNING] Failed to generate feature importance plot: {e}")
+
+            html += """
+        <p style="color: #666; font-size: 0.9em; margin-top: 20px; padding-top: 15px; border-top: 1px solid #ddd;">
+            <strong>How to interpret:</strong> Confusion matrix shows true vs predicted outcomes.
+            ROC curve measures model discrimination (higher AUC = better).
+            Calibration curve validates if predicted probabilities are accurate (closer to diagonal = better).
+        </p>
+    </div>
+"""
+            return html
+
+        except Exception as e:
+            print(f"[WARNING] Failed to generate ML prediction plots: {e}")
+            return ""
+
     def _generate_ml_performance_html(self, days: int = 7) -> str:
         """
         Generate ML performance metrics HTML section.
@@ -601,7 +754,14 @@ class SendGridNotifier:
         <h3 style="color: #a855f7;">📋 Conclusion</h3>
         <p style="margin: 0; font-size: 1.05em; font-weight: 500;">{self._generate_conclusion(results)}</p>
     </div>
+"""
 
+        # Add ML prediction plots if available
+        if 'ml_results' in results:
+            ml_plots_html = self._generate_ml_prediction_plots_html(results['ml_results'])
+            html += ml_plots_html
+
+        html += """
     <div class="section methodology">
         <h3 style="color: #0078d4;">🔬 Methodology (Current System)</h3>
         <div class="metric"><span class="metric-label">System:</span> Multi-Strategy Stock Predictor (v15.0)</div>

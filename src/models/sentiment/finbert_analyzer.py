@@ -81,7 +81,11 @@ class FinBERTAnalyzer:
             print(f"[INFO] (First run will download ~440MB, then cached locally)")
 
             self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-            self.model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
+            # Use safetensors for secure model loading (bypass torch.load security issue)
+            self.model = AutoModelForSequenceClassification.from_pretrained(
+                self.model_name,
+                use_safetensors=True  # Secure alternative to torch.load
+            )
             self.model.to(self.device)
             self.model.eval()  # Inference mode
 
