@@ -349,7 +349,7 @@ class SendGridNotifier:
         """Create COMPREHENSIVE HTML email body for experiment report."""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        # Extract information
+        # Extract information - handle multiple experiment formats
         symbols_tested = results.get('symbols_tested', 0)
         test_results = results.get('new_test_results', {})
         tier_a = test_results.get('tier_a', [])
@@ -360,6 +360,11 @@ class SendGridNotifier:
         # Build stock data lookup from results list
         stock_data_map = {}
         all_results = test_results.get('results', [])
+
+        # Also check for top-level detailed_results (EXP-062 format)
+        if not all_results:
+            all_results = results.get('detailed_results', [])
+
         for stock_data in all_results:
             if isinstance(stock_data, dict) and 'ticker' in stock_data:
                 stock_data_map[stock_data['ticker']] = stock_data
@@ -374,9 +379,14 @@ class SendGridNotifier:
             elif isinstance(stock, dict) and stock.get('ticker'):
                 tested_symbols.append(stock.get('ticker'))
 
-        # If we have no tested symbols from tiers, try to get from results
-        if not tested_symbols and stock_data_map:
-            tested_symbols = list(stock_data_map.keys())
+        # If we have no tested symbols from tiers, try multiple sources
+        if not tested_symbols:
+            # Try stock_data_map
+            if stock_data_map:
+                tested_symbols = list(stock_data_map.keys())
+            # Try top-level test_stocks list (EXP-062 format)
+            elif 'test_stocks' in results:
+                tested_symbols = results['test_stocks']
 
         tier_a_count = len(tier_a) if tier_a else 0
         tier_b_count = len(tier_b) if tier_b else 0
