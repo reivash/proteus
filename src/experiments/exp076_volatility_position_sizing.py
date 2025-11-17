@@ -49,7 +49,7 @@ from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
 from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
 from src.models.trading.mean_reversion import MeanReversionDetector, MeanReversionBacktester
-from src.config.mean_reversion_params import get_all_tickers, STOCK_PARAMS
+from src.config.mean_reversion_params import get_all_tickers
 
 
 def calculate_atr_pct(data: pd.DataFrame, period: int = 14) -> float:
@@ -127,20 +127,12 @@ def test_volatility_position_sizing_stock(ticker: str,
         engineer = TechnicalFeatureEngineer(fillna=True)
         enriched_data = engineer.engineer_features(data)
 
-        # Get stock parameters
-        params = STOCK_PARAMS.get(ticker, {
-            'z_score_threshold': 1.5,
-            'rsi_oversold': 35,
-            'volume_multiplier': 1.3,
-            'price_drop_threshold': -1.5
-        })
-
-        # Detect signals
+        # Use baseline parameters for fair comparison
         detector = MeanReversionDetector(
-            z_score_threshold=params.get('z_score_threshold', 1.5),
-            rsi_oversold=params.get('rsi_oversold', 35),
-            volume_multiplier=params.get('volume_multiplier', 1.3),
-            price_drop_threshold=params.get('price_drop_threshold', -1.5)
+            z_score_threshold=1.5,
+            rsi_oversold=35,
+            volume_multiplier=1.3,
+            price_drop_threshold=-1.5
         )
 
         signals = detector.detect_overcorrections(enriched_data)
