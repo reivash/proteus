@@ -190,7 +190,7 @@ class EmailNotifier:
 <body>
     <div class="header">
         <h2>📈 Proteus Trading Dashboard</h2>
-        <p>Mean Reversion Strategy v4.0</p>
+        <p>AI-Powered Stock Predictor</p>
         <p style="font-size: 0.9em;">{now}</p>
     </div>
 
@@ -270,7 +270,7 @@ class EmailNotifier:
         </ul>
         <p style="margin-top: 15px;">
             <em>This is an automated notification from Proteus Trading Dashboard.</em><br>
-            <em>Strategy: Mean Reversion v4.0 | Expected Win Rate: 77.3% | Avg Hold: 1-2 days</em>
+            <em>System: Multi-Strategy Predictor v15.0 | Expected Win Rate: 79.3% | Avg Hold: 1-2 days</em>
         </p>
     </div>
 </body>
