@@ -168,6 +168,65 @@ class SendGridNotifier:
             print(f"[ERROR] SendGrid experiment report failed: {e}")
             return False
 
+    def _generate_conclusion(self, results: Dict) -> str:
+        """
+        Generate a clear conclusion statement based on experiment results.
+
+        Returns:
+            Human-readable conclusion about experiment outcome and next steps
+        """
+        try:
+            # Check if deploy field exists
+            deploy = results.get('deploy', None)
+            next_step = results.get('next_step', 'Review results and determine next action')
+
+            # Check for explicit conclusion in results
+            if 'conclusion' in results:
+                return results['conclusion']
+
+            # Generate conclusion based on deployment decision
+            if deploy is True or deploy == 1.0:
+                # Successful deployment
+                tier_a_count = 0
+                if 'new_test_results' in results:
+                    tier_a = results['new_test_results'].get('tier_a', [])
+                    tier_a_count = len(tier_a)
+
+                if tier_a_count > 0:
+                    return f"✅ SUCCESS: Experiment validated {tier_a_count} high-performing stocks for deployment. Next: {next_step}"
+                else:
+                    return f"✅ SUCCESS: Experiment meets deployment criteria. Next: {next_step}"
+
+            elif deploy is False or deploy == 0.0:
+                # Failed to meet criteria
+                return f"❌ INSUFFICIENT PERFORMANCE: Experiment did not meet deployment thresholds. Next: {next_step}"
+
+            # Check for other success indicators
+            if 'win_rate_improvement' in results:
+                improvement = results['win_rate_improvement']
+                if improvement >= 3.0:
+                    return f"✅ Significant win rate improvement (+{improvement:.1f}pp). Ready for deployment."
+                elif improvement > 0:
+                    return f"⚠️ Marginal improvement (+{improvement:.1f}pp) below +3pp threshold. Not deployed."
+                else:
+                    return f"❌ No improvement found ({improvement:+.1f}pp). Exploring alternative approaches."
+
+            # Check stocks processed metrics
+            if 'successful_processing' in results or 'successful_analyses' in results:
+                successful = results.get('successful_processing', results.get('successful_analyses', 0))
+                tested = results.get('stocks_tested', successful)
+
+                if successful >= tested * 0.8:  # 80%+ success rate
+                    return f"✅ Successfully processed {successful}/{tested} stocks. Pipeline validated for next phase: {next_step}"
+                else:
+                    return f"⚠️ Only {successful}/{tested} stocks processed successfully. Improvements needed before proceeding."
+
+            # Default: use next_step as conclusion
+            return f"Experiment complete. Next step: {next_step}"
+
+        except Exception as e:
+            return "Experiment complete. See detailed results below."
+
     def _extract_experiment_summary(self, results: Dict) -> str:
         """
         Extract key findings from experiment results for subject line.
@@ -401,6 +460,9 @@ class SendGridNotifier:
                  color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }}
         .section {{ background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 20px 0;
                    border-left: 5px solid #10b981; }}
+        .objective {{ background: #f0f9ff; border-left-color: #0ea5e9; }}
+        .hypothesis {{ background: #fef3c7; border-left-color: #eab308; }}
+        .conclusion {{ background: #f3e8ff; border-left-color: #a855f7; }}
         .methodology {{ background: #e7f3ff; border-left-color: #0078d4; }}
         .symbols {{ background: #fff4e6; border-left-color: #f59e0b; }}
         .tier-section {{ background: #e0f2fe; padding: 20px; margin: 20px 0;
@@ -431,8 +493,23 @@ class SendGridNotifier:
         <p style="font-size: 0.95em; opacity: 0.85; margin: 5px 0;">Completed: {now}</p>
     </div>
 
+    <div class="section objective">
+        <h3 style="color: #0ea5e9;">🎯 Objective</h3>
+        <p style="margin: 0; font-size: 1.05em;">{results.get('objective', results.get('algorithm', 'Optimize trading signals and expand high-performing stock portfolio'))}</p>
+    </div>
+
+    <div class="section hypothesis">
+        <h3 style="color: #eab308;">💡 Hypothesis</h3>
+        <p style="margin: 0; font-size: 1.05em;">{results.get('hypothesis', 'Testing signal optimization to improve win rate and returns')}</p>
+    </div>
+
+    <div class="section conclusion">
+        <h3 style="color: #a855f7;">📋 Conclusion</h3>
+        <p style="margin: 0; font-size: 1.05em; font-weight: 500;">{self._generate_conclusion(results)}</p>
+    </div>
+
     <div class="section methodology">
-        <h3 style="color: #0078d4;">🔬 Methodology</h3>
+        <h3 style="color: #0078d4;">🔬 Methodology (Current System)</h3>
         <div class="metric"><span class="metric-label">System:</span> Multi-Strategy Stock Predictor (v15.0)</div>
         <div class="metric"><span class="metric-label">Approach:</span> Research-driven signal optimization across multiple strategies</div>
         <div class="metric"><span class="metric-label">Entry Signal:</span> Z-score < -1.5, RSI < 35, Volume spike > 1.3x, Price drop > -1.5%</div>
