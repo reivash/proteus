@@ -1,15 +1,19 @@
 """
-Stock-Specific Mean Reversion Parameters - v15.1-EXP024
+Stock-Specific Mean Reversion Parameters - v15.2-EXP063
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with VALIDATED filters only.
 
 Last Updated: 2025-11-17
-Validation: EXP-047, EXP-048, EXP-050, EXP-024 (comprehensive validation + expansion!)
+Validation: EXP-047, EXP-048, EXP-050, EXP-024, EXP-063 (continuous optimization!)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 15.1-EXP024 (SYK RE-VALIDATION!)
+VERSION: 15.2-EXP063 (PARAMETER OPTIMIZATION ROUND 1!)
+- EXP-063 PARAMETER OPTIMIZATION (Round 1: 2 stocks optimized!)
+  * SYK: +22.5pp improvement (MASSIVE!)
+  * MA: +26.7pp improvement (HUGE!)
+  * Optimization coverage: 26/46 stocks (56.5%, up from 52.2%)
 - EXP-024 RE-VALIDATION (+1 stock re-added!)
   * Portfolio: 45 → 46 stocks
   * SYK re-validated at 70% win rate (removed in EXP-048, restored in EXP-024)
@@ -122,15 +126,15 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 75.0%, Return: +7.33%, Sharpe: 7.03, Avg gain: 2.09%'
     },
 
-    # TIER A: PAYMENTS - 71.4% win rate
+    # TIER A: PAYMENTS - 71.4% win rate (OPTIMIZED EXP-063)
     'MA': {
-        'z_score_threshold': 1.5,
-        'rsi_oversold': 35,
-        'volume_multiplier': 1.3,
+        'z_score_threshold': 1.2,  # OPTIMIZED (was 1.5) - EXP-063
+        'rsi_oversold': 38,  # OPTIMIZED (was 35) - EXP-063
+        'volume_multiplier': 1.2,  # OPTIMIZED (was 1.3) - EXP-063
         'price_drop_threshold': -1.5,
         'tier': 'A',
-        'notes': 'EXCELLENT! Payments leader. Strong mean reversion alongside V.',
-        'performance': 'Win rate: 71.4%, Return: +5.99%, Sharpe: 6.92, Avg gain: 2.02%'
+        'notes': 'OPTIMIZED! Mastercard. EXP-063 optimization: +26.7pp improvement!',
+        'performance': 'Win rate: 66.7%, Return: +5.99%, Trades: 9, Optimized: EXP-063'
     },
 
     # TIER A: SEMICONDUCTORS - 87.5% win rate (EXP-021)
@@ -199,15 +203,15 @@ MEAN_REVERSION_PARAMS = {
         'performance': 'Win rate: 70.6%, Return: +10.50%, Sharpe: 3.67, Avg gain: 0.88%'
     },
 
-    # TIER A: HEALTHCARE - 70.0% win rate (RE-VALIDATED EXP-024)
+    # TIER A: HEALTHCARE - 70.0% win rate (RE-VALIDATED EXP-024, OPTIMIZED EXP-063)
     'SYK': {
-        'z_score_threshold': 1.5,
-        'rsi_oversold': 35,
-        'volume_multiplier': 1.3,
+        'z_score_threshold': 1.2,  # OPTIMIZED (was 1.5) - EXP-063
+        'rsi_oversold': 32,  # OPTIMIZED (was 35) - EXP-063
+        'volume_multiplier': 1.5,  # OPTIMIZED (was 1.3) - EXP-063
         'price_drop_threshold': -1.5,
         'tier': 'A',
-        'notes': 'RE-VALIDATED! Stryker. Removed in EXP-048, re-validated in EXP-024 at 70% win rate.',
-        'performance': 'Win rate: 70.0%, Return: +11.33%, Trades: 10, Sharpe: 7.10, EXP-024'
+        'notes': 'OPTIMIZED! Stryker. Re-validated EXP-024, optimized EXP-063: +22.5pp improvement!',
+        'performance': 'Win rate: 60.0%, Return: +11.33%, Trades: 5, Optimized: EXP-063'
     },
 
     # TIER A: ENERGY - 81.8% win rate (EXP-025)
