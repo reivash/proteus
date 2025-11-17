@@ -30,6 +30,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from src.trading.signal_scanner import SignalScanner
+from src.monitoring.ml_performance_tracker import MLPerformanceTracker
 
 # ML imports
 try:
@@ -45,7 +46,7 @@ class MLSignalScanner(SignalScanner):
     ML-enhanced signal scanner with XGBoost probability scoring.
     """
 
-    def __init__(self, lookback_days=60, model_path=None, ml_threshold=0.30):
+    def __init__(self, lookback_days=60, model_path=None, ml_threshold=0.30, enable_tracking=True):
         """
         Initialize ML-enhanced signal scanner.
 
@@ -53,11 +54,21 @@ class MLSignalScanner(SignalScanner):
             lookback_days: Days of historical data to fetch
             model_path: Path to XGBoost model file (default: EXP-069 simplified model)
             ml_threshold: ML probability threshold for "high confidence" signals (default: 0.30)
+            enable_tracking: Enable ML performance tracking (default: True)
         """
         super().__init__(lookback_days=lookback_days)
 
         self.ml_threshold = ml_threshold
         self.model = None
+        self.tracker = None
+
+        # Initialize performance tracker
+        if enable_tracking:
+            try:
+                self.tracker = MLPerformanceTracker(ml_threshold=ml_threshold)
+                print(f"[OK] ML Performance Tracker initialized")
+            except Exception as e:
+                print(f"[WARNING] Performance tracker disabled: {e}")
 
         if not ML_AVAILABLE:
             print("[WARNING] XGBoost not available - ML scoring disabled")
@@ -268,6 +279,22 @@ class MLSignalScanner(SignalScanner):
             signal['ml_confidence'] = 'MEDIUM'
         else:
             signal['ml_confidence'] = 'LOW'
+
+        # Log signal to performance tracker
+        if self.tracker:
+            try:
+                signal_id = self.tracker.log_signal(
+                    ticker=signal['ticker'],
+                    ml_probability=signal['ml_probability'],
+                    ml_confidence=signal['ml_confidence'],
+                    signal_strength=signal.get('signal_strength'),
+                    z_score=signal.get('z_score'),
+                    rsi=signal.get('rsi'),
+                    expected_return=signal.get('expected_return')
+                )
+                signal['signal_id'] = signal_id
+            except Exception as e:
+                print(f"[WARNING] Failed to log signal to tracker: {e}")
 
         return signal
 

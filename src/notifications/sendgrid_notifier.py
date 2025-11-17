@@ -21,6 +21,13 @@ try:
 except ImportError:
     SENDGRID_AVAILABLE = False
 
+# ML Performance Tracking
+try:
+    from src.monitoring.ml_performance_tracker import MLPerformanceTracker
+    ML_TRACKING_AVAILABLE = True
+except ImportError:
+    ML_TRACKING_AVAILABLE = False
+
 
 class SendGridNotifier:
     """Send email notifications via SendGrid API (simpler than SMTP)."""
@@ -310,6 +317,88 @@ class SendGridNotifier:
         else:
             return f"ALERT: Proteus - {len(signals)} BUY Signals! - {timestamp}"
 
+    def _generate_ml_performance_html(self, days: int = 7) -> str:
+        """
+        Generate ML performance metrics HTML section.
+
+        Args:
+            days: Number of days to analyze
+
+        Returns:
+            HTML string with ML performance metrics or empty string if no data
+        """
+        if not ML_TRACKING_AVAILABLE:
+            return ""
+
+        try:
+            tracker = MLPerformanceTracker()
+            metrics = tracker.calculate_metrics(days=days)
+
+            # Skip if no completed signals
+            if 'error' in metrics or metrics.get('completed_signals', 0) == 0:
+                return ""
+
+            ml_approved = metrics['ml_approved']
+            ml_filtered = metrics['ml_filtered']
+            improvement_factor = metrics['improvement_factor']
+
+            # Color code based on performance
+            if improvement_factor >= 2.0:
+                perf_color = '#10b981'  # Green
+                perf_status = 'EXCELLENT'
+            elif improvement_factor >= 1.5:
+                perf_color = '#3b82f6'  # Blue
+                perf_status = 'GOOD'
+            elif improvement_factor >= 1.0:
+                perf_color = '#f59e0b'  # Orange
+                perf_status = 'ACCEPTABLE'
+            else:
+                perf_color = '#ef4444'  # Red
+                perf_status = 'DEGRADED'
+
+            html = f"""
+    <h3>ML Performance Tracker (Last {days} Days)</h3>
+    <div class="ml-performance" style="background: #f8fafc; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid {perf_color};">
+        <div class="metric" style="margin: 8px 0;">
+            <strong>Status:</strong>
+            <span style="color: {perf_color}; font-weight: bold;">{perf_status}</span>
+        </div>
+        <div class="metric" style="margin: 8px 0;">
+            <strong>Improvement Factor:</strong>
+            <span style="color: {perf_color}; font-weight: bold;">{improvement_factor:.2f}x</span>
+            (Target: 2.4x)
+        </div>
+
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd;">
+            <strong>ML-Approved Signals (>= 30% confidence):</strong>
+            <div style="margin-left: 20px;">
+                <div class="metric">Count: {ml_approved['count']} ({ml_approved['wins']}W / {ml_approved['losses']}L)</div>
+                <div class="metric">Precision: <span style="color: #10b981; font-weight: bold;">{ml_approved['precision']*100:.1f}%</span></div>
+                <div class="metric">Avg Return: <span style="color: {'#10b981' if ml_approved['avg_return'] > 0 else '#ef4444'};">{ml_approved['avg_return']:+.1f}%</span></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <strong>ML-Filtered Signals (< 30% confidence):</strong>
+            <div style="margin-left: 20px;">
+                <div class="metric">Count: {ml_filtered['count']} ({ml_filtered['wins']}W / {ml_filtered['losses']}L)</div>
+                <div class="metric">Precision: {ml_filtered['precision']*100:.1f}%</div>
+                <div class="metric">Avg Return: <span style="color: {'#10b981' if ml_filtered['avg_return'] > 0 else '#ef4444'};">{ml_filtered['avg_return']:+.1f}%</span></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #ddd; font-size: 0.9em; color: #666;">
+            <strong>Note:</strong> ML performance tracking validates the 2.4x precision improvement claim in production.
+            Manual outcome updates required via ml_outcome_updater.py
+        </div>
+    </div>
+"""
+            return html
+
+        except Exception as e:
+            print(f"[WARNING] Failed to generate ML performance HTML: {e}")
+            return ""
+
     def _create_body(self, scan_status: str, signals: List[Dict], performance: Dict = None, scanned_tickers: List[str] = None) -> str:
         """Create email body - full HTML template."""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -393,6 +482,11 @@ class SendGridNotifier:
         <div class="metric">Total Return: <strong>{performance.get('total_return', 0):+.2f}%</strong></div>
     </div>
 """
+
+        # Add ML performance metrics if available
+        ml_perf_html = self._generate_ml_performance_html(days=7)
+        if ml_perf_html:
+            html += ml_perf_html
 
         html += """
     <div class="footer">
