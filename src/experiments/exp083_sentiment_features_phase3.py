@@ -51,6 +51,7 @@ sys.path.insert(0, os.path.abspath('.'))
 from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
 from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.sentiment.sentiment_features import SentimentFeaturePipeline
+from src.models.trading.mean_reversion import MeanReversionDetector
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score, accuracy_score
@@ -136,35 +137,41 @@ def prepare_ml_dataset(ticker: str,
         else:
             print(f"  [WARN] Sentiment pipeline not ready, using technical only")
 
-    # 4. Create labels (forward returns)
-    enriched_data['forward_return_3d'] = enriched_data['Close'].shift(-3) / enriched_data['Close'] - 1
-    enriched_data['win'] = (enriched_data['forward_return_3d'] > 0.01).astype(int)
-
-    # 5. Filter to analysis period and valid signals
-    enriched_data = enriched_data[enriched_data['Date'] >= start_date].copy()
-
-    # Panic sell signals (for labeling, not features)
-    enriched_data['panic_sell'] = (
-        (enriched_data['rsi'] < 35) &
-        (enriched_data['z_score'] < -1.5) &
-        (enriched_data['volume_spike'] > 1.3) &
-        (enriched_data['price_drop_pct'] < -1.5)
+    # 4. Use MeanReversionDetector to get panic sell signals (consistent with EXP-082)
+    detector = MeanReversionDetector(
+        z_score_threshold=1.5,
+        rsi_oversold=35,
+        volume_multiplier=1.3,
+        price_drop_threshold=-1.5
     )
 
-    valid_signals = enriched_data[enriched_data['panic_sell']].copy()
+    signals = detector.detect_overcorrections(enriched_data)
 
-    if len(valid_signals) < 30:
-        print(f"  [ERROR] Insufficient panic sell signals: {len(valid_signals)}")
+    if len(signals) == 0:
+        print(f"  [ERROR] No panic sell signals detected")
+        return None, None
+
+    # 5. Calculate forward returns (3-day holding period)
+    signals['forward_return_3d'] = signals['Close'].pct_change(3).shift(-3) * 100
+
+    # Binary label: 1 if return > 0, 0 otherwise
+    signals['win'] = (signals['forward_return_3d'] > 0).astype(int)
+
+    # Filter out rows with missing forward returns
+    signals = signals.dropna(subset=['forward_return_3d'])
+
+    if len(signals) < 30:
+        print(f"  [ERROR] Insufficient valid signals: {len(signals)}")
         return None, None
 
     # 6. Prepare features and labels
-    exclude_cols = ['forward_return_3d', 'win', 'panic_sell', 'Date', 'confidence_level']
-    feature_cols = [col for col in valid_signals.columns
+    exclude_cols = ['forward_return_3d', 'win', 'Date', 'confidence_level']
+    feature_cols = [col for col in signals.columns
                     if col not in exclude_cols and
-                    valid_signals[col].dtype in ['int64', 'float64', 'bool']]
+                    signals[col].dtype in ['int64', 'float64', 'bool']]
 
-    X = valid_signals[feature_cols].copy()
-    y = valid_signals['win'].copy()
+    X = signals[feature_cols].copy()
+    y = signals['win'].copy()
 
     # Handle any remaining NaN
     X = X.fillna(0)
