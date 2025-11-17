@@ -88,16 +88,17 @@ def validate_gap_trading_stock(ticker: str,
         # Score gaps
         gaps = detector.calculate_gap_score(gaps)
 
-        # Filter by market regime
-        regime_detector = MarketRegimeDetector()
-        gaps = detector.filter_by_regime(gaps, regime_detector, enriched_data)
+        # TEMPORARY: Skip regime filter to validate raw gap trading performance
+        # TODO: Re-enable after validating base strategy works
+        # regime_detector = MarketRegimeDetector()
+        # gaps = detector.filter_by_regime(gaps, regime_detector, enriched_data)
 
-        if len(gaps) == 0:
-            return {
-                'ticker': ticker,
-                'total_gaps': 0,
-                'message': 'No gaps in favorable regime'
-            }
+        # if len(gaps) == 0:
+        #     return {
+        #         'ticker': ticker,
+        #         'total_gaps': 0,
+        #         'message': 'No gaps in favorable regime'
+        #     }
 
         # Calculate entry/exit targets
         gaps = detector.calculate_entry_exit(gaps, profit_target=5.0, stop_loss=-5.0, max_hold_days=3)
