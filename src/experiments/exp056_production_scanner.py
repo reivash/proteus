@@ -43,7 +43,7 @@ from datetime import datetime, timedelta
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from src.trading.signal_scanner import SignalScanner
+from src.trading.ml_signal_scanner import MLSignalScanner
 from src.notifications.sendgrid_notifier import SendGridNotifier
 
 
@@ -73,6 +73,12 @@ def format_signal_email(signals: list, market_regime: str) -> str:
 
     signal_rows = ""
     for signal in signals:
+        ml_prob = signal.get('ml_probability', 0.0)
+        ml_conf = signal.get('ml_confidence', 'N/A')
+
+        # Color code ML confidence
+        ml_color = '#28a745' if ml_conf == 'HIGH' else '#ffc107' if ml_conf == 'MEDIUM' else '#dc3545'
+
         signal_rows += f"""
 <tr>
     <td><strong>{signal['ticker']}</strong></td>
@@ -82,6 +88,7 @@ def format_signal_email(signals: list, market_regime: str) -> str:
     <td>{signal['expected_return']:.1f}%</td>
     <td>{signal['signal_strength']:.0f}/100</td>
     <td>{signal['position_size']:.2f}x</td>
+    <td style="background-color: {ml_color}; color: white; font-weight: bold;">{ml_prob:.3f} ({ml_conf})</td>
 </tr>
 """
 
@@ -103,6 +110,7 @@ def format_signal_email(signals: list, market_regime: str) -> str:
     <th>Expected Return</th>
     <th>Signal Strength</th>
     <th>Position Size</th>
+    <th>ML Probability</th>
 </tr>
 {signal_rows}
 </table>
@@ -171,8 +179,8 @@ def run_exp056_production_scanner():
     print("Portfolio: 45 stocks | 79.3% win rate | ~251 trades/year")
     print()
 
-    # Initialize scanner
-    scanner = SignalScanner(lookback_days=60)
+    # Initialize ML-enhanced scanner
+    scanner = MLSignalScanner(lookback_days=60)
 
     # Check market regime
     print("Checking market regime...")
@@ -222,18 +230,22 @@ def run_exp056_production_scanner():
     if signals:
         print()
         print("SIGNAL DETAILS:")
-        print("-"*70)
-        print(f"{'Ticker':<8} {'Price':<10} {'Z-Score':<10} {'RSI':<8} {'Exp.Ret':<10} {'Strength':<10} {'Size'}")
-        print("-"*70)
+        print("-"*80)
+        print(f"{'Ticker':<8} {'Price':<10} {'Z-Score':<10} {'RSI':<8} {'Exp.Ret':<10} {'Strength':<10} {'Size':<8} {'ML Prob':<10} {'ML Conf'}")
+        print("-"*80)
 
         for signal in signals:
+            ml_prob = signal.get('ml_probability', 0.0)
+            ml_conf = signal.get('ml_confidence', 'N/A')
             print(f"{signal['ticker']:<8} "
                   f"${signal['price']:<9.2f} "
                   f"{signal['z_score']:<10.2f} "
                   f"{signal['rsi']:<8.1f} "
                   f"{signal['expected_return']:<9.1f}% "
                   f"{signal['signal_strength']:<9.0f}/100 "
-                  f"{signal['position_size']:.2f}x")
+                  f"{signal['position_size']:<7.2f}x "
+                  f"{ml_prob:<9.3f} "
+                  f"{ml_conf}")
 
     print()
     print("="*70)
