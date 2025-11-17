@@ -49,7 +49,7 @@ import json
 sys.path.insert(0, os.path.abspath('.'))
 
 from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
-from src.data.features.technical_features import TechnicalFeatureEngineer
+from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.sentiment.sentiment_features import SentimentFeaturePipeline
 
 from sklearn.model_selection import train_test_split
