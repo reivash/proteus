@@ -90,7 +90,7 @@ def validate_gap_trading_stock(ticker: str,
 
         # Filter by market regime
         regime_detector = MarketRegimeDetector()
-        gaps = detector.filter_by_regime(gaps, regime_detector)
+        gaps = detector.filter_by_regime(gaps, regime_detector, enriched_data)
 
         if len(gaps) == 0:
             return {

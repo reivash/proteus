@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-11-17 15:30:14",
+  "type": "scheduled",
+  "regime": "BULL",
+  "status": "Complete - Found 0 signal(s)",
+  "scanned_tickers": [
+    "NVDA",
+    "TSLA",
+    "AAPL",
+    "AMZN",
+    "MSFT",
+    "JPM",
+    "JNJ",
+    "UNH",
+    "INTC",
+    "CVX",
+    "QQQ"
+  ],
+  "signals": [],
+  "signal_count": 0,
+  "performance": {
+    "current_equity": 100000,
+    "total_return": 0.0,
+    "total_trades": 3,
+    "win_rate": 66.66666666666666,
+    "sharpe_ratio": null,
+    "max_drawdown": 0,
+    "num_positions": 0,
+    "days_tracked": 2
+  }
+}

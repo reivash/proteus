@@ -141,13 +141,15 @@ class GapDetector:
         return gaps
 
     def filter_by_regime(self, gaps: pd.DataFrame,
-                        regime_detector=None) -> pd.DataFrame:
+                        regime_detector=None,
+                        price_data: pd.DataFrame = None) -> pd.DataFrame:
         """
         Filter gaps by market regime (avoid trading gaps in bear markets).
 
         Args:
             gaps: Gap events DataFrame
             regime_detector: MarketRegimeDetector instance
+            price_data: Full OHLCV DataFrame for regime detection
 
         Returns:
             Filtered gaps (BULL/SIDEWAYS only)
@@ -155,13 +157,20 @@ class GapDetector:
         if regime_detector is None or len(gaps) == 0:
             return gaps
 
-        # Check regime for each gap date
-        filtered_gaps = []
+        # If no price data provided, can't filter by regime
+        if price_data is None:
+            return gaps
 
-        for idx, gap in gaps.iterrows():
-            regime = regime_detector.detect_regime(gap.name)
-            if regime in ['BULL', 'SIDEWAYS']:
-                filtered_gaps.append(idx)
+        # Detect regime on full dataset
+        data_with_regime = regime_detector.detect_regime(price_data)
+
+        # Filter gaps to only those in BULL or SIDEWAYS regimes
+        filtered_gaps = []
+        for gap_date in gaps.index:
+            if gap_date in data_with_regime.index:
+                regime = data_with_regime.loc[gap_date, 'regime']
+                if regime in ['BULL', 'SIDEWAYS']:
+                    filtered_gaps.append(gap_date)
 
         return gaps.loc[filtered_gaps] if filtered_gaps else pd.DataFrame()
 

@@ -1,5 +1,5 @@
 {
-  "last_scan": "2025-11-16T16:59:02.168585",
+  "last_scan": "2025-11-17T15:30:00.525543",
   "status": "Complete - Found 0 signal(s)",
   "signals": [],
   "signal_count": 0,
@@ -13,6 +13,7 @@
     "JNJ",
     "UNH",
     "INTC",
-    "CVX"
+    "CVX",
+    "QQQ"
   ]
 }
