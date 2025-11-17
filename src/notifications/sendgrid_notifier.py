@@ -278,7 +278,7 @@ class SendGridNotifier:
 <body>
     <div class="header">
         <h2>Proteus Trading Dashboard</h2>
-        <p>Mean Reversion Strategy v4.0</p>
+        <p>AI-Powered Stock Predictor</p>
         <p style="font-size: 0.9em;">{now}</p>
     </div>
 
@@ -321,7 +321,7 @@ class SendGridNotifier:
             html += f"""
     <h3>Performance Summary</h3>
     <div class="performance">
-        <div class="metric"><strong>Algorithm:</strong> Mean Reversion v5.0 with Time-Decay Exits</div>
+        <div class="metric"><strong>System:</strong> Multi-Strategy Stock Predictor v15.0</div>
         <div class="metric"><strong>Strategy:</strong> Panic sell detection using Z-score, RSI, volume spikes, and price drops</div>
         <div class="metric"><strong>Exit Rules:</strong> Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1% (time-decay)</div>
         <div class="metric"><strong>Filters:</strong> Market regime (no trading in bear markets) + Earnings exclusion (±3 days)</div>
@@ -417,14 +417,14 @@ class SendGridNotifier:
 <body>
     <div class="header">
         <h1 style="margin: 0; font-size: 1.8em;">📊 {experiment_id} - Complete Report</h1>
-        <p style="font-size: 1.15em; margin: 10px 0; opacity: 0.95;">Proteus Mean Reversion Trading System</p>
+        <p style="font-size: 1.15em; margin: 10px 0; opacity: 0.95;">Proteus Stock Prediction System</p>
         <p style="font-size: 0.95em; opacity: 0.85; margin: 5px 0;">Completed: {now}</p>
     </div>
 
     <div class="section methodology">
         <h3 style="color: #0078d4;">🔬 Methodology</h3>
-        <div class="metric"><span class="metric-label">Algorithm:</span> Mean Reversion with Time-Decay Exits (v5.0)</div>
-        <div class="metric"><span class="metric-label">Strategy Basis:</span> Statistical mean reversion + behavioral finance (panic sell overreactions)</div>
+        <div class="metric"><span class="metric-label">System:</span> Multi-Strategy Stock Predictor (v15.0)</div>
+        <div class="metric"><span class="metric-label">Approach:</span> Research-driven signal optimization across multiple strategies</div>
         <div class="metric"><span class="metric-label">Entry Signal:</span> Z-score < -1.5, RSI < 35, Volume spike > 1.3x, Price drop > -1.5%</div>
         <div class="metric"><span class="metric-label">Exit Strategy:</span> Time-decay targets (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)</div>
         <div class="metric"><span class="metric-label">Backtest Period:</span> {period} ({self._get_period_dates(period)})</div>
@@ -542,7 +542,7 @@ class SendGridNotifier:
             html += f"""
     <div class="tier-section tier-c">
         <h3 style="color: #dc2626;">❌ Tier C Stocks ({tier_c_count}) - Win Rate <55%</h3>
-        <p style="margin-bottom: 20px; color: #991b1b;"><strong>AVOID TRADING</strong> - Mean reversion does not work on these stocks</p>
+        <p style="margin-bottom: 20px; color: #991b1b;"><strong>AVOID TRADING</strong> - These stocks do not meet quality thresholds</p>
 """
             # Show worst 10 performers
             for stock in tier_c[:10]:
@@ -593,10 +593,10 @@ class SendGridNotifier:
 
         <h4 style="margin-top: 20px; color: #0284c7;">Research Basis:</h4>
         <ul style="margin: 10px 0; padding-left: 25px;">
-            <li><strong>Mean Reversion Theory:</strong> Prices tend to revert to their statistical mean after extreme deviations</li>
+            <li><strong>Signal Quality:</strong> High-probability trade setups identified through continuous research</li>
             <li><strong>Behavioral Finance:</strong> Panic sells often overreact due to emotional selling, creating buying opportunities</li>
             <li><strong>Time-Decay Exits:</strong> Based on empirical observation that reversal momentum fades over time</li>
-            <li><strong>Stock-Specific Parameters:</strong> Not all stocks exhibit mean reversion equally (EXP-014 finding)</li>
+            <li><strong>Stock-Specific Optimization:</strong> Each stock has unique characteristics optimized through experimentation</li>
         </ul>
     </div>
 
