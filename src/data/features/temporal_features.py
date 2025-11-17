@@ -70,12 +70,8 @@ class TemporalFeatureEngineer:
         """
         data = df.copy()
 
-        # Create normalized price pattern (last 20 days)
-        data['normalized_price_20d'] = (
-            data['Close'].rolling(window=20).apply(
-                lambda x: (x - x.min()) / (x.max() - x.min() + 1e-9), raw=True
-            )
-        )
+        # Pattern library will be built from normalized price patterns
+        # (Normalization happens inline in loop below for each pattern)
 
         # Build pattern library from historical data
         pattern_matches = []

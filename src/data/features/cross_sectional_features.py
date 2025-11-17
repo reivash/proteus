@@ -217,8 +217,8 @@ class CrossSectionalFeatureEngineer:
             print("[WARN] Failed to fetch market data, using neutral values")
             return self._add_neutral_market_features(data)
 
-        # Merge SPY data
-        spy_returns = spy_data['Close'].pct_change()
+        # Merge SPY data - reindex to match stock data dates
+        spy_returns = spy_data['Close'].pct_change().reindex(data.index, method='ffill')
         data_returns = data['Close'].pct_change()
 
         # Calculate correlation and beta
@@ -229,15 +229,14 @@ class CrossSectionalFeatureEngineer:
         var_spy = spy_returns.rolling(window=60).var()
         data['spy_beta_60d'] = cov / var_spy
 
-        # VIX features
-        vix_series = pd.Series(vix_data['Close'].values, index=data.index)
+        # VIX features - reindex to match stock data dates
+        vix_series = vix_data['Close'].reindex(data.index, method='ffill')
         data['vix_level'] = vix_series
         data['vix_change_5d'] = vix_series.diff(5)
         data['market_stress'] = (vix_series > 25).astype(int)
 
         # SPY divergence
-        spy_ret_series = pd.Series(spy_returns.values, index=data.index)
-        data['spy_divergence'] = abs(data_returns - spy_ret_series)
+        data['spy_divergence'] = abs(data_returns - spy_returns)
 
         if self.fillna:
             data['spy_correlation_20d'] = data['spy_correlation_20d'].fillna(0.5)  # Neutral correlation
