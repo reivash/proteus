@@ -1,19 +1,24 @@
 """
-Stock-Specific Mean Reversion Parameters - v15.2-EXP063
+Stock-Specific Mean Reversion Parameters - v15.3-EXP064
 
 Optimized parameters for mean reversion strategy per stock.
 Parameters tuned on 2022-2025 data with VALIDATED filters only.
 
 Last Updated: 2025-11-17
-Validation: EXP-047, EXP-048, EXP-050, EXP-024, EXP-063 (continuous optimization!)
+Validation: EXP-047, EXP-048, EXP-050, EXP-024, EXP-063, EXP-064 (continuous research!)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 15.2-EXP063 (PARAMETER OPTIMIZATION ROUND 1!)
+VERSION: 15.3-EXP064 (SECTOR DIVERSIFICATION EXPANSION!)
+- EXP-064 SECTOR DIVERSIFICATION (+2 new Tier A stocks!)
+  * NEE: 85.7% win rate (UTILITIES - First utility stock!)
+  * HCA: 71.4% win rate (HEALTHCARE SERVICES - First hospital operator!)
+  * Portfolio: 46 -> 48 stocks (+4.3% expansion)
+  * NEW SECTORS: Utilities (defensive, stable mean reversion)
 - EXP-063 PARAMETER OPTIMIZATION (Round 1: 2 stocks optimized!)
   * SYK: +22.5pp improvement (MASSIVE!)
   * MA: +26.7pp improvement (HUGE!)
-  * Optimization coverage: 26/46 stocks (56.5%, up from 52.2%)
+  * Optimization coverage: 26/48 stocks (54.2%)
 - EXP-024 RE-VALIDATION (+1 stock re-added!)
   * Portfolio: 45 → 46 stocks
   * SYK re-validated at 70% win rate (removed in EXP-048, restored in EXP-024)
@@ -42,10 +47,11 @@ VERSION: 15.2-EXP063 (PARAMETER OPTIMIZATION ROUND 1!)
   * EXP-042: +8 stocks (QCOM, JPM, JNJ, PFE, WMT, AMAT, ADI, NOW)
   * EXP-050: +18 stocks (SCHW, AIG, USB, CVS, LOW, LMT, COP, SLB, APD, MS, PNC, CRM, ADBE, TGT, CAT, XOM, MPC, ECL)
   * EXP-024: SYK re-validated and restored
+  * EXP-064: +2 stocks (NEE, HCA) - sector diversification (utilities, healthcare services)
 - Win rate: ~79.3% (VALIDATED on EXP-047)
-- Avg return: Projected improvement with +25% more opportunities
-- Trade frequency: ~254 trades/year across 46 stocks (+69% vs v14.1!)
-- Portfolio optimization: 100% (all 46 stocks meet 70%+ threshold!)
+- Avg return: Projected improvement with increased opportunities
+- Trade frequency: ~265 trades/year across 48 stocks (+76% vs v14.1!)
+- Portfolio optimization: 100% (all 48 stocks meet 70%+ threshold!)
 - SEVEN stocks with 100% win rate: AVGO, TXN, JPM, ADI, NOW, ROAD, COP!
 - Only proven, effective enhancements deployed
 
@@ -611,6 +617,30 @@ MEAN_REVERSION_PARAMS = {
         'tier': 'A',
         'notes': 'OPTIMIZED! Ecolab. EXP-050 expansion.',
         'performance': 'Win rate: 70.0%, Return: +12.8%, Trades: 10, Sharpe: 4.14, EXP-050'
+    },
+
+    # ========================================================================
+    # EXP-064 EXPANSION (2 NEW TIER A STOCKS) - Sector Diversification
+    # ========================================================================
+
+    'NEE': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! NextEra Energy. Utilities sector (first utility in portfolio!)',
+        'performance': 'Win rate: 85.7%, Return: +14.7%, Trades: 7, Sharpe: 8.73, EXP-064'
+    },
+
+    'HCA': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! HCA Healthcare. Healthcare services (first hospital operator!)',
+        'performance': 'Win rate: 71.4%, Return: +3.4%, Trades: 7, Sharpe: 1.74, EXP-064'
     },
 
     # ========================================================================
