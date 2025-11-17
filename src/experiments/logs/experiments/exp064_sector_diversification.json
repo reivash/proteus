@@ -1,0 +1,136 @@
+{
+  "experiment_id": "EXP-064",
+  "date": "2025-11-17 11:34:46",
+  "candidates_tested": 14,
+  "tier_a": 2,
+  "tier_b": 4,
+  "tier_c": 8,
+  "results": [
+    {
+      "ticker": "NEE",
+      "sector": "Utilities",
+      "win_rate": 85.71428571428571,
+      "total_return": 14.677973442683733,
+      "total_trades": 7,
+      "sharpe_ratio": 8.734680323048337,
+      "tier": "A"
+    },
+    {
+      "ticker": "DUK",
+      "sector": "Utilities",
+      "win_rate": 62.5,
+      "total_return": 0.4896539565467206,
+      "total_trades": 8,
+      "sharpe_ratio": 0.3364008020857399,
+      "tier": "B"
+    },
+    {
+      "ticker": "D",
+      "sector": "Utilities",
+      "win_rate": 50.0,
+      "total_return": 0.2568075999363373,
+      "total_trades": 8,
+      "sharpe_ratio": 0.2353854121075899,
+      "tier": "C"
+    },
+    {
+      "ticker": "AEP",
+      "sector": "Utilities",
+      "win_rate": 60.0,
+      "total_return": -2.3245765052366196,
+      "total_trades": 5,
+      "sharpe_ratio": -2.1882586933822012,
+      "tier": "B"
+    },
+    {
+      "ticker": "T",
+      "sector": "Telecom",
+      "win_rate": 66.66666666666666,
+      "total_return": -0.4964115738248842,
+      "total_trades": 6,
+      "sharpe_ratio": -0.11138121055312926,
+      "tier": "B"
+    },
+    {
+      "ticker": "VZ",
+      "sector": "Telecom",
+      "win_rate": 50.0,
+      "total_return": 0.5876154284387702,
+      "total_trades": 8,
+      "sharpe_ratio": 0.4512281225685989,
+      "tier": "C"
+    },
+    {
+      "ticker": "TMUS",
+      "sector": "Telecom",
+      "win_rate": 62.5,
+      "total_return": 1.8431288075906993,
+      "total_trades": 8,
+      "sharpe_ratio": 1.5242873630262646,
+      "tier": "B"
+    },
+    {
+      "ticker": "PLD",
+      "sector": "REIT",
+      "win_rate": 44.44444444444444,
+      "total_return": 1.4009410391946142,
+      "total_trades": 9,
+      "sharpe_ratio": 0.68123550994274,
+      "tier": "C"
+    },
+    {
+      "ticker": "AMT",
+      "sector": "REIT",
+      "win_rate": 37.5,
+      "total_return": -3.9775771443537944,
+      "total_trades": 8,
+      "sharpe_ratio": -1.6362998460581373,
+      "tier": "C"
+    },
+    {
+      "ticker": "EQIX",
+      "sector": "REIT",
+      "win_rate": 0.0,
+      "total_return": -22.494878143590736,
+      "total_trades": 7,
+      "sharpe_ratio": -12.234921089591626,
+      "tier": "C"
+    },
+    {
+      "ticker": "UNH",
+      "sector": "Healthcare Services",
+      "win_rate": 45.45454545454545,
+      "total_return": -5.279755611103543,
+      "total_trades": 11,
+      "sharpe_ratio": -2.127758500488976,
+      "tier": "C"
+    },
+    {
+      "ticker": "CI",
+      "sector": "Healthcare Services",
+      "win_rate": 50.0,
+      "total_return": -2.375400457050514,
+      "total_trades": 8,
+      "sharpe_ratio": -1.1083326748996893,
+      "tier": "C"
+    },
+    {
+      "ticker": "HCA",
+      "sector": "Healthcare Services",
+      "win_rate": 71.42857142857143,
+      "total_return": 3.417063257828157,
+      "total_trades": 7,
+      "sharpe_ratio": 1.7415579776170103,
+      "tier": "A"
+    },
+    {
+      "ticker": "LHX",
+      "sector": "Aerospace/Defense",
+      "win_rate": 22.22222222222222,
+      "total_return": -3.403730483297185,
+      "total_trades": 9,
+      "sharpe_ratio": -1.2360784343747224,
+      "tier": "C"
+    }
+  ]
+}

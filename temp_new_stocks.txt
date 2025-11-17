@@ -1,0 +1,185 @@
+
+    # ========================================================================
+    # EXP-050 EXPANSION (18 NEW TIER A STOCKS) - 70%+ win rate
+    # ========================================================================
+
+    'SCHW': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 77.8% win rate, +10.4% return',
+        'performance': 'Win rate: 77.8%, Return: +10.4%, Trades: 9, Sharpe: 2.13, EXP-050'
+    },
+
+    'AIG': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 83.3% win rate, +25.3% return',
+        'performance': 'Win rate: 83.3%, Return: +25.3%, Trades: 12, Sharpe: 6.26, EXP-050'
+    },
+
+    'USB': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 76.9% win rate, +18.7% return',
+        'performance': 'Win rate: 76.9%, Return: +18.7%, Trades: 13, Sharpe: 4.77, EXP-050'
+    },
+
+    'CVS': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 80.0% win rate, +10.2% return',
+        'performance': 'Win rate: 80.0%, Return: +10.2%, Trades: 5, Sharpe: 9.77, EXP-050'
+    },
+
+    'LOW': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 85.7% win rate, +10.6% return',
+        'performance': 'Win rate: 85.7%, Return: +10.6%, Trades: 7, Sharpe: 8.58, EXP-050'
+    },
+
+    'LMT': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 75.0% win rate, +7.2% return',
+        'performance': 'Win rate: 75.0%, Return: +7.2%, Trades: 8, Sharpe: 4.83, EXP-050'
+    },
+
+    'COP': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 100.0% win rate, +15.2% return',
+        'performance': 'Win rate: 100.0%, Return: +15.2%, Trades: 6, Sharpe: 12.38, EXP-050'
+    },
+
+    'SLB': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 71.4% win rate, +5.4% return',
+        'performance': 'Win rate: 71.4%, Return: +5.4%, Trades: 14, Sharpe: 1.23, EXP-050'
+    },
+
+    'APD': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! EXP-050 expansion. 72.7% win rate, +21.8% return',
+        'performance': 'Win rate: 72.7%, Return: +21.8%, Trades: 11, Sharpe: 6.02, EXP-050'
+    },
+
+    'MS': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 40,
+        'volume_multiplier': 1.8,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 88.9% win rate, +27.9% return',
+        'performance': 'Win rate: 88.9%, Return: +27.9%, Trades: 9, Sharpe: 7.25, EXP-050'
+    },
+
+    'PNC': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 40,
+        'volume_multiplier': 1.5,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 77.8% win rate, +7.7% return',
+        'performance': 'Win rate: 77.8%, Return: +7.7%, Trades: 9, Sharpe: 3.23, EXP-050'
+    },
+
+    'CRM': {
+        'z_score_threshold': 2.0,
+        'rsi_oversold': 30,
+        'volume_multiplier': 1.2,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 80.0% win rate, -0.2% return',
+        'performance': 'Win rate: 80.0%, Return: -0.2%, Trades: 5, Sharpe: 0.04, EXP-050'
+    },
+
+    'ADBE': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 32,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 70.0% win rate, +14.3% return',
+        'performance': 'Win rate: 70.0%, Return: +14.3%, Trades: 10, Sharpe: 4.75, EXP-050'
+    },
+
+    'TGT': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 30,
+        'volume_multiplier': 1.5,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 80.0% win rate, +2.4% return',
+        'performance': 'Win rate: 80.0%, Return: +2.4%, Trades: 5, Sharpe: 2.62, EXP-050'
+    },
+
+    'CAT': {
+        'z_score_threshold': 2.0,
+        'rsi_oversold': 30,
+        'volume_multiplier': 1.2,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 85.7% win rate, +13.0% return',
+        'performance': 'Win rate: 85.7%, Return: +13.0%, Trades: 7, Sharpe: 9.84, EXP-050'
+    },
+
+    'XOM': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 38,
+        'volume_multiplier': 1.5,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 75.0% win rate, +15.4% return',
+        'performance': 'Win rate: 75.0%, Return: +15.4%, Trades: 8, Sharpe: 5.69, EXP-050'
+    },
+
+    'MPC': {
+        'z_score_threshold': 1.2,
+        'rsi_oversold': 30,
+        'volume_multiplier': 1.2,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 83.3% win rate, +12.7% return',
+        'performance': 'Win rate: 83.3%, Return: +12.7%, Trades: 6, Sharpe: 8.98, EXP-050'
+    },
+
+    'ECL': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.2,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'OPTIMIZED! EXP-050 expansion. 70.0% win rate, +12.8% return',
+        'performance': 'Win rate: 70.0%, Return: +12.8%, Trades: 10, Sharpe: 4.14, EXP-050'
+    },
+

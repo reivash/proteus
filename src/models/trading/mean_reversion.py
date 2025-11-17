@@ -198,8 +198,9 @@ class MeanReversionBacktester:
             # ENTRY: Look for panic sell signals (BUY opportunity)
             if row['panic_sell'] == 1 and position is None:
                 entry_price = row['Close']
-                # Apply position sizing multiplier
-                position_capital = capital * self.position_size_multiplier
+                # Apply position sizing (per-signal if available, else global multiplier)
+                position_size = row.get('position_size', self.position_size_multiplier)
+                position_capital = capital * position_size
                 shares = position_capital / entry_price
                 position = {
                     'entry_idx': i,
@@ -207,7 +208,7 @@ class MeanReversionBacktester:
                     'entry_price': entry_price,
                     'shares': shares,
                     'type': 'long',  # Buying the dip
-                    'position_size': self.position_size_multiplier
+                    'position_size': position_size
                 }
 
             # EXIT: Check exit conditions if in position
