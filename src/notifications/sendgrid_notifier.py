@@ -145,7 +145,11 @@ class SendGridNotifier:
             return False
 
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        subject = f"📊 Proteus Experiment Complete - {experiment_id} - {timestamp}"
+
+        # Create informative subject line with key results
+        status_summary = self._extract_experiment_summary(results)
+        subject = f"📊 Proteus {experiment_id} - {status_summary} - {timestamp}"
+
         html_content = self._create_experiment_body(experiment_id, results)
 
         message = Mail(
@@ -163,6 +167,78 @@ class SendGridNotifier:
         except Exception as e:
             print(f"[ERROR] SendGrid experiment report failed: {e}")
             return False
+
+    def _extract_experiment_summary(self, results: Dict) -> str:
+        """
+        Extract key findings from experiment results for subject line.
+
+        Returns concise summary like:
+        - "SUCCESS: 9 New Tier A Stocks"
+        - "FAILED: -5.7pp Win Rate"
+        - "NEUTRAL: No Improvement Found"
+        """
+        try:
+            # Stock expansion experiments
+            if 'new_test_results' in results:
+                tier_a_count = len([r for r in results.get('new_test_results', [])
+                                   if r.get('win_rate', 0) >= 70])
+                if tier_a_count > 0:
+                    return f"✅ SUCCESS: {tier_a_count} New Tier A Stocks"
+                else:
+                    return "❌ FAILED: No Tier A Stocks Found"
+
+            # Win rate / performance improvement experiments
+            if 'win_rate_improvement' in results:
+                improvement = results['win_rate_improvement']
+                if improvement >= 3.0:
+                    return f"✅ SUCCESS: +{improvement:.1f}pp Win Rate"
+                elif improvement >= 0:
+                    return f"⚠️ MARGINAL: +{improvement:.1f}pp Win Rate"
+                else:
+                    return f"❌ FAILED: {improvement:+.1f}pp Win Rate"
+
+            # Return improvement experiments
+            if 'return_improvement' in results:
+                improvement = results['return_improvement']
+                if improvement >= 5.0:
+                    return f"✅ SUCCESS: +{improvement:.1f}% Return"
+                elif improvement >= 0:
+                    return f"⚠️ MARGINAL: +{improvement:.1f}% Return"
+                else:
+                    return f"❌ FAILED: {improvement:+.1f}% Return"
+
+            # Optimization experiments (stocks improved)
+            if 'stocks_improved' in results:
+                improved = results['stocks_improved']
+                tested = results.get('stocks_tested', improved)
+                if improved > 0:
+                    return f"✅ SUCCESS: {improved}/{tested} Stocks Improved"
+                else:
+                    return f"❌ FAILED: No Stocks Improved"
+
+            # Validation experiments
+            if 'validation_status' in results:
+                status = results['validation_status']
+                if status.lower() in ['approved', 'success', 'validated']:
+                    return "✅ VALIDATED"
+                elif status.lower() in ['rejected', 'failed']:
+                    return "❌ REJECTED"
+                else:
+                    return f"⚠️ {status.upper()}"
+
+            # Default: check for general success/failure indicators
+            if 'status' in results:
+                if results['status'].lower() in ['success', 'approved']:
+                    return "✅ SUCCESS"
+                elif results['status'].lower() in ['failed', 'rejected']:
+                    return "❌ FAILED"
+
+            # Fallback
+            return "Complete"
+
+        except Exception as e:
+            print(f"[WARNING] Could not extract experiment summary: {e}")
+            return "Complete"
 
     def _create_subject(self, signals: List[Dict]) -> str:
         """Create email subject with timestamp to prevent threading."""
@@ -281,9 +357,26 @@ class SendGridNotifier:
         tier_c = test_results.get('tier_c', [])
         period = results.get('period', '3y')
 
+        # Build stock data lookup from results list
+        stock_data_map = {}
+        all_results = test_results.get('results', [])
+        for stock_data in all_results:
+            if isinstance(stock_data, dict) and 'ticker' in stock_data:
+                stock_data_map[stock_data['ticker']] = stock_data
+
         # Get all tested symbols from results if available
         all_stocks = tier_a + tier_b + tier_c
-        tested_symbols = [stock.get('ticker') for stock in all_stocks if stock.get('ticker')]
+        # Handle both string tickers and dict format
+        tested_symbols = []
+        for stock in all_stocks:
+            if isinstance(stock, str):
+                tested_symbols.append(stock)
+            elif isinstance(stock, dict) and stock.get('ticker'):
+                tested_symbols.append(stock.get('ticker'))
+
+        # If we have no tested symbols from tiers, try to get from results
+        if not tested_symbols and stock_data_map:
+            tested_symbols = list(stock_data_map.keys())
 
         tier_a_count = len(tier_a) if tier_a else 0
         tier_b_count = len(tier_b) if tier_b else 0
@@ -371,13 +464,20 @@ class SendGridNotifier:
         <p style="margin-bottom: 20px; color: #166534;"><strong>QUALIFIED FOR TRADING</strong> - High win rate, excellent returns, strong risk-adjusted performance</p>
 """
             for stock in tier_a:
-                ticker = stock.get('ticker', 'N/A')
-                win_rate = stock.get('win_rate', 0)
-                total_return = stock.get('total_return', 0)
-                sharpe = stock.get('sharpe_ratio', 0)
-                trades = stock.get('total_trades', 0)
-                avg_gain = stock.get('avg_gain', 0)
-                avg_loss = stock.get('avg_loss', 0)
+                # Handle both string tickers and dict format
+                if isinstance(stock, str):
+                    stock_data = stock_data_map.get(stock, {})
+                    ticker = stock
+                else:
+                    stock_data = stock
+                    ticker = stock.get('ticker', 'N/A')
+
+                win_rate = stock_data.get('win_rate', 0)
+                total_return = stock_data.get('total_return', 0)
+                sharpe = stock_data.get('sharpe_ratio', 0)
+                trades = stock_data.get('total_trades', 0)
+                avg_gain = stock_data.get('avg_gain', 0)
+                avg_loss = stock_data.get('avg_loss', 0)
 
                 html += f"""
         <div class="stock">
@@ -411,10 +511,17 @@ class SendGridNotifier:
         <p style="margin-bottom: 20px; color: #92400e;">Marginal performance - monitored but not actively traded</p>
 """
             for stock in tier_b:
-                ticker = stock.get('ticker', 'N/A')
-                win_rate = stock.get('win_rate', 0)
-                total_return = stock.get('total_return', 0)
-                trades = stock.get('total_trades', 0)
+                # Handle both string tickers and dict format
+                if isinstance(stock, str):
+                    stock_data = stock_data_map.get(stock, {})
+                    ticker = stock
+                else:
+                    stock_data = stock
+                    ticker = stock.get('ticker', 'N/A')
+
+                win_rate = stock_data.get('win_rate', 0)
+                total_return = stock_data.get('total_return', 0)
+                trades = stock_data.get('total_trades', 0)
 
                 html += f"""
         <div class="stock">
@@ -439,10 +546,17 @@ class SendGridNotifier:
 """
             # Show worst 10 performers
             for stock in tier_c[:10]:
-                ticker = stock.get('ticker', 'N/A')
-                win_rate = stock.get('win_rate', 0)
-                total_return = stock.get('total_return', 0)
-                trades = stock.get('total_trades', 0)
+                # Handle both string tickers and dict format
+                if isinstance(stock, str):
+                    stock_data = stock_data_map.get(stock, {})
+                    ticker = stock
+                else:
+                    stock_data = stock
+                    ticker = stock.get('ticker', 'N/A')
+
+                win_rate = stock_data.get('win_rate', 0)
+                total_return = stock_data.get('total_return', 0)
+                trades = stock_data.get('total_trades', 0)
 
                 html += f"""
         <div class="stock">
