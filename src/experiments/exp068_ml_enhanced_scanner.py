@@ -308,11 +308,11 @@ def run_exp068_ml_scanner():
         print("[ERROR] Required libraries not available")
         return None
 
-    # Load ML model from EXP-067
-    model_path = 'logs/experiments/exp067_xgboost_model.json'
+    # Load simplified ML model from EXP-069 (production-compatible)
+    model_path = 'logs/experiments/exp069_simplified_model.json'
     if not os.path.exists(model_path):
         print(f"[ERROR] Model not found: {model_path}")
-        print("Run EXP-067 first to train the model")
+        print("Run EXP-069 first to train the simplified model")
         return None
 
     # Initialize scanner
@@ -429,7 +429,7 @@ def run_exp068_ml_scanner():
         'methodology': {
             'baseline': 'Rule-based mean reversion signals',
             'experimental': 'ML probability filter (threshold: 0.30)',
-            'ml_model': 'XGBoost (0.843 AUC from EXP-067)',
+            'ml_model': 'Simplified XGBoost (0.834 AUC, 41 features from EXP-069)',
             'success_criteria': 'Functional scanner with ML filtering'
         }
     }
