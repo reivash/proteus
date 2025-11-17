@@ -110,8 +110,8 @@ def prepare_ml_dataset(ticker: str,
             return None, None
 
         # Prepare features and labels
-        exclude_cols = ['forward_return_3d', 'win', 'panic_sell']
-        feature_cols = [col for col in valid_signals.columns if col not in exclude_cols]
+        exclude_cols = ['forward_return_3d', 'win', 'panic_sell', 'Date']
+        feature_cols = [col for col in valid_signals.columns if col not in exclude_cols and valid_signals[col].dtype in ['int64', 'float64', 'bool']]
 
         X = valid_signals[feature_cols]
         y = valid_signals['win']
