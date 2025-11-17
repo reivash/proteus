@@ -147,7 +147,7 @@ class MeanReversionBacktester:
     def __init__(
         self,
         initial_capital=10000,
-        exit_strategy='trailing_stop',  # 'trailing_stop' (v6.0 EXP-074), 'time_decay' (v5.0), or 'fixed' (v4.0 legacy)
+        exit_strategy='time_decay',  # 'time_decay' (v5.0 default - REVERTED), 'trailing_stop' (v6.0 FAILED EXP-075), or 'fixed' (v4.0 legacy)
         profit_target=2.0,  # % gain to take profit (used for 'fixed' strategy)
         stop_loss=-2.0,     # % loss to cut losses (used for 'fixed' strategy)
         max_hold_days=3,    # Maximum days to hold position (v5.0: increased from 2 to 3)
@@ -158,7 +158,7 @@ class MeanReversionBacktester:
 
         Args:
             initial_capital: Starting capital
-            exit_strategy: 'trailing_stop' (v6.0 EXP-074 default), 'time_decay' (v5.0), or 'fixed' (v4.0 legacy)
+            exit_strategy: 'time_decay' (v5.0 default - REVERTED from v6.0), 'trailing_stop' (v6.0 FAILED on full portfolio), or 'fixed' (v4.0 legacy)
             profit_target: % gain to exit with profit (only for 'fixed' strategy)
             stop_loss: % loss to exit with loss (only for 'fixed' strategy)
             max_hold_days: Max days to hold before forced exit (v5.0: 3 days)
