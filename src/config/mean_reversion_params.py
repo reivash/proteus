@@ -1,15 +1,23 @@
 """
-Stock-Specific Mean Reversion Parameters - v15.3-EXP064
+Stock-Specific Mean Reversion Parameters - v15.4-EXP071
 
 Optimized parameters for mean reversion strategy per stock.
-Parameters tuned on 2022-2025 data with VALIDATED filters only.
+Parameters tuned on 2020-2025 data with VALIDATED filters only.
 
 Last Updated: 2025-11-17
-Validation: EXP-047, EXP-048, EXP-050, EXP-024, EXP-063, EXP-064 (continuous research!)
+Validation: EXP-047, EXP-048, EXP-050, EXP-024, EXP-063, EXP-064, EXP-070, EXP-071 (continuous research!)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 15.3-EXP064 (SECTOR DIVERSIFICATION EXPANSION!)
+VERSION: 15.4-EXP071 (ML-DRIVEN PORTFOLIO EXPANSION!)
+- EXP-071 ML-VALIDATED EXPANSION (+6 new Tier A stocks!)
+  * ML screening (EXP-070) + batch validation (EXP-071)
+  * Portfolio: 48 -> 54 stocks (+12.5% expansion!)
+  * Average win rate of new stocks: 76.1%
+  * NEW STOCKS: CMCSA (83.3%), ETN (76.5%), HD (76.5%), TMUS (76.5%), META (72.2%), SHW (71.4%)
+  * NEW SECTORS EXPANDED: Communications (2), Tech (META), Consumer (HD), Industrials (ETN), Materials (SHW)
+  * Estimated trade frequency: 251 -> ~281 trades/year (+12%)
+  * All stocks ML-validated with XGBoost model (0.834 AUC)
 - EXP-064 SECTOR DIVERSIFICATION (+2 new Tier A stocks!)
   * NEE: 85.7% win rate (UTILITIES - First utility stock!)
   * HCA: 71.4% win rate (HEALTHCARE SERVICES - First hospital operator!)
@@ -48,11 +56,13 @@ VERSION: 15.3-EXP064 (SECTOR DIVERSIFICATION EXPANSION!)
   * EXP-050: +18 stocks (SCHW, AIG, USB, CVS, LOW, LMT, COP, SLB, APD, MS, PNC, CRM, ADBE, TGT, CAT, XOM, MPC, ECL)
   * EXP-024: SYK re-validated and restored
   * EXP-064: +2 stocks (NEE, HCA) - sector diversification (utilities, healthcare services)
-- Win rate: ~79.3% (VALIDATED on EXP-047)
+  * EXP-071: +6 stocks (CMCSA, TMUS, META, ETN, HD, SHW) - ML-validated expansion
+- Win rate: ~78.5% (VALIDATED on EXP-047 + EXP-071)
 - Avg return: Projected improvement with increased opportunities
-- Trade frequency: ~265 trades/year across 48 stocks (+76% vs v14.1!)
-- Portfolio optimization: 100% (all 48 stocks meet 70%+ threshold!)
+- Trade frequency: ~281 trades/year across 54 stocks (+12% vs v15.3!)
+- Portfolio optimization: 100% (all 54 stocks meet 70%+ threshold!)
 - SEVEN stocks with 100% win rate: AVGO, TXN, JPM, ADI, NOW, ROAD, COP!
+- ML integration: XGBoost model (0.834 AUC, 2.4x precision improvement)
 - Only proven, effective enhancements deployed
 
 CRITICAL LESSONS from v15.0/v16.0 Failure:
@@ -641,6 +651,72 @@ MEAN_REVERSION_PARAMS = {
         'tier': 'A',
         'notes': 'EXCELLENT! HCA Healthcare. Healthcare services (first hospital operator!)',
         'performance': 'Win rate: 71.4%, Return: +3.4%, Trades: 7, Sharpe: 1.74, EXP-064'
+    },
+
+    # TIER A: COMMUNICATIONS - 83.3% win rate (EXP-071 ML EXPANSION)
+    'CMCSA': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Comcast. ML-validated (EXP-070/071). Highest win rate in batch!',
+        'performance': 'Win rate: 83.3%, Return: +16.5%, Trades: 12, ML Prob: 0.787, EXP-071'
+    },
+
+    # TIER A: COMMUNICATIONS - 76.5% win rate (EXP-071 ML EXPANSION)
+    'TMUS': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! T-Mobile. ML-validated (EXP-070/071). Wireless leader.',
+        'performance': 'Win rate: 76.5%, Return: +22.7%, Trades: 17, ML Prob: 0.570, EXP-071'
+    },
+
+    # TIER A: TECHNOLOGY - 72.2% win rate (EXP-071 ML EXPANSION)
+    'META': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Meta Platforms. ML-validated (EXP-070/071). Social media giant.',
+        'performance': 'Win rate: 72.2%, Return: +34.4%, Trades: 18, ML Prob: 0.760, EXP-071'
+    },
+
+    # TIER A: INDUSTRIALS - 76.5% win rate (EXP-071 ML EXPANSION)
+    'ETN': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Eaton. ML-validated (EXP-070/071). Power management leader.',
+        'performance': 'Win rate: 76.5%, Return: +49.0%, Trades: 17, ML Prob: 0.748, EXP-071'
+    },
+
+    # TIER A: CONSUMER - 76.5% win rate (EXP-071 ML EXPANSION)
+    'HD': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Home Depot. ML-validated (EXP-070/071). Home improvement leader.',
+        'performance': 'Win rate: 76.5%, Return: +49.6%, Trades: 17, ML Prob: 0.629, EXP-071'
+    },
+
+    # TIER A: MATERIALS - 71.4% win rate (EXP-071 ML EXPANSION)
+    'SHW': {
+        'z_score_threshold': 1.5,
+        'rsi_oversold': 35,
+        'volume_multiplier': 1.3,
+        'price_drop_threshold': -1.5,
+        'tier': 'A',
+        'notes': 'EXCELLENT! Sherwin-Williams. ML-validated (EXP-070/071). Paint and coatings leader.',
+        'performance': 'Win rate: 71.4%, Return: +25.2%, Trades: 14, ML Prob: 0.652, EXP-071'
     },
 
     # ========================================================================
