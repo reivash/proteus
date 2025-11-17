@@ -147,7 +147,7 @@ class MeanReversionBacktester:
     def __init__(
         self,
         initial_capital=10000,
-        exit_strategy='time_decay',  # 'time_decay' or 'fixed'
+        exit_strategy='trailing_stop',  # 'trailing_stop' (v6.0 EXP-074), 'time_decay' (v5.0), or 'fixed' (v4.0 legacy)
         profit_target=2.0,  # % gain to take profit (used for 'fixed' strategy)
         stop_loss=-2.0,     # % loss to cut losses (used for 'fixed' strategy)
         max_hold_days=3,    # Maximum days to hold position (v5.0: increased from 2 to 3)
@@ -158,7 +158,7 @@ class MeanReversionBacktester:
 
         Args:
             initial_capital: Starting capital
-            exit_strategy: 'time_decay' (v5.0 default) or 'fixed' (v4.0 legacy)
+            exit_strategy: 'trailing_stop' (v6.0 EXP-074 default), 'time_decay' (v5.0), or 'fixed' (v4.0 legacy)
             profit_target: % gain to exit with profit (only for 'fixed' strategy)
             stop_loss: % loss to exit with loss (only for 'fixed' strategy)
             max_hold_days: Max days to hold before forced exit (v5.0: 3 days)
@@ -178,6 +178,12 @@ class MeanReversionBacktester:
                 1: (1.5, -1.5),   # Day 1: ±1.5%
                 2: (1.0, -1.0),   # Day 2+: ±1%
             }
+
+        # Trailing stop parameters (v6.0 EXP-074)
+        elif exit_strategy == 'trailing_stop':
+            self.trailing_stop_initial_pct = 2.0  # Initial stop: 2% below entry
+            self.trailing_stop_trail_pct = 0.5    # Trail by 0.5% below highest price
+            self.trailing_stop_profit_threshold = 1.0  # Start trailing at 1% profit
 
     def backtest(self, df: pd.DataFrame) -> Dict:
         """
@@ -208,12 +214,15 @@ class MeanReversionBacktester:
                     'entry_price': entry_price,
                     'shares': shares,
                     'type': 'long',  # Buying the dip
-                    'position_size': position_size
+                    'position_size': position_size,
+                    'highest_price': entry_price  # v6.0: Track highest price for trailing stop
                 }
 
             # EXIT: Check exit conditions if in position
             elif position is not None:
                 current_price = data.iloc[i]['Close']
+                current_high = data.iloc[i]['High']
+                current_low = data.iloc[i]['Low']
                 entry_price = position['entry_price']
                 days_held = i - position['entry_idx']
 
@@ -221,7 +230,26 @@ class MeanReversionBacktester:
                 return_pct = (current_price / entry_price - 1) * 100
 
                 # Exit conditions based on strategy
-                if self.exit_strategy == 'time_decay':
+                if self.exit_strategy == 'trailing_stop':
+                    # Trailing stop (v6.0 EXP-074): Let winners run, cut losers quickly
+                    # Update highest price
+                    if current_high > position['highest_price']:
+                        position['highest_price'] = current_high
+
+                    # Calculate trailing stop
+                    if position['highest_price'] > entry_price * (1 + self.trailing_stop_profit_threshold/100):
+                        # In profit: trail by 0.5% below highest
+                        stop_price = position['highest_price'] * (1 - self.trailing_stop_trail_pct/100)
+                    else:
+                        # Not yet profitable: use initial stop (2% below entry)
+                        stop_price = entry_price * (1 - self.trailing_stop_initial_pct/100)
+
+                    # Check if stop was hit (using intraday low)
+                    hit_stop = current_low <= stop_price
+                    hit_profit = False  # No profit target for trailing stop
+                    timeout = days_held >= self.max_hold_days
+
+                elif self.exit_strategy == 'time_decay':
                     # Time-decay exits (v5.0): Tighter targets as hold time increases
                     profit_target, stop_loss = self.time_decay_targets.get(
                         days_held,
