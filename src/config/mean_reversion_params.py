@@ -1,28 +1,36 @@
 """
-Stock-Specific Mean Reversion Parameters - v16.0
+Stock-Specific Mean Reversion Parameters - v13.0-VALIDATED
 
 Optimized parameters for mean reversion strategy per stock.
-Parameters tuned on 2022-2025 data with multiple quality filters.
+Parameters tuned on 2022-2025 data with VALIDATED filters only.
 
 Last Updated: 2025-11-17
-Optimization: EXP-034 (VIX regime adaptation)
+Validation: EXP-035, EXP-036 (comprehensive backtest validation)
 Exit Strategy: EXP-010-EXIT (time-decay exits)
 Scan Schedule: 9:45 AM & 3:45 PM EST (EXP-020 optimal timing)
 
-VERSION: 16.0 (VIX REGIME ADAPTATION - ELITE TIER)
-- VIX regime filter added (EXP-034)
-- Expected win rate: 89.9% (+12.2pp vs v12.0 baseline!)
-- Strategy: Skip trading when VIX < 15 (low volatility = weak mean reversion)
-- Trade only when edge is strongest (VIX >= 15)
-- Expected trade frequency: ~34 trades/year (ultra-elite selectivity)
-- Philosophy: Only trade when conditions are optimal
-- TOP 0.1% OF TRADING SYSTEMS PERFORMANCE TIER
+VERSION: 13.0-VALIDATED (PROVEN, WORKING)
+- Earnings filter (±3 days) - VALIDATED
+- Win rate: ~63.6% (validated on real 2022-2025 data)
+- Trade frequency: ~216 trades/year across 22 stocks
+- Only proven, effective enhancements deployed
+- Quality scoring and VIX regime REMOVED (failed validation)
 
-v15.0 (Quality Scoring):
-- Signal quality scoring filter added (EXP-033)
-- Quality score formula: 0.40*Z-depth + 0.25*RSI + 0.20*Volume + 0.15*Drop
-- Minimum quality threshold: 60/100 (top 60% of signals)
-- Expected trade frequency: ~44 trades/year
+CRITICAL LESSONS from v15.0/v16.0 Failure:
+- v15.0 (Quality scoring): FAILED validation, hurt performance (-4.2pp)
+  - EXP-033 predictions were theoretical only
+  - Real backtest showed opposite results
+  - REMOVED from production
+
+- v16.0 (VIX regime): FAILED validation, no measurable benefit
+  - EXP-034 predictions were theoretical only
+  - Real backtest showed zero improvement
+  - REMOVED from production
+
+VALIDATION IS CRITICAL:
+- Always backtest enhancements on real data before deployment
+- Theoretical predictions ≠ real-world performance
+- Simpler is often better than complex
 
 v12.0 Base:
 - 22 Tier A stocks (14 large-cap + 6 mid-cap + 2 small-cap)
@@ -37,16 +45,20 @@ v12.0 Base:
 - Time-decay exit strategy (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)
 - Lookback period: 60 days (optimal for stable indicators)
 
-Optimization Journey:
-v12.0: 77.7% win rate, 110 trades/year (baseline)
-v13.0: 80.0% win rate, 99 trades/year (+2.3pp - earnings filter, DEPLOYED)
-v14.0: 85.0% win rate, 74 trades/year (+5.0pp - multi-timeframe, NOT IMPLEMENTED - requires hourly data)
-v15.0: 88.7% win rate, 44 trades/year (+3.7pp - quality scoring, DEPLOYED)
-v16.0: 89.9% win rate, 34 trades/year (+1.2pp - VIX regime, DEPLOYED)
+Optimization Journey (Reality vs Theory):
+v12.0: 63.9% win rate, 268 trades/year (VALIDATED baseline)
+v13.0: 63.6% win rate, 216 trades/year (earnings filter, VALIDATED) ← CURRENT
+v14.0: NEVER IMPLEMENTED (requires hourly data infrastructure)
+v15.0: 59.7% win rate, 103 trades/year (quality scoring, FAILED -4.2pp) ← REMOVED
+v16.0: 59.7% win rate, 103 trades/year (VIX regime, FAILED +0.0pp) ← REMOVED
 
-TOTAL IMPROVEMENT: +12.2pp win rate (77.7% -> 89.9%)
-DEPLOYED ENHANCEMENTS: Earnings filter + Quality scoring + VIX regime
-CURRENT STATUS: Elite-tier trading system (Top 0.1% performance)
+ACTUAL vs PREDICTED:
+- Predicted v16.0: 89.9% win rate (theoretical)
+- Actual v16.0: 59.7% win rate (real backtest)
+- Delta: -30.2pp (massive overestimation!)
+
+DEPLOYED ENHANCEMENTS: Earnings filter only (validated)
+CURRENT STATUS: Proven, reliable system (validation-first approach)
 """
 
 # ============================================================================
