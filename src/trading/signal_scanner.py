@@ -57,20 +57,30 @@ class SignalScanner:
     Scan all stocks in universe for mean reversion signals.
     """
 
-    def __init__(self, lookback_days=90):
+    def __init__(self, lookback_days=90, min_signal_strength=None):
         """
         Initialize signal scanner.
 
         Args:
             lookback_days: Calendar days of historical data to fetch for indicator calculation
                          Default: 90 calendar days (~60-65 trading days after weekends/holidays)
+            min_signal_strength: Minimum signal strength to trade (Q4 filter).
+                               Set to 75th percentile value for Q4-only filtering.
+                               Default: None (no filtering - trade all signals)
+                               Example: 65.0 for Q4 threshold (EXP-093)
 
         Note: We need ~90 calendar days to reliably get 60+ trading days due to:
             - Weekends (28-30% reduction)
             - Market holidays (2-3% additional reduction)
             - This ensures indicators have sufficient data
+
+        Q4 Filtering (EXP-093):
+            - When enabled, only trade signals in top quartile (highest quality)
+            - Expected impact: +14.1pp win rate (63.7% → 77.8%)
+            - Reduces trade frequency by ~75% (quality over quantity)
         """
         self.lookback_days = lookback_days
+        self.min_signal_strength = min_signal_strength
         self.tickers = get_all_tickers()
 
     def calculate_signal_strength(self, row: pd.Series, params: dict) -> float:
@@ -142,7 +152,7 @@ class SignalScanner:
             date: Date to check for signals (default: today)
 
         Returns:
-            List of signal dictionaries
+            List of signal dictionaries (filtered by min_signal_strength if enabled)
         """
         if date is None:
             date = datetime.now().strftime('%Y-%m-%d')
@@ -162,6 +172,18 @@ class SignalScanner:
 
         print("=" * 70)
         print(f"Total signals found: {len(signals)}")
+
+        # Apply Q4 filter if enabled (EXP-093)
+        if self.min_signal_strength is not None and signals:
+            pre_filter_count = len(signals)
+            signals = [s for s in signals if s['signal_strength'] >= self.min_signal_strength]
+            filtered_count = pre_filter_count - len(signals)
+
+            print(f"\nQ4 Filter Applied (min_signal_strength >= {self.min_signal_strength:.1f}):")
+            print(f"  Signals before filter: {pre_filter_count}")
+            print(f"  Signals after filter: {len(signals)}")
+            print(f"  Filtered out: {filtered_count} ({filtered_count/pre_filter_count*100:.1f}%)")
+            print("=" * 70)
 
         return signals
 
