@@ -488,6 +488,33 @@ class PaperTrader:
         else:
             return 0.6  # Very high volatility - minimal size
 
+    def _get_regime_multiplier(self, regime: Optional[str]) -> float:
+        """
+        EXP-106: Calculate position size multiplier based on market regime.
+
+        Adapts position sizing to market conditions for better risk management:
+        - BULL: 1.0x (full size - favorable trending conditions)
+        - SIDEWAYS: 0.8x (reduce size - choppy range-bound conditions)
+        - BEAR: 0.0x (no trading - already filtered upstream)
+
+        Args:
+            regime: Market regime ('BULL', 'SIDEWAYS', 'BEAR', 'UNKNOWN')
+
+        Returns:
+            Regime-based position size multiplier (0.0-1.0x)
+        """
+        if regime is None or regime == 'UNKNOWN':
+            return 1.0  # Default to full size if regime unknown
+
+        if regime == 'BULL':
+            return 1.0  # Full size in trending markets
+        elif regime == 'SIDEWAYS':
+            return 0.8  # Reduce size in choppy markets
+        elif regime == 'BEAR':
+            return 0.0  # No trading (should be filtered upstream)
+        else:
+            return 1.0  # Default
+
     def _execute_entry(self, signal: Dict, entry_date: str) -> Optional[Dict]:
         """
         Execute entry trade.
@@ -522,8 +549,12 @@ class PaperTrader:
         atr_pct = signal.get('atr_pct')
         volatility_multiplier = self._get_volatility_multiplier(atr_pct)
 
-        # Combined sizing: signal strength × volatility adjustment
-        combined_multiplier = signal_multiplier * volatility_multiplier
+        # EXP-106: Apply regime-based multiplier
+        regime = signal.get('regime', None)
+        regime_multiplier = self._get_regime_multiplier(regime)
+
+        # Combined sizing: signal strength × volatility × regime
+        combined_multiplier = signal_multiplier * volatility_multiplier * regime_multiplier
         position_capital = self.capital * self.position_size * combined_multiplier
         shares = position_capital / entry_price
 
@@ -584,8 +615,10 @@ class PaperTrader:
             'signal_strength': signal_strength,
             'signal_multiplier': signal_multiplier,         # EXP-096
             'volatility_multiplier': volatility_multiplier, # EXP-100
-            'combined_multiplier': combined_multiplier,     # EXP-100
-            'atr_pct': atr_pct                             # EXP-100
+            'regime_multiplier': regime_multiplier,         # EXP-106
+            'combined_multiplier': combined_multiplier,     # EXP-106: signal × volatility × regime
+            'atr_pct': atr_pct,                            # EXP-100
+            'regime': regime                                # EXP-106
         }
 
         # Log position sizing info
@@ -593,7 +626,8 @@ class PaperTrader:
             tier = "ELITE" if signal_strength >= 90 else "STRONG" if signal_strength >= 80 else "GOOD" if signal_strength >= 70 else "ACCEPTABLE"
             if atr_pct:
                 vol_tier = "Low" if atr_pct < 1.5 else "Med" if atr_pct < 2.5 else "High" if atr_pct < 3.5 else "VHigh"
-                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) × {vol_tier} vol (ATR {atr_pct:.1f}%) → {combined_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
+                regime_str = f" × {regime}" if regime else ""
+                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) × {vol_tier} vol (ATR {atr_pct:.1f}%){regime_str} → {combined_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
             else:
                 print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) → {signal_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
 

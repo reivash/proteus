@@ -183,13 +183,17 @@ class SignalScanner:
         if date is None:
             date = datetime.now().strftime('%Y-%m-%d')
 
+        # EXP-106: Get current market regime once for all signals
+        regime = self.get_market_regime()
+
         signals = []
 
         print(f"Scanning {len(self.tickers)} stocks for signals on {date}...")
+        print(f"Market Regime: {regime}")
         print("=" * 70)
 
         for ticker in self.tickers:
-            signal = self.scan_stock(ticker, date)
+            signal = self.scan_stock(ticker, date, regime=regime)
             if signal:
                 signals.append(signal)
                 print(f"[SIGNAL] {ticker}: {signal['signal_type']}")
@@ -213,13 +217,14 @@ class SignalScanner:
 
         return signals
 
-    def scan_stock(self, ticker: str, date: str = None) -> Dict:
+    def scan_stock(self, ticker: str, date: str = None, regime: str = None) -> Dict:
         """
         Scan a single stock for signals.
 
         Args:
             ticker: Stock ticker
             date: Date to check (default: today)
+            regime: Market regime (EXP-106, optional)
 
         Returns:
             Signal dictionary if signal found, None otherwise
@@ -324,6 +329,7 @@ class SignalScanner:
             'signal_strength': float(signal_strength),
             'position_size': float(position_size),
             'atr_pct': float(row['atr_pct']) if 'atr_pct' in row else None,  # EXP-100: Volatility for position sizing
+            'regime': regime,  # EXP-106: Market regime for adaptive position sizing
             'parameters': params
         }
 
