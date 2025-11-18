@@ -135,6 +135,37 @@ class Position:
         else:
             return -3.0  # Very high volatility - widest stop
 
+    def get_atr_based_profit_target(self, default_profit_target: float = 2.0) -> float:
+        """
+        EXP-102: Calculate ATR-based profit target threshold.
+
+        Normalizes profit targets to volatility, complementing EXP-101 stop loss:
+        - Low volatility (ATR < 1.5%): 1.5% target (realistic for stable stocks)
+        - Medium volatility (1.5-2.5%): 2.0% target (baseline, current default)
+        - High volatility (2.5-3.5%): 2.5% target (let volatile stocks run)
+        - Very high volatility (≥3.5%): 3.0% target (maximize winners on big movers)
+
+        This captures more profit from high-volatility winners while exiting
+        low-volatility positions faster before mean reversion.
+
+        Args:
+            default_profit_target: Fallback target if ATR unavailable (default: 2.0%)
+
+        Returns:
+            Profit target threshold percentage (positive value)
+        """
+        if self.atr_pct is None or self.atr_pct <= 0:
+            return default_profit_target  # Fallback to default if ATR unavailable
+
+        if self.atr_pct < 1.5:
+            return 1.5  # Low volatility - faster exit
+        elif self.atr_pct < 2.5:
+            return 2.0  # Medium volatility - baseline
+        elif self.atr_pct < 3.5:
+            return 2.5  # High volatility - let it run
+        else:
+            return 3.0  # Very high volatility - maximize big winners
+
     def check_exit(self, profit_target: float = 2.0, stop_loss: float = -2.0, max_hold_days: int = 2) -> Optional[str]:
         """
         Check if position should be exited.
@@ -145,8 +176,11 @@ class Position:
         EXP-101: Uses ATR-based stop loss instead of fixed threshold for better
         volatility normalization.
 
+        EXP-102: Uses ATR-based profit target to capture more profit from volatile
+        winners while exiting low-volatility positions faster.
+
         Args:
-            profit_target: Profit target percentage
+            profit_target: Default profit target percentage - overridden by ATR-based calculation
             stop_loss: Default stop loss percentage (negative) - overridden by ATR-based calculation
             max_hold_days: Maximum hold period
 
@@ -158,8 +192,9 @@ class Position:
             if self.current_price <= self.trailing_stop_price:
                 return 'trailing_stop'
 
-        # Check profit target
-        if self.current_return >= profit_target:
+        # EXP-102: Check ATR-based profit target (volatility-normalized)
+        atr_profit_target = self.get_atr_based_profit_target(profit_target)
+        if self.current_return >= atr_profit_target:
             return 'profit_target'
 
         # EXP-101: Check ATR-based stop loss (volatility-normalized)
