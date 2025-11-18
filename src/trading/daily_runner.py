@@ -50,7 +50,11 @@ class DailyRunner:
             position_size: Position size as fraction of capital
             max_positions: Maximum concurrent positions
         """
-        self.scanner = SignalScanner(lookback_days=90)
+        # Q4-ONLY FILTER DEPLOYED (2025-11-18)
+        # Trade only top 25% quality signals based on EXP-091 research
+        # Expected: +14.1pp win rate (63.7% → 77.8%)
+        # Threshold: 65.0 (conservative estimate, exact value pending EXP-093 validation)
+        self.scanner = SignalScanner(lookback_days=90, min_signal_strength=65.0)
         self.trader = PaperTrader(
             initial_capital=initial_capital,
             profit_target=2.0,
