@@ -250,7 +250,7 @@ def run_exp076_volatility_position_sizing():
             test_results.append(result)
             print(f"ATR={result['atr_pct']:.2f}%, Tier={result['volatility_tier']}, "
                   f"Size={result['position_multiplier']:.1f}x, "
-                  f"Sharpe Δ={result['improvement']['sharpe_pct']:+.1f}%")
+                  f"Sharpe Change={result['improvement']['sharpe_pct']:+.1f}%")
         else:
             print("No trades")
 
