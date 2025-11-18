@@ -16,6 +16,12 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 import json
 import os
+import sys
+
+# Add parent directory to path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from src.config.stock_config_loader import get_stock_exit_params
 
 
 class Position:
@@ -242,9 +248,40 @@ class PaperTrader:
 
         return trade
 
+    def _get_exit_params(self, ticker: str) -> Dict[str, float]:
+        """
+        Get exit parameters for a ticker (per-stock or defaults).
+
+        Args:
+            ticker: Stock ticker
+
+        Returns:
+            Dictionary with profit_target, stop_loss, max_hold_days
+        """
+        # Try to get per-stock exit params from stock_configs.json
+        stock_params = get_stock_exit_params(ticker)
+
+        if stock_params:
+            # Use per-stock parameters (EXP-044/EXP-049 optimized)
+            return {
+                'profit_target': stock_params.get('profit_target', self.profit_target),
+                'stop_loss': stock_params.get('stop_loss', self.stop_loss),
+                'max_hold_days': stock_params.get('max_hold_days', self.max_hold_days)
+            }
+        else:
+            # Use default parameters
+            return {
+                'profit_target': self.profit_target,
+                'stop_loss': self.stop_loss,
+                'max_hold_days': self.max_hold_days
+            }
+
     def check_exits(self, current_prices: Dict[str, float], current_date: str = None) -> List[Dict]:
         """
         Check and execute exits for open positions.
+
+        Uses per-stock exit parameters if available (EXP-044/EXP-049 optimization),
+        otherwise falls back to default parameters.
 
         Args:
             current_prices: Dictionary of {ticker: current_price}
@@ -268,10 +305,13 @@ class PaperTrader:
             current_price = current_prices[ticker]
             position.update(current_price, current_date)
 
+            # Get per-stock or default exit parameters
+            exit_params = self._get_exit_params(ticker)
+
             exit_reason = position.check_exit(
-                profit_target=self.profit_target,
-                stop_loss=self.stop_loss,
-                max_hold_days=self.max_hold_days
+                profit_target=exit_params['profit_target'],
+                stop_loss=exit_params['stop_loss'],
+                max_hold_days=exit_params['max_hold_days']
             )
 
             if exit_reason:
