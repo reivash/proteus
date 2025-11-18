@@ -253,11 +253,19 @@ class SignalScanner:
         signal_strength = self.calculate_signal_strength(row, params)
         position_size = self.calculate_position_size(signal_strength)
 
+        # Calculate limit order price (EXP-080: 0.3% below close for better entry)
+        close_price = float(row['Close'])
+        limit_price = close_price * 0.997  # 0.3% discount
+        low_price = float(row['Low']) if 'Low' in row else close_price
+
         return {
             'ticker': ticker,
             'date': row['Date'].strftime('%Y-%m-%d'),
             'signal_type': 'BUY',  # Mean reversion = buy the dip
-            'price': float(row['Close']),
+            'price': close_price,
+            'limit_price': limit_price,
+            'intraday_low': low_price,
+            'limit_would_fill': low_price <= limit_price,  # Whether limit order would have filled
             'z_score': float(row['z_score']) if 'z_score' in row else None,
             'rsi': float(row['rsi']) if 'rsi' in row else None,
             'volume_ratio': float(row['Volume'] / row.get('volume_20d_avg', row['Volume'])) if 'Volume' in row else None,

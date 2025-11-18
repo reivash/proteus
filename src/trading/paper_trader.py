@@ -104,7 +104,8 @@ class PaperTrader:
         max_hold_days: int = 2,
         position_size: float = 0.1,  # 10% of capital per position
         max_positions: int = 5,
-        data_dir: str = 'data/paper_trading'
+        data_dir: str = 'data/paper_trading',
+        use_limit_orders: bool = True  # EXP-080: Use limit orders for entry (default: True)
     ):
         """
         Initialize paper trader.
@@ -117,6 +118,7 @@ class PaperTrader:
             position_size: Position size as fraction of capital
             max_positions: Maximum concurrent positions
             data_dir: Directory to store trading data
+            use_limit_orders: Use limit order entry strategy (EXP-080: +29% improvement)
         """
         self.initial_capital = initial_capital
         self.capital = initial_capital
@@ -126,6 +128,7 @@ class PaperTrader:
         self.position_size = position_size
         self.max_positions = max_positions
         self.data_dir = data_dir
+        self.use_limit_orders = use_limit_orders
 
         # Trading state
         self.positions: Dict[str, Position] = {}
@@ -190,7 +193,19 @@ class PaperTrader:
             Trade dictionary or None
         """
         ticker = signal['ticker']
-        entry_price = signal['price']
+
+        # EXP-080: Use limit order pricing if enabled
+        if self.use_limit_orders and 'limit_price' in signal:
+            # Check if limit order would fill (intraday low must be below limit price)
+            if not signal.get('limit_would_fill', False):
+                print(f"[SKIP] {ticker}: Limit order @ ${signal['limit_price']:.2f} would not fill (low: ${signal.get('intraday_low', 0):.2f})")
+                return None
+
+            entry_price = signal['limit_price']
+            print(f"[LIMIT ORDER] {ticker}: Entry @ ${entry_price:.2f} (vs close ${signal['price']:.2f}, saved {((signal['price'] - entry_price)/signal['price']*100):.2f}%)")
+        else:
+            # Traditional close-only entry
+            entry_price = signal['price']
 
         # Calculate position size
         position_capital = self.capital * self.position_size
@@ -221,7 +236,8 @@ class PaperTrader:
             'entry_price': entry_price,
             'shares': shares,
             'cost': cost,
-            'signal': signal
+            'signal': signal,
+            'entry_method': 'limit_order' if self.use_limit_orders else 'market_close'
         }
 
         return trade
