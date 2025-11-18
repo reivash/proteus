@@ -232,6 +232,10 @@ class CrossSectionalFeatureEngineer:
         if vix_df['Date'].dt.tz is not None:
             vix_df['Date'] = vix_df['Date'].dt.tz_localize(None)
 
+        # Remove timezone from main data as well to ensure clean merge
+        if hasattr(data['Date'].dtype, 'tz') and data['Date'].dt.tz is not None:
+            data['Date'] = data['Date'].dt.tz_localize(None)
+
         # Merge on Date column
         data = pd.merge(data, spy_df[['Date', 'spy_returns', 'SPY_Close']], on='Date', how='left')
         data = pd.merge(data, vix_df, on='Date', how='left')
