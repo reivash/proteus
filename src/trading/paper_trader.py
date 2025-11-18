@@ -246,6 +246,7 @@ class PaperTrader:
         max_portfolio_heat: float = 0.50,        # EXP-096: Max 50% capital deployed at once
         max_position_pct: float = 0.20,          # EXP-103: Max 20% of capital per single position
         reentry_cooldown_days: int = 3,          # EXP-107: Days to wait before re-entering same stock
+        max_daily_loss_pct: float = 3.0,         # EXP-108: Max daily loss (circuit breaker: stop trading)
         use_trailing_stop: bool = True,          # EXP-097: Adaptive trailing stop-loss
         trailing_activation_pct: float = 1.5,    # EXP-097: Activate trailing at +1.5% profit
         trailing_distance_pct: float = 1.0       # EXP-097: Trail 1% below peak
@@ -266,6 +267,7 @@ class PaperTrader:
             max_portfolio_heat: Maximum fraction of capital deployed simultaneously
             max_position_pct: Maximum per-stock position size (EXP-103: prevents concentration risk)
             reentry_cooldown_days: Days to wait before re-entering same stock (EXP-107: prevents overtrading)
+            max_daily_loss_pct: Maximum daily loss percentage (EXP-108: circuit breaker stops trading)
             use_trailing_stop: Use adaptive trailing stop-loss (EXP-097)
             trailing_activation_pct: Profit % to activate trailing stop
             trailing_distance_pct: Distance % below peak price for trailing stop
@@ -283,6 +285,7 @@ class PaperTrader:
         self.max_portfolio_heat = max_portfolio_heat
         self.max_position_pct = max_position_pct
         self.reentry_cooldown_days = reentry_cooldown_days  # EXP-107
+        self.max_daily_loss_pct = max_daily_loss_pct  # EXP-108
         self.use_trailing_stop = use_trailing_stop
         self.trailing_activation_pct = trailing_activation_pct
         self.trailing_distance_pct = trailing_distance_pct
@@ -292,6 +295,7 @@ class PaperTrader:
         self.trade_history: List[Dict] = []
         self.daily_equity: List[Dict] = []
         self.last_exit_dates: Dict[str, str] = {}  # EXP-107: Track last exit date by ticker
+        self.daily_start_equity: Dict[str, float] = {}  # EXP-108: Track equity at start of each day
 
         # Performance metrics
         self.total_trades = 0
@@ -531,6 +535,24 @@ class PaperTrader:
             Trade dictionary or None
         """
         ticker = signal['ticker']
+
+        # EXP-108: Check daily loss limit (circuit breaker)
+        current_total_value = self.get_current_total_value()
+
+        # Track start-of-day equity (reset on new day)
+        if entry_date not in self.daily_start_equity:
+            self.daily_start_equity[entry_date] = current_total_value
+
+        # Calculate today's P&L
+        daily_start = self.daily_start_equity[entry_date]
+        daily_pnl = current_total_value - daily_start
+        daily_pnl_pct = (daily_pnl / daily_start) * 100
+
+        # Block trading if daily loss limit exceeded
+        if daily_pnl_pct < -self.max_daily_loss_pct:
+            print(f"[CIRCUIT BREAKER] {ticker}: Daily loss limit reached ({daily_pnl_pct:.2f}% < -{self.max_daily_loss_pct:.1f}%)")
+            print(f"                  Trading suspended for remainder of day. Start: ${daily_start:.2f}, Current: ${current_total_value:.2f}")
+            return None
 
         # EXP-107: Check re-entry cooldown period
         if ticker in self.last_exit_dates:
