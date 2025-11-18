@@ -139,11 +139,13 @@ class SendGridNotifier:
 
         try:
             sg = SendGridAPIClient(self.config['sendgrid_api_key'])
-            sg.send(message)
-            print(f"✓ Test email sent via SendGrid!")
+            response = sg.send(message)
+            print(f"[OK] Test email sent via SendGrid! Status: {response.status_code}")
+            print(f"[OK] Sent to: {self.config['recipient_email']}")
             return True
         except Exception as e:
-            print(f"✗ SendGrid test failed: {e}")
+            print(f"[ERROR] SendGrid test failed: {e}")
+            print(f"[ERROR] Check SendGrid dashboard: https://app.sendgrid.com/email_activity")
             return False
 
     def _parse_experiment_docstring(self, experiment_id: str) -> Dict[str, str]:
