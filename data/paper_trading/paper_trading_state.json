@@ -1,8 +1,53 @@
 {
-  "capital": 100000,
-  "positions": [],
+  "capital": 90000.0,
+  "positions": [
+    {
+      "ticker": "AXP",
+      "entry_date": "2025-11-18",
+      "entry_price": 340.22625,
+      "shares": 29.392205921794687,
+      "hold_days": 0,
+      "current_price": 341.25,
+      "current_return": 0.30090270812437514,
+      "pnl": 30.090270812437513,
+      "signal_info": {
+        "ticker": "AXP",
+        "date": "2025-11-17",
+        "signal_type": "BUY",
+        "price": 341.25,
+        "limit_price": 340.22625,
+        "intraday_low": 339.3999938964844,
+        "limit_would_fill": true,
+        "z_score": -2.743918358951497,
+        "rsi": 31.19770015577906,
+        "volume_ratio": 1.0,
+        "reversion_target": 360.8195007324219,
+        "expected_return": 5.734652229281134,
+        "signal_strength": 59.71696902960889,
+        "position_size": 1.3957545354441334,
+        "parameters": {
+          "z_score_threshold": 1.5,
+          "rsi_oversold": 35,
+          "volume_multiplier": 1.3,
+          "price_drop_threshold": -1.5,
+          "tier": "A",
+          "notes": "EXCELLENT! American Express. Highest return (+29.21%) in finance sector.",
+          "performance": "Win rate: 71.4%, Return: +29.21%, Sharpe: 7.61, Avg gain: 3.92%"
+        }
+      }
+    }
+  ],
   "trade_history": [],
-  "daily_equity": [],
+  "daily_equity": [
+    {
+      "date": "2025-11-18",
+      "capital": 90000.0,
+      "positions_value": 10030.090270812438,
+      "total_equity": 100030.09027081243,
+      "return": 0.03009027081243403,
+      "num_positions": 1
+    }
+  ],
   "total_trades": 0,
   "winning_trades": 0,
   "losing_trades": 0
