@@ -50,7 +50,7 @@ sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
-from src.data.yahoo_finance_fetcher import YahooFinanceFetcher
+from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
 
 
 def calculate_signal_strength_threshold(scanner: SignalScanner, start_date: str, end_date: str) -> float:
