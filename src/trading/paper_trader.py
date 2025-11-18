@@ -49,6 +49,19 @@ class Position:
         self.current_price = entry_price
         self.current_return = 0.0
 
+        # EXP-098: Signal strength-based trailing stop activation
+        # Adjust activation threshold based on signal quality (same tiers as EXP-096 position sizing)
+        signal_strength = signal_info.get('signal_strength', None)
+        if signal_strength is not None and signal_strength >= 65.0:
+            if signal_strength >= 90:  # ELITE
+                trailing_activation_pct = 1.0   # Activate early - let high-confidence winners run
+            elif signal_strength >= 80:  # STRONG
+                trailing_activation_pct = 1.25
+            elif signal_strength >= 70:  # GOOD
+                trailing_activation_pct = 1.5   # Baseline
+            else:  # ACCEPTABLE (65-69)
+                trailing_activation_pct = 2.0   # Conservative - only at profit target
+
         # EXP-097: Adaptive trailing stop-loss
         self.use_trailing_stop = use_trailing_stop
         self.trailing_activation_pct = trailing_activation_pct  # Profit % to activate trailing
