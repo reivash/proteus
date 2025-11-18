@@ -49,6 +49,9 @@ class Position:
         self.current_price = entry_price
         self.current_return = 0.0
 
+        # EXP-101: Store ATR for volatility-based stop loss
+        self.atr_pct = signal_info.get('atr_pct', None)
+
         # EXP-098: Signal strength-based trailing stop activation
         # Adjust activation threshold based on signal quality (same tiers as EXP-096 position sizing)
         signal_strength = signal_info.get('signal_strength', None)
@@ -101,6 +104,37 @@ class Position:
                 if self.trailing_stop_price is None or new_stop > self.trailing_stop_price:
                     self.trailing_stop_price = new_stop
 
+    def get_atr_based_stop_loss(self, default_stop_loss: float = -2.0) -> float:
+        """
+        EXP-101: Calculate ATR-based stop loss threshold.
+
+        Normalizes stop loss to volatility for consistent risk management:
+        - Low volatility (ATR < 1.5%): -1.5% stop (tighter for stable stocks)
+        - Medium volatility (1.5-2.5%): -2.0% stop (baseline, current default)
+        - High volatility (2.5-3.5%): -2.5% stop (wider for volatile stocks)
+        - Very high volatility (≥3.5%): -3.0% stop (widest for extreme volatility)
+
+        This prevents premature stop-outs on volatile stocks while maintaining
+        tighter risk control on stable stocks.
+
+        Args:
+            default_stop_loss: Fallback stop loss if ATR unavailable (default: -2.0%)
+
+        Returns:
+            Stop loss threshold percentage (negative value)
+        """
+        if self.atr_pct is None or self.atr_pct <= 0:
+            return default_stop_loss  # Fallback to default if ATR unavailable
+
+        if self.atr_pct < 1.5:
+            return -1.5  # Low volatility - tighter stop
+        elif self.atr_pct < 2.5:
+            return -2.0  # Medium volatility - baseline
+        elif self.atr_pct < 3.5:
+            return -2.5  # High volatility - wider stop
+        else:
+            return -3.0  # Very high volatility - widest stop
+
     def check_exit(self, profit_target: float = 2.0, stop_loss: float = -2.0, max_hold_days: int = 2) -> Optional[str]:
         """
         Check if position should be exited.
@@ -108,9 +142,12 @@ class Position:
         EXP-097: Includes trailing stop logic - if trailing stop is active and triggered,
         takes precedence over profit target (locks in gains).
 
+        EXP-101: Uses ATR-based stop loss instead of fixed threshold for better
+        volatility normalization.
+
         Args:
             profit_target: Profit target percentage
-            stop_loss: Stop loss percentage (negative)
+            stop_loss: Default stop loss percentage (negative) - overridden by ATR-based calculation
             max_hold_days: Maximum hold period
 
         Returns:
@@ -124,11 +161,14 @@ class Position:
         # Check profit target
         if self.current_return >= profit_target:
             return 'profit_target'
-        # Check fixed stop loss (only if trailing not active or price hasn't activated trailing)
-        elif self.current_return <= stop_loss:
+
+        # EXP-101: Check ATR-based stop loss (volatility-normalized)
+        atr_stop_loss = self.get_atr_based_stop_loss(stop_loss)
+        if self.current_return <= atr_stop_loss:
             return 'stop_loss'
+
         # Check max hold days
-        elif self.hold_days >= max_hold_days:
+        if self.hold_days >= max_hold_days:
             return 'max_hold'
 
         return None
