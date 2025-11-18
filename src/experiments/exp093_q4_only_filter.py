@@ -68,7 +68,7 @@ def calculate_signal_strength_threshold(scanner: SignalScanner, start_date: str,
 
     for date in date_range:
         date_str = date.strftime('%Y-%m-%d')
-        signals = scanner.scan_all(date_str)
+        signals = scanner.scan_all_stocks(date_str)
 
         if signals:
             for signal in signals:
@@ -117,7 +117,7 @@ def backtest_q4_only(scanner: SignalScanner, q4_threshold: float,
         date_str = date.strftime('%Y-%m-%d')
 
         # Get all signals for this day
-        all_signals = scanner.scan_all(date_str)
+        all_signals = scanner.scan_all_stocks(date_str)
 
         if all_signals:
             total_signals_seen += len(all_signals)
@@ -206,7 +206,7 @@ def main():
 
     for date in date_range:
         date_str = date.strftime('%Y-%m-%d')
-        signals = scanner.scan_all(date_str)
+        signals = scanner.scan_all_stocks(date_str)
 
         if signals:
             baseline_signals_count += len(signals)
