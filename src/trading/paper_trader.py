@@ -239,15 +239,19 @@ class PaperTrader:
         executed_trades = []
 
         for signal in signals:
-            # Check if we can take position
-            if len(self.positions) >= self.max_positions:
-                print(f"[SKIP] {signal['ticker']}: Max positions ({self.max_positions}) reached")
-                continue
-
             # Check if already in position
             if signal['ticker'] in self.positions:
                 print(f"[SKIP] {signal['ticker']}: Already in position")
                 continue
+
+            # EXP-099: Smart position replacement when at max capacity
+            if len(self.positions) >= self.max_positions:
+                replacement_made = self._attempt_position_replacement(signal, current_date, executed_trades)
+                if replacement_made:
+                    continue  # Replacement handled, move to next signal
+                else:
+                    print(f"[SKIP] {signal['ticker']}: Max positions ({self.max_positions}) reached, no suitable replacement")
+                    continue
 
             # Execute trade
             trade = self._execute_entry(signal, current_date)
@@ -256,6 +260,99 @@ class PaperTrader:
                 print(f"[ENTRY] {signal['ticker']}: {trade['shares']:.2f} shares @ ${trade['entry_price']:.2f}")
 
         return executed_trades
+
+    def _attempt_position_replacement(self, new_signal: Dict, current_date: str, executed_trades: List[Dict]) -> bool:
+        """
+        EXP-099: Attempt to replace weakest position with stronger signal when at max capacity.
+
+        Replacement criteria:
+        - New signal strength > weakest position strength + 15 points (minimum gap)
+        - Weakest position not yet profitable (no locked gains to give up)
+        - Weakest position held < 1 day (fresh enough to exit without time penalty)
+
+        Args:
+            new_signal: New signal to potentially enter
+            current_date: Current date
+            executed_trades: List to append trades to
+
+        Returns:
+            True if replacement made, False otherwise
+        """
+        if not self.positions:
+            return False
+
+        new_signal_strength = new_signal.get('signal_strength', 0)
+
+        # Find weakest position by signal strength
+        weakest_ticker = None
+        weakest_strength = float('inf')
+
+        for ticker, position in self.positions.items():
+            pos_signal_strength = position.signal_info.get('signal_strength', 0)
+            if pos_signal_strength < weakest_strength:
+                weakest_strength = pos_signal_strength
+                weakest_ticker = ticker
+
+        if weakest_ticker is None:
+            return False
+
+        weakest_position = self.positions[weakest_ticker]
+
+        # Check replacement criteria
+        strength_gap = new_signal_strength - weakest_strength
+        MIN_STRENGTH_GAP = 15.0  # Require significant quality improvement
+
+        if strength_gap < MIN_STRENGTH_GAP:
+            return False  # New signal not significantly stronger
+
+        # Don't replace profitable positions (would give up locked gains)
+        if weakest_position.current_return > 0:
+            return False
+
+        # Don't replace positions held >= 1 day (time-based exit penalty)
+        if weakest_position.hold_days >= 1:
+            return False
+
+        # Criteria met - execute replacement
+        print(f"[REPLACE] Swapping {weakest_ticker} (strength={weakest_strength:.0f}) "
+              f"for {new_signal['ticker']} (strength={new_signal_strength:.0f}, gap=+{strength_gap:.0f})")
+
+        # Exit weakest position
+        exit_trade = {
+            'ticker': weakest_ticker,
+            'entry_date': weakest_position.entry_date.strftime('%Y-%m-%d'),
+            'exit_date': current_date,
+            'entry_price': weakest_position.entry_price,
+            'exit_price': weakest_position.current_price,
+            'shares': weakest_position.shares,
+            'pnl': weakest_position.get_pnl(),
+            'return': weakest_position.current_return,
+            'hold_days': weakest_position.hold_days,
+            'exit_reason': 'position_replacement',
+            'signal_info': weakest_position.signal_info
+        }
+
+        # Remove position
+        del self.positions[weakest_ticker]
+        self.trade_history.append(exit_trade)
+        self.total_trades += 1
+
+        if exit_trade['pnl'] >= 0:
+            self.winning_trades += 1
+        else:
+            self.losing_trades += 1
+
+        print(f"[EXIT] {weakest_ticker}: Closed for replacement, "
+              f"P&L: ${exit_trade['pnl']:+.2f} ({exit_trade['return']:+.2f}%)")
+
+        # Enter new position
+        entry_trade = self._execute_entry(new_signal, current_date)
+        if entry_trade:
+            executed_trades.append(entry_trade)
+            print(f"[ENTRY] {new_signal['ticker']}: {entry_trade['shares']:.2f} shares @ ${entry_trade['entry_price']:.2f}")
+            return True
+
+        return False
 
     def _get_position_size_multiplier(self, signal_strength: float) -> float:
         """
