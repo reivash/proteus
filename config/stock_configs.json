@@ -1,0 +1,116 @@
+{
+  "_comment": "Per-stock optimized parameters from EXP-044 (entry) and EXP-049 (exit)",
+  "_version": "1.0",
+  "_deployed": "2025-11-18",
+  "_source_experiments": ["EXP-044", "EXP-049"],
+
+  "entry_parameters": {
+    "TXN": {
+      "z_score_threshold": 2.5,
+      "rsi_oversold": 38,
+      "volume_multiplier": 1.2,
+      "improvement": "+16.7pp",
+      "source": "EXP-044"
+    },
+    "IDXX": {
+      "z_score_threshold": 1.8,
+      "rsi_oversold": 40,
+      "volume_multiplier": 1.5,
+      "improvement": "+2.2pp",
+      "source": "EXP-044"
+    },
+    "DXCM": {
+      "z_score_threshold": 1.5,
+      "rsi_oversold": 30,
+      "volume_multiplier": 1.8,
+      "improvement": "+2.9pp",
+      "source": "EXP-044"
+    },
+    "EXR": {
+      "z_score_threshold": 1.2,
+      "rsi_oversold": 38,
+      "volume_multiplier": 1.5,
+      "improvement": "+13.3pp",
+      "source": "EXP-044"
+    }
+  },
+
+  "exit_parameters": {
+    "NVDA": {
+      "profit_target": 2.5,
+      "stop_loss": -2.5,
+      "max_hold_days": 2,
+      "win_rate": "83.3%",
+      "source": "EXP-049"
+    },
+    "V": {
+      "profit_target": 1.5,
+      "stop_loss": -1.5,
+      "max_hold_days": 2,
+      "win_rate": "83.3%",
+      "source": "EXP-049"
+    },
+    "MA": {
+      "profit_target": 1.5,
+      "stop_loss": -1.5,
+      "max_hold_days": 3,
+      "win_rate": "71.4%",
+      "source": "EXP-049"
+    },
+    "AVGO": {
+      "profit_target": 2.0,
+      "stop_loss": -2.0,
+      "max_hold_days": 2,
+      "win_rate": "100.0%",
+      "source": "EXP-049"
+    },
+    "KLAC": {
+      "profit_target": 2.0,
+      "stop_loss": -2.0,
+      "max_hold_days": 2,
+      "win_rate": "83.3%",
+      "source": "EXP-049"
+    },
+    "ORCL": {
+      "profit_target": 2.0,
+      "stop_loss": -2.0,
+      "max_hold_days": 3,
+      "win_rate": "75.0%",
+      "source": "EXP-049"
+    },
+    "MRVL": {
+      "profit_target": 2.5,
+      "stop_loss": -2.5,
+      "max_hold_days": 2,
+      "win_rate": "85.7%",
+      "source": "EXP-049"
+    },
+    "ABBV": {
+      "profit_target": 1.5,
+      "stop_loss": -1.5,
+      "max_hold_days": 3,
+      "win_rate": "83.3%",
+      "source": "EXP-049"
+    },
+    "EOG": {
+      "profit_target": 2.0,
+      "stop_loss": -2.0,
+      "max_hold_days": 4,
+      "win_rate": "85.7%",
+      "source": "EXP-049"
+    }
+  },
+
+  "defaults": {
+    "entry": {
+      "z_score_threshold": 2.0,
+      "rsi_oversold": 30,
+      "volume_multiplier": 1.5
+    },
+    "exit": {
+      "profit_target": 2.0,
+      "stop_loss": -2.0,
+      "max_hold_days": 2
+    }
+  }
+}

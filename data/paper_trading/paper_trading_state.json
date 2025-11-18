@@ -46,6 +46,14 @@
       "total_equity": 100030.09027081243,
       "return": 0.03009027081243403,
       "num_positions": 1
+    },
+    {
+      "date": "2025-11-18",
+      "capital": 90000.0,
+      "positions_value": 10030.090270812438,
+      "total_equity": 100030.09027081243,
+      "return": 0.03009027081243403,
+      "num_positions": 1
     }
   ],
   "total_trades": 0,
