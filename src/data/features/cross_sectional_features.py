@@ -288,6 +288,10 @@ class CrossSectionalFeatureEngineer:
             if len(data) == 0:
                 return None
 
+            # Flatten multi-index columns if present (yf.download can return MultiIndex)
+            if isinstance(data.columns, pd.MultiIndex):
+                data.columns = data.columns.get_level_values(0)
+
             self.market_data_cache[cache_key] = data
             return data
 
