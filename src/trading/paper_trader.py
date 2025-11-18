@@ -35,7 +35,10 @@ class Position:
         entry_date: str,
         entry_price: float,
         shares: float,
-        signal_info: Dict
+        signal_info: Dict,
+        use_trailing_stop: bool = True,
+        trailing_activation_pct: float = 1.5,
+        trailing_distance_pct: float = 1.0
     ):
         self.ticker = ticker
         self.entry_date = pd.to_datetime(entry_date)
@@ -46,9 +49,17 @@ class Position:
         self.current_price = entry_price
         self.current_return = 0.0
 
+        # EXP-097: Adaptive trailing stop-loss
+        self.use_trailing_stop = use_trailing_stop
+        self.trailing_activation_pct = trailing_activation_pct  # Profit % to activate trailing
+        self.trailing_distance_pct = trailing_distance_pct       # Distance % below peak
+        self.peak_price = entry_price                            # Track highest price reached
+        self.trailing_stop_active = False                        # Whether trailing is active
+        self.trailing_stop_price = None                          # Current trailing stop level
+
     def update(self, current_price: float, current_date: str):
         """
-        Update position with current price.
+        Update position with current price and trailing stop logic.
 
         Args:
             current_price: Current stock price
@@ -58,9 +69,31 @@ class Position:
         self.current_return = ((current_price - self.entry_price) / self.entry_price) * 100
         self.hold_days = (pd.to_datetime(current_date) - self.entry_date).days
 
+        # EXP-097: Update trailing stop logic
+        if self.use_trailing_stop:
+            # Update peak price if new high reached
+            if current_price > self.peak_price:
+                self.peak_price = current_price
+
+            # Check if we should activate trailing stop
+            if not self.trailing_stop_active:
+                if self.current_return >= self.trailing_activation_pct:
+                    self.trailing_stop_active = True
+                    # Set initial trailing stop at trailing_distance_pct below current peak
+                    self.trailing_stop_price = self.peak_price * (1 - self.trailing_distance_pct / 100)
+
+            # Update trailing stop price if active (only moves up, never down)
+            if self.trailing_stop_active:
+                new_stop = self.peak_price * (1 - self.trailing_distance_pct / 100)
+                if self.trailing_stop_price is None or new_stop > self.trailing_stop_price:
+                    self.trailing_stop_price = new_stop
+
     def check_exit(self, profit_target: float = 2.0, stop_loss: float = -2.0, max_hold_days: int = 2) -> Optional[str]:
         """
         Check if position should be exited.
+
+        EXP-097: Includes trailing stop logic - if trailing stop is active and triggered,
+        takes precedence over profit target (locks in gains).
 
         Args:
             profit_target: Profit target percentage
@@ -70,12 +103,21 @@ class Position:
         Returns:
             Exit reason or None
         """
+        # EXP-097: Check trailing stop first (if active)
+        if self.use_trailing_stop and self.trailing_stop_active and self.trailing_stop_price:
+            if self.current_price <= self.trailing_stop_price:
+                return 'trailing_stop'
+
+        # Check profit target
         if self.current_return >= profit_target:
             return 'profit_target'
+        # Check fixed stop loss (only if trailing not active or price hasn't activated trailing)
         elif self.current_return <= stop_loss:
             return 'stop_loss'
+        # Check max hold days
         elif self.hold_days >= max_hold_days:
             return 'max_hold'
+
         return None
 
     def get_pnl(self) -> float:
@@ -111,9 +153,12 @@ class PaperTrader:
         position_size: float = 0.1,  # 10% of capital per position (base size)
         max_positions: int = 5,
         data_dir: str = 'data/paper_trading',
-        use_limit_orders: bool = True,  # EXP-080: Use limit orders for entry (default: True)
-        use_dynamic_sizing: bool = True,  # EXP-096: Signal-strength-based position sizing
-        max_portfolio_heat: float = 0.50  # EXP-096: Max 50% capital deployed at once
+        use_limit_orders: bool = True,           # EXP-080: Use limit orders for entry (default: True)
+        use_dynamic_sizing: bool = True,         # EXP-096: Signal-strength-based position sizing
+        max_portfolio_heat: float = 0.50,        # EXP-096: Max 50% capital deployed at once
+        use_trailing_stop: bool = True,          # EXP-097: Adaptive trailing stop-loss
+        trailing_activation_pct: float = 1.5,    # EXP-097: Activate trailing at +1.5% profit
+        trailing_distance_pct: float = 1.0       # EXP-097: Trail 1% below peak
     ):
         """
         Initialize paper trader.
@@ -129,6 +174,9 @@ class PaperTrader:
             use_limit_orders: Use limit order entry strategy (EXP-080: +29% improvement)
             use_dynamic_sizing: Use signal-strength-based position sizing (EXP-096)
             max_portfolio_heat: Maximum fraction of capital deployed simultaneously
+            use_trailing_stop: Use adaptive trailing stop-loss (EXP-097)
+            trailing_activation_pct: Profit % to activate trailing stop
+            trailing_distance_pct: Distance % below peak price for trailing stop
         """
         self.initial_capital = initial_capital
         self.capital = initial_capital
@@ -141,6 +189,9 @@ class PaperTrader:
         self.use_limit_orders = use_limit_orders
         self.use_dynamic_sizing = use_dynamic_sizing
         self.max_portfolio_heat = max_portfolio_heat
+        self.use_trailing_stop = use_trailing_stop
+        self.trailing_activation_pct = trailing_activation_pct
+        self.trailing_distance_pct = trailing_distance_pct
 
         # Trading state
         self.positions: Dict[str, Position] = {}
@@ -275,7 +326,10 @@ class PaperTrader:
             entry_date=entry_date,
             entry_price=entry_price,
             shares=shares,
-            signal_info=signal
+            signal_info=signal,
+            use_trailing_stop=self.use_trailing_stop,
+            trailing_activation_pct=self.trailing_activation_pct,
+            trailing_distance_pct=self.trailing_distance_pct
         )
 
         self.positions[ticker] = position
@@ -560,7 +614,10 @@ class PaperTrader:
                     entry_date=pos_dict['entry_date'],
                     entry_price=pos_dict['entry_price'],
                     shares=pos_dict['shares'],
-                    signal_info=pos_dict['signal_info']
+                    signal_info=pos_dict['signal_info'],
+                    use_trailing_stop=self.use_trailing_stop,
+                    trailing_activation_pct=self.trailing_activation_pct,
+                    trailing_distance_pct=self.trailing_distance_pct
                 )
                 position.hold_days = pos_dict['hold_days']
                 position.current_price = pos_dict['current_price']
