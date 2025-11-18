@@ -53,6 +53,48 @@ from src.trading.paper_trader import PaperTrader
 from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
 
 
+def get_enhanced_performance(trader: 'PaperTrader') -> dict:
+    """
+    Get performance metrics including Sharpe ratio and avg return.
+
+    Args:
+        trader: PaperTrader instance
+
+    Returns:
+        Enhanced performance dictionary with all metrics
+    """
+    # Get basic performance
+    perf = trader.get_performance()
+
+    # Calculate avg_return from trade history
+    if trader.trade_history:
+        avg_return = np.mean([trade['return'] for trade in trader.trade_history])
+    else:
+        avg_return = 0.0
+
+    # Calculate Sharpe ratio from daily equity
+    if len(trader.daily_equity) > 1:
+        returns = []
+        for i in range(1, len(trader.daily_equity)):
+            prev_equity = trader.daily_equity[i-1]['total_equity']
+            curr_equity = trader.daily_equity[i]['total_equity']
+            daily_return = (curr_equity - prev_equity) / prev_equity
+            returns.append(daily_return)
+
+        if returns and np.std(returns) > 0:
+            sharpe_ratio = (np.mean(returns) / np.std(returns)) * np.sqrt(252)  # Annualized
+        else:
+            sharpe_ratio = 0.0
+    else:
+        sharpe_ratio = 0.0
+
+    # Add enhanced metrics
+    perf['avg_return'] = avg_return
+    perf['sharpe_ratio'] = sharpe_ratio
+
+    return perf
+
+
 def calculate_signal_strength_threshold(scanner: SignalScanner, start_date: str, end_date: str) -> float:
     """
     Calculate the 75th percentile (Q4 threshold) of signal_strength
@@ -138,7 +180,7 @@ def backtest_q4_only(scanner: SignalScanner, q4_threshold: float,
             pass
 
     # Get performance stats
-    performance = trader.get_performance_summary()
+    performance = get_enhanced_performance(trader)
 
     print(f"\nSignal filtering stats:")
     print(f"  Total signals seen: {total_signals_seen}")
@@ -219,7 +261,7 @@ def main():
         except:
             pass
 
-    baseline_perf = trader_baseline.get_performance_summary()
+    baseline_perf = get_enhanced_performance(trader_baseline)
 
     print(f"\nBaseline performance:")
     print(f"  Total signals: {baseline_signals_count}")
