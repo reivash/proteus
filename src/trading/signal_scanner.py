@@ -144,6 +144,32 @@ class SignalScanner:
         position_size = 0.5 + (signal_strength / 100.0) * 1.5
         return max(0.5, min(2.0, position_size))
 
+    def _get_atr_based_limit_discount(self, atr_pct: float) -> float:
+        """
+        Calculate limit order discount based on ATR volatility (EXP-104).
+
+        Normalizes limit order discount by volatility to maintain consistent
+        fill rates across different stocks:
+        - Low volatility (ATR < 1.5%): 0.2% discount (tighter for stable stocks)
+        - Medium volatility (1.5-2.5%): 0.3% discount (baseline)
+        - High volatility (2.5-3.5%): 0.4% discount (wider for volatile stocks)
+        - Very high volatility (≥3.5%): 0.5% discount (widest for extremely volatile)
+
+        Args:
+            atr_pct: Average True Range as percentage of price
+
+        Returns:
+            Limit order discount as decimal (e.g., 0.003 for 0.3%)
+        """
+        if atr_pct < 1.5:
+            return 0.002  # 0.2% discount
+        elif atr_pct < 2.5:
+            return 0.003  # 0.3% discount (baseline)
+        elif atr_pct < 3.5:
+            return 0.004  # 0.4% discount
+        else:
+            return 0.005  # 0.5% discount
+
     def scan_all_stocks(self, date=None) -> List[Dict]:
         """
         Scan all stocks for signals.
@@ -275,9 +301,11 @@ class SignalScanner:
         signal_strength = self.calculate_signal_strength(row, params)
         position_size = self.calculate_position_size(signal_strength)
 
-        # Calculate limit order price (EXP-080: 0.3% below close for better entry)
+        # Calculate limit order price (EXP-104: ATR-based discount for consistent fill rates)
         close_price = float(row['Close'])
-        limit_price = close_price * 0.997  # 0.3% discount
+        atr_pct = float(row['atr_pct']) if 'atr_pct' in row else 2.0  # Default to medium volatility
+        limit_discount = self._get_atr_based_limit_discount(atr_pct)
+        limit_price = close_price * (1 - limit_discount)
         low_price = float(row['Low']) if 'Low' in row else close_price
 
         return {
