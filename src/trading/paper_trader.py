@@ -537,7 +537,8 @@ class PaperTrader:
         ticker = signal['ticker']
 
         # EXP-108: Check daily loss limit (circuit breaker)
-        current_total_value = self.get_current_total_value()
+        positions_value = sum(pos.shares * pos.current_price for pos in self.positions.values())
+        current_total_value = self.capital + positions_value
 
         # Track start-of-day equity (reset on new day)
         if entry_date not in self.daily_start_equity:
