@@ -128,6 +128,48 @@ def should_accept_signal(signal: Dict, current_positions: List[Dict], correlatio
     return accept, avg_corr
 
 
+def get_enhanced_performance(trader: 'PaperTrader') -> dict:
+    """
+    Get performance metrics including Sharpe ratio and avg return.
+
+    Args:
+        trader: PaperTrader instance
+
+    Returns:
+        Enhanced performance dictionary with all metrics
+    """
+    # Get basic performance
+    perf = trader.get_performance()
+
+    # Calculate avg_return from trade history
+    if trader.trade_history:
+        avg_return = np.mean([trade['return'] for trade in trader.trade_history])
+    else:
+        avg_return = 0.0
+
+    # Calculate Sharpe ratio from daily equity
+    if len(trader.daily_equity) > 1:
+        returns = []
+        for i in range(1, len(trader.daily_equity)):
+            prev_equity = trader.daily_equity[i-1]['total_equity']
+            curr_equity = trader.daily_equity[i]['total_equity']
+            daily_return = (curr_equity - prev_equity) / prev_equity
+            returns.append(daily_return)
+
+        if returns and np.std(returns) > 0:
+            sharpe_ratio = (np.mean(returns) / np.std(returns)) * np.sqrt(252)  # Annualized
+        else:
+            sharpe_ratio = 0.0
+    else:
+        sharpe_ratio = 0.0
+
+    # Add enhanced metrics
+    perf['avg_return'] = avg_return
+    perf['sharpe_ratio'] = sharpe_ratio
+
+    return perf
+
+
 def backtest_with_correlation_limit(correlation_threshold: float, start_date: str, end_date: str) -> dict:
     """
     Backtest strategy with correlation limits.
@@ -200,7 +242,7 @@ def backtest_with_correlation_limit(correlation_threshold: float, start_date: st
             pass
 
     # Get performance
-    performance = trader.get_performance_summary()
+    performance = get_enhanced_performance(trader)
 
     print(f"  Total signals: {total_signals}")
     print(f"  Accepted: {accepted_signals}")
