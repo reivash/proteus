@@ -244,6 +244,7 @@ class PaperTrader:
         use_limit_orders: bool = True,           # EXP-080: Use limit orders for entry (default: True)
         use_dynamic_sizing: bool = True,         # EXP-096: Signal-strength-based position sizing
         max_portfolio_heat: float = 0.50,        # EXP-096: Max 50% capital deployed at once
+        max_position_pct: float = 0.20,          # EXP-103: Max 20% of capital per single position
         use_trailing_stop: bool = True,          # EXP-097: Adaptive trailing stop-loss
         trailing_activation_pct: float = 1.5,    # EXP-097: Activate trailing at +1.5% profit
         trailing_distance_pct: float = 1.0       # EXP-097: Trail 1% below peak
@@ -262,6 +263,7 @@ class PaperTrader:
             use_limit_orders: Use limit order entry strategy (EXP-080: +29% improvement)
             use_dynamic_sizing: Use signal-strength-based position sizing (EXP-096)
             max_portfolio_heat: Maximum fraction of capital deployed simultaneously
+            max_position_pct: Maximum per-stock position size (EXP-103: prevents concentration risk)
             use_trailing_stop: Use adaptive trailing stop-loss (EXP-097)
             trailing_activation_pct: Profit % to activate trailing stop
             trailing_distance_pct: Distance % below peak price for trailing stop
@@ -277,6 +279,7 @@ class PaperTrader:
         self.use_limit_orders = use_limit_orders
         self.use_dynamic_sizing = use_dynamic_sizing
         self.max_portfolio_heat = max_portfolio_heat
+        self.max_position_pct = max_position_pct
         self.use_trailing_stop = use_trailing_stop
         self.trailing_activation_pct = trailing_activation_pct
         self.trailing_distance_pct = trailing_distance_pct
@@ -523,6 +526,20 @@ class PaperTrader:
         combined_multiplier = signal_multiplier * volatility_multiplier
         position_capital = self.capital * self.position_size * combined_multiplier
         shares = position_capital / entry_price
+
+        # EXP-103: Cap position at max_position_pct of total capital (prevents concentration risk)
+        current_positions_value = sum(pos.shares * pos.entry_price for pos in self.positions.values())
+        total_capital = self.capital + current_positions_value
+        max_position_capital = total_capital * self.max_position_pct
+        max_shares = max_position_capital / entry_price
+
+        if shares * entry_price > max_position_capital:
+            original_shares = shares
+            shares = max_shares
+            position_capital = shares * entry_price
+            print(f"[CAP] {ticker}: Position capped at {self.max_position_pct:.0%} of capital (${max_position_capital:.2f})")
+            print(f"      Original: {original_shares:.2f} shares (${original_shares * entry_price:.2f})")
+            print(f"      Capped:   {shares:.2f} shares (${position_capital:.2f})")
 
         # EXP-096: Check portfolio heat limit (total deployed capital)
         current_positions_value = sum(pos.shares * pos.entry_price for pos in self.positions.values())
