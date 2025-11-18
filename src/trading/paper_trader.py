@@ -245,6 +245,7 @@ class PaperTrader:
         use_dynamic_sizing: bool = True,         # EXP-096: Signal-strength-based position sizing
         max_portfolio_heat: float = 0.50,        # EXP-096: Max 50% capital deployed at once
         max_position_pct: float = 0.20,          # EXP-103: Max 20% of capital per single position
+        reentry_cooldown_days: int = 3,          # EXP-107: Days to wait before re-entering same stock
         use_trailing_stop: bool = True,          # EXP-097: Adaptive trailing stop-loss
         trailing_activation_pct: float = 1.5,    # EXP-097: Activate trailing at +1.5% profit
         trailing_distance_pct: float = 1.0       # EXP-097: Trail 1% below peak
@@ -264,6 +265,7 @@ class PaperTrader:
             use_dynamic_sizing: Use signal-strength-based position sizing (EXP-096)
             max_portfolio_heat: Maximum fraction of capital deployed simultaneously
             max_position_pct: Maximum per-stock position size (EXP-103: prevents concentration risk)
+            reentry_cooldown_days: Days to wait before re-entering same stock (EXP-107: prevents overtrading)
             use_trailing_stop: Use adaptive trailing stop-loss (EXP-097)
             trailing_activation_pct: Profit % to activate trailing stop
             trailing_distance_pct: Distance % below peak price for trailing stop
@@ -280,6 +282,7 @@ class PaperTrader:
         self.use_dynamic_sizing = use_dynamic_sizing
         self.max_portfolio_heat = max_portfolio_heat
         self.max_position_pct = max_position_pct
+        self.reentry_cooldown_days = reentry_cooldown_days  # EXP-107
         self.use_trailing_stop = use_trailing_stop
         self.trailing_activation_pct = trailing_activation_pct
         self.trailing_distance_pct = trailing_distance_pct
@@ -288,6 +291,7 @@ class PaperTrader:
         self.positions: Dict[str, Position] = {}
         self.trade_history: List[Dict] = []
         self.daily_equity: List[Dict] = []
+        self.last_exit_dates: Dict[str, str] = {}  # EXP-107: Track last exit date by ticker
 
         # Performance metrics
         self.total_trades = 0
@@ -528,6 +532,17 @@ class PaperTrader:
         """
         ticker = signal['ticker']
 
+        # EXP-107: Check re-entry cooldown period
+        if ticker in self.last_exit_dates:
+            last_exit = pd.to_datetime(self.last_exit_dates[ticker])
+            current_date = pd.to_datetime(entry_date)
+            days_since_exit = (current_date - last_exit).days
+
+            if days_since_exit < self.reentry_cooldown_days:
+                days_remaining = self.reentry_cooldown_days - days_since_exit
+                print(f"[COOLDOWN] {ticker}: Re-entry blocked ({days_since_exit} days since exit, {days_remaining} days remaining)")
+                return None
+
         # EXP-080: Use limit order pricing if enabled
         if self.use_limit_orders and 'limit_price' in signal:
             # Check if limit order would fill (intraday low must be below limit price)
@@ -758,6 +773,9 @@ class PaperTrader:
 
         # Add to history
         self.trade_history.append(exit_trade)
+
+        # EXP-107: Track exit date for re-entry cooldown
+        self.last_exit_dates[ticker] = exit_date
 
         # Remove position
         del self.positions[ticker]
