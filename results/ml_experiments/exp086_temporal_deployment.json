@@ -1,0 +1,28 @@
+{
+  "experiment": "EXP-086",
+  "deployed_at": "2025-11-18T01:33:52.133558",
+  "validation_experiment": "EXP-085",
+  "validation_results": {
+    "avg_auc_improvement": 0.02,
+    "stocks_improved_pct": 90.0,
+    "validation_passed": true
+  },
+  "deployment": {
+    "features_enabled": {
+      "technical": true,
+      "temporal": true,
+      "cross_sectional": false
+    },
+    "total_features": 65,
+    "stock_universe_count": 27,
+    "expected_production_auc": 0.854
+  },
+  "top_temporal_features": [
+    "regime_persistence",
+    "days_since_extreme",
+    "regime_trend_strength",
+    "consolidation_days",
+    "momentum_decay"
+  ],
+  "status": "DEPLOYED"
+}

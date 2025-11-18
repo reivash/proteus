@@ -232,17 +232,17 @@ class FeatureIntegrator:
         summary += "=" * 70 + "\n\n"
 
         summary += "ENABLED FEATURE SETS:\n"
-        summary += f"  ✓ Technical Features: {counts['technical']} features (baseline)\n"
+        summary += f"  [+] Technical Features: {counts['technical']} features (baseline)\n"
 
         if self.config.use_cross_sectional:
-            summary += f"  ✓ Cross-Sectional Features: {counts['cross_sectional']} features (+2-4pp AUC)\n"
+            summary += f"  [+] Cross-Sectional Features: {counts['cross_sectional']} features (+2-4pp AUC)\n"
         else:
-            summary += f"  ✗ Cross-Sectional Features: DISABLED\n"
+            summary += f"  [-] Cross-Sectional Features: DISABLED\n"
 
         if self.config.use_temporal:
-            summary += f"  ✓ Temporal Features: {counts['temporal']} features (+2-5pp AUC)\n"
+            summary += f"  [+] Temporal Features: {counts['temporal']} features (+2-5pp AUC)\n"
         else:
-            summary += f"  ✗ Temporal Features: DISABLED\n"
+            summary += f"  [-] Temporal Features: DISABLED\n"
 
         summary += f"\nTOTAL FEATURES: {counts['total']}\n"
         summary += f"EXPECTED AUC LIFT: +{lift*100:.1f}pp\n"
