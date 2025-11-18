@@ -295,6 +295,7 @@ class SignalScanner:
             'expected_return': float(row['expected_return']) if 'expected_return' in row else None,
             'signal_strength': float(signal_strength),
             'position_size': float(position_size),
+            'atr_pct': float(row['atr_pct']) if 'atr_pct' in row else None,  # EXP-100: Volatility for position sizing
             'parameters': params
         }
 

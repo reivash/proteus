@@ -382,6 +382,34 @@ class PaperTrader:
         else:
             return 0.75  # ACCEPTABLE (65-69)
 
+    def _get_volatility_multiplier(self, atr_pct: Optional[float]) -> float:
+        """
+        EXP-100: Calculate position size multiplier based on stock volatility (ATR%).
+
+        Adjusts position size inversely to volatility to normalize risk:
+        - Low volatility stocks (<  1.5% ATR): 1.2x (size up stable stocks)
+        - Medium volatility (1.5-2.5% ATR): 1.0x (baseline)
+        - High volatility (2.5-3.5% ATR): 0.8x (size down volatile stocks)
+        - Very high volatility (>= 3.5% ATR): 0.6x (minimal exposure to extreme volatility)
+
+        Args:
+            atr_pct: Average True Range as percentage of price (e.g., 2.5 means 2.5% ATR)
+
+        Returns:
+            Volatility-based position size multiplier (0.6-1.2x)
+        """
+        if atr_pct is None or atr_pct <= 0:
+            return 1.0  # Default to baseline if ATR unavailable
+
+        if atr_pct < 1.5:
+            return 1.2  # Low volatility - size up
+        elif atr_pct < 2.5:
+            return 1.0  # Medium volatility - baseline
+        elif atr_pct < 3.5:
+            return 0.8  # High volatility - size down
+        else:
+            return 0.6  # Very high volatility - minimal size
+
     def _execute_entry(self, signal: Dict, entry_date: str) -> Optional[Dict]:
         """
         Execute entry trade.
@@ -410,8 +438,15 @@ class PaperTrader:
 
         # EXP-096: Calculate position size with signal-strength multiplier
         signal_strength = signal.get('signal_strength', 70.0)  # Default to GOOD tier
-        size_multiplier = self._get_position_size_multiplier(signal_strength)
-        position_capital = self.capital * self.position_size * size_multiplier
+        signal_multiplier = self._get_position_size_multiplier(signal_strength)
+
+        # EXP-100: Apply volatility-based multiplier
+        atr_pct = signal.get('atr_pct')
+        volatility_multiplier = self._get_volatility_multiplier(atr_pct)
+
+        # Combined sizing: signal strength × volatility adjustment
+        combined_multiplier = signal_multiplier * volatility_multiplier
+        position_capital = self.capital * self.position_size * combined_multiplier
         shares = position_capital / entry_price
 
         # EXP-096: Check portfolio heat limit (total deployed capital)
@@ -455,13 +490,20 @@ class PaperTrader:
             'signal': signal,
             'entry_method': 'limit_order' if self.use_limit_orders else 'market_close',
             'signal_strength': signal_strength,
-            'size_multiplier': size_multiplier
+            'signal_multiplier': signal_multiplier,         # EXP-096
+            'volatility_multiplier': volatility_multiplier, # EXP-100
+            'combined_multiplier': combined_multiplier,     # EXP-100
+            'atr_pct': atr_pct                             # EXP-100
         }
 
         # Log position sizing info
         if self.use_dynamic_sizing:
             tier = "ELITE" if signal_strength >= 90 else "STRONG" if signal_strength >= 80 else "GOOD" if signal_strength >= 70 else "ACCEPTABLE"
-            print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) → {size_multiplier:.2f}x multiplier = ${cost:.2f} ({(cost/total_capital)*100:.1f}% of total capital)")
+            if atr_pct:
+                vol_tier = "Low" if atr_pct < 1.5 else "Med" if atr_pct < 2.5 else "High" if atr_pct < 3.5 else "VHigh"
+                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) × {vol_tier} vol (ATR {atr_pct:.1f}%) → {combined_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
+            else:
+                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) → {signal_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
 
         return trade
 
