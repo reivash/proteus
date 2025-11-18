@@ -221,8 +221,16 @@ class CrossSectionalFeatureEngineer:
         spy_df = spy_data.reset_index()[['Date', 'Close']].rename(columns={'Close': 'SPY_Close'})
         spy_df['spy_returns'] = spy_df['SPY_Close'].pct_change()
 
+        # Remove timezone info to match stock data
+        if spy_df['Date'].dt.tz is not None:
+            spy_df['Date'] = spy_df['Date'].dt.tz_localize(None)
+
         # Prepare VIX data for merge
         vix_df = vix_data.reset_index()[['Date', 'Close']].rename(columns={'Close': 'VIX_Close'})
+
+        # Remove timezone info to match stock data
+        if vix_df['Date'].dt.tz is not None:
+            vix_df['Date'] = vix_df['Date'].dt.tz_localize(None)
 
         # Merge on Date column
         data = pd.merge(data, spy_df[['Date', 'spy_returns', 'SPY_Close']], on='Date', how='left')
