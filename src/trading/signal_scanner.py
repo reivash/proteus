@@ -57,7 +57,7 @@ class SignalScanner:
     Scan all stocks in universe for mean reversion signals.
     """
 
-    def __init__(self, lookback_days=90, min_signal_strength=None):
+    def __init__(self, lookback_days=90, min_signal_strength=None, intraday_price_position_threshold=0.30):
         """
         Initialize signal scanner.
 
@@ -68,6 +68,10 @@ class SignalScanner:
                                Set to 75th percentile value for Q4-only filtering.
                                Default: None (no filtering - trade all signals)
                                Example: 65.0 for Q4 threshold (EXP-093)
+            intraday_price_position_threshold: Max intraday price position (EXP-109).
+                                              Rejects signals where (Close-Low)/(High-Low) > threshold.
+                                              Default: 0.30 (30% above low)
+                                              Set to None to disable filter
 
         Note: We need ~90 calendar days to reliably get 60+ trading days due to:
             - Weekends (28-30% reduction)
@@ -78,9 +82,15 @@ class SignalScanner:
             - When enabled, only trade signals in top quartile (highest quality)
             - Expected impact: +14.1pp win rate (63.7% → 77.8%)
             - Reduces trade frequency by ~75% (quality over quantity)
+
+        Intraday Price Position Filter (EXP-109):
+            - Filters out stocks with intraday recovery (shows strength, not panic)
+            - Mean reversion works best when stocks close near their lows
+            - Default: 0.30 (reject if closed >30% above low)
         """
         self.lookback_days = lookback_days
         self.min_signal_strength = min_signal_strength
+        self.intraday_price_position_threshold = intraday_price_position_threshold
         self.tickers = get_all_tickers()
 
     def calculate_signal_strength(self, row: pd.Series, params: dict) -> float:
@@ -312,6 +322,23 @@ class SignalScanner:
         limit_discount = self._get_atr_based_limit_discount(atr_pct)
         limit_price = close_price * (1 - limit_discount)
         low_price = float(row['Low']) if 'Low' in row else close_price
+        high_price = float(row['High']) if 'High' in row else close_price
+
+        # EXP-109: Calculate intraday price position (where close falls in day's range)
+        # 0.0 = closed at low (true panic), 1.0 = closed at high (full recovery)
+        intraday_range = high_price - low_price
+        if intraday_range > 0:
+            price_position = (close_price - low_price) / intraday_range
+        else:
+            price_position = 0.5  # Default to midpoint if no range
+
+        # EXP-109: Filter out signals with high intraday recovery if threshold is set
+        # Mean reversion works best when stocks close near their lows (true panic)
+        # Stocks that recover intraday show strength and are poor mean reversion candidates
+        if self.intraday_price_position_threshold is not None and price_position > self.intraday_price_position_threshold:
+            print(f"  [FILTER] {ticker}: Rejected due to intraday recovery "
+                  f"(closed {price_position:.1%} above low, threshold: {self.intraday_price_position_threshold:.1%})")
+            return None
 
         return {
             'ticker': ticker,
@@ -320,6 +347,8 @@ class SignalScanner:
             'price': close_price,
             'limit_price': limit_price,
             'intraday_low': low_price,
+            'intraday_high': high_price,  # EXP-109: High price for range calculation
+            'intraday_price_position': float(price_position),  # EXP-109: Where close falls in day's range (0=low, 1=high)
             'limit_would_fill': low_price <= limit_price,  # Whether limit order would have filled
             'z_score': float(row['z_score']) if 'z_score' in row else None,
             'rsi': float(row['rsi']) if 'rsi' in row else None,
