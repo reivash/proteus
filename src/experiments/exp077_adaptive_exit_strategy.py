@@ -237,7 +237,7 @@ def run_exp077_adaptive_exit_strategy():
                 improved_count += 1
 
             print(f"ATR={result['atr_pct']:.2f}%, Strategy={result['adaptive_strategy']}, "
-                  f"WR Δ={wr_improvement:+.1f}pp, Return Δ={return_improvement:+.2f}%")
+                  f"WR Delta={wr_improvement:+.1f}pp, Return Delta={return_improvement:+.2f}%")
         else:
             print("No trades")
 
@@ -277,7 +277,7 @@ def run_exp077_adaptive_exit_strategy():
     print(f"  Low/Medium Volatility (time_decay): {len(low_vol_stocks)} stocks")
     print()
 
-    print(f"{'Metric':<25} {'Baseline':<20} {'Adaptive':<20} {'Improvement'}")
+    print(f"{'Metric':<25} {'Baseline':<20} {'Adaptive':<20} {'Change'}")
     print("-"*70)
     print(f"{'Win Rate':<25} {baseline_wr:<19.1f}% {adaptive_wr:<19.1f}% {avg_wr_improvement:+.1f}pp")
     print(f"{'Avg Return/Trade':<25} {baseline_return:<19.2f}% {adaptive_return:<19.2f}% {avg_return_improvement:+.2f}%")
@@ -295,7 +295,7 @@ def run_exp077_adaptive_exit_strategy():
     # Top improvers
     print("TOP 10 STOCKS BY IMPROVEMENT:")
     print("-"*70)
-    print(f"{'Ticker':<8} {'Vol Tier':<12} {'Strategy':<15} {'WR Δ':<10} {'Return Δ'}")
+    print(f"{'Ticker':<8} {'Vol Tier':<12} {'Strategy':<15} {'WR Change':<12} {'Return Change'}")
     print("-"*70)
 
     sorted_results = sorted(test_results,
