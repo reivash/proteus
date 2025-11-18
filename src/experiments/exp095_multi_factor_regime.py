@@ -130,6 +130,8 @@ class MultiFactorRegimeDetector:
         data['VIX'] = vix_data['Close']
 
         # Calculate technical indicators
+        from ta.trend import ADXIndicator
+
         engineer = TechnicalFeatureEngineer()
 
         # SMA for trend
@@ -140,12 +142,19 @@ class MultiFactorRegimeDetector:
         # Momentum
         data['momentum_60d'] = data['Close'].pct_change(60) * 100
 
-        # ADX for trend strength
-        data = engineer.add_adx(data)
+        # ADX for trend strength (calculate directly)
+        adx_indicator = ADXIndicator(
+            high=data['High'],
+            low=data['Low'],
+            close=data['Close'],
+            window=14,
+            fillna=True
+        )
+        data['adx'] = adx_indicator.adx()
 
         # ATR for volatility
-        data = engineer.add_atr(data)
-        data['atr_pct'] = (data['atr'] / data['Close']) * 100
+        data = engineer.add_volatility_indicators(data)
+        # atr_pct already calculated by add_volatility_indicators()
 
         # Classify regime
         def classify_regime(row):
