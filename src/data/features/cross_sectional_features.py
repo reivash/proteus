@@ -217,26 +217,43 @@ class CrossSectionalFeatureEngineer:
             print("[WARN] Failed to fetch market data, using neutral values")
             return self._add_neutral_market_features(data)
 
-        # Merge SPY data - reindex to match stock data dates
-        spy_returns = spy_data['Close'].pct_change().reindex(data.index, method='ffill')
+        # Prepare SPY data for merge
+        spy_df = spy_data.reset_index()[['Date', 'Close']].rename(columns={'Close': 'SPY_Close'})
+        spy_df['spy_returns'] = spy_df['SPY_Close'].pct_change()
+
+        # Prepare VIX data for merge
+        vix_df = vix_data.reset_index()[['Date', 'Close']].rename(columns={'Close': 'VIX_Close'})
+
+        # Merge on Date column
+        data = pd.merge(data, spy_df[['Date', 'spy_returns', 'SPY_Close']], on='Date', how='left')
+        data = pd.merge(data, vix_df, on='Date', how='left')
+
+        # Forward fill missing values (for days when market was open but SPY/VIX wasn't)
+        data['spy_returns'] = data['spy_returns'].fillna(method='ffill')
+        data['SPY_Close'] = data['SPY_Close'].fillna(method='ffill')
+        data['VIX_Close'] = data['VIX_Close'].fillna(method='ffill')
+
+        # Calculate stock returns
         data_returns = data['Close'].pct_change()
 
         # Calculate correlation and beta
-        data['spy_correlation_20d'] = data_returns.rolling(window=20).corr(spy_returns)
+        data['spy_correlation_20d'] = data_returns.rolling(window=20).corr(data['spy_returns'])
 
         # Beta = Cov(stock, SPY) / Var(SPY)
-        cov = data_returns.rolling(window=60).cov(spy_returns)
-        var_spy = spy_returns.rolling(window=60).var()
+        cov = data_returns.rolling(window=60).cov(data['spy_returns'])
+        var_spy = data['spy_returns'].rolling(window=60).var()
         data['spy_beta_60d'] = cov / var_spy
 
-        # VIX features - reindex to match stock data dates
-        vix_series = vix_data['Close'].reindex(data.index, method='ffill')
-        data['vix_level'] = vix_series
-        data['vix_change_5d'] = vix_series.diff(5)
-        data['market_stress'] = (vix_series > 25).astype(int)
+        # VIX features
+        data['vix_level'] = data['VIX_Close']
+        data['vix_change_5d'] = data['VIX_Close'].diff(5)
+        data['market_stress'] = (data['VIX_Close'] > 25).astype(int)
 
         # SPY divergence
-        data['spy_divergence'] = abs(data_returns - spy_returns)
+        data['spy_divergence'] = abs(data_returns - data['spy_returns'])
+
+        # Clean up temporary columns
+        data = data.drop(columns=['spy_returns', 'SPY_Close', 'VIX_Close'], errors='ignore')
 
         if self.fillna:
             data['spy_correlation_20d'] = data['spy_correlation_20d'].fillna(0.5)  # Neutral correlation
