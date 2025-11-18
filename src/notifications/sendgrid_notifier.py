@@ -146,6 +146,105 @@ class SendGridNotifier:
             print(f"✗ SendGrid test failed: {e}")
             return False
 
+    def _parse_experiment_docstring(self, experiment_id: str) -> Dict[str, str]:
+        """
+        Parse experiment file docstring to extract detailed information.
+
+        Args:
+            experiment_id: Experiment identifier (e.g., 'EXP-092')
+
+        Returns:
+            Dictionary with parsed sections (objective, methodology, expected_impact, etc.)
+        """
+        # Convert experiment ID to filename (e.g., EXP-092 -> exp092)
+        exp_num = experiment_id.replace('EXP-', '').replace('-', '')
+        exp_file = f"src/experiments/exp{exp_num}_*.py"
+
+        # Try to find the experiment file
+        import glob
+        matches = glob.glob(exp_file)
+
+        if not matches:
+            return {}
+
+        try:
+            # Read the file
+            with open(matches[0], 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            # Extract module docstring
+            if content.startswith('"""'):
+                end_idx = content.find('"""', 3)
+                if end_idx != -1:
+                    docstring = content[3:end_idx].strip()
+                else:
+                    return {}
+            else:
+                return {}
+
+            # Parse sections from docstring
+            parsed = {
+                'full_docstring': docstring,
+                'objective': '',
+                'methodology': '',
+                'expected_impact': '',
+                'context': '',
+                'hypothesis': '',
+                'success_criteria': ''
+            }
+
+            # Split into lines for parsing
+            lines = docstring.split('\n')
+            current_section = None
+            section_content = []
+
+            for line in lines:
+                line_upper = line.strip().upper()
+
+                # Check for section headers
+                if line_upper.startswith('OBJECTIVE:'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'objective'
+                    section_content = [line.split(':', 1)[1].strip() if ':' in line else '']
+                elif line_upper.startswith('METHODOLOGY:'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'methodology'
+                    section_content = []
+                elif line_upper.startswith('EXPECTED IMPACT:') or line_upper.startswith('EXPECTED OUTCOME:'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'expected_impact'
+                    section_content = []
+                elif line_upper.startswith('CONTEXT:') or line_upper.startswith('CONTEXT -'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'context'
+                    section_content = []
+                elif line_upper.startswith('HYPOTHESIS:'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'hypothesis'
+                    section_content = [line.split(':', 1)[1].strip() if ':' in line else '']
+                elif line_upper.startswith('SUCCESS CRITERIA:'):
+                    if current_section:
+                        parsed[current_section] = '\n'.join(section_content).strip()
+                    current_section = 'success_criteria'
+                    section_content = []
+                elif current_section:
+                    section_content.append(line)
+
+            # Save last section
+            if current_section:
+                parsed[current_section] = '\n'.join(section_content).strip()
+
+            return parsed
+
+        except Exception as e:
+            print(f"[WARNING] Could not parse experiment docstring: {e}")
+            return {}
+
     def send_experiment_report(self, experiment_id: str, results: Dict) -> bool:
         """
         Send experiment completion report email.
@@ -167,11 +266,14 @@ class SendGridNotifier:
 
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+        # Parse experiment file for detailed information
+        exp_details = self._parse_experiment_docstring(experiment_id)
+
         # Create informative subject line with key results
         status_summary = self._extract_experiment_summary(results)
         subject = f"📊 Proteus {experiment_id} - {status_summary} - {timestamp}"
 
-        html_content = self._create_experiment_body(experiment_id, results)
+        html_content = self._create_experiment_body(experiment_id, results, exp_details)
 
         message = Mail(
             from_email=Email(self.config.get('sender_email', 'proteus@trading.local')),
@@ -651,9 +753,12 @@ class SendGridNotifier:
 """
         return html
 
-    def _create_experiment_body(self, experiment_id: str, results: Dict) -> str:
-        """Create COMPREHENSIVE HTML email body for experiment report."""
+    def _create_experiment_body(self, experiment_id: str, results: Dict, exp_details: Dict = None) -> str:
+        """Create COMPREHENSIVE HTML email body for experiment report with verbose details."""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+        if exp_details is None:
+            exp_details = {}
 
         # Extract information - handle multiple experiment formats
         symbols_tested = results.get('symbols_tested', 0)
@@ -707,6 +812,7 @@ class SendGridNotifier:
                  color: white; padding: 30px; border-radius: 10px; margin-bottom: 30px; }}
         .section {{ background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 20px 0;
                    border-left: 5px solid #10b981; }}
+        .context {{ background: #ede9fe; border-left-color: #6366f1; }}
         .objective {{ background: #f0f9ff; border-left-color: #0ea5e9; }}
         .hypothesis {{ background: #fef3c7; border-left-color: #eab308; }}
         .conclusion {{ background: #f3e8ff; border-left-color: #a855f7; }}
@@ -740,18 +846,40 @@ class SendGridNotifier:
         <p style="font-size: 0.95em; opacity: 0.85; margin: 5px 0;">Completed: {now}</p>
     </div>
 
+    <div class="section context">
+        <h3 style="color: #6366f1;">📖 Context & Background</h3>
+        <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('context', 'See experiment file for full context')}</p>
+    </div>
+
     <div class="section objective">
         <h3 style="color: #0ea5e9;">🎯 Objective</h3>
-        <p style="margin: 0; font-size: 1.05em;">{results.get('objective', results.get('algorithm', 'Optimize trading signals and expand high-performing stock portfolio'))}</p>
+        <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('objective') or results.get('objective', results.get('algorithm', 'Optimize trading signals and expand high-performing stock portfolio'))}</p>
     </div>
 
     <div class="section hypothesis">
         <h3 style="color: #eab308;">💡 Hypothesis</h3>
-        <p style="margin: 0; font-size: 1.05em;">{results.get('hypothesis', 'Testing signal optimization to improve win rate and returns')}</p>
+        <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('hypothesis') or results.get('hypothesis', 'Testing signal optimization to improve win rate and returns')}</p>
+    </div>
+
+    <div class="section methodology">
+        <h3 style="color: #0078d4;">🔬 Methodology</h3>
+        <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('methodology', 'See methodology section below')}</p>
+    </div>
+
+    <div class="section" style="background: #fef3c7; border-left-color: #f59e0b;">
+        <h3 style="color: #f59e0b;">🎯 Success Criteria & Expected Impact</h3>
+        <div style="margin-bottom: 15px;">
+            <h4 style="margin: 10px 0 5px 0; color: #92400e;">Success Criteria:</h4>
+            <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('success_criteria', 'Not explicitly defined')}</p>
+        </div>
+        <div>
+            <h4 style="margin: 10px 0 5px 0; color: #92400e;">Expected Impact:</h4>
+            <p style="margin: 0; font-size: 1.05em; white-space: pre-wrap;">{exp_details.get('expected_impact', 'See experiment results below')}</p>
+        </div>
     </div>
 
     <div class="section conclusion">
-        <h3 style="color: #a855f7;">📋 Conclusion</h3>
+        <h3 style="color: #a855f7;">📋 Actual Results & Conclusion</h3>
         <p style="margin: 0; font-size: 1.05em; font-weight: 500;">{self._generate_conclusion(results)}</p>
     </div>
 """
@@ -761,16 +889,16 @@ class SendGridNotifier:
             ml_plots_html = self._generate_ml_prediction_plots_html(results['ml_results'])
             html += ml_plots_html
 
-        html += """
-    <div class="section methodology">
-        <h3 style="color: #0078d4;">🔬 Methodology (Current System)</h3>
-        <div class="metric"><span class="metric-label">System:</span> Multi-Strategy Stock Predictor (v15.0)</div>
-        <div class="metric"><span class="metric-label">Approach:</span> Research-driven signal optimization across multiple strategies</div>
-        <div class="metric"><span class="metric-label">Entry Signal:</span> Z-score < -1.5, RSI < 35, Volume spike > 1.3x, Price drop > -1.5%</div>
+        html += f"""
+    <div class="section" style="background: #e0f2fe; border-left-color: #0284c7;">
+        <h3 style="color: #0284c7;">🔧 Current Production System Configuration</h3>
+        <div class="metric"><span class="metric-label">System Version:</span> Multi-Strategy Stock Predictor v15.0</div>
+        <div class="metric"><span class="metric-label">Entry Strategy:</span> Limit orders (+29% improvement, EXP-080)</div>
+        <div class="metric"><span class="metric-label">Position Sizing:</span> Signal strength based 0.5x-2.0x (+41.7% returns, EXP-045)</div>
         <div class="metric"><span class="metric-label">Exit Strategy:</span> Time-decay targets (Day 0: ±2%, Day 1: ±1.5%, Day 2+: ±1%)</div>
         <div class="metric"><span class="metric-label">Backtest Period:</span> {period} ({self._get_period_dates(period)})</div>
         <div class="metric"><span class="metric-label">Data Source:</span> Yahoo Finance (historical OHLCV)</div>
-        <div class="metric"><span class="metric-label">Initial Capital:</span> $10,000 per stock (simulated)</div>
+        <div class="metric"><span class="metric-label">Current Win Rate:</span> 63.7% (base scanner, EXP-091)</div>
     </div>
 
     <div class="section symbols">
