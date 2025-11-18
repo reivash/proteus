@@ -55,13 +55,21 @@ class DailyRunner:
         # Expected: +14.1pp win rate (63.7% → 77.8%)
         # Threshold: 65.0 (conservative estimate, exact value pending EXP-093 validation)
         self.scanner = SignalScanner(lookback_days=90, min_signal_strength=65.0)
+
+        # DYNAMIC POSITION SIZING DEPLOYED (2025-11-18)
+        # EXP-096: Signal-strength-based tiered position sizing
+        # ELITE (90-100): 1.5x, STRONG (80-89): 1.25x, GOOD (70-79): 1.0x, ACCEPTABLE (65-69): 0.75x
+        # Portfolio heat limit: 50% max deployed capital for risk management
         self.trader = PaperTrader(
             initial_capital=initial_capital,
             profit_target=2.0,
             stop_loss=-2.0,
             max_hold_days=2,
             position_size=position_size,
-            max_positions=max_positions
+            max_positions=max_positions,
+            use_limit_orders=True,           # EXP-080: +29% improvement
+            use_dynamic_sizing=True,         # EXP-096: Signal-strength tiered sizing
+            max_portfolio_heat=0.50          # EXP-096: Max 50% capital deployed
         )
         self.tracker = PerformanceTracker()
         self.fetcher = YahooFinanceFetcher()

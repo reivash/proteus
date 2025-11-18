@@ -108,10 +108,12 @@ class PaperTrader:
         profit_target: float = 2.0,
         stop_loss: float = -2.0,
         max_hold_days: int = 2,
-        position_size: float = 0.1,  # 10% of capital per position
+        position_size: float = 0.1,  # 10% of capital per position (base size)
         max_positions: int = 5,
         data_dir: str = 'data/paper_trading',
-        use_limit_orders: bool = True  # EXP-080: Use limit orders for entry (default: True)
+        use_limit_orders: bool = True,  # EXP-080: Use limit orders for entry (default: True)
+        use_dynamic_sizing: bool = True,  # EXP-096: Signal-strength-based position sizing
+        max_portfolio_heat: float = 0.50  # EXP-096: Max 50% capital deployed at once
     ):
         """
         Initialize paper trader.
@@ -121,10 +123,12 @@ class PaperTrader:
             profit_target: Profit target percentage
             stop_loss: Stop loss percentage
             max_hold_days: Maximum hold period
-            position_size: Position size as fraction of capital
+            position_size: Base position size as fraction of capital
             max_positions: Maximum concurrent positions
             data_dir: Directory to store trading data
             use_limit_orders: Use limit order entry strategy (EXP-080: +29% improvement)
+            use_dynamic_sizing: Use signal-strength-based position sizing (EXP-096)
+            max_portfolio_heat: Maximum fraction of capital deployed simultaneously
         """
         self.initial_capital = initial_capital
         self.capital = initial_capital
@@ -135,6 +139,8 @@ class PaperTrader:
         self.max_positions = max_positions
         self.data_dir = data_dir
         self.use_limit_orders = use_limit_orders
+        self.use_dynamic_sizing = use_dynamic_sizing
+        self.max_portfolio_heat = max_portfolio_heat
 
         # Trading state
         self.positions: Dict[str, Position] = {}
@@ -187,6 +193,34 @@ class PaperTrader:
 
         return executed_trades
 
+    def _get_position_size_multiplier(self, signal_strength: float) -> float:
+        """
+        Get position size multiplier based on signal strength.
+
+        EXP-096: Tiered position sizing by signal quality
+        - ELITE (90-100): 1.5x (15% capital) - highest conviction
+        - STRONG (80-89): 1.25x (12.5%) - strong signals
+        - GOOD (70-79): 1.0x (10%) - baseline
+        - ACCEPTABLE (65-69): 0.75x (7.5%) - minimum Q4
+
+        Args:
+            signal_strength: Signal strength score (0-100)
+
+        Returns:
+            Position size multiplier
+        """
+        if not self.use_dynamic_sizing:
+            return 1.0
+
+        if signal_strength >= 90:
+            return 1.5  # ELITE
+        elif signal_strength >= 80:
+            return 1.25  # STRONG
+        elif signal_strength >= 70:
+            return 1.0  # GOOD
+        else:
+            return 0.75  # ACCEPTABLE (65-69)
+
     def _execute_entry(self, signal: Dict, entry_date: str) -> Optional[Dict]:
         """
         Execute entry trade.
@@ -213,9 +247,21 @@ class PaperTrader:
             # Traditional close-only entry
             entry_price = signal['price']
 
-        # Calculate position size
-        position_capital = self.capital * self.position_size
+        # EXP-096: Calculate position size with signal-strength multiplier
+        signal_strength = signal.get('signal_strength', 70.0)  # Default to GOOD tier
+        size_multiplier = self._get_position_size_multiplier(signal_strength)
+        position_capital = self.capital * self.position_size * size_multiplier
         shares = position_capital / entry_price
+
+        # EXP-096: Check portfolio heat limit (total deployed capital)
+        current_positions_value = sum(pos.shares * pos.entry_price for pos in self.positions.values())
+        proposed_total = current_positions_value + (shares * entry_price)
+        total_capital = self.capital + current_positions_value
+        portfolio_heat = proposed_total / total_capital
+
+        if portfolio_heat > self.max_portfolio_heat:
+            print(f"[SKIP] {ticker}: Portfolio heat limit reached ({portfolio_heat:.1%} > {self.max_portfolio_heat:.1%})")
+            return None
 
         # Check if we have enough capital
         cost = shares * entry_price
@@ -243,8 +289,15 @@ class PaperTrader:
             'shares': shares,
             'cost': cost,
             'signal': signal,
-            'entry_method': 'limit_order' if self.use_limit_orders else 'market_close'
+            'entry_method': 'limit_order' if self.use_limit_orders else 'market_close',
+            'signal_strength': signal_strength,
+            'size_multiplier': size_multiplier
         }
+
+        # Log position sizing info
+        if self.use_dynamic_sizing:
+            tier = "ELITE" if signal_strength >= 90 else "STRONG" if signal_strength >= 80 else "GOOD" if signal_strength >= 70 else "ACCEPTABLE"
+            print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) → {size_multiplier:.2f}x multiplier = ${cost:.2f} ({(cost/total_capital)*100:.1f}% of total capital)")
 
         return trade
 

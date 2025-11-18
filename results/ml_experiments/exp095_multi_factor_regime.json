@@ -1,0 +1,78 @@
+{
+  "experiment": "EXP-095",
+  "timestamp": "2025-11-18T17:07:26.986406",
+  "objective": "Multi-factor regime detection",
+  "test_period": "2023-11-19 to 2025-11-18",
+  "regime_distribution": {
+    "UNKNOWN": 199,
+    "BULL_WEAK": 146,
+    "BULL_STRONG": 76,
+    "SIDEWAYS": 54,
+    "PANIC": 11,
+    "FEAR": 7,
+    "SIDEWAYS_CHOPPY": 5,
+    "BEAR": 2
+  },
+  "regime_returns": {
+    "BULL_WEAK": {
+      "avg_return": 0.05500701903356231,
+      "volatility": 0.7449543802911449,
+      "sharpe": 0.07383944639947526,
+      "days": 146
+    },
+    "BULL_STRONG": {
+      "avg_return": -0.0517679075951047,
+      "volatility": 0.6049101261628456,
+      "sharpe": -0.08557950240226009,
+      "days": 76
+    },
+    "SIDEWAYS": {
+      "avg_return": 0.268293380228477,
+      "volatility": 1.3640106062753061,
+      "sharpe": 0.19669449709126807,
+      "days": 54
+    },
+    "PANIC": {
+      "avg_return": 0.6771620983061438,
+      "volatility": 4.004236337599531,
+      "sharpe": 0.16911142130838624,
+      "days": 11
+    },
+    "FEAR": {
+      "avg_return": -0.3990215500223477,
+      "volatility": 1.839440807484763,
+      "sharpe": -0.21692546365107918,
+      "days": 7
+    },
+    "SIDEWAYS_CHOPPY": {
+      "avg_return": 0.3394951674109281,
+      "volatility": 0.7844283782033724,
+      "sharpe": 0.43279307180152776,
+      "days": 5
+    },
+    "BEAR": {
+      "avg_return": -0.1376859298362565,
+      "volatility": 3.171490348578501,
+      "sharpe": -0.043413636714350695,
+      "days": 2
+    }
+  },
+  "multi_factor_strategy": {
+    "trading_days": 281,
+    "avg_return": 0.07147745996727163,
+    "volatility": 0.8690770890455248,
+    "sharpe": 0.08224524713425903
+  },
+  "crude_strategy": {
+    "trading_days": 487,
+    "avg_return": 0.07452437283301702,
+    "volatility": 0.8516126814018745,
+    "sharpe": 0.08750970301468433
+  },
+  "improvement": {
+    "sharpe_absolute": -0.005264455880425303,
+    "sharpe_pct": -6.0158538985578724
+  },
+  "recommendation": "REJECT",
+  "reason": "Sharpe improvement -6.0% insufficient"
+}
