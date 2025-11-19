@@ -89,13 +89,12 @@ def backtest_with_concentration_limit(
     # Use custom position size based on concentration limit
     trader = PaperTrader(
         initial_capital=90000,
-        position_size_pct=max_position_pct,  # Set max position size
+        max_position_pct=max_position_pct,  # Set max position size
         max_positions=5,
-        profit_target_pct=2.0,
-        stop_loss_pct=-2.0,
+        profit_target=2.0,
+        stop_loss=-2.0,
         max_hold_days=2,
-        use_limit_orders=True,
-        limit_order_discount_pct=0.5
+        use_limit_orders=True
     )
 
     # Track concentration statistics

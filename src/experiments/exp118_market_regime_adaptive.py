@@ -130,13 +130,11 @@ def backtest_with_regime_filter(
     )
     trader = PaperTrader(
         initial_capital=90000,
-        position_size_pct=0.20,
         max_positions=5,
-        profit_target_pct=2.0,  # May be overridden by regime
-        stop_loss_pct=-2.0,     # May be overridden by regime
+        profit_target=2.0,  # May be overridden by regime
+        stop_loss=-2.0,     # May be overridden by regime
         max_hold_days=2,
-        use_limit_orders=True,
-        limit_order_discount_pct=0.5
+        use_limit_orders=True
     )
 
     # Track regime statistics
