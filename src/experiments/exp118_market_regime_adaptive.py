@@ -46,7 +46,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
-from src.data.yahoo_finance_fetcher import YahooFinanceFetcher
+from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
 
 
 def get_regime_filter_name(filter_type: str) -> str:
