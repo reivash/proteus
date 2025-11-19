@@ -46,7 +46,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from src.data.fetchers.rate_limited_yahoo import RateLimitedYahooFinanceFetcher
 
 
 def get_regime_filter_name(filter_type: str) -> str:
@@ -123,7 +123,7 @@ def backtest_with_regime_filter(
     print(f"{'='*70}\n")
 
     # Initialize components
-    fetcher = YahooFinanceFetcher()
+    fetcher = RateLimitedYahooFinanceFetcher(verbose=True)
     scanner = SignalScanner(
         lookback_days=90,
         min_signal_strength=None  # Use Q4 filtering from SignalScanner
