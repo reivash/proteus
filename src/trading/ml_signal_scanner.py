@@ -122,7 +122,7 @@ class MLSignalScanner(SignalScanner):
         try:
             # Fetch data (use same data as main scanner for consistency)
             from datetime import datetime, timedelta
-            from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
+            from src.data.fetchers.rate_limited_yahoo import RateLimitedYahooFinanceFetcher
 
             if date is None:
                 date = datetime.now().strftime('%Y-%m-%d')
@@ -130,7 +130,7 @@ class MLSignalScanner(SignalScanner):
             end_date = pd.to_datetime(date)
             start_date = end_date - timedelta(days=self.lookback_days + 400)  # Extra for temporal features
 
-            fetcher = YahooFinanceFetcher()
+            fetcher = RateLimitedYahooFinanceFetcher()
             df = fetcher.fetch_stock_data(
                 ticker,
                 start_date=start_date.strftime('%Y-%m-%d'),
