@@ -664,10 +664,10 @@ class PaperTrader:
             tier = "ELITE" if signal_strength >= 90 else "STRONG" if signal_strength >= 80 else "GOOD" if signal_strength >= 70 else "ACCEPTABLE"
             if atr_pct:
                 vol_tier = "Low" if atr_pct < 1.5 else "Med" if atr_pct < 2.5 else "High" if atr_pct < 3.5 else "VHigh"
-                regime_str = f" × {regime}" if regime else ""
-                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) × {vol_tier} vol (ATR {atr_pct:.1f}%){regime_str} → {combined_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
+                regime_str = f" * {regime}" if regime else ""
+                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) * {vol_tier} vol (ATR {atr_pct:.1f}%){regime_str} -> {combined_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
             else:
-                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) → {signal_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
+                print(f"[SIZE] {ticker}: {tier} signal ({signal_strength:.1f}) -> {signal_multiplier:.2f}x = ${cost:.2f} ({(cost/total_capital)*100:.1f}%)")
 
         return trade
 
