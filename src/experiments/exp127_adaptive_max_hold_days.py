@@ -275,10 +275,10 @@ def print_performance(perf: dict, label: str):
     print(f"Total Trades: {perf['total_trades']}")
     print(f"Win Rate: {perf['win_rate']:.1f}%")
     print(f"Total Return: {perf['total_return']:.2f}%")
-    print(f"Avg Return per Trade: {perf['avg_return_per_trade']:.2f}%")
-    print(f"Sharpe Ratio: {perf['sharpe_ratio']:.2f}")
-    print(f"Max Drawdown: {perf['max_drawdown']:.2f}%")
-    print(f"Profit Factor: {perf['profit_factor']:.2f}")
+    print(f"Avg PnL per Trade: ${perf.get('avg_pnl', 0):.2f}")
+    print(f"Sharpe Ratio: {perf.get('sharpe_ratio', 0):.2f}")
+    print(f"Max Drawdown: {perf.get('max_drawdown', 0):.2f}%")
+    print(f"Profit Factor: {perf.get('profit_factor', 0):.2f}")
 
     # Print hold days statistics
     if 'hold_stats' in perf:
@@ -322,10 +322,10 @@ def compare_results(results: Dict[str, dict]):
             perf['total_trades'],
             f"{perf['win_rate']:.1f}",
             f"{perf['total_return']:.2f}",
-            f"{perf['avg_return_per_trade']:.2f}",
-            f"{perf['sharpe_ratio']:.2f}",
-            f"{perf['max_drawdown']:.2f}",
-            f"{perf['profit_factor']:.2f}",
+            f"{perf.get('avg_pnl', 0):.2f}",
+            f"{perf.get('sharpe_ratio', 0):.2f}",
+            f"{perf.get('max_drawdown', 0):.2f}",
+            f"{perf.get('profit_factor', 0):.2f}",
             f"{avg_days:.2f}"
         ]
         rows.append(row)
