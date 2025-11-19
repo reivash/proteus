@@ -72,7 +72,7 @@ class DailyRunner:
             max_portfolio_heat=0.50          # EXP-096: Max 50% capital deployed
         )
         self.tracker = PerformanceTracker()
-        self.fetcher = YahooFinanceFetcher()
+        self.fetcher = RateLimitedYahooFinanceFetcher()
 
     def run_daily_workflow(self, date: str = None) -> Dict:
         """
