@@ -278,9 +278,21 @@ def backtest_with_circuit_breaker(
         # Process signals (empty if paused)
         if signals:
             trader.process_signals(signals, date_str)
-
-        # Update positions
-        trader.update_positions(date_str, fetcher)
+        # Update positions and check exits
+        open_positions = trader.get_open_positions()
+        if open_positions:
+            tickers = [pos['ticker'] for pos in open_positions]
+            prices = {}
+            for ticker in tickers:
+                try:
+                    data = fetcher.get_stock_data(ticker, date_str, date_str)
+                    if data is not None and not data.empty:
+                        prices[ticker] = float(data['Close'].iloc[-1])
+                except:
+                    pass
+            if prices:
+                trader.update_daily_equity(prices, date_str)
+                trader.check_exits(prices, date_str)
 
         # Check for newly closed positions and update breaker
         current_closed = trader.get_performance()['total_trades']

@@ -283,9 +283,21 @@ def backtest_with_freshness_filter(
             # Process filtered signals
             if filtered_signals:
                 trader.process_signals(filtered_signals, date_str)
-
-        # Update positions
-        trader.update_positions(date_str, fetcher)
+        # Update positions and check exits
+        open_positions = trader.get_open_positions()
+        if open_positions:
+            tickers = [pos['ticker'] for pos in open_positions]
+            prices = {}
+            for ticker in tickers:
+                try:
+                    data = fetcher.get_stock_data(ticker, date_str, date_str)
+                    if data is not None and not data.empty:
+                        prices[ticker] = float(data['Close'].iloc[-1])
+                except:
+                    pass
+            if prices:
+                trader.update_daily_equity(prices, date_str)
+                trader.check_exits(prices, date_str)
 
         # Move to next trading day
         current_dt += timedelta(days=1)
