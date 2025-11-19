@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
 from src.trading.performance_tracker import PerformanceTracker
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from src.data.fetchers.rate_limited_yahoo import RateLimitedYahooFinanceFetcher
 
 
 class DailyRunner:
