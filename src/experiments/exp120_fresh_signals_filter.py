@@ -226,7 +226,7 @@ def backtest_with_freshness_filter(
         date_str = current_dt.strftime('%Y-%m-%d')
 
         # Scan for signals
-        signals = scanner.scan_all_stocks(date_str, fetcher)
+        signals = scanner.scan_all_stocks(date_str)
 
         if len(signals) > 0:
             filter_stats['total_signals'] += len(signals)

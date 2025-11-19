@@ -114,7 +114,7 @@ def backtest_with_concentration_limit(
         date_str = current_dt.strftime('%Y-%m-%d')
 
         # Scan for signals
-        signals = scanner.scan_all_stocks(date_str, fetcher)
+        signals = scanner.scan_all_stocks(date_str)
 
         if len(signals) > 0:
             print(f"\n{'='*70}")

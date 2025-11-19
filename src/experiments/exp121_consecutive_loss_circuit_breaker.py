@@ -249,7 +249,7 @@ def backtest_with_circuit_breaker(
         is_paused = breaker.is_trading_paused(date_str)
 
         # Scan for signals
-        signals = scanner.scan_all_stocks(date_str, fetcher)
+        signals = scanner.scan_all_stocks(date_str)
 
         if len(signals) > 0:
             total_signals += len(signals)
