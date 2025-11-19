@@ -44,7 +44,7 @@ import os
 # Add parent directory to path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from src.data.fetchers.rate_limited_yahoo import RateLimitedYahooFinanceFetcher
 from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
 from src.data.features.technical_indicators import TechnicalFeatureEngineer
 from src.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
@@ -247,7 +247,7 @@ class SignalScanner:
         start_date = end_date - timedelta(days=self.lookback_days)
 
         # Fetch data
-        fetcher = YahooFinanceFetcher()
+        fetcher = RateLimitedYahooFinanceFetcher()
         try:
             data = fetcher.fetch_stock_data(
                 ticker,
@@ -370,7 +370,7 @@ class SignalScanner:
             'BULL', 'BEAR', or 'SIDEWAYS'
         """
         detector = MarketRegimeDetector()
-        fetcher = YahooFinanceFetcher()
+        fetcher = RateLimitedYahooFinanceFetcher()
 
         # Get SPY data for regime detection
         end_date = datetime.now().strftime('%Y-%m-%d')
