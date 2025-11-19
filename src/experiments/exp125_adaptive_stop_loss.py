@@ -45,7 +45,7 @@ import pandas as pd
 import numpy as np
 
 # Add src directory to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..')
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from src.trading.signal_scanner import SignalScanner
 from src.trading.paper_trader import PaperTrader
