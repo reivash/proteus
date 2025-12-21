@@ -1,8 +1,37 @@
 {
-  "_comment": "Per-stock optimized parameters from EXP-044 (entry) and EXP-049 (exit)",
-  "_version": "1.0",
-  "_deployed": "2025-11-18",
-  "_source_experiments": ["EXP-044", "EXP-049"],
+  "_comment": "Per-stock optimized parameters from EXP-044, EXP-049, and backtest analysis",
+  "_version": "2.0",
+  "_deployed": "2025-12-20",
+  "_source_experiments": ["EXP-044", "EXP-049", "365-day-backtest"],
+
+  "signal_thresholds": {
+    "_comment": "Per-stock minimum signal thresholds based on 365-day backtest win rates",
+    "_analysis_date": "2025-12-20",
+
+    "higher_threshold": {
+      "_comment": "Stocks with win rate <50% - require stronger signals",
+      "JNJ": {"min_strength": 70, "reason": "Win 33%, need stronger signals"},
+      "ABBV": {"min_strength": 75, "reason": "Win 33%, 100% stop-out rate"},
+      "TMUS": {"min_strength": 75, "reason": "Win 17%, consistently poor"},
+      "CAT": {"min_strength": 70, "reason": "Win 33%, -2% avg return"},
+      "MPC": {"min_strength": 70, "reason": "Win 40%, 80% stop-out rate"},
+      "CVS": {"min_strength": 80, "reason": "Win 0%, worst performer"}
+    },
+
+    "lower_threshold": {
+      "_comment": "Stocks with win rate >75% - can use lower thresholds",
+      "MSFT": {"min_strength": 40, "reason": "Win 100%, +4.78% avg return"},
+      "MA": {"min_strength": 40, "reason": "Win 100%, +4.36% avg return"},
+      "NEE": {"min_strength": 40, "reason": "Win 100%, +3.88% avg return"},
+      "PFE": {"min_strength": 40, "reason": "Win 75%, +3.08% avg return"},
+      "LMT": {"min_strength": 40, "reason": "Win 100%, +2.74% avg return"},
+      "AIG": {"min_strength": 40, "reason": "Win 100%, +2.08% avg return"},
+      "ADI": {"min_strength": 45, "reason": "Win 75%, +2.07% avg return"},
+      "CRM": {"min_strength": 45, "reason": "Win 75%, +1.75% avg return"},
+      "ORCL": {"min_strength": 40, "reason": "Win 100%, +1.71% avg return"},
+      "AXP": {"min_strength": 40, "reason": "Win 100%, +1.44% avg return"}
+    }
+  },
 
   "entry_parameters": {
     "TXN": {

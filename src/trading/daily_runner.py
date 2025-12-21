@@ -30,6 +30,13 @@ from src.trading.paper_trader import PaperTrader
 from src.trading.performance_tracker import PerformanceTracker
 from src.data.fetchers.rate_limited_yahoo import RateLimitedYahooFinanceFetcher
 
+# Deep Dive Conviction Filter (2025-12-18)
+try:
+    from src.research.conviction_filter import ConvictionFilter
+    CONVICTION_FILTER_AVAILABLE = True
+except ImportError:
+    CONVICTION_FILTER_AVAILABLE = False
+
 
 class DailyRunner:
     """
@@ -50,11 +57,12 @@ class DailyRunner:
             position_size: Position size as fraction of capital
             max_positions: Maximum concurrent positions
         """
-        # Q4-ONLY FILTER DEPLOYED (2025-11-18)
-        # Trade only top 25% quality signals based on EXP-091 research
-        # Expected: +14.1pp win rate (63.7% → 77.8%)
-        # Threshold: 65.0 (conservative estimate, exact value pending EXP-093 validation)
-        self.scanner = SignalScanner(lookback_days=90, min_signal_strength=65.0)
+        # Q4-ONLY FILTER - ADJUSTED (2025-12-18)
+        # Original: 65.0 (too restrictive - 0 signals for weeks)
+        # Diagnostic showed signals at 53-59 strength being filtered
+        # Lowered to 50.0 to capture moderate-strength signals while still filtering weak ones
+        # TODO: Re-evaluate threshold based on live performance
+        self.scanner = SignalScanner(lookback_days=90, min_signal_strength=50.0)
 
         # DYNAMIC POSITION SIZING DEPLOYED (2025-11-18)
         # EXP-096: Signal-strength-based tiered position sizing
@@ -73,6 +81,14 @@ class DailyRunner:
         )
         self.tracker = PerformanceTracker()
         self.fetcher = RateLimitedYahooFinanceFetcher()
+
+        # CONVICTION FILTER INTEGRATION (2025-12-18)
+        # Uses overnight deep dive analysis to modify position sizing
+        if CONVICTION_FILTER_AVAILABLE:
+            self.conviction_filter = ConvictionFilter()
+            print(f"[LOADED] Conviction filter: {len(self.conviction_filter._cache)} stocks analyzed")
+        else:
+            self.conviction_filter = None
 
     def run_daily_workflow(self, date: str = None) -> Dict:
         """
@@ -123,12 +139,30 @@ class DailyRunner:
         print(f"[SIGNALS] Found {len(signals)} signal(s)")
         print()
 
+        # Step 2b: Apply conviction filter (2025-12-18)
+        if signals and self.conviction_filter:
+            print("Step 2b: Applying conviction filter...")
+            filtered_signals = []
+            for signal in signals:
+                should_trade, modified_signal = self.conviction_filter.filter_signal(signal)
+                if should_trade:
+                    filtered_signals.append(modified_signal)
+                    print(f"  [OK] {signal['ticker']}: {modified_signal.get('conviction_tier', 'N/A')} "
+                          f"({modified_signal.get('conviction_score', 'N/A')}/100) -> "
+                          f"{modified_signal.get('position_modifier', 1.0):.2f}x size")
+                else:
+                    print(f"  [SKIP] {signal['ticker']}: {modified_signal.get('conviction_note', 'Filtered')}")
+            signals = filtered_signals
+            print(f"[CONVICTION] {len(signals)} signal(s) passed filter")
+            print()
+
         if signals:
             print("Signals details:")
             for signal in signals:
+                conv_info = f", Conv: {signal.get('conviction_tier', 'N/A')}" if 'conviction_tier' in signal else ""
                 print(f"  {signal['ticker']}: {signal['signal_type']} @ ${signal['price']:.2f} "
                       f"(Z: {signal['z_score']:.2f}, RSI: {signal['rsi']:.1f}, "
-                      f"Expected: {signal['expected_return']:.2f}%)")
+                      f"Expected: {signal['expected_return']:.2f}%{conv_info})")
             print()
 
         # Step 3: Process entries

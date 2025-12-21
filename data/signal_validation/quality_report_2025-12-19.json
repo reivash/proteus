@@ -1,0 +1,137 @@
+{
+  "report_date": "2025-12-19",
+  "analysis_period": "365 days",
+  "total_signals": 122,
+  "overall_hit_rate": 29.5,
+  "overall_win_rate": 63.9,
+  "avg_return_2d": 0.87,
+  "avg_max_gain": 4.95,
+  "avg_max_loss": -4.39,
+  "tier_metrics": {
+    "ELITE": {
+      "count": 5,
+      "hit_rate": 0.0,
+      "win_rate": 60.0,
+      "avg_return_2d": 1.05,
+      "avg_max_gain": 8.78,
+      "avg_max_loss": -8.31
+    },
+    "STRONG": {
+      "count": 30,
+      "hit_rate": 26.7,
+      "win_rate": 56.7,
+      "avg_return_2d": 1.54,
+      "avg_max_gain": 5.26,
+      "avg_max_loss": -5.34
+    },
+    "GOOD": {
+      "count": 37,
+      "hit_rate": 29.7,
+      "win_rate": 67.6,
+      "avg_return_2d": 0.97,
+      "avg_max_gain": 5.27,
+      "avg_max_loss": -4.19
+    },
+    "MODERATE": {
+      "count": 36,
+      "hit_rate": 36.1,
+      "win_rate": 61.1,
+      "avg_return_2d": -0.18,
+      "avg_max_gain": 4.01,
+      "avg_max_loss": -4.13
+    },
+    "WEAK": {
+      "count": 9,
+      "hit_rate": 22.2,
+      "win_rate": 66.7,
+      "avg_return_2d": 1.39,
+      "avg_max_gain": 3.87,
+      "avg_max_loss": -2.63
+    },
+    "POOR": {
+      "count": 5,
+      "hit_rate": 40.0,
+      "win_rate": 100.0,
+      "avg_return_2d": 2.39,
+      "avg_max_gain": 5.57,
+      "avg_max_loss": -1.42
+    }
+  },
+  "threshold_analysis": [
+    {
+      "threshold": 30,
+      "signals": 122,
+      "win_rate": 63.9,
+      "hit_rate": 29.5,
+      "avg_return": 0.87,
+      "score": 67.1
+    },
+    {
+      "threshold": 40,
+      "signals": 117,
+      "win_rate": 62.4,
+      "hit_rate": 29.1,
+      "avg_return": 0.8,
+      "score": 59.1
+    },
+    {
+      "threshold": 45,
+      "signals": 116,
+      "win_rate": 62.1,
+      "hit_rate": 29.3,
+      "avg_return": 0.78,
+      "score": 57.5
+    },
+    {
+      "threshold": 50,
+      "signals": 108,
+      "win_rate": 62.0,
+      "hit_rate": 29.6,
+      "avg_return": 0.75,
+      "score": 56.5
+    },
+    {
+      "threshold": 55,
+      "signals": 91,
+      "win_rate": 61.5,
+      "hit_rate": 28.6,
+      "avg_return": 0.92,
+      "score": 52.2
+    },
+    {
+      "threshold": 60,
+      "signals": 72,
+      "win_rate": 62.5,
+      "hit_rate": 26.4,
+      "avg_return": 1.22,
+      "score": 53.6
+    },
+    {
+      "threshold": 65,
+      "signals": 54,
+      "win_rate": 64.8,
+      "hit_rate": 27.8,
+      "avg_return": 1.75,
+      "score": 59.4
+    },
+    {
+      "threshold": 70,
+      "signals": 35,
+      "win_rate": 57.1,
+      "hit_rate": 22.9,
+      "avg_return": 1.47,
+      "score": 25.6
+    },
+    {
+      "threshold": 75,
+      "signals": 21,
+      "win_rate": 57.1,
+      "hit_rate": 19.0,
+      "avg_return": 2.12,
+      "score": 22.1
+    }
+  ],
+  "recommended_threshold": 30,
+  "sample_size_adequate": true,
+  "confidence_level": 0.95
+}
