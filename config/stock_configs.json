@@ -1,8 +1,8 @@
 {
-  "_comment": "Per-stock optimized parameters with regime-aware adjustments (Dec 2025)",
-  "_version": "4.0",
+  "_comment": "Per-stock optimized parameters with regime and sector-aware adjustments (Dec 2025)",
+  "_version": "5.0",
   "_deployed": "2025-12-21",
-  "_source_experiments": ["EXP-044", "EXP-049", "365-day-backtest", "per-stock-calibration", "regime-analysis"],
+  "_source_experiments": ["EXP-044", "EXP-049", "365-day-backtest", "per-stock-calibration", "regime-analysis", "sector-momentum-analysis"],
 
   "regime_parameters": {
     "_comment": "Based on 1-year analysis: VOLATILE/BEAR best for mean reversion, BULL worst",
@@ -152,6 +152,60 @@
     "MRVL": {"profit_target": 2.5, "stop_loss": -2.5, "max_hold_days": 2, "source": "EXP-049"},
     "ABBV": {"profit_target": 1.5, "stop_loss": -1.5, "max_hold_days": 3, "source": "EXP-049"},
     "EOG": {"profit_target": 2.0, "stop_loss": -2.0, "max_hold_days": 4, "source": "EXP-049"}
+  },
+
+  "sector_parameters": {
+    "_comment": "Sector momentum analysis - weak sectors outperform by +0.27% per trade",
+    "_source": "sector_momentum_analysis.json",
+
+    "sector_etf_mapping": {
+      "XLF": "Financials",
+      "XLK": "Technology",
+      "XLV": "Healthcare",
+      "XLE": "Energy",
+      "XLI": "Industrials",
+      "XLY": "Consumer",
+      "XLC": "Communication",
+      "XLB": "Materials"
+    },
+
+    "stock_sector_mapping": {
+      "JPM": "XLF", "MS": "XLF", "SCHW": "XLF", "AXP": "XLF", "AIG": "XLF", "USB": "XLF", "PNC": "XLF", "V": "XLF", "MA": "XLF",
+      "NVDA": "XLK", "AVGO": "XLK", "MSFT": "XLK", "ORCL": "XLK", "INTU": "XLK", "ADBE": "XLK", "CRM": "XLK", "NOW": "XLK", "AMAT": "XLK", "KLAC": "XLK", "MRVL": "XLK", "QCOM": "XLK", "TXN": "XLK", "ADI": "XLK",
+      "ABBV": "XLV", "SYK": "XLV", "GILD": "XLV", "PFE": "XLV", "JNJ": "XLV", "CVS": "XLV", "HCA": "XLV", "IDXX": "XLV", "INSM": "XLV",
+      "COP": "XLE", "SLB": "XLE", "XOM": "XLE", "MPC": "XLE", "EOG": "XLE",
+      "CAT": "XLI", "ETN": "XLI", "LMT": "XLI", "ROAD": "XLI",
+      "HD": "XLY", "LOW": "XLY", "TGT": "XLY", "WMT": "XLY",
+      "TMUS": "XLC", "CMCSA": "XLC", "META": "XLC",
+      "APD": "XLB", "ECL": "XLB", "MLM": "XLB", "SHW": "XLB"
+    },
+
+    "momentum_thresholds": {
+      "_comment": "5-day sector momentum categories",
+      "weak": {"max": -3, "strength_boost": 1.10, "reason": "56% win, +0.62% avg"},
+      "slightly_weak": {"min": -3, "max": -1, "strength_boost": 1.05, "reason": "57.6% win, +0.24% avg"},
+      "neutral": {"min": -1, "max": 1, "strength_boost": 1.0, "reason": "50.8% win, +0.18% avg"},
+      "slightly_strong": {"min": 1, "max": 3, "strength_boost": 0.95, "reason": "54.5% win, +0.16% avg"},
+      "strong": {"min": 3, "strength_boost": 0.90, "reason": "49.7% win, +0.21% avg"}
+    },
+
+    "best_sector_combinations": {
+      "_comment": "Top sector + momentum combos from 1-year analysis",
+      "tier1_combos": ["Energy+strong", "Industrials+weak", "Financials+weak"],
+      "avoid_combos": ["Consumer+any", "Industrials+slightly_strong", "Communication+strong"]
+    },
+
+    "sector_rankings": {
+      "_comment": "Sector performance for mean reversion (by avg return)",
+      "Healthcare": {"win_rate": 59.4, "avg_ret": 0.61, "rank": 1},
+      "Technology": {"win_rate": 53.4, "avg_ret": 0.50, "rank": 2},
+      "Financials": {"win_rate": 59.3, "avg_ret": 0.38, "rank": 3},
+      "Energy": {"win_rate": 56.2, "avg_ret": 0.31, "rank": 4},
+      "Industrials": {"win_rate": 51.8, "avg_ret": 0.20, "rank": 5},
+      "Communication": {"win_rate": 52.2, "avg_ret": 0.13, "rank": 6},
+      "Materials": {"win_rate": 52.2, "avg_ret": 0.13, "rank": 7},
+      "Consumer": {"win_rate": 49.0, "avg_ret": -0.21, "rank": 8}
+    }
   },
 
   "defaults": {

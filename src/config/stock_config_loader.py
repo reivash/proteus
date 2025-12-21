@@ -280,6 +280,88 @@ class StockConfigLoader:
 
         return (0, 1.0)  # Default
 
+    def get_stock_sector(self, ticker: str) -> Optional[str]:
+        """
+        Get the sector ETF for a stock.
+
+        Returns:
+            Sector ETF symbol (e.g., 'XLK') or None
+        """
+        sector_params = self._config.get('sector_parameters', {})
+        mapping = sector_params.get('stock_sector_mapping', {})
+        return mapping.get(ticker)
+
+    def get_sector_name(self, sector_etf: str) -> str:
+        """Get human-readable sector name from ETF symbol."""
+        sector_params = self._config.get('sector_parameters', {})
+        etf_mapping = sector_params.get('sector_etf_mapping', {})
+        return etf_mapping.get(sector_etf, sector_etf)
+
+    def get_sector_momentum_boost(self, momentum: float) -> float:
+        """
+        Get signal strength boost based on sector momentum.
+
+        Based on sector momentum analysis:
+        - Weak sectors (+10% boost): 56% win, +0.62% avg
+        - Strong sectors (-10% penalty): 49.7% win, +0.21% avg
+
+        Args:
+            momentum: 5-day sector momentum in percent
+
+        Returns:
+            Strength multiplier (e.g., 1.10 for weak sectors)
+        """
+        sector_params = self._config.get('sector_parameters', {})
+        thresholds = sector_params.get('momentum_thresholds', {})
+
+        if momentum < -3:
+            return thresholds.get('weak', {}).get('strength_boost', 1.10)
+        elif momentum < -1:
+            return thresholds.get('slightly_weak', {}).get('strength_boost', 1.05)
+        elif momentum < 1:
+            return thresholds.get('neutral', {}).get('strength_boost', 1.0)
+        elif momentum < 3:
+            return thresholds.get('slightly_strong', {}).get('strength_boost', 0.95)
+        else:
+            return thresholds.get('strong', {}).get('strength_boost', 0.90)
+
+    def get_sector_momentum_category(self, momentum: float) -> str:
+        """Get sector momentum category from momentum value."""
+        if momentum < -3:
+            return 'weak'
+        elif momentum < -1:
+            return 'slightly_weak'
+        elif momentum < 1:
+            return 'neutral'
+        elif momentum < 3:
+            return 'slightly_strong'
+        else:
+            return 'strong'
+
+    def get_sector_ranking(self, sector_name: str) -> dict:
+        """
+        Get sector performance ranking for mean reversion.
+
+        Returns dict with win_rate, avg_ret, rank
+        """
+        sector_params = self._config.get('sector_parameters', {})
+        rankings = sector_params.get('sector_rankings', {})
+        return rankings.get(sector_name, {'win_rate': 50.0, 'avg_ret': 0.0, 'rank': 5})
+
+    def is_avoid_sector_combo(self, sector_name: str, momentum_category: str) -> bool:
+        """
+        Check if a sector + momentum combination should be avoided.
+
+        Based on analysis, Consumer sector consistently underperforms.
+        """
+        sector_params = self._config.get('sector_parameters', {})
+        combos = sector_params.get('best_sector_combinations', {})
+        avoid = combos.get('avoid_combos', [])
+
+        # Check for exact match or wildcard
+        combo_str = f"{sector_name}+{momentum_category}"
+        return combo_str in avoid or f"{sector_name}+any" in avoid
+
 
 # Singleton instance
 _loader = None

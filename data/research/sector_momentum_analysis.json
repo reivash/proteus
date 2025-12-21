@@ -1,0 +1,236 @@
+{
+  "timestamp": "2025-12-21T20:32:50.232771",
+  "days_analyzed": 365,
+  "total_signals": 2455,
+  "by_sector_momentum": {
+    "weak": {
+      "signals": 662,
+      "win_rate": 56.0,
+      "hit_rate": 79.9,
+      "avg_ret": 0.62,
+      "avg_sector_momentum": -5.83
+    },
+    "slightly_weak": {
+      "signals": 596,
+      "win_rate": 57.6,
+      "hit_rate": 62.2,
+      "avg_ret": 0.24,
+      "avg_sector_momentum": -1.88
+    },
+    "neutral": {
+      "signals": 626,
+      "win_rate": 50.8,
+      "hit_rate": 58.8,
+      "avg_ret": 0.18,
+      "avg_sector_momentum": -0.03
+    },
+    "slightly_strong": {
+      "signals": 426,
+      "win_rate": 54.5,
+      "hit_rate": 56.6,
+      "avg_ret": 0.16,
+      "avg_sector_momentum": 1.85
+    },
+    "strong": {
+      "signals": 145,
+      "win_rate": 49.7,
+      "hit_rate": 65.5,
+      "avg_ret": 0.21,
+      "avg_sector_momentum": 4.6
+    }
+  },
+  "by_sector": {
+    "Healthcare": {
+      "signals": 278,
+      "win_rate": 59.4,
+      "hit_rate": 68.0,
+      "avg_ret": 0.61
+    },
+    "Financials": {
+      "signals": 349,
+      "win_rate": 59.3,
+      "hit_rate": 68.5,
+      "avg_ret": 0.38
+    },
+    "Materials": {
+      "signals": 228,
+      "win_rate": 52.2,
+      "hit_rate": 51.8,
+      "avg_ret": 0.13
+    },
+    "Industrials": {
+      "signals": 224,
+      "win_rate": 51.8,
+      "hit_rate": 61.2,
+      "avg_ret": 0.2
+    },
+    "Energy": {
+      "signals": 260,
+      "win_rate": 56.2,
+      "hit_rate": 72.7,
+      "avg_ret": 0.31
+    },
+    "Technology": {
+      "signals": 668,
+      "win_rate": 53.4,
+      "hit_rate": 73.1,
+      "avg_ret": 0.5
+    },
+    "Consumer": {
+      "signals": 243,
+      "win_rate": 49.0,
+      "hit_rate": 52.7,
+      "avg_ret": -0.21
+    },
+    "Communication": {
+      "signals": 205,
+      "win_rate": 52.2,
+      "hit_rate": 56.6,
+      "avg_ret": 0.13
+    }
+  },
+  "top_combinations": [
+    {
+      "sector": "Energy",
+      "momentum": "strong",
+      "signals": 8,
+      "win_rate": 87.5,
+      "avg_ret": 2.646481568745296
+    },
+    {
+      "sector": "Industrials",
+      "momentum": "weak",
+      "signals": 21,
+      "win_rate": 76.19047619047619,
+      "avg_ret": 1.8424298415351508
+    },
+    {
+      "sector": "Communication",
+      "momentum": "weak",
+      "signals": 29,
+      "win_rate": 58.620689655172406,
+      "avg_ret": 1.2425945253433808
+    },
+    {
+      "sector": "Financials",
+      "momentum": "weak",
+      "signals": 96,
+      "win_rate": 67.70833333333334,
+      "avg_ret": 1.0997366960565937
+    },
+    {
+      "sector": "Energy",
+      "momentum": "slightly_strong",
+      "signals": 54,
+      "win_rate": 74.07407407407408,
+      "avg_ret": 1.0763762873015208
+    },
+    {
+      "sector": "Financials",
+      "momentum": "strong",
+      "signals": 21,
+      "win_rate": 61.904761904761905,
+      "avg_ret": 0.9610041894472797
+    },
+    {
+      "sector": "Technology",
+      "momentum": "weak",
+      "signals": 240,
+      "win_rate": 53.333333333333336,
+      "avg_ret": 0.8765682161829421
+    },
+    {
+      "sector": "Healthcare",
+      "momentum": "neutral",
+      "signals": 62,
+      "win_rate": 61.29032258064516,
+      "avg_ret": 0.8555932026578102
+    },
+    {
+      "sector": "Healthcare",
+      "momentum": "slightly_strong",
+      "signals": 62,
+      "win_rate": 61.29032258064516,
+      "avg_ret": 0.7743485054109372
+    },
+    {
+      "sector": "Energy",
+      "momentum": "neutral",
+      "signals": 63,
+      "win_rate": 60.317460317460316,
+      "avg_ret": 0.7596575218798434
+    }
+  ],
+  "bottom_combinations": [
+    {
+      "sector": "Consumer",
+      "momentum": "weak",
+      "signals": 65,
+      "win_rate": 53.84615384615385,
+      "avg_ret": -0.28759668570056357
+    },
+    {
+      "sector": "Consumer",
+      "momentum": "neutral",
+      "signals": 63,
+      "win_rate": 33.33333333333333,
+      "avg_ret": -0.31181155251804915
+    },
+    {
+      "sector": "Consumer",
+      "momentum": "slightly_strong",
+      "signals": 31,
+      "win_rate": 45.16129032258064,
+      "avg_ret": -0.3491583958166131
+    },
+    {
+      "sector": "Energy",
+      "momentum": "weak",
+      "signals": 95,
+      "win_rate": 43.15789473684211,
+      "avg_ret": -0.3530218485203534
+    },
+    {
+      "sector": "Energy",
+      "momentum": "slightly_weak",
+      "signals": 40,
+      "win_rate": 50.0,
+      "avg_ret": -0.35310669856058885
+    },
+    {
+      "sector": "Consumer",
+      "momentum": "strong",
+      "signals": 19,
+      "win_rate": 52.63157894736842,
+      "avg_ret": -0.39623130770070536
+    },
+    {
+      "sector": "Financials",
+      "momentum": "neutral",
+      "signals": 84,
+      "win_rate": 40.476190476190474,
+      "avg_ret": -0.4934262137017552
+    },
+    {
+      "sector": "Materials",
+      "momentum": "slightly_strong",
+      "signals": 34,
+      "win_rate": 38.23529411764706,
+      "avg_ret": -0.5517702628369092
+    },
+    {
+      "sector": "Communication",
+      "momentum": "strong",
+      "signals": 11,
+      "win_rate": 27.27272727272727,
+      "avg_ret": -0.646216904917497
+    },
+    {
+      "sector": "Industrials",
+      "momentum": "slightly_strong",
+      "signals": 40,
+      "win_rate": 30.0,
+      "avg_ret": -0.920754935316549
+    }
+  ]
+}

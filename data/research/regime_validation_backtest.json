@@ -1,0 +1,29 @@
+{
+  "timestamp": "2025-12-21T20:31:04.116499",
+  "days_analyzed": 365,
+  "baseline": {
+    "signals": 2537,
+    "win_rate": 54.7,
+    "hit_rate": 65.1,
+    "avg_ret": 0.31,
+    "weighted_ret": 0.31,
+    "sharpe": 0.105,
+    "expectancy": 0.312
+  },
+  "regime_aware": {
+    "signals": 2487,
+    "win_rate": 54.7,
+    "hit_rate": 65.3,
+    "avg_ret": 0.31,
+    "weighted_ret": 0.42,
+    "sharpe": 0.103,
+    "expectancy": 0.308
+  },
+  "improvement": {
+    "win_rate": 0.0,
+    "avg_ret": 0.0,
+    "weighted_ret": 0.10999999999999999,
+    "sharpe": -0.0020000000000000018,
+    "expectancy": -0.0040000000000000036
+  }
+}
