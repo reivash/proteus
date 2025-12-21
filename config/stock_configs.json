@@ -1,35 +1,75 @@
 {
-  "_comment": "Per-stock optimized parameters from EXP-044, EXP-049, and backtest analysis",
-  "_version": "2.0",
-  "_deployed": "2025-12-20",
-  "_source_experiments": ["EXP-044", "EXP-049", "365-day-backtest"],
+  "_comment": "Per-stock optimized parameters from 1-year RSI<35 analysis (Dec 2025)",
+  "_version": "3.0",
+  "_deployed": "2025-12-21",
+  "_source_experiments": ["EXP-044", "EXP-049", "365-day-backtest", "per-stock-calibration"],
+
+  "stock_tiers": {
+    "_comment": "Stocks grouped by 1-year mean reversion performance",
+
+    "elite_performers": {
+      "_comment": "Expectancy > +0.5%, focus allocation here",
+      "stocks": ["COP", "CVS", "SLB", "XOM", "ADI", "GILD", "JPM", "EOG", "IDXX", "TXN"],
+      "threshold_adjustment": -5,
+      "position_boost": 1.2
+    },
+
+    "strong_performers": {
+      "_comment": "Expectancy +0.2% to +0.5%",
+      "stocks": ["QCOM", "JNJ", "V", "MPC", "SHW", "KLAC", "MS", "AMAT"],
+      "threshold_adjustment": 0,
+      "position_boost": 1.0
+    },
+
+    "average_performers": {
+      "_comment": "Expectancy 0% to +0.2%",
+      "stocks": ["MA", "LMT", "EXR", "USB", "SYK", "PFE", "SCHW", "ABBV", "MSFT", "NEE", "TMUS", "APD", "AIG"],
+      "threshold_adjustment": 0,
+      "position_boost": 1.0
+    },
+
+    "weak_performers": {
+      "_comment": "Expectancy -0.2% to 0%, require higher threshold",
+      "stocks": ["NVDA", "AVGO", "AXP", "WMT", "CMCSA", "META", "INSM", "ROAD", "MRVL", "MLM", "LOW", "PNC", "ECL"],
+      "threshold_adjustment": 5,
+      "position_boost": 0.8
+    },
+
+    "avoid_list": {
+      "_comment": "Expectancy < -0.2%, exclude or require very high signals",
+      "stocks": ["NOW", "CAT", "CRM", "HCA", "TGT", "ETN", "HD", "ORCL", "ADBE", "INTU"],
+      "threshold_adjustment": 15,
+      "position_boost": 0.5
+    }
+  },
 
   "signal_thresholds": {
-    "_comment": "Per-stock minimum signal thresholds based on 365-day backtest win rates",
-    "_analysis_date": "2025-12-20",
+    "_comment": "Per-stock minimum signal thresholds based on 1-year analysis",
 
     "higher_threshold": {
-      "_comment": "Stocks with win rate <50% - require stronger signals",
-      "JNJ": {"min_strength": 70, "reason": "Win 33%, need stronger signals"},
-      "ABBV": {"min_strength": 75, "reason": "Win 33%, 100% stop-out rate"},
-      "TMUS": {"min_strength": 75, "reason": "Win 17%, consistently poor"},
-      "CAT": {"min_strength": 70, "reason": "Win 33%, -2% avg return"},
-      "MPC": {"min_strength": 70, "reason": "Win 40%, 80% stop-out rate"},
-      "CVS": {"min_strength": 80, "reason": "Win 0%, worst performer"}
+      "NOW": {"min_strength": 70, "reason": "Win 41%, -0.64% exp, worst performer"},
+      "CAT": {"min_strength": 70, "reason": "Win 47%, -0.38% exp"},
+      "HCA": {"min_strength": 70, "reason": "Win 42%, -0.32% exp"},
+      "CRM": {"min_strength": 65, "reason": "Win 45%, -0.30% exp"},
+      "TGT": {"min_strength": 65, "reason": "Win 45%, -0.28% exp"},
+      "ETN": {"min_strength": 65, "reason": "Win 46%, -0.26% exp"},
+      "HD": {"min_strength": 65, "reason": "Win 46%, -0.25% exp"},
+      "ORCL": {"min_strength": 60, "reason": "Win 49%, -0.22% exp"},
+      "ADBE": {"min_strength": 60, "reason": "Win 49%, -0.20% exp"},
+      "INTU": {"min_strength": 60, "reason": "Win 52%, -0.20% exp"}
     },
 
     "lower_threshold": {
-      "_comment": "Stocks with win rate >75% - can use lower thresholds",
-      "MSFT": {"min_strength": 40, "reason": "Win 100%, +4.78% avg return"},
-      "MA": {"min_strength": 40, "reason": "Win 100%, +4.36% avg return"},
-      "NEE": {"min_strength": 40, "reason": "Win 100%, +3.88% avg return"},
-      "PFE": {"min_strength": 40, "reason": "Win 75%, +3.08% avg return"},
-      "LMT": {"min_strength": 40, "reason": "Win 100%, +2.74% avg return"},
-      "AIG": {"min_strength": 40, "reason": "Win 100%, +2.08% avg return"},
-      "ADI": {"min_strength": 45, "reason": "Win 75%, +2.07% avg return"},
-      "CRM": {"min_strength": 45, "reason": "Win 75%, +1.75% avg return"},
-      "ORCL": {"min_strength": 40, "reason": "Win 100%, +1.71% avg return"},
-      "AXP": {"min_strength": 40, "reason": "Win 100%, +1.44% avg return"}
+      "COP": {"min_strength": 40, "reason": "Win 72%, +0.83% exp, best performer"},
+      "CVS": {"min_strength": 40, "reason": "Win 70%, +0.76% exp"},
+      "SLB": {"min_strength": 40, "reason": "Win 77%, +0.75% exp"},
+      "XOM": {"min_strength": 40, "reason": "Win 71%, +0.61% exp"},
+      "ADI": {"min_strength": 45, "reason": "Win 65%, +0.51% exp"},
+      "GILD": {"min_strength": 45, "reason": "Win 68%, +0.50% exp"},
+      "JPM": {"min_strength": 45, "reason": "Win 69%, +0.50% exp"},
+      "EOG": {"min_strength": 45, "reason": "Win 63%, +0.49% exp"},
+      "IDXX": {"min_strength": 45, "reason": "Win 68%, +0.45% exp"},
+      "TXN": {"min_strength": 45, "reason": "Win 59%, +0.45% exp"}
     }
   },
 
@@ -48,13 +88,6 @@
       "improvement": "+2.2pp",
       "source": "EXP-044"
     },
-    "DXCM": {
-      "z_score_threshold": 1.5,
-      "rsi_oversold": 30,
-      "volume_multiplier": 1.8,
-      "improvement": "+2.9pp",
-      "source": "EXP-044"
-    },
     "EXR": {
       "z_score_threshold": 1.2,
       "rsi_oversold": 38,
@@ -65,69 +98,15 @@
   },
 
   "exit_parameters": {
-    "NVDA": {
-      "profit_target": 2.5,
-      "stop_loss": -2.5,
-      "max_hold_days": 2,
-      "win_rate": "83.3%",
-      "source": "EXP-049"
-    },
-    "V": {
-      "profit_target": 1.5,
-      "stop_loss": -1.5,
-      "max_hold_days": 2,
-      "win_rate": "83.3%",
-      "source": "EXP-049"
-    },
-    "MA": {
-      "profit_target": 1.5,
-      "stop_loss": -1.5,
-      "max_hold_days": 3,
-      "win_rate": "71.4%",
-      "source": "EXP-049"
-    },
-    "AVGO": {
-      "profit_target": 2.0,
-      "stop_loss": -2.0,
-      "max_hold_days": 2,
-      "win_rate": "100.0%",
-      "source": "EXP-049"
-    },
-    "KLAC": {
-      "profit_target": 2.0,
-      "stop_loss": -2.0,
-      "max_hold_days": 2,
-      "win_rate": "83.3%",
-      "source": "EXP-049"
-    },
-    "ORCL": {
-      "profit_target": 2.0,
-      "stop_loss": -2.0,
-      "max_hold_days": 3,
-      "win_rate": "75.0%",
-      "source": "EXP-049"
-    },
-    "MRVL": {
-      "profit_target": 2.5,
-      "stop_loss": -2.5,
-      "max_hold_days": 2,
-      "win_rate": "85.7%",
-      "source": "EXP-049"
-    },
-    "ABBV": {
-      "profit_target": 1.5,
-      "stop_loss": -1.5,
-      "max_hold_days": 3,
-      "win_rate": "83.3%",
-      "source": "EXP-049"
-    },
-    "EOG": {
-      "profit_target": 2.0,
-      "stop_loss": -2.0,
-      "max_hold_days": 4,
-      "win_rate": "85.7%",
-      "source": "EXP-049"
-    }
+    "NVDA": {"profit_target": 2.5, "stop_loss": -2.5, "max_hold_days": 2, "source": "EXP-049"},
+    "V": {"profit_target": 1.5, "stop_loss": -1.5, "max_hold_days": 2, "source": "EXP-049"},
+    "MA": {"profit_target": 1.5, "stop_loss": -1.5, "max_hold_days": 3, "source": "EXP-049"},
+    "AVGO": {"profit_target": 2.0, "stop_loss": -2.0, "max_hold_days": 2, "source": "EXP-049"},
+    "KLAC": {"profit_target": 2.0, "stop_loss": -2.0, "max_hold_days": 2, "source": "EXP-049"},
+    "ORCL": {"profit_target": 2.0, "stop_loss": -2.0, "max_hold_days": 3, "source": "EXP-049"},
+    "MRVL": {"profit_target": 2.5, "stop_loss": -2.5, "max_hold_days": 2, "source": "EXP-049"},
+    "ABBV": {"profit_target": 1.5, "stop_loss": -1.5, "max_hold_days": 3, "source": "EXP-049"},
+    "EOG": {"profit_target": 2.0, "stop_loss": -2.0, "max_hold_days": 4, "source": "EXP-049"}
   },
 
   "defaults": {
@@ -138,7 +117,7 @@
     },
     "exit": {
       "profit_target": 2.0,
-      "stop_loss": -2.0,
+      "stop_loss": -2.5,
       "max_hold_days": 2
     }
   }
