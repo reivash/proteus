@@ -118,37 +118,29 @@ class SmartScanner:
 
     def get_exit_params(self, ticker: str, regime: MarketRegime) -> Dict:
         """
-        Get exit parameters adjusted for regime.
+        Get exit parameters adjusted for regime and current volatility.
+        Uses dynamic VIX-based adjustments for more responsive exits.
         """
         # Get base params from config
         base_params = self.config_loader.get_default_exit_params()
-
-        # Get regime adjustments
-        stop_adjustment = self.regime_detector.get_stop_adjustment(regime)
 
         profit_target = base_params.get('profit_target', 2.0)
         stop_loss = base_params.get('stop_loss', -2.5)
         max_hold = base_params.get('max_hold_days', 3)
 
-        # Adjust stop for regime
-        adjusted_stop = stop_loss * stop_adjustment
-
-        # Trailing stop params (new!)
-        # Start trailing after 1% gain, trail by 0.5%
-        trailing_trigger = 1.0
-        trailing_distance = 0.5
-
-        # In volatile regime, use wider trailing
-        if regime == MarketRegime.VOLATILE:
-            trailing_trigger = 1.5
-            trailing_distance = 0.75
+        # Get volatility-adjusted exits (new dynamic system)
+        vol_exits = self.regime_detector.get_volatility_adjusted_exits(
+            base_profit=profit_target,
+            base_stop=stop_loss
+        )
 
         return {
-            'profit_target': profit_target,
-            'stop_loss': round(adjusted_stop, 2),
+            'profit_target': vol_exits['profit_target'],
+            'stop_loss': vol_exits['stop_loss'],
             'max_hold_days': max_hold,
-            'trailing_trigger': trailing_trigger,
-            'trailing_distance': trailing_distance
+            'trailing_trigger': vol_exits['trailing_trigger'],
+            'trailing_distance': vol_exits['trailing_distance'],
+            'volatility_mult': vol_exits['volatility_multiplier']
         }
 
     def scan(self) -> ScanResult:
@@ -173,8 +165,13 @@ class SmartScanner:
         position_mult = self.regime_detector.get_position_multiplier(regime_analysis.regime)
         min_threshold = self.regime_detector.get_min_signal_threshold(regime_analysis.regime)
 
+        # Get dynamic threshold adjustments based on VIX/trends
+        dynamic_adj = self.regime_detector.get_dynamic_threshold(base_threshold=min_threshold)
+        dynamic_threshold = dynamic_adj['threshold']
+
         print(f"    Position multiplier: {position_mult:.1f}x")
-        print(f"    Min signal threshold: {min_threshold:.0f}")
+        print(f"    Base threshold: {min_threshold:.0f}")
+        print(f"    Dynamic threshold: {dynamic_threshold:.1f} (VIX adj: {dynamic_adj['vix_adjustment']:.2f}x)")
 
         # 2. Run GPU scan
         print()
@@ -196,11 +193,11 @@ class SmartScanner:
         for sig in gpu_signals:
             # Get per-stock threshold (may override regime threshold)
             stock_threshold = self.config_loader.get_signal_threshold(
-                sig.ticker, base_threshold=min_threshold
+                sig.ticker, base_threshold=dynamic_threshold
             )
 
-            # Apply the higher of regime or per-stock threshold
-            effective_threshold = max(min_threshold, stock_threshold)
+            # Apply the higher of dynamic or per-stock threshold
+            effective_threshold = max(dynamic_threshold, stock_threshold)
 
             if sig.signal_strength < effective_threshold:
                 filtered_count += 1

@@ -253,6 +253,114 @@ class MarketRegimeDetector:
         }
         return thresholds.get(regime, 50.0)
 
+    def get_dynamic_threshold(self, base_threshold: float = 50.0) -> Dict[str, float]:
+        """
+        Get dynamically adjusted thresholds based on current market conditions.
+
+        Returns dict with:
+        - threshold: Adjusted signal strength threshold
+        - position_mult: Position size multiplier
+        - stop_mult: Stop loss multiplier
+        - vix_adjustment: VIX-based adjustment factor
+        - confidence: Confidence in the adjustment
+        """
+        if self.vix_data is None:
+            self.fetch_data()
+
+        # Get current VIX
+        vix_level, vix_percentile = self.calculate_volatility_regime()
+
+        # VIX-based threshold adjustment
+        # Low VIX (<15): Reduce threshold by up to 10%
+        # Normal VIX (15-25): No change
+        # High VIX (25-35): Increase threshold by up to 20%
+        # Extreme VIX (>35): Increase threshold by up to 40%
+
+        if vix_level < 15:
+            vix_adj = 1.0 - (15 - vix_level) / 50  # Up to -10%
+        elif vix_level <= 25:
+            vix_adj = 1.0
+        elif vix_level <= 35:
+            vix_adj = 1.0 + (vix_level - 25) / 50  # Up to +20%
+        else:
+            vix_adj = 1.2 + (vix_level - 35) / 50  # +20% to +40%
+
+        # Trend-based adjustment
+        trend_20d, trend_50d, ma_alignment = self.calculate_trend_strength()
+
+        # In strong trends (>5%), increase threshold
+        trend_magnitude = abs(trend_20d)
+        if trend_magnitude > 5:
+            trend_adj = 1.0 + (trend_magnitude - 5) / 20  # Up to +25%
+        else:
+            trend_adj = 1.0
+
+        # Combined adjustment (cap at 1.5x)
+        combined_adj = min(1.5, vix_adj * trend_adj)
+
+        # Calculate final values
+        adjusted_threshold = base_threshold * combined_adj
+
+        # Position multiplier (inverse of threshold adjustment)
+        position_mult = max(0.3, 1.0 / combined_adj)
+
+        # Stop multiplier (wider in volatile markets)
+        stop_mult = 1.0 + max(0, (vix_level - 20) / 40)  # Up to 1.5x at VIX 40
+
+        return {
+            'threshold': round(adjusted_threshold, 1),
+            'base_threshold': base_threshold,
+            'position_mult': round(position_mult, 2),
+            'stop_mult': round(stop_mult, 2),
+            'vix_adjustment': round(vix_adj, 3),
+            'trend_adjustment': round(trend_adj, 3),
+            'combined_adjustment': round(combined_adj, 3),
+            'vix_level': round(vix_level, 1),
+            'vix_percentile': round(vix_percentile, 1),
+            'trend_20d': round(trend_20d, 2),
+            'confidence': round(min(0.95, 0.5 + (1 - abs(1 - combined_adj))), 2)
+        }
+
+    def get_volatility_adjusted_exits(self, base_profit: float = 2.0,
+                                       base_stop: float = -2.0) -> Dict[str, float]:
+        """
+        Get volatility-adjusted exit parameters.
+
+        In high volatility:
+        - Widen profit targets (more room to run)
+        - Widen stop losses (avoid whipsaws)
+        - Tighten trailing stops trigger (lock in gains faster)
+        """
+        if self.vix_data is None:
+            self.fetch_data()
+
+        vix_level, _ = self.calculate_volatility_regime()
+
+        # Volatility multiplier (1.0 at VIX 20, scales up/down)
+        vol_mult = vix_level / 20.0
+        vol_mult = max(0.7, min(2.0, vol_mult))  # Cap between 0.7x and 2.0x
+
+        adjusted_profit = base_profit * vol_mult
+        adjusted_stop = base_stop * vol_mult
+
+        # Trailing stop adjustments
+        # Lower VIX = tighter trailing (less whipsaw risk)
+        # Higher VIX = wider trailing (more whipsaw risk)
+        trailing_trigger = 1.0 + (vix_level - 20) / 40  # 0.5% to 1.5%
+        trailing_distance = 0.5 + (vix_level - 20) / 60  # 0.3% to 0.8%
+
+        trailing_trigger = max(0.5, min(2.0, trailing_trigger))
+        trailing_distance = max(0.3, min(1.0, trailing_distance))
+
+        return {
+            'profit_target': round(adjusted_profit, 2),
+            'stop_loss': round(adjusted_stop, 2),
+            'trailing_trigger': round(trailing_trigger, 2),
+            'trailing_distance': round(trailing_distance, 2),
+            'vix_level': round(vix_level, 1),
+            'volatility_multiplier': round(vol_mult, 2)
+        }
+
 
 def get_current_regime() -> RegimeAnalysis:
     """Quick function to get current regime."""
