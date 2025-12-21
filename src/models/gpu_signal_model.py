@@ -586,32 +586,43 @@ class GPUSignalModel:
         conf = conf.cpu().item()
         attention = attention.cpu().numpy().flatten()
 
-        # Compute signal strength (0-100) - RECALIBRATED based on backtest results
-        # Backtest showed: POOR tier (30-40) outperformed ELITE (80+)
-        # New formula emphasizes expected return and penalizes overconfidence
+        # Compute signal strength (0-100) - RECALIBRATED V2 based on 365-day backtest
+        # Key findings: GOOD tier (60-70) had 67.6% win rate vs STRONG (70-80) at 56.7%
+        # Root cause: high E[R] predictions were unreliable, causing inflated scores
+        # Fix: Reduce E[R] weight, favor probability, optimal confidence at 0.35-0.45
 
-        # Base: probability adjusted by confidence (0-100)
+        # Base: probability is the most reliable predictor (0-100)
         base_score = prob * 100
 
-        # Return component: expected return as percentage (can be negative)
-        # +2% expected return adds +20 points, -2% subtracts 20 points
-        return_component = expected_ret * 10
+        # Return component: REDUCED weight - E[R] predictions are overconfident
+        # +2% expected return adds +6 points (was +20), -2% subtracts 6 points
+        return_component = expected_ret * 3
 
-        # Confidence adjustment: moderate confidence is better than extreme
-        # Peak at 0.6-0.7, penalize very high (>0.85) or very low (<0.4) confidence
-        if conf > 0.85:
-            conf_adjustment = 1.0 - (conf - 0.85) * 2  # Penalize overconfidence
-        elif conf < 0.4:
-            conf_adjustment = conf / 0.4  # Penalize low confidence
+        # Confidence adjustment: optimal range is 0.30-0.50 based on backtest
+        # GOOD tier average was 0.357, which performed best
+        if conf > 0.70:
+            conf_adjustment = 0.85  # Penalize overconfidence more
+        elif conf > 0.50:
+            conf_adjustment = 0.95  # Slight penalty
+        elif conf < 0.25:
+            conf_adjustment = conf / 0.25  # Penalize very low confidence
         else:
-            conf_adjustment = 1.0
+            conf_adjustment = 1.0  # Optimal range 0.25-0.50
+
+        # Quality bonus: reward signals with BOTH good prob AND positive E[R]
+        # This helps separate truly strong signals from noise
+        quality_bonus = 0
+        if prob > 0.50 and expected_ret > 0.5:
+            quality_bonus = min(10, (prob - 0.50) * 30 + expected_ret * 2)
+        elif prob < 0.45 or expected_ret < 0:
+            quality_bonus = -5  # Slight penalty for weak signals
 
         # Mean reversion score from features (index 19)
         mr_score = latest[0, 19] if latest.shape[1] > 19 else 0
-        mr_component = float(mr_score) * 15  # -30 to +30 range
+        mr_component = float(mr_score) * 10  # Reduced from 15
 
         # Combine components
-        signal_strength = (base_score * conf_adjustment) + return_component + mr_component
+        signal_strength = (base_score * conf_adjustment) + return_component + mr_component + quality_bonus
 
         # Clamp to 0-100 range
         signal_strength = max(0, min(100, signal_strength))
