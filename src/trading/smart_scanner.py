@@ -24,6 +24,7 @@ from analysis.market_regime import MarketRegimeDetector, MarketRegime, RegimeAna
 from config.stock_config_loader import get_loader
 from trading.sector_correlation import filter_correlated_signals, get_sector, print_sector_analysis
 from trading.volatility_sizing import VolatilitySizer
+from data.fetchers.earnings_calendar import EarningsCalendarFetcher
 
 
 @dataclass
@@ -57,6 +58,10 @@ class SmartSignal:
 
     # Tier classification
     tier: str
+
+    # Earnings proximity
+    near_earnings: bool = False
+    earnings_warning: str = ""
 
 
 @dataclass
@@ -92,6 +97,10 @@ class SmartScanner:
             portfolio_value=portfolio_value,
             risk_per_trade=0.02,  # 2% risk per trade
             max_position_pct=0.15  # 15% max position
+        )
+        self.earnings_calendar = EarningsCalendarFetcher(
+            exclusion_days_before=3,
+            exclusion_days_after=1  # Less strict on after
         )
 
     def get_tier(self, strength: float) -> str:
@@ -148,6 +157,37 @@ class SmartScanner:
             'trailing_distance': vol_exits['trailing_distance'],
             'volatility_mult': vol_exits['volatility_multiplier']
         }
+
+    def check_earnings_proximity(self, ticker: str) -> tuple:
+        """
+        Check if a stock is near an earnings announcement.
+
+        Returns:
+            Tuple of (near_earnings: bool, warning_message: str)
+        """
+        import pandas as pd
+        from datetime import timedelta
+
+        today = pd.Timestamp.now().normalize()
+
+        # Check if today is in the exclusion window
+        if not self.earnings_calendar.should_trade_on_date(ticker, today):
+            # Find the nearest earnings date
+            earnings_df = self.earnings_calendar.fetch_earnings_dates(ticker)
+            if len(earnings_df) > 0:
+                # Find closest earnings date
+                future_earnings = earnings_df[earnings_df['earnings_date'] >= today - timedelta(days=5)]
+                if len(future_earnings) > 0:
+                    next_earnings = future_earnings['earnings_date'].min()
+                    days_until = (next_earnings - today).days
+                    if days_until <= 0:
+                        return True, f"Earnings on {next_earnings.strftime('%Y-%m-%d')} (today/recent)"
+                    else:
+                        return True, f"Earnings in {days_until} days ({next_earnings.strftime('%Y-%m-%d')})"
+
+            return True, "Near earnings announcement"
+
+        return False, ""
 
     def scan(self) -> ScanResult:
         """
@@ -302,7 +342,31 @@ class SmartScanner:
         final_signals = sector_filtered_signals
         total_filtered = filtered_count + sector_filtered_count
 
-        # 5. Create result
+        # 5. Apply earnings filter (mark but don't remove)
+        print()
+        print("[5] Checking earnings proximity...")
+        earnings_warnings = []
+        earnings_excluded = []
+        for sig in final_signals:
+            near_earnings, warning = self.check_earnings_proximity(sig.ticker)
+            if near_earnings:
+                sig.near_earnings = True
+                sig.earnings_warning = warning
+                earnings_warnings.append(f"{sig.ticker}: {warning}")
+                earnings_excluded.append(sig.ticker)
+
+        # Remove signals near earnings from final list
+        final_signals = [s for s in final_signals if not s.near_earnings]
+        earnings_filtered_count = len(earnings_excluded)
+        total_filtered += earnings_filtered_count
+
+        print(f"    Passed earnings filter: {len(final_signals)}")
+        print(f"    Near earnings (excluded): {earnings_filtered_count}")
+        if earnings_warnings:
+            for w in earnings_warnings[:5]:
+                print(f"      - {w}")
+
+        # 6. Create result
         result = ScanResult(
             timestamp=datetime.now().isoformat(),
             regime=regime_analysis,
@@ -311,10 +375,10 @@ class SmartScanner:
             total_scanned=len(gpu_signals)
         )
 
-        # 6. Print summary
+        # 7. Print summary
         self._print_summary(result)
 
-        # 7. Save results
+        # 8. Save results
         self._save_results(result)
 
         return result
