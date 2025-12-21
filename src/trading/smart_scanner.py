@@ -23,6 +23,7 @@ from models.gpu_signal_model import GPUSignalModel, GPUSignal
 from analysis.market_regime import MarketRegimeDetector, MarketRegime, RegimeAnalysis
 from config.stock_config_loader import get_loader
 from trading.sector_correlation import filter_correlated_signals, get_sector, print_sector_analysis
+from trading.volatility_sizing import VolatilitySizer
 
 
 @dataclass
@@ -87,6 +88,11 @@ class SmartScanner:
         self.gpu_model = GPUSignalModel()
         self.regime_detector = MarketRegimeDetector()
         self.config_loader = get_loader()
+        self.volatility_sizer = VolatilitySizer(
+            portfolio_value=portfolio_value,
+            risk_per_trade=0.02,  # 2% risk per trade
+            max_position_pct=0.15  # 15% max position
+        )
 
     def get_tier(self, strength: float) -> str:
         """Get tier name for signal strength."""
@@ -221,11 +227,17 @@ class SmartScanner:
 
             adjusted_strength = min(100, adjusted_strength)
 
-            # Calculate position size
+            # Calculate position size using volatility-based sizing
             current_price = stock_prices.get(sig.ticker, 100)
-            shares = self.calculate_position_size(
-                adjusted_strength, position_mult, current_price
+
+            # Get volatility-based sizing
+            vol_metrics = self.volatility_sizer.calculate_position_size(
+                sig.ticker, current_price, stop_loss_pct=abs(exit_params['stop_loss'])
             )
+
+            # Use volatility-adjusted shares, scaled by position multiplier
+            shares = int(vol_metrics.suggested_shares * position_mult)
+            shares = max(1, shares)
 
             smart_signal = SmartSignal(
                 ticker=sig.ticker,
