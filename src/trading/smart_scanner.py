@@ -134,7 +134,7 @@ class SmartScanner:
     def get_exit_params(self, ticker: str, regime: MarketRegime) -> Dict:
         """
         Get exit parameters adjusted for regime and current volatility.
-        Uses dynamic VIX-based adjustments for more responsive exits.
+        Uses config-based regime multipliers and VIX-based adjustments.
         """
         # Get base params from config
         base_params = self.config_loader.get_default_exit_params()
@@ -143,19 +143,30 @@ class SmartScanner:
         stop_loss = base_params.get('stop_loss', -2.5)
         max_hold = base_params.get('max_hold_days', 3)
 
-        # Get volatility-adjusted exits (new dynamic system)
+        # Get regime-specific adjustments from config
+        regime_params = self.config_loader.get_regime_params(regime.value)
+        profit_mult = regime_params.get('profit_target_multiplier', 1.0)
+        stop_mult = regime_params.get('stop_loss_multiplier', 1.0)
+        regime_max_hold = regime_params.get('max_hold_days', max_hold)
+
+        # Apply regime multipliers to base values
+        regime_profit = profit_target * profit_mult
+        regime_stop = stop_loss * stop_mult  # stop is negative, so multiplying widens it
+
+        # Get volatility-adjusted exits (additional layer based on current VIX)
         vol_exits = self.regime_detector.get_volatility_adjusted_exits(
-            base_profit=profit_target,
-            base_stop=stop_loss
+            base_profit=regime_profit,
+            base_stop=regime_stop
         )
 
         return {
-            'profit_target': vol_exits['profit_target'],
-            'stop_loss': vol_exits['stop_loss'],
-            'max_hold_days': max_hold,
-            'trailing_trigger': vol_exits['trailing_trigger'],
-            'trailing_distance': vol_exits['trailing_distance'],
-            'volatility_mult': vol_exits['volatility_multiplier']
+            'profit_target': round(vol_exits['profit_target'], 2),
+            'stop_loss': round(vol_exits['stop_loss'], 2),
+            'max_hold_days': regime_max_hold,
+            'trailing_trigger': round(vol_exits['trailing_trigger'], 2),
+            'trailing_distance': round(vol_exits['trailing_distance'], 2),
+            'volatility_mult': vol_exits['volatility_multiplier'],
+            'regime_mult': profit_mult  # For debugging
         }
 
     def check_earnings_proximity(self, ticker: str) -> tuple:
@@ -207,17 +218,33 @@ class SmartScanner:
         print(f"    VIX: {regime_analysis.vix_level:.1f} "
               f"({regime_analysis.vix_percentile:.0f}th percentile)")
 
-        # Get regime adjustments
-        position_mult = self.regime_detector.get_position_multiplier(regime_analysis.regime)
-        min_threshold = self.regime_detector.get_min_signal_threshold(regime_analysis.regime)
+        # Get regime adjustments from config (based on 1-year regime analysis)
+        # VOLATILE: 62% win, +1.94% avg - BEST for mean reversion
+        # BEAR: 69% win, +0.89% avg - Strong for mean reversion
+        # CHOPPY: 56% win, +0.17% avg - Baseline
+        # BULL: 51% win, +0.15% avg - WORST for mean reversion
+        regime_params = self.config_loader.get_regime_params(regime_analysis.regime.value)
 
-        # Get dynamic threshold adjustments based on VIX/trends
+        # Use config-based adjustments (inverted from old system!)
+        # In volatile/bear regimes, we LOWER threshold and INCREASE position
+        base_threshold = 50.0
+        regime_threshold_adj = regime_params.get('threshold_adjustment', 0)
+        min_threshold = base_threshold + regime_threshold_adj  # e.g., 50 + (-15) = 35 in volatile
+
+        position_mult = regime_params.get('position_multiplier', 1.0)
+
+        # Get dynamic threshold adjustments based on VIX/trends (additional layer)
         dynamic_adj = self.regime_detector.get_dynamic_threshold(base_threshold=min_threshold)
         dynamic_threshold = dynamic_adj['threshold']
 
-        print(f"    Position multiplier: {position_mult:.1f}x")
+        # Log regime-specific elite stocks
+        elite_stocks = self.config_loader.get_regime_elite_stocks(regime_analysis.regime.value)
+
+        print(f"    Regime adjustment: {regime_threshold_adj:+.0f}")
+        print(f"    Position multiplier: {position_mult:.1f}x (from config)")
         print(f"    Base threshold: {min_threshold:.0f}")
-        print(f"    Dynamic threshold: {dynamic_threshold:.1f} (VIX adj: {dynamic_adj['vix_adjustment']:.2f}x)")
+        print(f"    Dynamic threshold: {dynamic_threshold:.1f}")
+        print(f"    Elite stocks for this regime: {', '.join(elite_stocks[:5])}")
 
         # 2. Run GPU scan
         print()
@@ -252,12 +279,21 @@ class SmartScanner:
             # Get exit params for this stock + regime
             exit_params = self.get_exit_params(sig.ticker, regime_analysis.regime)
 
-            # Calculate adjusted strength (slight boost/penalty based on regime fit)
+            # Calculate adjusted strength based on regime analysis findings
+            # VOLATILE/BEAR are BETTER for mean reversion (counterintuitive but data-driven)
             adjusted_strength = sig.signal_strength
-            if regime_analysis.regime == MarketRegime.CHOPPY:
-                adjusted_strength *= 1.05  # Boost in ideal conditions
+            if regime_analysis.regime == MarketRegime.VOLATILE:
+                adjusted_strength *= 1.15  # 15% boost - best regime (62% win, +1.94% avg)
             elif regime_analysis.regime == MarketRegime.BEAR:
-                adjusted_strength *= 0.9   # Penalty in risky conditions
+                adjusted_strength *= 1.10  # 10% boost - strong regime (69% win, +0.89% avg)
+            elif regime_analysis.regime == MarketRegime.CHOPPY:
+                adjusted_strength *= 1.0   # Baseline (56% win, +0.17% avg)
+            elif regime_analysis.regime == MarketRegime.BULL:
+                adjusted_strength *= 0.85  # 15% penalty - worst regime (51% win, +0.15% avg)
+
+            # Extra boost for regime-elite stocks
+            if sig.ticker in elite_stocks:
+                adjusted_strength *= 1.05  # Additional 5% for elite stocks in this regime
 
             # Boost strong performers, penalize weak ones (based on backtest)
             if self.config_loader.is_strong_performer(sig.ticker):

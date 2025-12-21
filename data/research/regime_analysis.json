@@ -1,0 +1,203 @@
+{
+  "timestamp": "2025-12-21T20:24:21.597274",
+  "days_analyzed": 365,
+  "total_signals": 1941,
+  "summary_by_regime": {
+    "CHOPPY": {
+      "signals": 1313,
+      "win_rate": 55.8,
+      "hit_rate": 66.5,
+      "avg_ret_2d": 0.17,
+      "avg_max_gain": 3.43,
+      "avg_max_loss": -3.02,
+      "expectancy": 0.17,
+      "avg_vix": 18.7,
+      "avg_win": 1.93,
+      "avg_loss": -2.05
+    },
+    "BULL": {
+      "signals": 199,
+      "win_rate": 51.3,
+      "hit_rate": 51.3,
+      "avg_ret_2d": 0.15,
+      "avg_max_gain": 2.68,
+      "avg_max_loss": -2.38,
+      "expectancy": 0.15,
+      "avg_vix": 16.3,
+      "avg_win": 1.52,
+      "avg_loss": -1.3
+    },
+    "BEAR": {
+      "signals": 171,
+      "win_rate": 69.0,
+      "hit_rate": 89.5,
+      "avg_ret_2d": 0.89,
+      "avg_max_gain": 4.35,
+      "avg_max_loss": -2.73,
+      "expectancy": 0.89,
+      "avg_vix": 25.1,
+      "avg_win": 2.37,
+      "avg_loss": -2.4
+    },
+    "VOLATILE": {
+      "signals": 258,
+      "win_rate": 62.0,
+      "hit_rate": 94.2,
+      "avg_ret_2d": 1.94,
+      "avg_max_gain": 8.04,
+      "avg_max_loss": -4.76,
+      "expectancy": 1.94,
+      "avg_vix": 40.9,
+      "avg_win": 4.89,
+      "avg_loss": -2.86
+    }
+  },
+  "distribution": {
+    "CHOPPY": {
+      "count": 1313,
+      "percent": 67.6
+    },
+    "BULL": {
+      "count": 199,
+      "percent": 10.3
+    },
+    "BEAR": {
+      "count": 171,
+      "percent": 8.8
+    },
+    "VOLATILE": {
+      "count": 258,
+      "percent": 13.3
+    }
+  },
+  "top_performers_by_regime": {
+    "CHOPPY": {
+      "INSM": {
+        "count": 4,
+        "avg_ret": 3.7701374829339604,
+        "win_rate": 1.0,
+        "avg_max_gain": 7.330933466028999
+      },
+      "KLAC": {
+        "count": 7,
+        "avg_ret": 1.9990164018286856,
+        "win_rate": 0.5714285714285714,
+        "avg_max_gain": 7.20846716036625
+      },
+      "CVS": {
+        "count": 7,
+        "avg_ret": 1.8234964744016489,
+        "win_rate": 0.8571428571428571,
+        "avg_max_gain": 5.975335058831985
+      },
+      "ABBV": {
+        "count": 10,
+        "avg_ret": 1.8134336316453659,
+        "win_rate": 0.8,
+        "avg_max_gain": 4.731617866583799
+      },
+      "JNJ": {
+        "count": 8,
+        "avg_ret": 1.6501417332629664,
+        "win_rate": 1.0,
+        "avg_max_gain": 3.608970697365277
+      }
+    },
+    "BULL": {
+      "MA": {
+        "count": 3,
+        "avg_ret": 2.3023762394979754,
+        "win_rate": 1.0,
+        "avg_max_gain": 3.761406354792074
+      },
+      "COP": {
+        "count": 3,
+        "avg_ret": 1.5775599024307363,
+        "win_rate": 0.6666666666666666,
+        "avg_max_gain": 5.461795487410236
+      },
+      "AVGO": {
+        "count": 5,
+        "avg_ret": 1.1218998714456596,
+        "win_rate": 0.6,
+        "avg_max_gain": 3.91295149653081
+      },
+      "TXN": {
+        "count": 10,
+        "avg_ret": 0.963876947096477,
+        "win_rate": 0.6,
+        "avg_max_gain": 3.242578554592548
+      },
+      "SLB": {
+        "count": 3,
+        "avg_ret": 0.9161996937905018,
+        "win_rate": 1.0,
+        "avg_max_gain": 3.8688984850132093
+      }
+    },
+    "BEAR": {
+      "NVDA": {
+        "count": 3,
+        "avg_ret": 6.534141807324448,
+        "win_rate": 1.0,
+        "avg_max_gain": 11.039423174043769
+      },
+      "SCHW": {
+        "count": 4,
+        "avg_ret": 3.826771254613753,
+        "win_rate": 1.0,
+        "avg_max_gain": 7.855104366231968
+      },
+      "ABBV": {
+        "count": 4,
+        "avg_ret": 3.1648410820726838,
+        "win_rate": 1.0,
+        "avg_max_gain": 6.810529593927001
+      },
+      "MPC": {
+        "count": 4,
+        "avg_ret": 2.9869960307439767,
+        "win_rate": 1.0,
+        "avg_max_gain": 7.88077458169446
+      },
+      "KLAC": {
+        "count": 3,
+        "avg_ret": 2.564548448598051,
+        "win_rate": 1.0,
+        "avg_max_gain": 6.89487469003159
+      }
+    },
+    "VOLATILE": {
+      "AVGO": {
+        "count": 4,
+        "avg_ret": 9.321994924165777,
+        "win_rate": 1.0,
+        "avg_max_gain": 22.820364983970286
+      },
+      "KLAC": {
+        "count": 4,
+        "avg_ret": 6.8121440436357235,
+        "win_rate": 0.75,
+        "avg_max_gain": 20.317163723368516
+      },
+      "NVDA": {
+        "count": 4,
+        "avg_ret": 6.705008101507495,
+        "win_rate": 0.75,
+        "avg_max_gain": 18.128376010874007
+      },
+      "AXP": {
+        "count": 3,
+        "avg_ret": 5.9014444892627465,
+        "win_rate": 0.6666666666666666,
+        "avg_max_gain": 13.58156830037158
+      },
+      "MS": {
+        "count": 3,
+        "avg_ret": 5.804389668556201,
+        "win_rate": 1.0,
+        "avg_max_gain": 13.501208762622122
+      }
+    }
+  }
+}

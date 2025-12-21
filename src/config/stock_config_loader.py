@@ -168,6 +168,118 @@ class StockConfigLoader:
         lower = thresholds.get('lower_threshold', {})
         return ticker in lower
 
+    def get_regime_params(self, regime: str) -> Dict:
+        """
+        Get regime-specific parameters.
+
+        Based on 1-year regime analysis (Dec 2025):
+        - VOLATILE: Best for mean reversion (62% win, +1.94% avg)
+        - BEAR: Strong for mean reversion (69% win, +0.89% avg)
+        - CHOPPY: Baseline (56% win, +0.17% avg)
+        - BULL: Worst for mean reversion (51% win, +0.15% avg)
+
+        Args:
+            regime: One of 'volatile', 'bear', 'choppy', 'bull'
+
+        Returns:
+            Dict with threshold_adjustment, position_multiplier, exit multipliers
+        """
+        regime_key = regime.lower()
+        regime_params = self._config.get('regime_parameters', {})
+
+        if regime_key in regime_params:
+            return regime_params[regime_key]
+
+        # Fallback defaults
+        defaults = {
+            'volatile': {
+                'threshold_adjustment': -15,
+                'position_multiplier': 1.5,
+                'profit_target_multiplier': 1.5,
+                'stop_loss_multiplier': 1.5,
+                'max_hold_days': 3
+            },
+            'bear': {
+                'threshold_adjustment': -10,
+                'position_multiplier': 1.3,
+                'profit_target_multiplier': 1.2,
+                'stop_loss_multiplier': 1.2,
+                'max_hold_days': 3
+            },
+            'choppy': {
+                'threshold_adjustment': 0,
+                'position_multiplier': 1.0,
+                'profit_target_multiplier': 1.0,
+                'stop_loss_multiplier': 1.0,
+                'max_hold_days': 2
+            },
+            'bull': {
+                'threshold_adjustment': 10,
+                'position_multiplier': 0.7,
+                'profit_target_multiplier': 0.8,
+                'stop_loss_multiplier': 1.0,
+                'max_hold_days': 2
+            }
+        }
+        return defaults.get(regime_key, defaults['choppy'])
+
+    def get_regime_elite_stocks(self, regime: str) -> list:
+        """
+        Get elite stocks for a specific regime.
+
+        These stocks have historically performed best in this regime.
+        """
+        regime_key = regime.lower()
+        regime_params = self._config.get('regime_parameters', {})
+
+        if regime_key in regime_params:
+            return regime_params[regime_key].get('elite_stocks', [])
+
+        # Fallback defaults
+        defaults = {
+            'volatile': ['AVGO', 'KLAC', 'NVDA', 'AXP', 'MS'],
+            'bear': ['NVDA', 'SCHW', 'ABBV', 'MPC', 'KLAC'],
+            'choppy': ['INSM', 'KLAC', 'CVS', 'ABBV', 'JNJ'],
+            'bull': ['MA', 'COP', 'AVGO', 'TXN', 'SLB']
+        }
+        return defaults.get(regime_key, [])
+
+    def get_stock_tier(self, ticker: str) -> str:
+        """
+        Get the performance tier for a stock.
+
+        Returns: 'elite', 'strong', 'average', 'weak', or 'avoid'
+        """
+        tiers = self._config.get('stock_tiers', {})
+
+        for tier_name in ['elite_performers', 'strong_performers', 'average_performers',
+                          'weak_performers', 'avoid_list']:
+            tier_data = tiers.get(tier_name, {})
+            if ticker in tier_data.get('stocks', []):
+                return tier_name.replace('_performers', '').replace('_list', '')
+
+        return 'average'  # Default
+
+    def get_tier_adjustment(self, ticker: str) -> tuple:
+        """
+        Get threshold and position adjustments for a stock based on its tier.
+
+        Returns:
+            (threshold_adjustment, position_boost)
+        """
+        tiers = self._config.get('stock_tiers', {})
+
+        for tier_name in ['elite_performers', 'strong_performers', 'average_performers',
+                          'weak_performers', 'avoid_list']:
+            tier_data = tiers.get(tier_name, {})
+            if ticker in tier_data.get('stocks', []):
+                return (
+                    tier_data.get('threshold_adjustment', 0),
+                    tier_data.get('position_boost', 1.0)
+                )
+
+        return (0, 1.0)  # Default
+
 
 # Singleton instance
 _loader = None
