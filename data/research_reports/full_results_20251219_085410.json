@@ -1,0 +1,154 @@
+{
+  "gpu_model": {
+    "timestamp": "2025-12-19T08:53:36.890208",
+    "device": "cuda",
+    "top_signals": [
+      {
+        "ticker": "AVGO",
+        "strength": 61.1,
+        "prob": 0.7419,
+        "expected_return": 80.07,
+        "confidence": 0.8238
+      },
+      {
+        "ticker": "ETN",
+        "strength": 37.3,
+        "prob": 0.5767,
+        "expected_return": 17.44,
+        "confidence": 0.6469
+      },
+      {
+        "ticker": "AMAT",
+        "strength": 37.2,
+        "prob": 0.5761,
+        "expected_return": 16.11,
+        "confidence": 0.6462
+      },
+      {
+        "ticker": "ORCL",
+        "strength": 36.1,
+        "prob": 0.5681,
+        "expected_return": 14.89,
+        "confidence": 0.6362
+      },
+      {
+        "ticker": "MPC",
+        "strength": 35.4,
+        "prob": 0.5407,
+        "expected_return": 14.95,
+        "confidence": 0.6539
+      },
+      {
+        "ticker": "CAT",
+        "strength": 33.7,
+        "prob": 0.52,
+        "expected_return": 22.7,
+        "confidence": 0.6481
+      },
+      {
+        "ticker": "NOW",
+        "strength": 31.8,
+        "prob": 0.4534,
+        "expected_return": 13.56,
+        "confidence": 0.7016
+      },
+      {
+        "ticker": "MRVL",
+        "strength": 30.8,
+        "prob": 0.5252,
+        "expected_return": -9.57,
+        "confidence": 0.587
+      },
+      {
+        "ticker": "ROAD",
+        "strength": 30.6,
+        "prob": 0.5112,
+        "expected_return": -4.38,
+        "confidence": 0.5987
+      },
+      {
+        "ticker": "PFE",
+        "strength": 29.5,
+        "prob": 0.4727,
+        "expected_return": 11.81,
+        "confidence": 0.6238
+      }
+    ]
+  },
+  "earnings": {
+    "timestamp": "2025-12-19T08:53:45.237815",
+    "upcoming": [],
+    "recent": []
+  },
+  "sector": {
+    "timestamp": "2025-12-19T08:54:10.978283",
+    "market_regime": "SIDEWAYS",
+    "rotation_theme": "Rotation FROM Healthcare, Energy TO Communication Services",
+    "sector_rankings": [
+      "Communication Services",
+      "Consumer Defensive",
+      "Basic Materials",
+      "Financial Services",
+      "Real Estate"
+    ],
+    "insights": [
+      "Strongest sector: Communication Services (+4.7% 1W)",
+      "Weakest sector: Industrials (-5.3% 1W)",
+      "FAVOR signals in: Communication Services",
+      "CAUTION on signals in: Healthcare, Energy, Industrials"
+    ],
+    "top_adjustments": [
+      [
+        "EOG",
+        -8.0
+      ],
+      [
+        "COP",
+        -8.0
+      ],
+      [
+        "SLB",
+        -8.0
+      ],
+      [
+        "XOM",
+        -8.0
+      ],
+      [
+        "MPC",
+        -8.0
+      ],
+      [
+        "ROAD",
+        -8.0
+      ],
+      [
+        "LMT",
+        -8.0
+      ],
+      [
+        "CAT",
+        -8.0
+      ],
+      [
+        "ETN",
+        -8.0
+      ],
+      [
+        "CMCSA",
+        7.7
+      ]
+    ]
+  },
+  "retrospective": {
+    "timestamp": "2025-12-19T08:54:10.981282",
+    "trades_analyzed": 0,
+    "win_rate": 0,
+    "profit_factor": 0,
+    "recommendations": [
+      "Not enough trades to analyze - run system longer"
+    ],
+    "parameter_suggestions": {}
+  },
+  "deep_dives": null
+}

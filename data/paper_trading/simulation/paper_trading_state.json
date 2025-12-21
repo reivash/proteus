@@ -1,0 +1,110 @@
+{
+  "capital": 64107.703125,
+  "positions": [
+    {
+      "ticker": "INSM",
+      "entry_date": "2025-12-21",
+      "entry_price": 174.84,
+      "shares": 57.19514985129261,
+      "hold_days": 0,
+      "current_price": 174.84,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "INSM",
+        "date": "2025-12-21",
+        "signal_type": "BUY",
+        "price": 174.84,
+        "signal_strength": 73.2,
+        "expected_return": 1.07,
+        "atr_pct": null,
+        "regime": "CHOPPY"
+      }
+    },
+    {
+      "ticker": "ETN",
+      "entry_date": "2025-12-21",
+      "entry_price": 317.8,
+      "shares": 28.31969792322215,
+      "hold_days": 0,
+      "current_price": 317.8,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "ETN",
+        "date": "2025-12-21",
+        "signal_type": "BUY",
+        "price": 317.8,
+        "signal_strength": 70.1,
+        "expected_return": 1.01,
+        "atr_pct": null,
+        "regime": "CHOPPY"
+      }
+    },
+    {
+      "ticker": "HCA",
+      "entry_date": "2025-12-21",
+      "entry_price": 472.98,
+      "shares": 12.844094887733096,
+      "hold_days": 0,
+      "current_price": 472.98,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "HCA",
+        "date": "2025-12-21",
+        "signal_type": "BUY",
+        "price": 472.98,
+        "signal_strength": 67.0,
+        "expected_return": 1.13,
+        "atr_pct": null,
+        "regime": "CHOPPY"
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "entry_date": "2025-12-21",
+      "entry_price": 340.36,
+      "shares": 16.51009225525914,
+      "hold_days": 0,
+      "current_price": 340.36,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "AVGO",
+        "date": "2025-12-21",
+        "signal_type": "BUY",
+        "price": 340.36,
+        "signal_strength": 65.3,
+        "expected_return": 1.24,
+        "atr_pct": null,
+        "regime": "CHOPPY"
+      }
+    },
+    {
+      "ticker": "NOW",
+      "entry_date": "2025-12-21",
+      "entry_price": 155.31,
+      "shares": 33.46804375120726,
+      "hold_days": 0,
+      "current_price": 155.31,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "NOW",
+        "date": "2025-12-21",
+        "signal_type": "BUY",
+        "price": 155.31,
+        "signal_strength": 65.0,
+        "expected_return": 0.76,
+        "atr_pct": null,
+        "regime": "CHOPPY"
+      }
+    }
+  ],
+  "trade_history": [],
+  "daily_equity": [],
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0
+}

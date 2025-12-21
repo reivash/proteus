@@ -1,0 +1,43 @@
+{
+  "ticker": "ETN",
+  "company_name": "Eaton Corporation plc",
+  "analysis_date": "2025-12-18",
+  "business_quality_score": 8,
+  "financial_health_score": 8,
+  "competitive_moat_score": 7,
+  "management_quality_score": 7,
+  "catalyst_score": 8,
+  "risk_score": 7,
+  "conviction_score": 75,
+  "conviction_tier": "HIGH",
+  "business_summary": "Diversified industrial power management company. Electrical components, aerospace, vehicles, eMobility. Key beneficiary of electrification mega-trend (EVs, data centers, grid infrastructure). Global footprint with strong Americas presence.",
+  "bull_case": "Electrification mega-trend accelerates - EVs need power management, data centers expanding for AI, grid infrastructure spending for renewables. Eaton is picks-and-shovels play on all three. Consistent execution and margin expansion.",
+  "bear_case": "Industrial cycle turns down, construction spending slows, EV adoption slower than expected reducing eMobility segment growth. Multiple compression if growth slows (currently trading at premium 32x P/E).",
+  "key_risks": [
+    "Industrial cycle downturn",
+    "Premium valuation (32x P/E) leaves room for multiple compression",
+    "EV adoption slower than expected",
+    "Construction/infrastructure spending cuts"
+  ],
+  "upcoming_catalysts": [
+    "Data center power demand growth (AI buildout)",
+    "US infrastructure spending (CHIPS Act, IRA)",
+    "eMobility segment inflection",
+    "Grid modernization investments"
+  ],
+  "position_size_modifier": 1.2,
+  "recommended_hold_period": "1-5 days for mean reversion",
+  "stop_loss_suggestion": "-2.5%",
+  "data_sources_used": ["Yahoo Finance", "Public filings knowledge", "Industry analysis"],
+  "confidence_in_analysis": "HIGH",
+  "analysis_duration_minutes": 3,
+  "analyst_notes": "ETN is a cleaner setup than AVGO today. Lower debt (D/E 60 vs 166), stronger signal (58.7 vs 53.3), more extreme oversold (Z-score -2.49). The electrification theme is secular not cyclical. Institutional ownership at 86% shows smart money conviction. The pullback appears to be general industrial sector rotation, not company-specific. This is a quality compounder temporarily on sale.",
+  "proteus_signal_assessment": {
+    "signal_date": "2025-12-18",
+    "signal_strength": 58.7,
+    "z_score": -2.49,
+    "rsi": 34.5,
+    "recommendation": "TRADE WITH CONVICTION - Stronger signal, cleaner balance sheet, secular tailwinds. Prefer over AVGO.",
+    "conviction_boost": 10
+  }
+}

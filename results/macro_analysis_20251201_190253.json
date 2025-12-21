@@ -1,0 +1,395 @@
+{
+  "MU": {
+    "ticker": "MU",
+    "overall_score": 72.8,
+    "rating": "FAVORABLE",
+    "recommendation": "Macro environment supports investment, minor headwinds",
+    "component_scores": {
+      "economic_cycle": 80,
+      "fed_policy": 80,
+      "sector_tailwinds": 75,
+      "geopolitical": 45
+    },
+    "economic_cycle_analysis": {
+      "economic_cycle_score": 80,
+      "cycle_phase": "MODERATE GROWTH",
+      "risk_level": "MODERATE",
+      "sp500_return_ytd": 14.4,
+      "vix_level": 16.7,
+      "volatility_regime": "NORMAL (healthy)",
+      "notes": "Positive but moderate growth",
+      "reasons": [
+        "Positive market returns (+14.4% YTD)",
+        "Low volatility (VIX 16.7)",
+        "No recession signals, unemployment low"
+      ]
+    },
+    "fed_policy_analysis": {
+      "fed_policy_score": 80,
+      "rate_sensitivity": "MODERATE",
+      "current_impact": "NEUTRAL TO SLIGHTLY POSITIVE",
+      "fed_stance": "NEUTRAL TO ACCOMMODATIVE",
+      "fed_notes": [
+        "Fed Funds Rate: ~4.50% (down from 5.50% peak in 2023)",
+        "Rate cuts likely complete or nearly complete",
+        "Inflation moderating toward 2% target",
+        "Focus on maintaining growth while controlling inflation"
+      ],
+      "impact_notes": [
+        "Capex-intensive industry (high rates = higher cost of capital)",
+        "However, secular AI tailwind overrides rate concerns",
+        "Rate cuts would be positive but not required for growth"
+      ],
+      "reasons": [
+        "Fed in neutral/accommodative mode (supportive)",
+        "Rate cuts complete/near complete (reduces uncertainty)",
+        "Inflation moderating (no emergency tightening needed)"
+      ]
+    },
+    "sector_analysis": {
+      "sector_tailwinds_score": 75,
+      "sector_outlook": "VERY POSITIVE (secular AI tailwinds override cyclical concerns)",
+      "tailwinds": [
+        {
+          "factor": "AI & ML Chip Demand",
+          "strength": "VERY STRONG",
+          "duration": "5-10 years",
+          "impact": "+40 points",
+          "notes": "Training & inference driving GPU/HBM/custom silicon demand"
+        },
+        {
+          "factor": "Data Center Expansion",
+          "strength": "STRONG",
+          "duration": "3-7 years",
+          "impact": "+25 points",
+          "notes": "Cloud migration + AI workloads = capacity additions"
+        },
+        {
+          "factor": "Memory Upcycle (HBM)",
+          "strength": "STRONG",
+          "duration": "2-3 years",
+          "impact": "+20 points",
+          "notes": "HBM sold out through 2026, pricing power returning"
+        }
+      ],
+      "headwinds": [
+        {
+          "factor": "Cyclicality Risk",
+          "strength": "MODERATE",
+          "duration": "Structural",
+          "impact": "-10 points",
+          "notes": "Semiconductors historically cyclical (but AI secular)"
+        }
+      ],
+      "net_score": 75
+    },
+    "geopolitical_analysis": {
+      "geopolitical_risk_score": 45,
+      "geo_outlook": "MANAGEABLE RISKS (US positioning advantageous)",
+      "risks": [
+        {
+          "risk": "US-China Tech Decoupling",
+          "severity": "MODERATE",
+          "impact": "-10 points",
+          "mitigation": "US companies benefit from export controls on China",
+          "notes": "Restricts China access to advanced chips, benefits US companies like MU"
+        },
+        {
+          "risk": "Taiwan Geopolitical Tension",
+          "severity": "LOW TO MODERATE",
+          "impact": "-10 points",
+          "mitigation": "Diversified manufacturing (US CHIPS Act, Japan, Singapore)",
+          "notes": "Taiwan risk exists but diversification underway"
+        },
+        {
+          "risk": "Export Control Escalation",
+          "severity": "LOW",
+          "impact": "-5 points",
+          "mitigation": "US companies already comply, Chinese competitors restricted",
+          "notes": "Actually benefits US companies vs Chinese competition"
+        }
+      ],
+      "net_impact": -25
+    }
+  },
+  "APP": {
+    "ticker": "APP",
+    "overall_score": 55.8,
+    "rating": "NEUTRAL",
+    "recommendation": "Mixed macro signals, focus on company fundamentals",
+    "component_scores": {
+      "economic_cycle": 80,
+      "fed_policy": 80,
+      "sector_tailwinds": 25,
+      "geopolitical": 65
+    },
+    "economic_cycle_analysis": {
+      "economic_cycle_score": 80,
+      "cycle_phase": "MODERATE GROWTH",
+      "risk_level": "MODERATE",
+      "sp500_return_ytd": 14.4,
+      "vix_level": 16.7,
+      "volatility_regime": "NORMAL (healthy)",
+      "notes": "Positive but moderate growth",
+      "reasons": [
+        "Positive market returns (+14.4% YTD)",
+        "Low volatility (VIX 16.7)",
+        "No recession signals, unemployment low"
+      ]
+    },
+    "fed_policy_analysis": {
+      "fed_policy_score": 80,
+      "rate_sensitivity": "MODERATE",
+      "current_impact": "NEUTRAL",
+      "fed_stance": "NEUTRAL TO ACCOMMODATIVE",
+      "fed_notes": [
+        "Fed Funds Rate: ~4.50% (down from 5.50% peak in 2023)",
+        "Rate cuts likely complete or nearly complete",
+        "Inflation moderating toward 2% target",
+        "Focus on maintaining growth while controlling inflation"
+      ],
+      "impact_notes": [
+        "General technology sector sensitivity"
+      ],
+      "reasons": [
+        "Fed in neutral/accommodative mode (supportive)",
+        "Rate cuts complete/near complete (reduces uncertainty)",
+        "Inflation moderating (no emergency tightening needed)"
+      ]
+    },
+    "sector_analysis": {
+      "sector_tailwinds_score": 25,
+      "sector_outlook": "NEUTRAL TO POSITIVE",
+      "tailwinds": [
+        {
+          "factor": "Technology Adoption",
+          "strength": "MODERATE",
+          "duration": "5+ years",
+          "impact": "+25 points",
+          "notes": "General technology adoption trends"
+        }
+      ],
+      "headwinds": [],
+      "net_score": 25
+    },
+    "geopolitical_analysis": {
+      "geopolitical_risk_score": 65,
+      "geo_outlook": "LOW RISK",
+      "risks": [
+        {
+          "risk": "Regulatory Risk",
+          "severity": "LOW",
+          "impact": "-5 points",
+          "mitigation": "Compliance programs in place",
+          "notes": "Tech regulation ongoing but manageable"
+        }
+      ],
+      "net_impact": -5
+    }
+  },
+  "PLTR": {
+    "ticker": "PLTR",
+    "overall_score": 59.8,
+    "rating": "NEUTRAL",
+    "recommendation": "Mixed macro signals, focus on company fundamentals",
+    "component_scores": {
+      "economic_cycle": 80,
+      "fed_policy": 80,
+      "sector_tailwinds": 35,
+      "geopolitical": 65
+    },
+    "economic_cycle_analysis": {
+      "economic_cycle_score": 80,
+      "cycle_phase": "MODERATE GROWTH",
+      "risk_level": "MODERATE",
+      "sp500_return_ytd": 14.4,
+      "vix_level": 16.7,
+      "volatility_regime": "NORMAL (healthy)",
+      "notes": "Positive but moderate growth",
+      "reasons": [
+        "Positive market returns (+14.4% YTD)",
+        "Low volatility (VIX 16.7)",
+        "No recession signals, unemployment low"
+      ]
+    },
+    "fed_policy_analysis": {
+      "fed_policy_score": 80,
+      "rate_sensitivity": "LOW",
+      "current_impact": "NEUTRAL TO POSITIVE",
+      "fed_stance": "NEUTRAL TO ACCOMMODATIVE",
+      "fed_notes": [
+        "Fed Funds Rate: ~4.50% (down from 5.50% peak in 2023)",
+        "Rate cuts likely complete or nearly complete",
+        "Inflation moderating toward 2% target",
+        "Focus on maintaining growth while controlling inflation"
+      ],
+      "impact_notes": [
+        "High gross margins (60-80%) reduce sensitivity",
+        "SaaS revenue models provide stability",
+        "Rate cuts positive for multiple expansion"
+      ],
+      "reasons": [
+        "Fed in neutral/accommodative mode (supportive)",
+        "Rate cuts complete/near complete (reduces uncertainty)",
+        "Inflation moderating (no emergency tightening needed)"
+      ]
+    },
+    "sector_analysis": {
+      "sector_tailwinds_score": 35,
+      "sector_outlook": "POSITIVE (steady growth but valuation-dependent)",
+      "tailwinds": [
+        {
+          "factor": "Digital Transformation",
+          "strength": "STRONG",
+          "duration": "5+ years",
+          "impact": "+30 points",
+          "notes": "Enterprises accelerating cloud/SaaS adoption"
+        },
+        {
+          "factor": "AI Integration into Software",
+          "strength": "EMERGING",
+          "duration": "3-10 years",
+          "impact": "+20 points",
+          "notes": "Copilot features, automation driving value"
+        }
+      ],
+      "headwinds": [
+        {
+          "factor": "Valuation Pressure",
+          "strength": "MODERATE",
+          "duration": "Ongoing",
+          "impact": "-15 points",
+          "notes": "High multiples make stocks rate-sensitive"
+        }
+      ],
+      "net_score": 35
+    },
+    "geopolitical_analysis": {
+      "geopolitical_risk_score": 65,
+      "geo_outlook": "LOW RISK",
+      "risks": [
+        {
+          "risk": "Regulatory Risk",
+          "severity": "LOW",
+          "impact": "-5 points",
+          "mitigation": "Compliance programs in place",
+          "notes": "Tech regulation ongoing but manageable"
+        }
+      ],
+      "net_impact": -5
+    }
+  },
+  "ALAB": {
+    "ticker": "ALAB",
+    "overall_score": 72.8,
+    "rating": "FAVORABLE",
+    "recommendation": "Macro environment supports investment, minor headwinds",
+    "component_scores": {
+      "economic_cycle": 80,
+      "fed_policy": 80,
+      "sector_tailwinds": 75,
+      "geopolitical": 45
+    },
+    "economic_cycle_analysis": {
+      "economic_cycle_score": 80,
+      "cycle_phase": "MODERATE GROWTH",
+      "risk_level": "MODERATE",
+      "sp500_return_ytd": 14.4,
+      "vix_level": 16.7,
+      "volatility_regime": "NORMAL (healthy)",
+      "notes": "Positive but moderate growth",
+      "reasons": [
+        "Positive market returns (+14.4% YTD)",
+        "Low volatility (VIX 16.7)",
+        "No recession signals, unemployment low"
+      ]
+    },
+    "fed_policy_analysis": {
+      "fed_policy_score": 80,
+      "rate_sensitivity": "MODERATE",
+      "current_impact": "NEUTRAL TO SLIGHTLY POSITIVE",
+      "fed_stance": "NEUTRAL TO ACCOMMODATIVE",
+      "fed_notes": [
+        "Fed Funds Rate: ~4.50% (down from 5.50% peak in 2023)",
+        "Rate cuts likely complete or nearly complete",
+        "Inflation moderating toward 2% target",
+        "Focus on maintaining growth while controlling inflation"
+      ],
+      "impact_notes": [
+        "Capex-intensive industry (high rates = higher cost of capital)",
+        "However, secular AI tailwind overrides rate concerns",
+        "Rate cuts would be positive but not required for growth"
+      ],
+      "reasons": [
+        "Fed in neutral/accommodative mode (supportive)",
+        "Rate cuts complete/near complete (reduces uncertainty)",
+        "Inflation moderating (no emergency tightening needed)"
+      ]
+    },
+    "sector_analysis": {
+      "sector_tailwinds_score": 75,
+      "sector_outlook": "VERY POSITIVE (secular AI tailwinds override cyclical concerns)",
+      "tailwinds": [
+        {
+          "factor": "AI & ML Chip Demand",
+          "strength": "VERY STRONG",
+          "duration": "5-10 years",
+          "impact": "+40 points",
+          "notes": "Training & inference driving GPU/HBM/custom silicon demand"
+        },
+        {
+          "factor": "Data Center Expansion",
+          "strength": "STRONG",
+          "duration": "3-7 years",
+          "impact": "+25 points",
+          "notes": "Cloud migration + AI workloads = capacity additions"
+        },
+        {
+          "factor": "Memory Upcycle (HBM)",
+          "strength": "STRONG",
+          "duration": "2-3 years",
+          "impact": "+20 points",
+          "notes": "HBM sold out through 2026, pricing power returning"
+        }
+      ],
+      "headwinds": [
+        {
+          "factor": "Cyclicality Risk",
+          "strength": "MODERATE",
+          "duration": "Structural",
+          "impact": "-10 points",
+          "notes": "Semiconductors historically cyclical (but AI secular)"
+        }
+      ],
+      "net_score": 75
+    },
+    "geopolitical_analysis": {
+      "geopolitical_risk_score": 45,
+      "geo_outlook": "MANAGEABLE RISKS (US positioning advantageous)",
+      "risks": [
+        {
+          "risk": "US-China Tech Decoupling",
+          "severity": "MODERATE",
+          "impact": "-10 points",
+          "mitigation": "US companies benefit from export controls on China",
+          "notes": "Restricts China access to advanced chips, benefits US companies like MU"
+        },
+        {
+          "risk": "Taiwan Geopolitical Tension",
+          "severity": "LOW TO MODERATE",
+          "impact": "-10 points",
+          "mitigation": "Diversified manufacturing (US CHIPS Act, Japan, Singapore)",
+          "notes": "Taiwan risk exists but diversification underway"
+        },
+        {
+          "risk": "Export Control Escalation",
+          "severity": "LOW",
+          "impact": "-5 points",
+          "mitigation": "US companies already comply, Chinese competitors restricted",
+          "notes": "Actually benefits US companies vs Chinese competition"
+        }
+      ],
+      "net_impact": -25
+    }
+  }
+}

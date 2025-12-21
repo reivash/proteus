@@ -1,0 +1,111 @@
+
+PROTEUS OVERNIGHT DEEP DIVE RESULTS
+Generated: 2025-12-18 23:55:34
+================================================================================
+
+EXECUTIVE SUMMARY
+-----------------
+Total Stocks Analyzed: 54
+
+Conviction Tiers:
+  HIGH:   29 stocks
+  MEDIUM: 24 stocks
+  LOW:    1 stocks
+  AVOID:  0 stocks
+
+================================================================================
+
+TOP 10 HIGHEST CONVICTION STOCKS
+--------------------------------
+
+1. GILD - Gilead Sciences, Inc.
+   Conviction: 85.8/100 (HIGH)
+   Sector: Healthcare
+   Bull Case: Quality healthcare company with high quality business, strong balance sheet
+
+2. CRM - Salesforce, Inc.
+   Conviction: 83.3/100 (HIGH)
+   Sector: Technology
+   Bull Case: Quality technology company with high quality business, strong balance sheet
+
+3. PNC - The PNC Financial Services Group, Inc.
+   Conviction: 82.5/100 (HIGH)
+   Sector: Financial Services
+   Bull Case: Quality financial services company with high quality business, solid growth
+
+4. JNJ - Johnson & Johnson
+   Conviction: 81.5/100 (HIGH)
+   Sector: Healthcare
+   Bull Case: Quality healthcare company with high quality business, solid growth
+
+5. MSFT - Microsoft Corporation
+   Conviction: 81.2/100 (HIGH)
+   Sector: Technology
+   Bull Case: Quality technology company with high quality business, solid growth
+
+6. EOG - EOG Resources, Inc.
+   Conviction: 80.8/100 (HIGH)
+   Sector: Energy
+   Bull Case: Quality energy company with high quality business, strong balance sheet
+
+7. MRVL - Marvell Technology, Inc.
+   Conviction: 80.6/100 (HIGH)
+   Sector: Technology
+   Bull Case: Quality technology company with high quality business, solid growth
+
+8. COP - ConocoPhillips
+   Conviction: 80.5/100 (HIGH)
+   Sector: Energy
+   Bull Case: Quality energy company with high quality business, strong balance sheet
+
+9. KLAC - KLA Corporation
+   Conviction: 80.4/100 (HIGH)
+   Sector: Technology
+   Bull Case: Quality technology company with high quality business, solid growth
+
+10. USB - U.S. Bancorp
+   Conviction: 80.2/100 (HIGH)
+   Sector: Financial Services
+   Bull Case: Quality financial services company with high quality business, solid growth
+
+================================================================================
+
+BOTTOM 5 LOWEST CONVICTION STOCKS (AVOID)
+-----------------------------------------
+
+- CVS: 63.8/100 (MEDIUM)
+  Bear Case: Expensive valuation
+
+- ORCL: 63.6/100 (MEDIUM)
+  Bear Case: Balance sheet concerns
+
+- INSM: 62.8/100 (MEDIUM)
+  Bear Case: Sector rotation risk
+
+- NEE: 62.5/100 (MEDIUM)
+  Bear Case: Balance sheet concerns
+
+- APD: 35.3/100 (LOW)
+  Bear Case: Balance sheet concerns
+
+================================================================================
+
+HIGH CONVICTION STOCKS (Trade with larger size when signals fire)
+-----------------------------------------------------------------
+GILD, CRM, PNC, JNJ, MSFT, EOG, MRVL, COP, KLAC, USB, ADI, QCOM, NVDA, MA, SCHW, V, NOW, INTU, AIG, ECL, ADBE, MPC, JPM, MLM, HCA, TXN, AMAT, ETN, MS
+
+================================================================================
+
+TRADING IMPLICATIONS
+--------------------
+1. When a signal fires for a HIGH conviction stock: Trade with 1.2-1.5x position
+2. When a signal fires for a MEDIUM conviction stock: Trade with 1.0x position
+3. When a signal fires for a LOW conviction stock: Trade with 0.5-0.75x position
+4. When a signal fires for an AVOID stock: Skip the trade
+
+================================================================================
+
+Full results saved to: data/deep_dives/
+Individual stock analysis files available for each ticker.
+
+This analysis was generated automatically by the Proteus Deep Dive Agent.

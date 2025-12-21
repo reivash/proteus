@@ -1,0 +1,78 @@
+================================================================================
+ADVANCED IPO ANALYSIS REPORT
+Generated: 2025-11-30 19:34:03
+================================================================================
+
+METHODOLOGY:
+- Y Combinator Principles (40%): Niche dominance, emergence, moat, scaling
+- Competitive Position (30%): Market share, moat, 10x better
+- Growth Trajectory (30%): Stock performance, scaling, TAM expansion
+
+CANDIDATES ANALYZED: 2
+================================================================================
+
+
+RDDT - Reddit, Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 75.7/100
+  - Base YC Score: 85.2/100
+  - Competitive Score: 54.6/100
+  - Trajectory Score: 84.0/100
+
+Category: Emerging: Platform
+IPO: 2024-03-21 (20mo ago)
+Market Cap: $41.02B
+
+COMPETITIVE POSITION:
+  Market Share: 0.9% (Rank #4 of 4)
+  Competitive Moat: 90.0/100
+  10x Better: False (Score: 30.0/100)
+    - Growing 4.0x faster than peers
+
+GROWTH TRAJECTORY:
+  Total Return: +329.2% (Annualized: +136.2%)
+  Scaling: True (Score: 85.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 67.9% YoY
+  Gross Margin: 91.2%
+  Operating Margin: 23.7%
+
+--------------------------------------------------------------------------------
+
+
+ASND - Ascendis Pharma A/S
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 67.1/100
+  - Base YC Score: 75.4/100
+  - Competitive Score: 63.0/100
+  - Trajectory Score: 60.0/100
+
+Category: Biotechnology
+IPO: 2024-09-13 (15mo ago)
+Market Cap: $12.97B
+
+COMPETITIVE POSITION:
+  Market Share: 9.1% (Rank #4 of 4)
+  Competitive Moat: 100.0/100
+  10x Better: False (Score: 25.0/100)
+    - Margins 146.1% of peers (pricing power)
+
+GROWTH TRAJECTORY:
+  Total Return: +78.1% (Annualized: +60.9%)
+  Scaling: True (Score: 75.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 269.4% YoY
+  Gross Margin: 86.8%
+  Operating Margin: 5.1%
+
+--------------------------------------------------------------------------------
+
+================================================================================
+END OF REPORT
+================================================================================

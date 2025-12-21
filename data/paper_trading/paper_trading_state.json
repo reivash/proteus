@@ -1,5 +1,5 @@
 {
-  "capital": 90000.0,
+  "capital": 83636.64,
   "positions": [
     {
       "ticker": "AXP",
@@ -33,6 +33,84 @@
           "tier": "A",
           "notes": "EXCELLENT! American Express. Highest return (+29.21%) in finance sector.",
           "performance": "Win rate: 71.4%, Return: +29.21%, Sharpe: 7.61, Avg gain: 3.92%"
+        }
+      }
+    },
+    {
+      "ticker": "AVGO",
+      "entry_date": "2025-12-18",
+      "entry_price": 324.3898890686035,
+      "shares": 9.987980850151558,
+      "hold_days": 0,
+      "current_price": 324.3898890686035,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "AVGO",
+        "date": "2025-12-17",
+        "signal_type": "BUY",
+        "price": 326.0199890136719,
+        "limit_price": 324.3898890686035,
+        "intraday_low": 321.4200134277344,
+        "intraday_high": 346.6099853515625,
+        "intraday_price_position": 0.18261138201532545,
+        "limit_would_fill": true,
+        "z_score": -1.8812407321535598,
+        "rsi": 26.154762749881357,
+        "volume_ratio": 1.0,
+        "reversion_target": 375.91399841308595,
+        "expected_return": 15.303972480448657,
+        "signal_strength": 53.272912326384386,
+        "position_size": 1.2990936848957657,
+        "atr_pct": 5.645807210630466,
+        "regime": "SIDEWAYS",
+        "parameters": {
+          "z_score_threshold": 1.2,
+          "rsi_oversold": 32,
+          "volume_multiplier": 1.5,
+          "price_drop_threshold": -1.5,
+          "tier": "A",
+          "notes": "EXCELLENT! Broadcom. OPTIMIZED params: +22.2pp (77.8%->100%!)",
+          "performance": "Win rate: 87.5%, Return: +24.52%, Sharpe: 12.65, Avg gain: 3.98%"
+        }
+      }
+    },
+    {
+      "ticker": "ETN",
+      "entry_date": "2025-12-18",
+      "entry_price": 314.2409072875977,
+      "shares": 9.939380671216867,
+      "hold_days": 0,
+      "current_price": 314.2409072875977,
+      "current_return": 0.0,
+      "pnl": 0.0,
+      "signal_info": {
+        "ticker": "ETN",
+        "date": "2025-12-17",
+        "signal_type": "BUY",
+        "price": 315.82000732421875,
+        "limit_price": 314.2409072875977,
+        "intraday_low": 311.9200134277344,
+        "intraday_high": 331.1199951171875,
+        "intraday_price_position": 0.2031248758235383,
+        "limit_would_fill": true,
+        "z_score": -2.4945063971360075,
+        "rsi": 34.45500042910176,
+        "volume_ratio": 1.0,
+        "reversion_target": 337.2544998168945,
+        "expected_return": 6.786933061739586,
+        "signal_strength": 58.650416178772545,
+        "position_size": 1.3797562426815881,
+        "atr_pct": 3.632950898797997,
+        "regime": "SIDEWAYS",
+        "parameters": {
+          "z_score_threshold": 1.0,
+          "rsi_oversold": 38,
+          "volume_multiplier": 1.8,
+          "price_drop_threshold": -1.5,
+          "tier": "A",
+          "notes": "EXCELLENT! Eaton. +12.4pp improvement from optimization!",
+          "performance": "Win rate: 88.9%, Return: +19.3%, Trades: 9, EXP-072 optimized"
         }
       }
     }

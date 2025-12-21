@@ -1,0 +1,413 @@
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ATLASSIAN"}}}
+HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ATLASSIAN"}}}
+================================================================================
+AI/ML IPO COMPANY ANALYSIS - UNICORN POTENTIAL DETECTION
+================================================================================
+
+Mission: Identify high-growth AI/ML companies from recent IPOs
+Focus: '10x better' companies with unicorn potential
+
+AI/ML Companies to Analyze: 11
+
+  Core Ai: AI, PLTR, PATH, IONQ
+  Ai Enabled Platforms: SNOW, DDOG, U
+  Ai Security: CRWD, ZS
+  Data Infrastructure: GTLB, BILL
+
+Initializing advanced screener...
+[OK] Screener initialized
+
+================================================================================
+STARTING DEEP ANALYSIS OF AI/ML COMPANIES
+================================================================================
+This will analyze:
+  1. Y Combinator Scoring (niche dominance, emergence, moat, scaling)
+  2. Competitive Positioning (market share, moat, 10x better)
+  3. Growth Trajectory (stock performance, inflection points)
+
+Estimated time: 330 seconds
+
+================================================================================
+ADVANCED IPO SCREENING WITH DEEP ANALYSIS
+================================================================================
+
+Analyzing 11 candidates...
+This may take several minutes...
+
+
+================================================================================
+DEEP ANALYSIS: AI
+================================================================================
+[SKIP] AI did not pass basic filters
+
+================================================================================
+DEEP ANALYSIS: PLTR
+================================================================================
+
+[COMPETITIVE ANALYSIS] PLTR in Emerging: Ai
+----------------------------------------------------------------------
+  Peer Group (2): SNOW, DDOG
+  Market Share: 34.7% (Rank #2 of 3)
+  Competitive Moat Score: 80.0/100
+    - Gross Margin Advantage: +7.4pp
+    - Growth Premium: +32.7pp
+  10x Better: False (Score: 50.0/100)
+    - Growing 2.1x faster than peers
+    - Revenue per employee 1.8x peers (leverage)
+
+[GROWTH TRAJECTORY ANALYSIS] PLTR
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $9.50
+  Current Price: $168.45
+  Total Return: +1673.2%
+  Annualized Return: +74.4%
+  ATH Return: +2080.8%
+  Max Drawdown: -97.1%
+
+Revenue Growth:
+  Latest YoY Growth: 62.8%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 85.0/100
+    - Strong profitability at scale (15%+ operating margin)
+    - Excellent unit economics (80.8% gross margin)
+    - Scaling efficiently (high growth + profitable)
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 62.8% (Outpacing: True)
+  Market Penetration: 401.5%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 81.8/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: PATH
+================================================================================
+
+[COMPETITIVE ANALYSIS] PATH in Emerging: Cloud
+----------------------------------------------------------------------
+  Peer Group (3): GTLB, TEAM, ATLASSIAN
+  Market Share: 19.2% (Rank #2 of 4)
+  Competitive Moat Score: 25.0/100
+    - Gross Margin Advantage: +25.8pp
+    - Growth Premium: -2.2pp
+  10x Better: False (Score: 0.0/100)
+
+[GROWTH TRAJECTORY ANALYSIS] PATH
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $69.00
+  Current Price: $13.86
+  Total Return: -79.9%
+  Annualized Return: -29.4%
+  ATH Return: +23.4%
+  Max Drawdown: -88.5%
+
+Revenue Growth:
+  Latest YoY Growth: 14.4%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 25.0/100
+    - Excellent unit economics (83.1% gross margin)
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 14.4% (Outpacing: False)
+  Market Penetration: 7.4%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 23.8/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: IONQ
+================================================================================
+
+[COMPETITIVE ANALYSIS] IONQ in Quantum Computing
+----------------------------------------------------------------------
+  No peer group identified for IONQ
+
+[GROWTH TRAJECTORY ANALYSIS] IONQ
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $9.20
+  Current Price: $49.30
+  Total Return: +435.9%
+  Annualized Return: +49.6%
+  ATH Return: +792.3%
+  Max Drawdown: -96.2%
+
+Revenue Growth:
+  Latest YoY Growth: 221.5%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 30.0/100
+    - Good unit economics (52.3% gross margin)
+    - Strong revenue growth maintained
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 221.5% (Outpacing: True)
+  Market Penetration: 17.5%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 54.7/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: SNOW
+================================================================================
+
+[COMPETITIVE ANALYSIS] SNOW in Emerging: Cloud
+----------------------------------------------------------------------
+  Peer Group (3): DDOG, MDB, NET
+  Market Share: 35.6% (Rank #1 of 4)
+  Competitive Moat Score: 10.0/100
+    - Gross Margin Advantage: -9.0pp
+    - Growth Premium: +4.2pp
+  10x Better: False (Score: 0.0/100)
+
+[GROWTH TRAJECTORY ANALYSIS] SNOW
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $253.93
+  Current Price: $251.24
+  Total Return: -1.1%
+  Annualized Return: -0.2%
+  ATH Return: +58.3%
+  Max Drawdown: -73.0%
+
+Revenue Growth:
+  Latest YoY Growth: 31.8%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 30.0/100
+    - Good unit economics (66.8% gross margin)
+    - Strong revenue growth maintained
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 31.8% (Outpacing: True)
+  Market Penetration: 85.1%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 36.7/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: DDOG
+================================================================================
+[SKIP] DDOG did not pass basic filters
+
+================================================================================
+DEEP ANALYSIS: U
+================================================================================
+
+[COMPETITIVE ANALYSIS] U in Emerging: Ai
+----------------------------------------------------------------------
+  Peer Group (3): RBLX, EA, TTWO
+  Market Share: 9.1% (Rank #4 of 4)
+  Competitive Moat Score: 25.0/100
+    - Gross Margin Advantage: +19.7pp
+    - Growth Premium: -17.9pp
+  10x Better: False (Score: 0.0/100)
+
+[GROWTH TRAJECTORY ANALYSIS] U
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $68.35
+  Current Price: $42.52
+  Total Return: -37.8%
+  Annualized Return: -8.7%
+  ATH Return: +194.3%
+  Max Drawdown: -93.1%
+
+Revenue Growth:
+  Latest YoY Growth: 5.4%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 25.0/100
+    - Excellent unit economics (74.3% gross margin)
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 5.4% (Outpacing: False)
+  Market Penetration: 18.2%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 24.8/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: CRWD
+================================================================================
+[SKIP] CRWD did not pass basic filters
+
+================================================================================
+DEEP ANALYSIS: ZS
+================================================================================
+[SKIP] ZS did not pass basic filters
+
+================================================================================
+DEEP ANALYSIS: GTLB
+================================================================================
+
+[COMPETITIVE ANALYSIS] GTLB in Emerging: Cloud
+----------------------------------------------------------------------
+  Peer Group (3): PATH, TEAM, ATLASSIAN
+  Market Share: 11.0% (Rank #3 of 4)
+  Competitive Moat Score: 65.0/100
+    - Gross Margin Advantage: +33.0pp
+    - Growth Premium: +17.5pp
+  10x Better: False (Score: 55.0/100)
+    - Growing 2.0x faster than peers
+    - Outperforming with smaller market cap (undervalued)
+
+[GROWTH TRAJECTORY ANALYSIS] GTLB
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $103.89
+  Current Price: $41.06
+  Total Return: -60.5%
+  Annualized Return: -20.1%
+  ATH Return: +26.0%
+  Max Drawdown: -79.5%
+
+Revenue Growth:
+  Latest YoY Growth: 29.2%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 25.0/100
+    - Excellent unit economics (88.5% gross margin)
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 29.2% (Outpacing: True)
+  Market Penetration: 6.8%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 40.2/100
+================================================================================
+
+
+================================================================================
+DEEP ANALYSIS: BILL
+================================================================================
+
+[COMPETITIVE ANALYSIS] BILL in Emerging: Cloud
+----------------------------------------------------------------------
+  Peer Group (4): SQ, COIN, HOOD, PYPL
+  Market Share: 3.3% (Rank #4 of 5)
+  Competitive Moat Score: 25.0/100
+    - Gross Margin Advantage: +29.2pp
+    - Growth Premium: -31.1pp
+  10x Better: False (Score: 25.0/100)
+    - Margins 132.7% of peers (pricing power)
+
+[GROWTH TRAJECTORY ANALYSIS] BILL
+======================================================================
+Market Cap Trajectory:
+  IPO Price: $35.50
+  Current Price: $50.15
+  Total Return: +41.3%
+  Annualized Return: +6.0%
+  ATH Return: +864.1%
+  Max Drawdown: -91.5%
+
+Revenue Growth:
+  Latest YoY Growth: 10.4%
+  Growth Accelerating: False
+  Inflection Detected: False
+
+Scaling Signals:
+  Scaling Score: 25.0/100
+    - Excellent unit economics (83.8% gross margin)
+
+TAM Expansion:
+  Current TAM: $100B -> Future: $300B
+  TAM CAGR: 24.6%
+  Company Growth: 10.4% (Outpacing: False)
+  Market Penetration: 5.0%
+======================================================================
+
+================================================================================
+ADVANCED SCORE: 27.1/100
+================================================================================
+
+
+================================================================================
+AI/ML COMPANIES - RESULTS SUMMARY
+================================================================================
+Companies Successfully Analyzed: 7
+Average Advanced Score: 41.3/100
+Top Candidate: PLTR (81.8/100)
+
+SCORE DISTRIBUTION:
+  Exceptional (75-100): 1 companies
+    -> PLTR
+  Very Strong (65-74): 0 companies
+  Strong (50-64): 1 companies
+    -> IONQ
+  Moderate (<50): 5 companies
+    -> GTLB, SNOW, BILL, U, PATH
+
+================================================================================
+TOP 10 AI/ML COMPANIES BY ADVANCED SCORE
+================================================================================
+ticker               company_name  advanced_yc_score  market_cap_b revenue_growth_yoy          category
+  PLTR Palantir Technologies Inc.              81.80    401.489822              62.8%      Emerging: Ai
+  IONQ                 IonQ, Inc.              54.70     17.465983             221.5% Quantum Computing
+  GTLB                GitLab Inc.              40.19      6.847823              29.2%   Emerging: Cloud
+  SNOW             Snowflake Inc.              36.69     85.120115              31.8%   Emerging: Cloud
+  BILL        BILL Holdings, Inc.              27.10      5.033999              10.4%   Emerging: Cloud
+     U        Unity Software Inc.              24.78     18.194854               5.4%      Emerging: Ai
+  PATH                UiPath Inc.              23.76      7.415638              14.4%   Emerging: Cloud
+
+================================================================================
+TOP 3 AI/ML UNICORN CANDIDATES - DETAILED ANALYSIS
+================================================================================
+
+#1 PLTR - Palantir Technologies Inc.
+--------------------------------------------------------------------------------
+Advanced YC Score: 81.8/100
+Traceback (most recent call last):
+  File "C:\Users\javie\Documents\GitHub\proteus\analyze_ai_ml_ipos.py", line 269, in <module>
+    main()
+  File "C:\Users\javie\Documents\GitHub\proteus\analyze_ai_ml_ipos.py", line 163, in main
+    print(f"  \u251c\u2500 Base YC Score: {row['base_yc_score']:.1f}/100")
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 2-3: character maps to <undefined>

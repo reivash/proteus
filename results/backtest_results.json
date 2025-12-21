@@ -1,0 +1,338 @@
+{
+  "3_months": {
+    "period_months": 3,
+    "correlation": 0.5056863311072508,
+    "top_10_actual": [
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 120.7004454554393
+      },
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 55.69225710632085
+      },
+      {
+        "ticker": "TEM",
+        "score": 64.5,
+        "return": 32.953751504706396
+      },
+      {
+        "ticker": "AMD",
+        "score": 65.0,
+        "return": 23.875326767513815
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 20.34366295033509
+      },
+      {
+        "ticker": "MRVL",
+        "score": 65.4,
+        "return": 19.300154833707637
+      },
+      {
+        "ticker": "IONQ",
+        "score": 59.7,
+        "return": 18.728048264628587
+      },
+      {
+        "ticker": "DDOG",
+        "score": 52.6,
+        "return": 15.11104818324672
+      },
+      {
+        "ticker": "QCOM",
+        "score": 65.0,
+        "return": 14.785668385711078
+      },
+      {
+        "ticker": "CRWD",
+        "score": 48.6,
+        "return": 10.883569994522588
+      }
+    ],
+    "top_10_scored": [
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 55.69225710632085
+      },
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 120.7004454554393
+      },
+      {
+        "ticker": "PLTR",
+        "score": 81.8,
+        "return": 4.643340772459795
+      },
+      {
+        "ticker": "NVDA",
+        "score": 80.0,
+        "return": -0.1898215595955006
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 20.34366295033509
+      },
+      {
+        "ticker": "CRWV",
+        "score": 66.4,
+        "return": -28.52183704531929
+      },
+      {
+        "ticker": "MRVL",
+        "score": 65.4,
+        "return": 19.300154833707637
+      },
+      {
+        "ticker": "QCOM",
+        "score": 65.0,
+        "return": 14.785668385711078
+      },
+      {
+        "ticker": "AMD",
+        "score": 65.0,
+        "return": 23.875326767513815
+      },
+      {
+        "ticker": "TEM",
+        "score": 64.5,
+        "return": 32.953751504706396
+      }
+    ],
+    "high_scorers_return": 40.23797694499191,
+    "low_scorers_return": -15.224430280975481,
+    "market_return": 8.411657388927493,
+    "total_companies": 22
+  },
+  "6_months": {
+    "period_months": 6,
+    "correlation": 0.3394562208348962,
+    "top_10_actual": [
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 196.03672716882926
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 130.06237281038233
+      },
+      {
+        "ticker": "AMD",
+        "score": 65.0,
+        "return": 117.65763092690737
+      },
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 103.81328183980638
+      },
+      {
+        "ticker": "RDDT",
+        "score": 30.2,
+        "return": 92.05397883444785
+      },
+      {
+        "ticker": "BBAI",
+        "score": 22.2,
+        "return": 91.76012031150984
+      },
+      {
+        "ticker": "IONQ",
+        "score": 59.7,
+        "return": 58.70221746230779
+      },
+      {
+        "ticker": "NVDA",
+        "score": 80.0,
+        "return": 57.8341323686184
+      },
+      {
+        "ticker": "DDOG",
+        "score": 52.6,
+        "return": 51.51751332256893
+      },
+      {
+        "ticker": "CRWV",
+        "score": 66.4,
+        "return": 48.559108552856664
+      }
+    ],
+    "top_10_scored": [
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 103.81328183980638
+      },
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 196.03672716882926
+      },
+      {
+        "ticker": "PLTR",
+        "score": 81.8,
+        "return": 35.83259245131892
+      },
+      {
+        "ticker": "NVDA",
+        "score": 80.0,
+        "return": 57.8341323686184
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 130.06237281038233
+      },
+      {
+        "ticker": "CRWV",
+        "score": 66.4,
+        "return": 48.559108552856664
+      },
+      {
+        "ticker": "MRVL",
+        "score": 65.4,
+        "return": 47.4384623833817
+      },
+      {
+        "ticker": "QCOM",
+        "score": 65.0,
+        "return": 22.158221561290876
+      },
+      {
+        "ticker": "AMD",
+        "score": 65.0,
+        "return": 117.65763092690737
+      },
+      {
+        "ticker": "TEM",
+        "score": 64.5,
+        "return": 41.43702405354659
+      }
+    ],
+    "high_scorers_return": 104.71582132779103,
+    "low_scorers_return": 20.89406470503342,
+    "market_return": 21.78605108583628,
+    "total_companies": 22
+  },
+  "12_months": {
+    "period_months": 12,
+    "correlation": 0.120645267759967,
+    "top_10_actual": [
+      {
+        "ticker": "BBAI",
+        "score": 22.2,
+        "return": 287.4213659180048
+      },
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 264.98961216422856
+      },
+      {
+        "ticker": "PLTR",
+        "score": 81.8,
+        "return": 202.77329115572758
+      },
+      {
+        "ticker": "IONQ",
+        "score": 59.7,
+        "return": 187.68996089993456
+      },
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 113.44219799916955
+      },
+      {
+        "ticker": "CRWV",
+        "score": 66.4,
+        "return": 89.44425582885742
+      },
+      {
+        "ticker": "RDDT",
+        "score": 30.2,
+        "return": 84.47307336682252
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 69.12498917802579
+      },
+      {
+        "ticker": "RBRK",
+        "score": 60.9,
+        "return": 61.39986433107447
+      },
+      {
+        "ticker": "CRWD",
+        "score": 48.6,
+        "return": 57.62812614440917
+      }
+    ],
+    "top_10_scored": [
+      {
+        "ticker": "APP",
+        "score": 82.0,
+        "return": 264.98961216422856
+      },
+      {
+        "ticker": "MU",
+        "score": 81.9,
+        "return": 113.44219799916955
+      },
+      {
+        "ticker": "PLTR",
+        "score": 81.8,
+        "return": 202.77329115572758
+      },
+      {
+        "ticker": "NVDA",
+        "score": 80.0,
+        "return": 23.38540761483117
+      },
+      {
+        "ticker": "ALAB",
+        "score": 70.8,
+        "return": 69.12498917802579
+      },
+      {
+        "ticker": "CRWV",
+        "score": 66.4,
+        "return": 89.44425582885742
+      },
+      {
+        "ticker": "MRVL",
+        "score": 65.4,
+        "return": 0.9959540659137992
+      },
+      {
+        "ticker": "QCOM",
+        "score": 65.0,
+        "return": -0.4888202591185704
+      },
+      {
+        "ticker": "AMD",
+        "score": 65.0,
+        "return": 50.89276005718207
+      },
+      {
+        "ticker": "TEM",
+        "score": 64.5,
+        "return": 34.23731233189754
+      }
+    ],
+    "high_scorers_return": 134.74309962239653,
+    "low_scorers_return": 60.84158973421095,
+    "market_return": 16.856255458053145,
+    "total_companies": 22
+  }
+}

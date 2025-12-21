@@ -1,0 +1,226 @@
+================================================================================
+ADVANCED IPO ANALYSIS REPORT
+Generated: 2025-12-01 13:56:07
+================================================================================
+
+METHODOLOGY:
+- Y Combinator Principles (40%): Niche dominance, emergence, moat, scaling
+- Competitive Position (30%): Market share, moat, 10x better
+- Growth Trajectory (30%): Stock performance, scaling, TAM expansion
+
+CANDIDATES ANALYZED: 7
+================================================================================
+
+
+PLTR - Palantir Technologies Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 81.8/100
+  - Base YC Score: 85.2/100
+  - Competitive Score: 75.0/100
+  - Trajectory Score: 84.0/100
+
+Category: Emerging: Ai
+IPO: 2020-09-30 (62mo ago)
+Market Cap: $401.49B
+
+COMPETITIVE POSITION:
+  Market Share: 34.7% (Rank #2 of 3)
+  Competitive Moat: 80.0/100
+  10x Better: False (Score: 50.0/100)
+    - Growing 2.1x faster than peers
+    - Revenue per employee 1.8x peers (leverage)
+
+GROWTH TRAJECTORY:
+  Total Return: +1673.2% (Annualized: +74.4%)
+  Scaling: True (Score: 85.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 62.8% YoY
+  Gross Margin: 80.8%
+  Operating Margin: 33.3%
+
+--------------------------------------------------------------------------------
+
+
+IONQ - IonQ, Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 54.7/100
+  - Base YC Score: 52.8/100
+  - Competitive Score: 50.0/100
+  - Trajectory Score: 62.0/100
+
+Category: Quantum Computing
+IPO: 2021-10-01 (50mo ago)
+Market Cap: $17.47B
+
+GROWTH TRAJECTORY:
+  Total Return: +435.9% (Annualized: +49.6%)
+  Scaling: False (Score: 30.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 221.5% YoY
+  Gross Margin: 52.3%
+  Operating Margin: -423.5%
+
+--------------------------------------------------------------------------------
+
+
+GTLB - GitLab Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 40.2/100
+  - Base YC Score: 36.3/100
+  - Competitive Score: 55.6/100
+  - Trajectory Score: 30.0/100
+
+Category: Emerging: Cloud
+IPO: 2021-10-14 (50mo ago)
+Market Cap: $6.85B
+
+COMPETITIVE POSITION:
+  Market Share: 11.0% (Rank #3 of 4)
+  Competitive Moat: 65.0/100
+  10x Better: False (Score: 55.0/100)
+    - Growing 2.0x faster than peers
+    - Outperforming with smaller market cap (undervalued)
+
+GROWTH TRAJECTORY:
+  Total Return: -60.5% (Annualized: -20.1%)
+  Scaling: False (Score: 25.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 29.2% YoY
+  Gross Margin: 88.5%
+  Operating Margin: -7.8%
+
+--------------------------------------------------------------------------------
+
+
+SNOW - Snowflake Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 36.7/100
+  - Base YC Score: 49.0/100
+  - Competitive Score: 25.0/100
+  - Trajectory Score: 32.0/100
+
+Category: Emerging: Cloud
+IPO: 2020-09-16 (62mo ago)
+Market Cap: $85.12B
+
+COMPETITIVE POSITION:
+  Market Share: 35.6% (Rank #1 of 4)
+  Competitive Moat: 10.0/100
+  10x Better: False (Score: 0.0/100)
+
+GROWTH TRAJECTORY:
+  Total Return: -1.1% (Annualized: -0.2%)
+  Scaling: False (Score: 30.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: True
+
+KEY METRICS:
+  Revenue Growth: 31.8% YoY
+  Gross Margin: 66.8%
+  Operating Margin: -29.7%
+
+--------------------------------------------------------------------------------
+
+
+BILL - BILL Holdings, Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 27.1/100
+  - Base YC Score: 36.3/100
+  - Competitive Score: 22.0/100
+  - Trajectory Score: 20.0/100
+
+Category: Emerging: Cloud
+IPO: 2019-12-12 (72mo ago)
+Market Cap: $5.03B
+
+COMPETITIVE POSITION:
+  Market Share: 3.3% (Rank #4 of 5)
+  Competitive Moat: 25.0/100
+  10x Better: False (Score: 25.0/100)
+    - Margins 132.7% of peers (pricing power)
+
+GROWTH TRAJECTORY:
+  Total Return: +41.3% (Annualized: +6.0%)
+  Scaling: False (Score: 25.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: False
+
+KEY METRICS:
+  Revenue Growth: 10.4% YoY
+  Gross Margin: 83.8%
+  Operating Margin: -3.0%
+
+--------------------------------------------------------------------------------
+
+
+U - Unity Software Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 24.8/100
+  - Base YC Score: 41.0/100
+  - Competitive Score: 18.0/100
+  - Trajectory Score: 10.0/100
+
+Category: Emerging: Ai
+IPO: 2020-09-18 (62mo ago)
+Market Cap: $18.19B
+
+COMPETITIVE POSITION:
+  Market Share: 9.1% (Rank #4 of 4)
+  Competitive Moat: 25.0/100
+  10x Better: False (Score: 0.0/100)
+
+GROWTH TRAJECTORY:
+  Total Return: -37.8% (Annualized: -8.7%)
+  Scaling: False (Score: 25.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: False
+
+KEY METRICS:
+  Revenue Growth: 5.4% YoY
+  Gross Margin: 74.3%
+  Operating Margin: -26.7%
+
+--------------------------------------------------------------------------------
+
+
+PATH - UiPath Inc.
+--------------------------------------------------------------------------------
+ADVANCED YC SCORE: 23.8/100
+  - Base YC Score: 33.9/100
+  - Competitive Score: 24.0/100
+  - Trajectory Score: 10.0/100
+
+Category: Emerging: Cloud
+IPO: 2021-04-21 (55mo ago)
+Market Cap: $7.42B
+
+COMPETITIVE POSITION:
+  Market Share: 19.2% (Rank #2 of 4)
+  Competitive Moat: 25.0/100
+  10x Better: False (Score: 0.0/100)
+
+GROWTH TRAJECTORY:
+  Total Return: -79.9% (Annualized: -29.4%)
+  Scaling: False (Score: 25.0/100)
+  TAM Expansion: 3.0x potential
+  Outpacing Market: False
+
+KEY METRICS:
+  Revenue Growth: 14.4% YoY
+  Gross Margin: 83.1%
+  Operating Margin: -5.2%
+
+--------------------------------------------------------------------------------
+
+================================================================================
+END OF REPORT
+================================================================================

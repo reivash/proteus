@@ -1,0 +1,65 @@
+================================================================================
+IPO NICHE MARKET SCREENING REPORT
+Generated: 2025-11-30 19:11:10
+================================================================================
+
+Y COMBINATOR PRINCIPLES:
+1. Dominate small niche markets (monopoly power)
+2. Emerging categories (small today, massive tomorrow)
+3. Build 10x better products (strong moats)
+4. Inflection from 'unscalable' to scale
+
+FOUND 2 QUALIFYING CANDIDATES:
+================================================================================
+
+
+RDDT - Reddit, Inc.
+--------------------------------------------------------------------------------
+Category: Emerging: Platform (Est. TAM: $25.0B)
+IPO Date: 2024-03-21 (20 months ago)
+Market Cap: $41.02B
+
+Y COMBINATOR SCORE: 85.2/100
+  - Market Dominance:   100.0/100
+  - Category Emergence: 70.0/100
+  - 10x Moat:           95.0/100
+  - Scaling Inflection: 70.0/100
+
+KEY METRICS:
+  Revenue Growth: 67.9% YoY
+  Gross Margin: 91.2%
+  Operating Margin: 23.7%
+  Price/Sales: 21.5x
+
+SIGNALS:
+  [X] Niche Market: True
+  [X] Emerging Category: True
+  [X] At Inflection: True
+
+
+ASND - Ascendis Pharma A/S
+--------------------------------------------------------------------------------
+Category: Biotechnology (Est. TAM: $30.0B)
+IPO Date: 2024-09-13 (15 months ago)
+Market Cap: $12.97B
+
+Y COMBINATOR SCORE: 75.4/100
+  - Market Dominance:   62.3/100
+  - Category Emergence: 100.0/100
+  - 10x Moat:           65.0/100
+  - Scaling Inflection: 70.0/100
+
+KEY METRICS:
+  Revenue Growth: 269.4% YoY
+  Gross Margin: 86.8%
+  Operating Margin: 5.1%
+  Price/Sales: 20.1x
+
+SIGNALS:
+  [X] Niche Market: True
+  [X] Emerging Category: True
+  [X] At Inflection: True
+
+================================================================================
+END OF REPORT
+================================================================================

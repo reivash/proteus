@@ -1,0 +1,42 @@
+{
+  "ticker": "AVGO",
+  "company_name": "Broadcom Inc.",
+  "analysis_date": "2025-12-18",
+  "business_quality_score": 8,
+  "financial_health_score": 7,
+  "competitive_moat_score": 8,
+  "management_quality_score": 7,
+  "catalyst_score": 7,
+  "risk_score": 6,
+  "conviction_score": 72,
+  "conviction_tier": "MEDIUM",
+  "business_summary": "Semiconductor and infrastructure software conglomerate. Designs chips for networking, broadband, storage, wireless. VMware acquisition adds enterprise software. Strong AI tailwind from custom silicon for hyperscalers.",
+  "bull_case": "AI infrastructure spending accelerates, VMware integration exceeds expectations with cost synergies, custom AI accelerator wins expand beyond Google. Stock re-rates higher on recurring revenue mix shift.",
+  "bear_case": "AI bubble deflates causing hyperscaler capex cuts, VMware integration stumbles, high debt load (D/E 166) becomes problematic in sustained high-rate environment, Hock Tan succession handled poorly.",
+  "key_risks": [
+    "High debt load from VMware acquisition (D/E 166)",
+    "AI spending slowdown or bubble burst",
+    "CEO succession risk (Hock Tan is 72)",
+    "China tariff/trade war exposure"
+  ],
+  "upcoming_catalysts": [
+    "VMware integration synergies (next 12 months)",
+    "Custom AI chip wins with hyperscalers",
+    "Q1 2025 earnings - AI revenue growth"
+  ],
+  "position_size_modifier": 1.0,
+  "recommended_hold_period": "1-5 days for mean reversion, 6-12 months for thesis",
+  "stop_loss_suggestion": "-3% (wider due to volatility)",
+  "data_sources_used": ["Yahoo Finance", "Public filings knowledge", "Industry analysis"],
+  "confidence_in_analysis": "HIGH",
+  "analysis_duration_minutes": 5,
+  "analyst_notes": "Current oversold condition (RSI 26, Z-score -1.88) is a technical entry point into a fundamentally strong business. The 5%+ recent drop appears to be market-wide tech selling rather than AVGO-specific news. VMware integration on track. AI demand remains strong. Debt is the main concern but FCF ($25B) can service it. Would trade this signal with standard position size.",
+  "proteus_signal_assessment": {
+    "signal_date": "2025-12-18",
+    "signal_strength": 53.3,
+    "z_score": -1.88,
+    "rsi": 26.2,
+    "recommendation": "TRADE - Fundamentals support the mean reversion thesis. Quality business temporarily oversold.",
+    "conviction_boost": 0
+  }
+}

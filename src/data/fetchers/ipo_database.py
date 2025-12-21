@@ -21,12 +21,22 @@ from typing import Dict, Optional
 
 # Curated IPO database: ticker -> IPO date
 IPO_DATABASE = {
+    # 2025 IPOs
+    'FIG': '2025-07-31',    # Figma (AI-powered design platform)
+    'CRWV': '2025-03-28',   # CoreWeave (AI cloud infrastructure)
+
     # 2024 IPOs
+    'TTAN': '2024-12-12',   # ServiceTitan (AI-powered service business platform)
+    'OS': '2024-07-24',     # OneStream (AI-powered finance/CPM software)
+    'TEM': '2024-06-14',    # Tempus AI (AI in healthcare/precision medicine)
+    'RBRK': '2024-04-25',   # Rubrik (AI-powered cloud data security)
     'RDDT': '2024-03-21',   # Reddit
+    'ALAB': '2024-03-20',   # Astera Labs (AI/cloud semiconductor connectivity)
     'ASND': '2024-09-13',   # Ascendis Pharma
     'RELY': '2024-09-21',   # Remitly (relisted)
 
     # 2023 IPOs
+    'KVYO': '2023-09-20',   # Klaviyo (AI-powered marketing automation)
     'ARM': '2023-09-14',    # ARM Holdings
     'KVUE': '2023-05-04',   # Kenvue
     'FYBR': '2023-05-02',   # Frontier Communications
