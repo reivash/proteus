@@ -1,0 +1,197 @@
+{
+  "timestamp": "2025-12-22T08:17:17.340975",
+  "days_analyzed": 365,
+  "total_signals": 2537,
+  "baseline_return": 0.14633333333333334,
+  "by_day": {
+    "Monday": {
+      "signals": 528,
+      "win_rate_1d": 50.0,
+      "win_rate_2d": 58.3,
+      "hit_rate": 65.5,
+      "avg_ret_1d": 0.045,
+      "avg_ret_2d": 0.96,
+      "avg_ret_3d": 0.14,
+      "avg_max_gain": 3.88,
+      "avg_max_loss": -3.19
+    },
+    "Tuesday": {
+      "signals": 550,
+      "win_rate_1d": 58.4,
+      "win_rate_2d": 51.3,
+      "hit_rate": 64.7,
+      "avg_ret_1d": 0.962,
+      "avg_ret_2d": 0.111,
+      "avg_ret_3d": 0.513,
+      "avg_max_gain": 3.79,
+      "avg_max_loss": -3.0
+    },
+    "Wednesday": {
+      "signals": 427,
+      "win_rate_1d": 40.3,
+      "win_rate_2d": 53.4,
+      "hit_rate": 63.0,
+      "avg_ret_1d": -0.376,
+      "avg_ret_2d": 0.097,
+      "avg_ret_3d": 0.307,
+      "avg_max_gain": 3.33,
+      "avg_max_loss": -2.95
+    },
+    "Thursday": {
+      "signals": 501,
+      "win_rate_1d": 58.7,
+      "win_rate_2d": 57.5,
+      "hit_rate": 68.9,
+      "avg_ret_1d": 0.22,
+      "avg_ret_2d": 0.231,
+      "avg_ret_3d": 0.273,
+      "avg_max_gain": 3.76,
+      "avg_max_loss": -2.91
+    },
+    "Friday": {
+      "signals": 531,
+      "win_rate_1d": 54.6,
+      "win_rate_2d": 52.9,
+      "hit_rate": 63.3,
+      "avg_ret_1d": 0.157,
+      "avg_ret_2d": 0.124,
+      "avg_ret_3d": 1.005,
+      "avg_max_gain": 3.62,
+      "avg_max_loss": -3.15
+    }
+  },
+  "adjustments": {
+    "Monday": {
+      "diff_from_baseline": 0.814,
+      "strength_multiplier": 1.05
+    },
+    "Tuesday": {
+      "diff_from_baseline": -0.035,
+      "strength_multiplier": 1.0
+    },
+    "Wednesday": {
+      "diff_from_baseline": -0.049,
+      "strength_multiplier": 1.0
+    },
+    "Thursday": {
+      "diff_from_baseline": 0.085,
+      "strength_multiplier": 1.02
+    },
+    "Friday": {
+      "diff_from_baseline": -0.022,
+      "strength_multiplier": 1.0
+    }
+  },
+  "best_day": "Monday",
+  "worst_day": "Wednesday",
+  "edge_from_day_selection": 0.863,
+  "top_combinations": [
+    {
+      "day": "Monday",
+      "tier": "moderately_oversold",
+      "signals": 129,
+      "win_rate_2d": 62.7906976744186,
+      "avg_ret_2d": 1.373070396990951
+    },
+    {
+      "day": "Monday",
+      "tier": "slightly_oversold",
+      "signals": 223,
+      "win_rate_2d": 56.502242152466366,
+      "avg_ret_2d": 0.8826606906459231
+    },
+    {
+      "day": "Monday",
+      "tier": "very_oversold",
+      "signals": 176,
+      "win_rate_2d": 57.38636363636363,
+      "avg_ret_2d": 0.7537986971552659
+    },
+    {
+      "day": "Thursday",
+      "tier": "very_oversold",
+      "signals": 188,
+      "win_rate_2d": 63.297872340425535,
+      "avg_ret_2d": 0.5187981892281993
+    },
+    {
+      "day": "Tuesday",
+      "tier": "moderately_oversold",
+      "signals": 167,
+      "win_rate_2d": 54.49101796407185,
+      "avg_ret_2d": 0.36321937292693757
+    },
+    {
+      "day": "Friday",
+      "tier": "slightly_oversold",
+      "signals": 200,
+      "win_rate_2d": 55.00000000000001,
+      "avg_ret_2d": 0.3558855288129969
+    },
+    {
+      "day": "Wednesday",
+      "tier": "moderately_oversold",
+      "signals": 110,
+      "win_rate_2d": 56.36363636363636,
+      "avg_ret_2d": 0.3267816498745851
+    },
+    {
+      "day": "Wednesday",
+      "tier": "very_oversold",
+      "signals": 124,
+      "win_rate_2d": 51.61290322580645,
+      "avg_ret_2d": 0.23401014950396187
+    },
+    {
+      "day": "Thursday",
+      "tier": "moderately_oversold",
+      "signals": 141,
+      "win_rate_2d": 53.90070921985816,
+      "avg_ret_2d": 0.15878751490496004
+    },
+    {
+      "day": "Friday",
+      "tier": "moderately_oversold",
+      "signals": 161,
+      "win_rate_2d": 52.79503105590062,
+      "avg_ret_2d": 0.09431958808657832
+    }
+  ],
+  "bottom_combinations": [
+    {
+      "day": "Tuesday",
+      "tier": "very_oversold",
+      "signals": 187,
+      "win_rate_2d": 46.524064171122994,
+      "avg_ret_2d": 0.012817398647802382
+    },
+    {
+      "day": "Tuesday",
+      "tier": "slightly_oversold",
+      "signals": 196,
+      "win_rate_2d": 53.06122448979592,
+      "avg_ret_2d": -0.009378786717117098
+    },
+    {
+      "day": "Thursday",
+      "tier": "slightly_oversold",
+      "signals": 172,
+      "win_rate_2d": 54.06976744186046,
+      "avg_ret_2d": -0.024544232319382773
+    },
+    {
+      "day": "Friday",
+      "tier": "very_oversold",
+      "signals": 170,
+      "win_rate_2d": 50.588235294117645,
+      "avg_ret_2d": -0.11921505257233769
+    },
+    {
+      "day": "Wednesday",
+      "tier": "slightly_oversold",
+      "signals": 193,
+      "win_rate_2d": 52.84974093264248,
+      "avg_ret_2d": -0.1220640431378623
+    }
+  ]
+}

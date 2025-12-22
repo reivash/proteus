@@ -758,11 +758,33 @@ class GPUSignalModel:
                   f"E[R]={sig.expected_return:+.1f}%, "
                   f"Conf={sig.confidence:.2f}")
 
-        # Cache the stock data for price fetching
+        # Cache the stock data for price fetching and enhanced signal calculation
         self._last_scan_prices = {}
+        self._last_scan_consecutive_down = {}
+        self._last_scan_volume_ratio = {}
+
         for ticker, df in stock_data.items():
             if not df.empty:
                 self._last_scan_prices[ticker] = float(df['Close'].iloc[-1])
+
+                # Calculate consecutive down days
+                consecutive = 0
+                for i in range(len(df) - 1, -1, -1):
+                    if df['Close'].iloc[i] < df['Open'].iloc[i]:
+                        consecutive += 1
+                    else:
+                        break
+                self._last_scan_consecutive_down[ticker] = consecutive
+
+                # Calculate volume ratio (current / 20-day average)
+                if len(df) >= 20:
+                    avg_volume = df['Volume'].iloc[-20:].mean()
+                    if avg_volume > 0:
+                        self._last_scan_volume_ratio[ticker] = float(df['Volume'].iloc[-1] / avg_volume)
+                    else:
+                        self._last_scan_volume_ratio[ticker] = 1.0
+                else:
+                    self._last_scan_volume_ratio[ticker] = 1.0
 
         return signals
 
@@ -774,6 +796,26 @@ class GPUSignalModel:
             Dictionary of {ticker: last_close_price}
         """
         return getattr(self, '_last_scan_prices', {})
+
+    def get_consecutive_down_days(self, ticker: str) -> int:
+        """
+        Get number of consecutive down days for a ticker from cached data.
+
+        Returns:
+            Number of consecutive down days (0 if not available)
+        """
+        consecutive_data = getattr(self, '_last_scan_consecutive_down', {})
+        return consecutive_data.get(ticker, 1)  # Default to 1 if not available
+
+    def get_volume_ratio(self, ticker: str) -> float:
+        """
+        Get volume ratio (current volume / 20-day average) for a ticker.
+
+        Returns:
+            Volume ratio (1.0 if not available)
+        """
+        volume_data = getattr(self, '_last_scan_volume_ratio', {})
+        return volume_data.get(ticker, 1.0)  # Default to 1.0 if not available
 
 
 def run_gpu_scan():

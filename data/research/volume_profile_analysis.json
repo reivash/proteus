@@ -1,0 +1,198 @@
+{
+  "timestamp": "2025-12-22T08:20:35.925564",
+  "days_analyzed": 365,
+  "total_signals": 2493,
+  "baseline_return": 0.22,
+  "by_volume_ratio": {
+    "low": {
+      "signals": 653,
+      "win_rate": 48.5,
+      "hit_rate": 51.3,
+      "avg_ret": -0.047,
+      "avg_volume_ratio": 0.65
+    },
+    "normal": {
+      "signals": 1403,
+      "win_rate": 54.7,
+      "hit_rate": 66.0,
+      "avg_ret": 0.22,
+      "avg_volume_ratio": 1.08
+    },
+    "high": {
+      "signals": 364,
+      "win_rate": 60.7,
+      "hit_rate": 82.7,
+      "avg_ret": 0.9,
+      "avg_volume_ratio": 1.85
+    },
+    "very_high": {
+      "signals": 73,
+      "win_rate": 72.6,
+      "hit_rate": 86.3,
+      "avg_ret": 1.678,
+      "avg_volume_ratio": 3.3
+    }
+  },
+  "by_day_range": {
+    "narrow": {
+      "signals": 549,
+      "win_rate": 48.3,
+      "hit_rate": 39.7,
+      "avg_ret": -0.177,
+      "avg_range": 1.23
+    },
+    "normal": {
+      "signals": 909,
+      "win_rate": 54.0,
+      "hit_rate": 54.6,
+      "avg_ret": 0.177,
+      "avg_range": 1.96
+    },
+    "wide": {
+      "signals": 594,
+      "win_rate": 56.7,
+      "hit_rate": 82.8,
+      "avg_ret": 0.176,
+      "avg_range": 3.14
+    },
+    "very_wide": {
+      "signals": 441,
+      "win_rate": 60.1,
+      "hit_rate": 95.0,
+      "avg_ret": 1.268,
+      "avg_range": 6.43
+    }
+  },
+  "adjustments": {
+    "low": {
+      "diff_from_baseline": -0.267,
+      "strength_multiplier": 0.9
+    },
+    "normal": {
+      "diff_from_baseline": 0.0,
+      "strength_multiplier": 1.0
+    },
+    "high": {
+      "diff_from_baseline": 0.68,
+      "strength_multiplier": 1.1
+    },
+    "very_high": {
+      "diff_from_baseline": 1.458,
+      "strength_multiplier": 1.1
+    }
+  },
+  "best_volume_profile": "very_high",
+  "worst_volume_profile": "low",
+  "edge_from_volume_selection": 1.7249999999999999,
+  "volume_trend_correlation": 0.1378563367185231,
+  "capitulation_signals": 251,
+  "top_combinations": [
+    {
+      "volume": "very_high",
+      "range": "normal",
+      "signals": 14,
+      "win_rate": 85.71428571428571,
+      "avg_ret": 2.1053474249816224
+    },
+    {
+      "volume": "very_high",
+      "range": "very_wide",
+      "signals": 47,
+      "win_rate": 65.95744680851064,
+      "avg_ret": 1.760992097339406
+    },
+    {
+      "volume": "high",
+      "range": "very_wide",
+      "signals": 173,
+      "win_rate": 57.22543352601156,
+      "avg_ret": 1.4208977613635103
+    },
+    {
+      "volume": "normal",
+      "range": "very_wide",
+      "signals": 199,
+      "win_rate": 62.311557788944725,
+      "avg_ret": 1.2338896609394363
+    },
+    {
+      "volume": "high",
+      "range": "narrow",
+      "signals": 22,
+      "win_rate": 72.72727272727273,
+      "avg_ret": 1.0325302446813909
+    },
+    {
+      "volume": "very_high",
+      "range": "wide",
+      "signals": 11,
+      "win_rate": 81.81818181818183,
+      "avg_ret": 0.9305236472619899
+    },
+    {
+      "volume": "high",
+      "range": "normal",
+      "signals": 74,
+      "win_rate": 67.56756756756756,
+      "avg_ret": 0.8286469256591215
+    },
+    {
+      "volume": "low",
+      "range": "wide",
+      "signals": 108,
+      "win_rate": 56.481481481481474,
+      "avg_ret": 0.3935120344991698
+    },
+    {
+      "volume": "low",
+      "range": "normal",
+      "signals": 270,
+      "win_rate": 52.22222222222223,
+      "avg_ret": 0.14839080633901372
+    },
+    {
+      "volume": "normal",
+      "range": "wide",
+      "signals": 380,
+      "win_rate": 55.52631578947368,
+      "avg_ret": 0.14313985851725514
+    }
+  ],
+  "bottom_combinations": [
+    {
+      "volume": "normal",
+      "range": "normal",
+      "signals": 551,
+      "win_rate": 52.26860254083484,
+      "avg_ret": 0.054982771289559945
+    },
+    {
+      "volume": "high",
+      "range": "wide",
+      "signals": 95,
+      "win_rate": 58.94736842105262,
+      "avg_ret": -0.025211375533867576
+    },
+    {
+      "volume": "normal",
+      "range": "narrow",
+      "signals": 273,
+      "win_rate": 52.74725274725275,
+      "avg_ret": -0.08046036492766397
+    },
+    {
+      "volume": "low",
+      "range": "narrow",
+      "signals": 253,
+      "win_rate": 41.10671936758894,
+      "avg_ret": -0.3882778174821854
+    },
+    {
+      "volume": "low",
+      "range": "very_wide",
+      "signals": 22,
+      "win_rate": 50.0,
+      "avg_ret": -0.677872086492222
+    }
+  ]
+}

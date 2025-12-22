@@ -24,6 +24,8 @@ from analysis.market_regime import MarketRegimeDetector, MarketRegime, RegimeAna
 from config.stock_config_loader import get_loader
 from trading.sector_correlation import filter_correlated_signals, get_sector, print_sector_analysis
 from trading.volatility_sizing import VolatilitySizer
+from trading.sector_momentum import get_sector_momentum_calculator, SectorMomentum
+from trading.enhanced_signal_calculator import get_enhanced_calculator, SignalAdjustments
 from data.fetchers.earnings_calendar import EarningsCalendarFetcher
 
 
@@ -62,6 +64,23 @@ class SmartSignal:
     # Earnings proximity
     near_earnings: bool = False
     earnings_warning: str = ""
+
+    # Sector momentum (from sector_momentum.py)
+    sector_etf: str = ""
+    sector_name: str = ""
+    sector_momentum_5d: float = 0.0
+    sector_momentum_category: str = "neutral"
+    sector_momentum_boost: float = 1.0
+
+    # Enhanced signal adjustments (from enhanced_signal_calculator.py)
+    day_of_week: str = ""
+    day_of_week_multiplier: float = 1.0
+    consecutive_down_days: int = 0
+    consecutive_down_multiplier: float = 1.0
+    volume_ratio: float = 1.0
+    volume_multiplier: float = 1.0
+    stock_tier: str = "average"
+    stock_tier_multiplier: float = 1.0
 
 
 @dataclass
@@ -102,6 +121,8 @@ class SmartScanner:
             exclusion_days_before=3,
             exclusion_days_after=1  # Less strict on after
         )
+        self.sector_momentum = get_sector_momentum_calculator()
+        self.enhanced_calculator = get_enhanced_calculator()
 
     def get_tier(self, strength: float) -> str:
         """Get tier name for signal strength."""
@@ -256,6 +277,15 @@ class SmartScanner:
         stock_prices = self.gpu_model.get_last_prices()
         print(f"    Loaded {len(stock_prices)} real prices")
 
+        # 2b. Fetch sector momentum data (weak sectors outperform by +0.27% per trade)
+        print()
+        print("[2b] Fetching sector momentum...")
+        sector_momentum_data = self.sector_momentum.get_sector_momentum(force_refresh=True)
+        print(f"    Sector momentum loaded for {len(sector_momentum_data)} sectors")
+        for etf, mom in sorted(sector_momentum_data.items(), key=lambda x: x[1]):
+            cat = self.sector_momentum.get_momentum_category(mom)
+            print(f"    {etf}: {mom:+.1f}% ({cat})")
+
         # 3. Filter and enhance signals
         print()
         print("[3] Filtering and enhancing signals...")
@@ -279,29 +309,46 @@ class SmartScanner:
             # Get exit params for this stock + regime
             exit_params = self.get_exit_params(sig.ticker, regime_analysis.regime)
 
-            # Calculate adjusted strength based on regime analysis findings
-            # VOLATILE/BEAR are BETTER for mean reversion (counterintuitive but data-driven)
-            adjusted_strength = sig.signal_strength
-            if regime_analysis.regime == MarketRegime.VOLATILE:
-                adjusted_strength *= 1.15  # 15% boost - best regime (62% win, +1.94% avg)
-            elif regime_analysis.regime == MarketRegime.BEAR:
-                adjusted_strength *= 1.10  # 10% boost - strong regime (69% win, +0.89% avg)
-            elif regime_analysis.regime == MarketRegime.CHOPPY:
-                adjusted_strength *= 1.0   # Baseline (56% win, +0.17% avg)
-            elif regime_analysis.regime == MarketRegime.BULL:
-                adjusted_strength *= 0.85  # 15% penalty - worst regime (51% win, +0.15% avg)
+            # Get sector momentum data
+            sector_adj = self.sector_momentum.get_stock_momentum_adjustment(sig.ticker)
 
-            # Extra boost for regime-elite stocks
+            # Get consecutive down days and volume ratio from GPU model's cached data
+            # (These are calculated during the scan)
+            consecutive_down = self.gpu_model.get_consecutive_down_days(sig.ticker)
+            volume_ratio = self.gpu_model.get_volume_ratio(sig.ticker)
+
+            # Use enhanced calculator for unified signal strength adjustment
+            # This combines: regime, sector momentum, day-of-week, consecutive down-days,
+            # volume profile, and stock tier multipliers
+            enhanced_adj = self.enhanced_calculator.calculate_enhanced_strength(
+                ticker=sig.ticker,
+                base_strength=sig.signal_strength,
+                regime=regime_analysis.regime.value,
+                sector_name=sector_adj.sector_name,
+                sector_momentum=sector_adj.momentum_5d,
+                signal_date=datetime.now(),
+                consecutive_down_days=consecutive_down,
+                volume_ratio=volume_ratio
+            )
+
+            adjusted_strength = enhanced_adj.final_strength
+
+            # Extra boost for regime-elite stocks (config-driven)
             if sig.ticker in elite_stocks:
-                adjusted_strength *= 1.05  # Additional 5% for elite stocks in this regime
+                adjusted_strength = min(100, adjusted_strength * 1.05)
 
-            # Boost strong performers, penalize weak ones (based on backtest)
+            # Additional boost/penalty from config for historically strong/weak stocks
             if self.config_loader.is_strong_performer(sig.ticker):
-                adjusted_strength *= 1.05  # 5% boost for historically strong stocks
+                adjusted_strength = min(100, adjusted_strength * 1.05)
             elif self.config_loader.is_high_risk_stock(sig.ticker):
-                adjusted_strength *= 0.90  # 10% penalty for historically weak stocks
+                adjusted_strength = min(100, adjusted_strength * 0.90)
 
-            adjusted_strength = min(100, adjusted_strength)
+            # Check for avoid combos (e.g., Consumer sector consistently underperforms)
+            is_avoid, avoid_reason = self.sector_momentum.is_avoid_combo(
+                sig.ticker, sector_adj.momentum_5d
+            )
+            if is_avoid:
+                adjusted_strength = min(100, adjusted_strength * 0.85)
 
             # Calculate position size using volatility-based sizing
             current_price = stock_prices.get(sig.ticker, 100)
@@ -333,7 +380,22 @@ class SmartScanner:
                 max_hold_days=exit_params['max_hold_days'],
                 regime=regime_analysis.regime.value,
                 regime_confidence=regime_analysis.confidence,
-                tier=self.get_tier(adjusted_strength)
+                tier=self.get_tier(adjusted_strength),
+                # Sector momentum fields
+                sector_etf=sector_adj.etf,
+                sector_name=sector_adj.sector_name,
+                sector_momentum_5d=sector_adj.momentum_5d,
+                sector_momentum_category=sector_adj.momentum_category,
+                sector_momentum_boost=sector_adj.strength_boost,
+                # Enhanced signal adjustments
+                day_of_week=enhanced_adj.day_name,
+                day_of_week_multiplier=enhanced_adj.day_of_week_multiplier,
+                consecutive_down_days=enhanced_adj.consecutive_down_days,
+                consecutive_down_multiplier=enhanced_adj.consecutive_down_multiplier,
+                volume_ratio=enhanced_adj.volume_ratio,
+                volume_multiplier=enhanced_adj.volume_multiplier,
+                stock_tier=enhanced_adj.stock_tier,
+                stock_tier_multiplier=enhanced_adj.stock_tier_multiplier
             )
             smart_signals.append(smart_signal)
 
@@ -436,14 +498,15 @@ class SmartScanner:
         if result.signals:
             print("\n--- TOP SIGNALS ---")
             print(f"{'Ticker':<8} {'Price':>10} {'Shares':>7} {'Tier':<10} {'Str':>6} "
-                  f"{'E[R]':>7} {'Sector':<12}")
-            print("-" * 80)
+                  f"{'E[R]':>7} {'Sector':<14} {'SectorMom':>10}")
+            print("-" * 90)
 
             for sig in result.signals[:10]:
-                sector = get_sector(sig.ticker)
+                sector = sig.sector_name if sig.sector_name else get_sector(sig.ticker)
+                sector_mom_str = f"{sig.sector_momentum_5d:+.1f}%" if sig.sector_etf else "N/A"
                 print(f"{sig.ticker:<8} ${sig.current_price:>9.2f} {sig.suggested_shares:>7} "
                       f"{sig.tier:<10} {sig.adjusted_strength:>6.1f} "
-                      f"{sig.expected_return:>+6.1f}% {sector:<12}")
+                      f"{sig.expected_return:>+6.1f}% {sector:<14} {sector_mom_str:>10}")
 
         print()
 
