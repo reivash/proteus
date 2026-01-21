@@ -193,7 +193,7 @@ class MLEnhancedScanner:
             features_df = self.calculate_features(df)
 
             # Get most recent features (last row)
-            latest_features = features_df.iloc[-1:].fillna(method='ffill').fillna(method='bfill')
+            latest_features = features_df.iloc[-1:].ffill().bfill()
 
             # Ensure we have all 48 features in correct order
             # (This should match the feature order from training)

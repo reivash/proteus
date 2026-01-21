@@ -1,0 +1,578 @@
+{
+  "exp001_baseline.py": {
+    "number": 1,
+    "title": "EXPERIMENT: EXP-001",
+    "archived_date": "2026-01-21T09:07:26.814782",
+    "docstring": "EXPERIMENT: EXP-001\nDate: 2025-11-13\nObjective: Establish baseline performance using Moving Average Crossover\n\nMETHOD:\n- Approach: 50-day and 200-day moving average crossover\n- Data: S&P 500 (^GSPC), 2 years historical\n- Model: Simple MA crossover (no ML)\n\nThis establishes the baseline that all future models must beat."
+  },
+  "exp002_xgboost.py": {
+    "number": 2,
+    "title": "EXPERIMENT: EXP-002",
+    "archived_date": "2026-01-21T09:07:26.815782",
+    "docstring": "EXPERIMENT: EXP-002\nDate: 2025-11-14\nObjective: Beat baseline using XGBoost with technical indicators\n\nMETHOD:\n- Approach: XGBoost classifier with 36 engineered features\n- Data: S&P 500 (^GSPC), 2 years historical\n- Features: Technical indicators (RSI, MACD, Bollinger Bands, etc.)\n- Model: XGBoost with optimized hyperparameters"
+  },
+  "exp003_lstm.py": {
+    "number": 3,
+    "title": "EXPERIMENT: EXP-003",
+    "archived_date": "2026-01-21T09:07:26.816783",
+    "docstring": "EXPERIMENT: EXP-003\nDate: 2025-11-14\nObjective: Leverage GPU-accelerated LSTM for temporal pattern recognition\n\nMETHOD:\n- Approach: LSTM neural network with 60-day sequences\n- Data: S&P 500 (^GSPC), 2 years historical\n- Features: Same 36 technical indicators as EXP-002\n- Model: 2-layer LSTM (128 hidden units) with dropout\n- Hardware: RTX 4080 SUPER GPU acceleration"
+  },
+  "exp004_tech_stocks.py": {
+    "number": 4,
+    "title": "EXPERIMENT: EXP-004",
+    "archived_date": "2026-01-21T09:07:26.816783",
+    "docstring": "EXPERIMENT: EXP-004\nDate: 2025-11-14\nObjective: Test XGBoost on tech stocks (AI sector focus)\n\nMETHOD:\n- Approach: XGBoost (best performer from EXP-002)\n- Data: NVIDIA (NVDA) - leading AI/GPU company\n- Features: Technical indicators + market context (VIX, QQQ)\n- Rationale: User noted tech/AI sector profitability"
+  },
+  "exp005_xgboost_tuned.py": {
+    "number": 5,
+    "title": "EXPERIMENT: EXP-005",
+    "archived_date": "2026-01-21T09:07:26.820472",
+    "docstring": "EXPERIMENT: EXP-005\nDate: 2025-11-14\nObjective: Optimize XGBoost hyperparameters using Optuna\n\nMETHOD:\n- Approach: Automated hyperparameter search with Optuna\n- Base Model: XGBoost (best from EXP-002)\n- Search Space: n_estimators, max_depth, learning_rate, subsample, etc.\n- Optimization: Maximize directional accuracy\n- Trials: 50-100 iterations"
+  },
+  "exp006_ensemble.py": {
+    "number": 6,
+    "title": "EXPERIMENT: EXP-006",
+    "archived_date": "2026-01-21T09:07:26.820472",
+    "docstring": "EXPERIMENT: EXP-006\nDate: 2025-11-14\nObjective: Ensemble methods for robust predictions\n\nMETHOD:\n- Approach: Voting ensemble (XGBoost + LightGBM + Random Forest)\n- Voting: Soft (weighted average of probabilities)\n- Rationale: Multiple models reduce overfitting, more stable predictions"
+  },
+  "exp007_multi_timeframe.py": {
+    "number": 7,
+    "title": "EXPERIMENT: EXP-007",
+    "archived_date": "2026-01-21T09:07:26.822476",
+    "docstring": "EXPERIMENT: EXP-007\nDate: 2025-11-14\nObjective: Test prediction accuracy across multiple time horizons\n\nMETHOD:\n- Horizons: 1-day, 5-day, 20-day, 60-day predictions\n- Model: XGBoost (best from EXP-002)\n- Same features for all horizons (36 technical indicators)\n- Hypothesis: Medium timeframes (5-20 days) more predictable than daily\n\nUser Observation:\n\"Explore different prediction timeframes. For example how good are you\nat predicting change within a day vs a week vs a month vs long term\"\n\nThis te"
+  },
+  "exp008_bear_market_test.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-BEAR",
+    "archived_date": "2026-01-21T09:07:26.822476",
+    "docstring": "EXPERIMENT: EXP-008-BEAR\nDate: 2025-11-14\nObjective: Test mean reversion strategy in 2022 bear market\n\nCONTEXT:\n2022 was a significant bear market due to:\n- Fed rate hikes (0% to 4.5%)\n- High inflation (8-9%)\n- Tech selloff (-30% NASDAQ)\n- Recession fears\n\nQUESTION:\nDoes mean reversion strategy work in bear markets, or only in bull markets?\n\nThis tests if strategy is robust across different market regimes."
+  },
+  "exp008_earnings_filter.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-EARNINGS",
+    "archived_date": "2026-01-21T09:07:26.824480",
+    "docstring": "EXPERIMENT: EXP-008-EARNINGS\nDate: 2025-11-14\nObjective: Test mean reversion with earnings date filter\n\nPROBLEM:\nPanic sells near earnings are often justified by poor results/guidance.\nThese are NOT technical overcorrections, but fundamental events.\n\nSOLUTION:\nExclude trades within 3 days before and after earnings announcements.\n\nThis should reduce false signals and improve win rate."
+  },
+  "exp008_expand_universe.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-EXPAND",
+    "archived_date": "2026-01-21T09:07:26.824480",
+    "docstring": "EXPERIMENT: EXP-008-EXPAND\nDate: 2025-11-14\nObjective: Expand stock universe with optimized parameters\n\nAPPROACH:\nApply parameter optimization framework to additional stocks:\n- MSFT: Microsoft (mega-cap tech, moderate volatility)\n- GOOGL: Google (mega-cap tech, moderate volatility)\n- META: Meta/Facebook (large-cap tech, higher volatility)\n- AMZN: Amazon (mega-cap tech, moderate volatility)\n\nDetermine which stocks are suitable for mean reversion strategy."
+  },
+  "exp008_fomc_filter.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-FOMC",
+    "archived_date": "2026-01-21T09:07:26.826484",
+    "docstring": "EXPERIMENT: EXP-008-FOMC\nDate: 2025-11-14\nObjective: Test FOMC meeting filter for policy-driven volatility protection\n\nHYPOTHESIS:\nDuring FOMC meetings, market moves are driven by Fed policy decisions.\nFOMC filter should prevent trading during policy-driven volatility.\n\nEXPECTED IMPACT:\n- Fewer trades (blocked during Fed meetings)\n- Higher win rate (avoid policy-driven moves)\n- Better risk-adjusted returns\n- Protection against Fed-driven volatility\n\nFOMC MEETING SCHEDULE:\n- 8 meetings per year ("
+  },
+  "exp008_mean_reversion.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008",
+    "archived_date": "2026-01-21T09:07:26.828488",
+    "docstring": "EXPERIMENT: EXP-008\nDate: 2025-11-14\nObjective: Test mean reversion strategy on stock overcorrections\n\nMETHOD:\n- Strategy: Detect panic sells and buy the dip\n- Signals: Z-score < -2, RSI < 30, Volume spike (2x avg), Drop > 3%\n- Trade: Buy when all signals align, hold 1-2 days\n- Exit: +2% profit OR -2% stop loss OR 2-day timeout\n\nUser Observation:\n\"When stock jumps down suddenly, it tends to normalize in 1-2 days\"\n\nThis tests if overcorrections can be profitably traded."
+  },
+  "exp008_multi_stock_test.py": {
+    "number": 8,
+    "title": "Test mean reversion strategy on multiple stocks.",
+    "archived_date": "2026-01-21T09:07:26.828488",
+    "docstring": "Test mean reversion strategy on multiple stocks.\nIndividual stocks are more volatile than indices and may show better mean reversion."
+  },
+  "exp008_parameter_comparison.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-PARAMS-COMPARE",
+    "archived_date": "2026-01-21T09:07:26.828488",
+    "docstring": "EXPERIMENT: EXP-008-PARAMS-COMPARE\nDate: 2025-11-14\nObjective: Compare universal vs optimized parameters\n\nShow the performance improvement from using stock-specific parameters."
+  },
+  "exp008_parameter_optimization.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-PARAMS",
+    "archived_date": "2026-01-21T09:07:26.830492",
+    "docstring": "EXPERIMENT: EXP-008-PARAMS\nDate: 2025-11-14\nObjective: Optimize mean reversion parameters per stock\n\nHYPOTHESIS:\nDifferent stocks have different volatility characteristics.\nStock-specific parameter tuning should improve performance over universal parameters.\n\nAPPROACH:\nTest parameter combinations for each stock:\n- z_score_threshold: How many standard deviations = panic sell\n- rsi_oversold: RSI threshold for oversold condition\n- volume_multiplier: Volume spike threshold\n- price_drop_threshold: Mi"
+  },
+  "exp008_position_sizing.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-POSITION-SIZING",
+    "archived_date": "2026-01-21T09:07:26.832496",
+    "docstring": "EXPERIMENT: EXP-008-POSITION-SIZING\nDate: 2025-11-14\nObjective: Test dynamic position sizing vs fixed position sizing\n\nHYPOTHESIS:\nAllocating larger positions to higher-performing stocks (higher win rate, better Sharpe)\nwill improve portfolio-level returns and risk-adjusted performance.\n\nAPPROACH:\n- FIXED sizing: All stocks get 1.0x position (equal weighting)\n- DYNAMIC sizing: Tier-based position sizing\n  - Tier 1 (80%+ win): 1.0x position (full)\n  - Tier 2 (65-75% win): 0.75x position (reduced)"
+  },
+  "exp008_regime_filtered.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-REGIME",
+    "archived_date": "2026-01-21T09:07:26.832496",
+    "docstring": "EXPERIMENT: EXP-008-REGIME\nDate: 2025-11-14\nObjective: Test mean reversion with market regime filter\n\nFINDING FROM EXP-008-BEAR:\nMean reversion FAILS in bear markets (-6.71% avg return)\nbut WORKS in bull markets (+8.56% to +18.87% avg return)\n\nSOLUTION:\nAdd market regime detector that disables trading in bear markets.\n\nThis should eliminate the bear market losses while preserving bull market gains."
+  },
+  "exp008_sector_diversification.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-SECTORS",
+    "archived_date": "2026-01-21T09:07:26.832496",
+    "docstring": "EXPERIMENT: EXP-008-SECTORS\nDate: 2025-11-14\nObjective: Diversify trading universe across sectors\n\nCURRENT STATE:\n5 stocks, all tech sector (100% concentration risk)\n- NVDA, TSLA, AAPL, AMZN, MSFT\n\nGOAL:\nExpand to 8-10 stocks across multiple sectors\n- Energy (oil & gas, renewables)\n- Finance (banks, investment firms)\n- Healthcare (pharma, insurance)\n- Keep best tech performers\n\nAPPROACH:\nTest high-quality stocks from each sector with parameter optimization."
+  },
+  "exp008_universe_optimization.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-UNIVERSE-OPT",
+    "archived_date": "2026-01-21T09:07:26.832496",
+    "docstring": "EXPERIMENT: EXP-008-UNIVERSE-OPT\nDate: 2025-11-14\nObjective: Review marginal performers (AAPL, CVX) for potential removal\n\nHYPOTHESIS:\nRemoving marginal performers (60% win rate) may improve portfolio metrics.\n\nCURRENT UNIVERSE (10 stocks):\n- Tier 1 (80%+ win): NVDA, TSLA, AMZN, JPM, JNJ, UNH (6 stocks)\n- Tier 2 (65-75% win): MSFT, INTC (2 stocks)\n- Tier 3 (60% win): AAPL, CVX (2 stocks) <- CANDIDATES FOR REMOVAL\n\nPROPOSED UNIVERSE (8 stocks):\n- Remove AAPL (60% win, -0.25% return, -0.13 Sharpe)"
+  },
+  "exp008_vix_filter.py": {
+    "number": 8,
+    "title": "EXPERIMENT: EXP-008-VIX",
+    "archived_date": "2026-01-21T09:07:26.836990",
+    "docstring": "EXPERIMENT: EXP-008-VIX\nDate: 2025-11-14\nObjective: Test VIX filter for extreme volatility protection\n\nHYPOTHESIS:\nDuring extreme fear (VIX > 30), mean reversion breaks down.\nVIX filter should prevent trading during market crashes and extreme volatility.\n\nEXPECTED IMPACT:\n- Fewer trades (blocked during extreme fear)\n- Higher win rate (avoid crisis periods)\n- Better risk-adjusted returns\n- Protection against tail risk events\n\nHISTORICAL EXTREME VIX PERIODS:\n- 2020 COVID Crash: Feb-May 2020 (VIX 3"
+  },
+  "exp009_paper_trading_validation.py": {
+    "number": 9,
+    "title": "EXPERIMENT: EXP-009-PAPER-TRADING-VALIDATION",
+    "archived_date": "2026-01-21T09:07:26.838995",
+    "docstring": "EXPERIMENT: EXP-009-PAPER-TRADING-VALIDATION\nDate: 2025-11-14\nObjective: Validate paper trading system against backtest results\n\nHYPOTHESIS:\nPaper trading system should produce identical results to backtest when run\non historical dates with same entry/exit logic.\n\nTEST METHODOLOGY:\n1. Select 5-10 historical dates from 2024 with known panic sell signals\n2. Run paper trading system on these dates\n3. Run backtest on same period for comparison\n4. Compare metrics: entry prices, exit prices, returns, "
+  },
+  "exp009_simple_validation.py": {
+    "number": 9,
+    "title": "EXPERIMENT: EXP-009-SIMPLE-VALIDATION",
+    "archived_date": "2026-01-21T09:07:26.838995",
+    "docstring": "EXPERIMENT: EXP-009-SIMPLE-VALIDATION\nDate: 2025-11-14\nObjective: Simple validation that paper trading components work correctly\n\nAPPROACH:\nInstead of full simulation, test individual components:\n1. Signal detection logic produces same signals\n2. Entry logic uses correct prices\n3. Exit logic triggers at right conditions\n4. Performance calculations are accurate\n\nThis validates the SYSTEM LOGIC without simulating entire trading periods."
+  },
+  "exp009_simple_validation_fixed.py": {
+    "number": 9,
+    "title": "EXPERIMENT: EXP-009-SIMPLE-VALIDATION",
+    "archived_date": "2026-01-21T09:07:26.840999",
+    "docstring": "EXPERIMENT: EXP-009-SIMPLE-VALIDATION\nDate: 2025-11-14\nObjective: Simple validation that paper trading components work correctly\n\nAPPROACH:\nInstead of full simulation, test individual components:\n1. Signal detection logic produces same signals\n2. Entry logic uses correct prices\n3. Exit logic triggers at right conditions\n4. Performance calculations are accurate\n\nThis validates the SYSTEM LOGIC without simulating entire trading periods."
+  },
+  "exp010_exit_optimization.py": {
+    "number": 10,
+    "title": "EXPERIMENT: EXP-010-EXIT-OPTIMIZATION",
+    "archived_date": "2026-01-21T09:07:26.843003",
+    "docstring": "EXPERIMENT: EXP-010-EXIT-OPTIMIZATION\nDate: 2025-11-14\nObjective: Optimize exit strategy to maximize returns while maintaining win rate\n\nCURRENT EXIT STRATEGY (v4.0):\n- Profit target: +2%\n- Stop loss: -2%\n- Max hold: 2 days\n- Exit type: Fixed targets\n\nHYPOTHESIS:\nAlternative exit strategies may capture larger moves without sacrificing win rate:\n1. Trailing stops: Let winners run, protect profits\n2. Time-decay exits: Tighter stops as hold time increases\n3. Partial profit taking: Scale out to bala"
+  },
+  "exp011_sentiment_enhanced_panic.py": {
+    "number": 11,
+    "title": "EXPERIMENT: EXP-011",
+    "archived_date": "2026-01-21T09:07:26.845008",
+    "docstring": "EXPERIMENT: EXP-011\nDate: 2025-11-16\nObjective: Enhance panic sell detection with sentiment analysis\n\nRESEARCH MOTIVATION:\nBased on \"Predicting and Profiting from the Stock Market\" research report:\n- Sentiment analysis distinguishes emotion-driven vs information-driven panic sells\n- Emotion-driven panics mean-revert quickly (BUY opportunity)\n- Information-driven panics are justified drops (AVOID)\n- Twitter sentiment strongly predicts intraday trends (68.7% accuracy)\n- Social media outperforms ne"
+  },
+  "exp012_dynamic_position_sizing.py": {
+    "number": 12,
+    "title": "EXPERIMENT: EXP-012",
+    "archived_date": "2026-01-21T09:07:26.845008",
+    "docstring": "EXPERIMENT: EXP-012\nDate: 2025-11-16\nObjective: Optimize returns through dynamic position sizing\n\nRESEARCH MOTIVATION:\nCurrent strategy uses fixed position sizing - every trade gets same capital allocation.\nThis leaves money on the table:\n- HIGH confidence signals (emotion-driven panics) deserve larger positions\n- LOW confidence signals (information-driven) should be skipped entirely\n- High volatility stocks need smaller positions (risk management)\n- Kelly Criterion can optimize sizing based on "
+  },
+  "exp013_momentum_capture.py": {
+    "number": 13,
+    "title": "EXPERIMENT: EXP-013",
+    "archived_date": "2026-01-21T09:07:26.847012",
+    "docstring": "EXPERIMENT: EXP-013\nDate: 2025-11-16\nObjective: Capture momentum after panic sell reversals for higher returns\n\nRESEARCH MOTIVATION:\nCurrent strategy exits positions using time-decay (Day 0: \u00b12%, Day 1: \u00b11.5%, Day 2: \u00b11%).\nThis works well but may exit too early when panic reversals create momentum bounces.\n\nResearch shows:\n- Panic sells overshoot (mean reversion) - WE CAPTURE THIS \u2713\n- Reversal creates short-term momentum (2-5 days) - WE MISS THIS \u2717\n- Momentum bounces continue +2-4% beyond initia"
+  },
+  "exp014_stock_selection_optimization.py": {
+    "number": 14,
+    "title": "EXPERIMENT: EXP-014",
+    "archived_date": "2026-01-21T09:07:26.850116",
+    "docstring": "EXPERIMENT: EXP-014\nDate: 2025-11-16\nObjective: Identify which stocks have the best mean reversion performance\n\nRESEARCH MOTIVATION:\nEXP-013 revealed that not all panic sells are equal:\n- NVDA: 87.5% win rate, +49.70% return (EXCELLENT)\n- TSLA: 46.67% win rate, -29.84% return (POOR)\n\nMean reversion doesn't work universally. Some stocks have:\n- Strong mean reversion characteristics (NVDA)\n- Weak or no mean reversion (TSLA)\n- Information-driven panics vs emotion-driven panics\n\nHYPOTHESIS:\nBacktest"
+  },
+  "exp019_sentiment_integration.py": {
+    "number": 19,
+    "title": "EXPERIMENT: EXP-019",
+    "archived_date": "2026-01-21T09:07:26.852115",
+    "docstring": "EXPERIMENT: EXP-019\nDate: 2025-11-16\nObjective: Integrate real-time sentiment to filter panic sell signals\n\nRESEARCH MOTIVATION:\nEXP-014 showed some stocks have low win rates despite panic sell detection:\n- TSLA: 46.7% win rate (-29.84% return)\n- AAPL: 50.0% win rate (coin flip)\n- Even Tier A stocks have 12-25% losing trades\n\nRoot cause: Not all panic sells are equal\n- Emotion-driven panics: Overreaction, mean revert (HIGH win rate)\n- Information-driven panics: Real news, continue falling (LOW w"
+  },
+  "exp020_entry_timing_optimization.py": {
+    "number": 20,
+    "title": "EXPERIMENT: EXP-020",
+    "archived_date": "2026-01-21T09:07:26.854115",
+    "docstring": "EXPERIMENT: EXP-020\nDate: 2025-11-16\nObjective: Optimize entry timing after panic sell detection\n\nRESEARCH MOTIVATION:\nCurrent strategy enters at CLOSE on panic sell detection day.\nBut panic sells often gap down at open, then recover intraday.\n\nQuestions:\n- Should we buy at close (current) or next day open?\n- Can we get better entry by waiting for intraday dip?\n- Does immediate entry vs delayed entry affect returns?\n\nEXP-013 showed avg hold time is 0.5-0.8 days (exits on Day 0-1).\nThis means ent"
+  },
+  "exp021_expand_tier_a_universe.py": {
+    "number": 21,
+    "title": "EXPERIMENT: EXP-021",
+    "archived_date": "2026-01-21T09:07:26.854115",
+    "docstring": "EXPERIMENT: EXP-021\nDate: 2025-11-16\nObjective: Expand Tier A stock universe from 3 to 8-10 stocks\n\nRESEARCH MOTIVATION:\nEXP-014 was the biggest win: +15.99pp improvement from stock selection.\nCurrently monitoring only 3 Tier A stocks (NVDA, V, MA).\n\nMore high-quality stocks = More trading opportunities = Higher returns.\n\nCurrent state:\n- 3 Tier A stocks \u00d7 ~5 signals/year = ~15 trades/year\n- Target: 8-10 Tier A stocks \u00d7 ~5 signals/year = ~40-50 trades/year\n- Expected improvement: +5-10pp from in"
+  },
+  "exp023_market_regime_filtering.py": {
+    "number": 23,
+    "title": "EXPERIMENT: EXP-023",
+    "archived_date": "2026-01-21T09:07:26.856115",
+    "docstring": "EXPERIMENT: EXP-023\nDate: 2025-11-16\nObjective: Filter panic sell signals by market regime to improve win rate\n\nRESEARCH MOTIVATION:\nCurrent Tier A portfolio: 78.7% win rate (excellent but room for improvement)\nAnalysis shows ~21% of trades are losers.\n\nHypothesis: Many losses occur during bear markets when panic sells continue falling\ninstead of reversing (not true mean reversion opportunities).\n\nResearch shows:\n- Mean reversion works BEST in bull markets (overshoots get corrected)\n- Mean rever"
+  },
+  "exp024_expand_tier_a_round2.py": {
+    "number": 24,
+    "title": "EXPERIMENT: EXP-024",
+    "archived_date": "2026-01-21T09:07:26.857114",
+    "docstring": "EXPERIMENT: EXP-024\nDate: 2025-11-16\nObjective: Expand Tier A universe from 5 to 9-12 stocks (Round 2)\n\nRESEARCH MOTIVATION:\nStock selection has been our biggest wins:\n- EXP-014: +15.99pp improvement from selective trading\n- EXP-021: Found AVGO (87.5%) and AXP (71.4%)\n\nCurrent Tier A: 5 stocks (NVDA, AVGO, V, MA, AXP) \u2192 ~25 trades/year\nTarget: 9-12 stocks \u2192 ~45-60 trades/year (+80-140% opportunities)\n\nEXP-023 proved Tier A stocks work in ALL market regimes.\nBest path forward: Find MORE high-qual"
+  },
+  "exp025_expand_tier_a_round3.py": {
+    "number": 25,
+    "title": "EXPERIMENT: EXP-025",
+    "archived_date": "2026-01-21T09:07:26.858115",
+    "docstring": "EXPERIMENT: EXP-025\nDate: 2025-11-16\nObjective: Expand Tier A universe from 10 to 12-15 stocks (Round 3)\n\nRESEARCH MOTIVATION:\nStock selection continues to be our highest ROI optimization:\n- EXP-014: +15.99pp improvement from selective trading\n- EXP-021: Found 2 new Tier A stocks (AVGO, AXP)\n- EXP-024: Found 5 new Tier A stocks (KLAC, ORCL, MRVL, ABBV, SYK)\n\nCurrent Tier A: 10 stocks \u2192 ~55 trades/year\nTarget: 13-15 stocks \u2192 ~65-75 trades/year (+20-35% opportunities)\n\nHYPOTHESIS:\nTesting 30 addit"
+  },
+  "exp026_midcap_expansion.py": {
+    "number": 26,
+    "title": "EXPERIMENT: EXP-026",
+    "archived_date": "2026-01-21T09:07:26.859181",
+    "docstring": "EXPERIMENT: EXP-026\nDate: 2025-11-16\nObjective: Test mid-cap stocks (S&P 400) for Tier A candidates\n\nRESEARCH MOTIVATION:\nWe've tested ~90 large-cap stocks (S&P 100) across 3 experiments.\nFound 14 Tier A stocks (hit rate: ~15-16%).\n\nMid-cap stocks may have:\n- Higher volatility = stronger panic sells\n- Better mean reversion (less institutional ownership)\n- Underexplored opportunity set\n\nHYPOTHESIS:\nTesting 20 liquid mid-cap stocks will find 2-4 new Tier A candidates.\nExpected hit rate: 10-20% (si"
+  },
+  "exp027_midcap_batch2.py": {
+    "number": 27,
+    "title": "EXPERIMENT: EXP-027",
+    "archived_date": "2026-01-21T09:07:26.859181",
+    "docstring": "EXPERIMENT: EXP-027\nDate: 2025-11-16\nObjective: Test second batch of mid-cap stocks for additional Tier A candidates\n\nRESEARCH MOTIVATION:\nEXP-026 was highly successful:\n- Tested 18 mid-caps \u2192 found 4 Tier A stocks\n- Hit rate: 22% (BETTER than large-caps at 13-16%)\n- FTNT delivers +48.74% return (rivals NVDA!)\n- Hypothesis VALIDATED: Mid-caps have stronger mean reversion\n\nCONTINUATION STRATEGY:\nGiven 22% hit rate, testing 25 more mid-caps should find 5-6 new Tier A stocks.\nThis would bring portf"
+  },
+  "exp028_smallcap_exploration.py": {
+    "number": 28,
+    "title": "EXPERIMENT: EXP-028",
+    "archived_date": "2026-01-21T09:07:26.860181",
+    "docstring": "EXPERIMENT: EXP-028\nDate: 2025-11-16\nObjective: Test small-cap stocks ($1B-$5B) for Tier A candidates\n\nRESEARCH MOTIVATION:\nMid-cap expansion (EXP-026, EXP-027) delivered mixed results:\n- Batch 1: 22% hit rate (excellent)\n- Batch 2: 8.3% hit rate (declining)\n- Cumulative: 14.3% hit rate across 42 stocks\n\nHypothesis: Small-caps may offer better mean reversion characteristics.\n\nSMALL-CAP ADVANTAGES:\n1. Higher volatility = stronger panic sells\n2. Less institutional ownership = more emotional retail"
+  },
+  "exp029_position_sizing.py": {
+    "number": 29,
+    "title": "EXPERIMENT: EXP-029",
+    "archived_date": "2026-01-21T09:07:26.862180",
+    "docstring": "EXPERIMENT: EXP-029\nDate: 2025-11-16\nObjective: Optimize position sizing for Tier A portfolio\n\nRESEARCH MOTIVATION:\nWe now have 22 excellent Tier A stocks (v12.0):\n- Average win rate: 77.7%\n- Average return: +28.84%\n- Trade frequency: ~110/year\n\nCurrent strategy: EQUAL WEIGHTING ($10K per trade)\nProblem: INSM delivers +142% but gets same allocation as SYK at +11%\n\nHYPOTHESIS:\nIntelligent position sizing can improve returns by 10-20% without adding risk.\n\nPOSITION SIZING STRATEGIES TO TEST:\n\n1. E"
+  },
+  "exp030_portfolio_correlation.py": {
+    "number": 30,
+    "title": "EXPERIMENT: EXP-030",
+    "archived_date": "2026-01-21T09:07:26.863180",
+    "docstring": "EXPERIMENT: EXP-030\nDate: 2025-11-16\nObjective: Analyze portfolio correlation and sector concentration risk\n\nRESEARCH MOTIVATION:\nWe now have 22 Tier A stocks (v12.0) delivering +28.84% average return.\nBut are we truly diversified, or do we have hidden concentration risks?\n\nCURRENT SECTOR BREAKDOWN:\n- Semiconductors (4): NVDA, AVGO, KLAC, MRVL\n- Tech/Software (3): ORCL, TXN, INTU\n- Healthcare (5): ABBV, SYK, GILD, IDXX, DXCM, INSM\n- Payments (2): V, MA\n- Finance (1): AXP\n- Energy (1): EOG\n- Mate"
+  },
+  "exp031_earnings_filter.py": {
+    "number": 31,
+    "title": "EXPERIMENT: EXP-031",
+    "archived_date": "2026-01-21T09:07:26.864180",
+    "docstring": "EXPERIMENT: EXP-031\nDate: 2025-11-16\nObjective: Test earnings calendar filtering to improve win rate and reduce risk\n\nRESEARCH MOTIVATION:\nCurrent system (v12.0): 77.7% win rate, +28.84% avg return\nBut some losses likely come from earnings-related volatility that doesn't revert.\n\nPROBLEM:\nEarnings announcements create unpredictable volatility:\n1. Panic sells near earnings often driven by fundamental changes (not overreaction)\n2. Mean reversion assumes temporary emotional selling\n3. Earnings can "
+  },
+  "exp032_multitimeframe_confirmation.py": {
+    "number": 32,
+    "title": "EXPERIMENT: EXP-032",
+    "archived_date": "2026-01-21T09:07:26.865181",
+    "docstring": "EXPERIMENT: EXP-032\nDate: 2025-11-16\nObjective: Test multi-timeframe signal confirmation to improve win rate\n\nRESEARCH MOTIVATION:\nCurrent system (v12.0): 77.7% win rate\nWith earnings filter (v13.0): 80.0% win rate (estimated)\n\nBut can we push higher by requiring multi-timeframe confirmation?\n\nPROBLEM:\nSingle-timeframe signals can be noisy:\n1. Intraday panic sells may reverse next day (false signal)\n2. Daily panic without hourly confirmation = weak signal\n3. Noise in one timeframe \u2260 genuine pani"
+  },
+  "exp033_signal_quality_scoring.py": {
+    "number": 33,
+    "title": "EXPERIMENT: EXP-033",
+    "archived_date": "2026-01-21T09:07:26.866181",
+    "docstring": "EXPERIMENT: EXP-033\nDate: 2025-11-16\nObjective: Implement signal quality scoring to push beyond 85% win rate\n\nRESEARCH MOTIVATION:\nCurrent filters achieve 85% win rate (v14.0):\n- Earnings filter: +2.3pp\n- Multi-timeframe: +5.0pp\n\nBut NOT ALL SIGNALS ARE EQUAL QUALITY even after filtering.\nCan we rank signals and take only the best?\n\nPROBLEM:\nEven with filters, signals vary in strength:\n1. Deep panic sell (Z-score -3.0) > Mild panic (Z-score -1.6)\n2. Extreme oversold (RSI 20) > Borderline (RSI 34"
+  },
+  "exp034_volatility_regime_adaptation.py": {
+    "number": 34,
+    "title": "EXPERIMENT: EXP-034",
+    "archived_date": "2026-01-21T09:07:26.868183",
+    "docstring": "EXPERIMENT: EXP-034\nDate: 2025-11-16\nObjective: Adapt strategy to volatility regimes for 90%+ win rate\n\nRESEARCH MOTIVATION:\nCurrent pathway achieves 88.7% win rate (v15.0).\nBut mean reversion performance varies with market volatility.\n\nHYPOTHESIS:\nMean reversion is volatility-dependent:\n- HIGH VOL (VIX > 25): More panic sells, stronger reversions\n  \u2192 Trade AGGRESSIVELY (lower thresholds, more signals)\n- NORMAL VOL (VIX 15-25): Standard conditions\n  \u2192 Trade NORMALLY (current thresholds)\n- LOW VO"
+  },
+  "exp035_v16_validation.py": {
+    "number": 35,
+    "title": "EXPERIMENT: EXP-035",
+    "archived_date": "2026-01-21T09:07:26.870333",
+    "docstring": "EXPERIMENT: EXP-035\nDate: 2025-11-17\nObjective: Validate v16.0 enhancements with comprehensive backtest\n\nCRITICAL VALIDATION:\nWe've deployed major enhancements claiming +12.2pp win rate improvement:\n- v13.0: Earnings filter (+2.3pp estimated)\n- v15.0: Quality scoring (+3.7pp estimated)\n- v16.0: VIX regime (+1.2pp estimated)\n\nTOTAL CLAIM: 77.7% -> 89.9% win rate (+12.2pp)\n\nMUST VALIDATE with actual historical data before live trading!\n\nTEST METHODOLOGY:\n1. Run backtest on all 22 Tier A stocks (20"
+  },
+  "exp036_quality_threshold_optimization.py": {
+    "number": 36,
+    "title": "EXPERIMENT: EXP-036",
+    "archived_date": "2026-01-21T09:07:26.871337",
+    "docstring": "EXPERIMENT: EXP-036\nDate: 2025-11-17\nObjective: Optimize quality scoring threshold after v16.0 validation failure\n\nCRITICAL ISSUE DISCOVERED IN EXP-035:\nQuality scoring (threshold=60) is HURTING performance:\n- v12.0: 63.9% win rate, 268 trades\n- v15.0: 59.7% win rate, 103 trades (-4.2pp, -62% trades)\n\nPROBLEM:\nThreshold of 60/100 is TOO AGGRESSIVE:\n- Filtering out 62% of trades\n- Removing GOOD signals, not bad ones\n- Decreasing win rate instead of increasing it\n\nHYPOTHESIS:\nLower threshold will "
+  },
+  "exp037_parameter_optimization.py": {
+    "number": 37,
+    "title": "EXPERIMENT: EXP-037",
+    "archived_date": "2026-01-21T09:07:26.872337",
+    "docstring": "EXPERIMENT: EXP-037\nDate: 2025-11-17\nObjective: Optimize parameters per stock using data-driven backtest\n\nMOTIVATION:\nCurrent v13.0-VALIDATED: 63.6% win rate (validated)\nAll stocks use SAME parameters:\n- Z-score threshold: 1.5\n- RSI threshold: 35\n- Volume multiplier: 1.3x\n- Price drop: -1.5%\n\nPROBLEM:\nOne-size-fits-all is suboptimal:\n- NVDA (high volatility) might need z-score=2.0\n- GILD (low volatility) might need z-score=1.2\n- Different stocks have different characteristics\n\nHYPOTHESIS:\nOptimi"
+  },
+  "exp038_full_portfolio_optimization.py": {
+    "number": 38,
+    "title": "EXPERIMENT: EXP-038",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-038\nDate: 2025-11-17\nObjective: Complete per-stock parameter optimization for ALL Tier A stocks\n\nMOTIVATION:\nEXP-037 Results (4 stocks tested):\n- Average improvement: +16.6pp\n- NVDA: +8.3pp (75.0% \u2192 83.3%)\n- V: +16.7pp (66.7% \u2192 83.3%)\n- GILD: Optimized to z=1.2\n- ROAD: +28.6pp (71.4% \u2192 100%!)\n\nPROBLEM:\nOnly 4 of 22 Tier A stocks optimized. Remaining 18 stocks still using default parameters.\n\nHYPOTHESIS:\nOptimizing all 22 Tier A stocks will deliver portfolio-wide improvement:\n- Ex"
+  },
+  "exp039_exit_strategy_optimization.py": {
+    "number": 39,
+    "title": "EXPERIMENT: EXP-039",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-039\nDate: 2025-11-17\nObjective: Optimize exit strategy thresholds for maximum returns\n\nMOTIVATION:\nCurrent time-decay exit strategy (EXP-010):\n- Day 0: \u00b12.0% (entry day)\n- Day 1: \u00b11.5% (second day)\n- Day 2+: \u00b11.0% (third day onwards)\n- Max hold: 3 days\n\nPROBLEM:\nFixed thresholds may be suboptimal:\n- High volatility stocks (NVDA) might need wider targets (\u00b13%)\n- Low volatility stocks (V) might need tighter targets (\u00b11.5%)\n- Current thresholds chosen empirically, not data-driven\n\nH"
+  },
+  "exp040_position_sizing_optimization.py": {
+    "number": 40,
+    "title": "EXPERIMENT: EXP-040",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-040\nDate: 2025-11-17\nObjective: Optimize position sizing based on signal strength\n\nMOTIVATION:\nCurrent strategy: Fixed position size for all signals\n- Every signal gets equal capital allocation\n- Ignores signal strength differences\n- High-confidence signals (z=-2.5, RSI=25) treated same as marginal signals (z=-1.5, RSI=34)\n\nPROBLEM:\nFixed sizing is suboptimal:\n- Strong signals have higher expected returns - should allocate more capital\n- Weak signals have lower expected returns -"
+  },
+  "exp041_signal_timing_optimization.py": {
+    "number": 41,
+    "title": "EXPERIMENT: EXP-041",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-041\nDate: 2025-11-17\nObjective: Optimize signal entry timing for improved returns\n\nMOTIVATION:\nCurrent strategy: Enter immediately when signal triggers (EOD)\n- No consideration of intraday timing\n- No consideration of day-of-week patterns\n- No analysis of optimal entry delay\n\nPROBLEM:\nEntry timing could significantly impact returns:\n- Market open (9:30 AM) vs close (4:00 PM) price differences\n- Monday vs Friday entry performance\n- Immediate entry vs waiting 1-2 days for better pr"
+  },
+  "exp042_tier_a_stock_screening.py": {
+    "number": 42,
+    "title": "EXPERIMENT: EXP-042",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-042\nDate: 2025-11-17\nObjective: Screen for new Tier A stocks to expand portfolio\n\nMOTIVATION:\nCurrent portfolio: 23 Tier A stocks\n- Previous expansions: MSFT found via EXP-037 (77.8% win rate)\n- More high-quality stocks likely exist\n- Portfolio expansion = more trading opportunities\n\nPROBLEM:\nLimited portfolio coverage:\n- Only 23 stocks actively monitored\n- Many quality large-caps not tested (GOOGL, AMZN, META, etc.)\n- Mid-cap opportunities unexplored\n- Potential 5-10 additional "
+  },
+  "exp043_new_stocks_optimization.py": {
+    "number": 43,
+    "title": "EXPERIMENT: EXP-043",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-043\nDate: 2025-11-17\nObjective: Optimize parameters for 8 newly added Tier A stocks\n\nMOTIVATION:\nEXP-042 discovered 8 new Tier A stocks with >70% win rates\n- All currently using baseline parameters (z=1.5, rsi=35, vol=1.3)\n- EXP-037/038 showed +5-28pp improvements from optimization\n- Optimizing these stocks completes portfolio optimization (25/31 stocks)\n\nPROBLEM:\nNew stocks underoptimized:\n- QCOM: 80% baseline - could hit 85-90% optimized\n- JPM: 75% baseline - could hit 80-85% o"
+  },
+  "exp044_final_portfolio_optimization.py": {
+    "number": 44,
+    "title": "EXPERIMENT: EXP-044",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-044\nDate: 2025-11-17\nObjective: Complete 100% portfolio optimization (final 7 stocks)\n\nMOTIVATION:\nPortfolio optimization at 77% (24/31 stocks)\n- EXP-037, EXP-038, EXP-043 showed +5-15pp improvements per stock\n- 7 stocks still using baseline parameters\n- Completing optimization will maximize portfolio performance\n\nPROBLEM:\nRemaining stocks underoptimized:\n- TXN: Large-cap semiconductor (baseline params)\n- FTNT: Mid-cap cybersecurity (baseline params)\n- MLM: Mid-cap materials (bas"
+  },
+  "exp045_position_sizing_optimization.py": {
+    "number": 45,
+    "title": "EXPERIMENT: EXP-045",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-045\nDate: 2025-11-17\nObjective: Implement dynamic position sizing based on signal strength\n\nMOTIVATION:\nCurrent strategy: Fixed 1.0x position size for ALL signals\n- Strong signals (z=-2.5, RSI=25, high volume) treated same as weak signals (z=-1.5, RSI=34)\n- Missing opportunity to leverage signal quality\n- More capital should go to high-confidence signals\n\nPROBLEM:\nEqual position sizing is suboptimal:\n- Strong signals have higher expected returns \u2192 should allocate MORE capital\n- W"
+  },
+  "exp046_entry_timing_v2.py": {
+    "number": 46,
+    "title": "EXPERIMENT: EXP-046",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-046\nDate: 2025-11-17\nObjective: Optimize entry timing for better execution prices\n\nMOTIVATION:\nCurrent strategy: Enter at EOD close price when signal triggers\n- No consideration of intraday price action\n- No consideration of next-day gap behavior\n- No analysis of optimal entry delay\n- Missing opportunity to improve entry price by 1-3%\n\nPROBLEM:\nEntry timing significantly impacts returns:\n- Signals often gap down next day (panic continues)\n- Entering at next-day open could improve"
+  },
+  "exp047_v14_comprehensive_validation.py": {
+    "number": 47,
+    "title": "EXPERIMENT: EXP-047",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-047\nDate: 2025-11-17\nObjective: Comprehensive validation of v14.0-DYNAMIC-SIZING system\n\nMOTIVATION:\nMultiple major enhancements deployed in this session:\n- EXP-043: 7 new stocks optimized (+13.2pp avg)\n- EXP-044: 4 final stocks optimized (+5.8pp avg)\n- EXP-045: Dynamic position sizing (+41.7% return improvement!)\n- v14.0: All enhancements deployed to production\n\nNeed comprehensive validation to:\n- Confirm cumulative impact of all improvements\n- Validate dynamic position sizing i"
+  },
+  "exp048_underperformer_rescue.py": {
+    "number": 48,
+    "title": "EXPERIMENT: EXP-048",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-048\nDate: 2025-11-17\nObjective: Re-optimize or remove underperforming stocks from portfolio\n\nMOTIVATION:\nEXP-047 validation identified weak performers dragging down portfolio average:\n- FTNT: 25.0% win rate, -9.3% return (CRITICAL - only 4 trades)\n- SYK: 55.6% win rate, +0.9% return (9 trades)\n- DXCM: 60.0% win rate, +0.5% return (5 trades)\n- INVH: 60.0% win rate, +7.0% return (5 trades)\n\nPortfolio avg return: 16.7% (target: 18%+)\nNeed +1.3pp improvement to hit target.\n\nPROBLEM:\n"
+  },
+  "exp049_exit_threshold_optimization.py": {
+    "number": 49,
+    "title": "EXPERIMENT: EXP-049",
+    "archived_date": "2026-01-21T09:07:26.874336",
+    "docstring": "EXPERIMENT: EXP-049\nDate: 2025-11-17\nObjective: Optimize exit thresholds per stock based on volatility and reversion speed\n\nMOTIVATION:\nCurrent strategy: Universal time-decay exits for ALL stocks\n- Day 0: \u00b12%, Day 1: \u00b11.5%, Day 2+: \u00b11%\n- No consideration of stock-specific volatility\n- No consideration of stock-specific reversion speed\n- Missing opportunity to optimize exits for each stock's characteristics\n\nPROBLEM:\nOne-size-fits-all exits are suboptimal:\n- High volatility stocks (NVDA, ROAD, IN"
+  },
+  "exp050_tier_a_expansion_v2.py": {
+    "number": 50,
+    "title": "EXPERIMENT: EXP-050",
+    "archived_date": "2026-01-21T09:07:26.890271",
+    "docstring": "EXPERIMENT: EXP-050\nDate: 2025-11-17\nObjective: Expand Tier A universe with 5-10 additional high-quality stocks\n\nMOTIVATION:\nCurrent portfolio: 27 curated Tier A stocks (79.3% win rate, 19.2% avg return)\n- System is PROVEN - 79.3% win rate validates our approach\n- Quality bar established - 70%+ win rate threshold\n- Limited trading opportunities - ~200 trades/year\n- Could handle larger portfolio with same quality standards\n\nOPPORTUNITY:\nExpand universe to find more high-quality stocks:\n- Each new"
+  },
+  "exp051_portfolio_risk_management.py": {
+    "number": 51,
+    "title": "EXPERIMENT: EXP-051",
+    "archived_date": "2026-01-21T09:07:26.891466",
+    "docstring": "EXPERIMENT: EXP-051\nDate: 2025-11-17\nObjective: Implement portfolio-level risk management for 45-stock universe\n\nMOTIVATION:\nCurrent system: 45 stocks, each signal treated independently\n- No portfolio-level position limits\n- No correlation analysis\n- No sector exposure limits\n- Could have 10+ concurrent positions (all correlated)\n- Risk of large drawdowns if multiple positions fail simultaneously\n\nPROBLEM:\nIndividual stock optimization != portfolio optimization:\n- Multiple tech stocks could all "
+  },
+  "exp052_adaptive_regime_detection.py": {
+    "number": 52,
+    "title": "EXPERIMENT: EXP-052",
+    "archived_date": "2026-01-21T09:07:26.893465",
+    "docstring": "EXPERIMENT: EXP-052\nDate: 2025-11-17\nObjective: Implement adaptive strategy based on market volatility and breadth conditions\n\nMOTIVATION:\nCurrent system: Simple BEAR market filter (blocks all trades in bear markets)\n- No volatility regime consideration\n- No market breadth filtering\n- No adaptation to market conditions\n- Same strategy in calm vs volatile markets\n- Same strategy in healthy vs weak breadth\n\nPROBLEM:\nMean reversion strategy performance varies by market conditions:\n- HIGH VOLATILITY"
+  },
+  "exp053_portfolio_position_limits.py": {
+    "number": 53,
+    "title": "EXPERIMENT: EXP-053",
+    "archived_date": "2026-01-21T09:07:26.894466",
+    "docstring": "EXPERIMENT: EXP-053\nDate: 2025-11-17\nObjective: Implement and validate portfolio-level position limits\n\nMOTIVATION:\nEXP-051 analyzed portfolio risk and recommended controls, but they were NEVER IMPLEMENTED!\nCurrent system: Unlimited concurrent positions (take every signal)\n- No position limits -> capital spread across all signals\n- No sector limits -> could have 5 tech stocks at once\n- No signal prioritization -> weak and strong signals get equal weight\n- Missing 15-20% Sharpe improvement from c"
+  },
+  "exp054_stop_loss_optimization.py": {
+    "number": 54,
+    "title": "EXPERIMENT: EXP-054",
+    "archived_date": "2026-01-21T09:07:26.895466",
+    "docstring": "EXPERIMENT: EXP-054\nDate: 2025-11-17\nObjective: Optimize stop-loss levels per stock based on volatility\n\nMOTIVATION:\nCurrent system: -2% stop-loss for ALL stocks (one-size-fits-all)\n- Low volatility stocks (V, MA, JPM): -2% might be too wide, accepting unnecessary losses\n- High volatility stocks (NVDA, AVGO): -2% might be too tight, causing false stops\n- No adaptation to individual stock characteristics\n- Missing 5-10% Sharpe improvement from optimized stops\n\nPROBLEM:\nOne-size-fits-all stop-loss"
+  },
+  "exp055_holding_period_optimization.py": {
+    "number": 55,
+    "title": "EXPERIMENT: EXP-055",
+    "archived_date": "2026-01-21T09:07:26.897465",
+    "docstring": "EXPERIMENT: EXP-055\nDate: 2025-11-17\nObjective: Optimize holding period per stock based on reversion speed\n\nMOTIVATION:\nCurrent system: Max 3 days hold for ALL stocks (one-size-fits-all)\n- Fast-reverting stocks (V, MA): Might revert fully in 1-2 days\n- Slow-reverting stocks (NVDA, GILD): Might need 4-5 days for full profit\n- Holding too long = opportunity cost (capital tied up)\n- Exiting too early = leaving profit on table\n- Missing 5-15% return improvement from optimized holding periods\n\nPROBLE"
+  },
+  "exp056_production_scanner.py": {
+    "number": 56,
+    "title": "EXPERIMENT: EXP-056",
+    "archived_date": "2026-01-21T09:07:26.898465",
+    "docstring": "EXPERIMENT: EXP-056\nDate: 2025-11-17\nObjective: Deploy production-ready daily signal scanner with automated reporting\n\nMOTIVATION:\nResearch phase COMPLETE - all major parameters optimized!\n- 45 stocks optimized (all 70%+ WR)\n- Dynamic position sizing deployed (+41.7%)\n- All parameters validated (EXP-052 through EXP-055)\n- Strategy performing at theoretical maximum\n- Time to shift from RESEARCH to PRODUCTION DEPLOYMENT\n\nCURRENT GAP:\n- Signal scanner exists but runs manually\n- No automated daily s"
+  },
+  "exp057_multitimeframe_confirmation.py": {
+    "number": 57,
+    "title": "EXPERIMENT: EXP-057",
+    "archived_date": "2026-01-21T09:07:26.899465",
+    "docstring": "EXPERIMENT: EXP-057\nDate: 2025-11-17\nObjective: Test multi-timeframe signal confirmation for higher quality signals\n\nMOTIVATION:\nCurrent system: Signals based ONLY on daily data\n- No confirmation from higher timeframes (weekly)\n- Weak daily signals might not align with weekly trend\n- Strong signals should show panic across multiple timeframes\n- Missing 3-5pp win rate improvement from better signal quality\n\nPROBLEM:\nSingle timeframe signals != optimal signal quality:\n- Daily panic sell but weekly"
+  },
+  "exp058_seasonality_analysis.py": {
+    "number": 58,
+    "title": "EXPERIMENT: EXP-058",
+    "archived_date": "2026-01-21T09:07:26.901466",
+    "docstring": "EXPERIMENT: EXP-058\nDate: 2025-11-17\nObjective: Analyze seasonality patterns in mean reversion performance\n\nMOTIVATION:\nPrevious 5 experiments showed NO benefit - system appears fully optimized\nBUT: Seasonality is a known market phenomenon not yet tested\n- Tax loss harvesting (November-December)\n- January effect (new year positioning)\n- FOMC meeting weeks (Fed announcement volatility)\n- Day-of-week patterns (Friday vs Monday behavior)\n- Options expiration weeks (quad witching volatility)\n\nPROBLE"
+  },
+  "exp059_market_breadth_filter.py": {
+    "number": 59,
+    "title": "EXPERIMENT: EXP-059",
+    "archived_date": "2026-01-21T09:07:26.903220",
+    "docstring": "EXPERIMENT: EXP-059\nDate: 2025-11-17\nObjective: Filter signals based on market breadth quality\n\nMOTIVATION:\nPrevious 5+ experiments showed NO benefit - but this is DIFFERENT\nMarket breadth = overall market participation (% of stocks advancing)\n- Current system: Treat all days equally regardless of market breadth\n- Strong breadth (70%+ stocks advancing): Healthy market, mean reversion works well\n- Weak breadth (30%- stocks advancing): Narrow market, mean reversion less reliable\n- Not tested yet b"
+  },
+  "exp060_gap_analysis.py": {
+    "number": 60,
+    "title": "EXPERIMENT: EXP-060",
+    "archived_date": "2026-01-21T09:07:26.904225",
+    "docstring": "EXPERIMENT: EXP-060\nDate: 2025-11-17\nObjective: Test if overnight gaps enhance mean reversion signal quality\n\nMOTIVATION:\nSEVEN consecutive experiments showed NO benefit - system appears at peak\nBUT: Gap analysis is fundamentally DIFFERENT - not a filter, an ENHANCER\n- Overnight gaps = after-hours emotional trading\n- Large gaps down = panic intensified\n- Gap mean reversion = classic trading pattern\n- Could reveal that GAPPED panic sells perform better than intraday\n\nPROBLEM:\nTreating gapped vs n"
+  },
+  "exp061_gap_validation.py": {
+    "number": 61,
+    "title": "EXPERIMENT: EXP-061",
+    "archived_date": "2026-01-21T09:07:26.905225",
+    "docstring": "EXPERIMENT: EXP-061\nDate: 2025-11-17\nObjective: VALIDATE gap enhancement discovery across full portfolio\n\nBREAKTHROUGH FROM EXP-060:\nGap-required signals show +7.6pp win rate improvement!\n- Baseline: 82.4% win rate\n- Gap-enhanced: 90.0% win rate\n- Only 2 stocks had gap data - MUST VALIDATE on full portfolio\n\nMOTIVATION:\nAfter 7 failed experiments, gap analysis showed SIGNIFICANT improvement\nBUT: Small sample size (2 stocks), need comprehensive validation\n- Test all 45 stocks\n- Confirm +5pp minim"
+  },
+  "exp062_sector_relative_strength.py": {
+    "number": 62,
+    "title": "EXPERIMENT: EXP-062",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-062\nDate: 2025-11-17\nObjective: Enhance signal quality using sector relative strength\n\nRESEARCH MOTIVATION:\nAfter 61 experiments, what works = QUALITY FILTERING, not more constraints\n- v15.0 quality scoring: FAILED (-4.2pp)\n- v16.0 VIX regime: FAILED (+0.0pp)\n- EXP-061 gap filter: FAILED (-5.7pp)\n\nTHEORY FOUNDATION:\nStocks that are OVERSOLD but OUTPERFORMING their sector = higher-quality signals\n- Mean reversion + relative strength = dual confirmation\n- Sector weakness can drag d"
+  },
+  "exp062_sentiment_data_collection.py": {
+    "number": 62,
+    "title": "EXPERIMENT: EXP-062",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-062\nDate: 2025-11-17\nObjective: Build and validate sentiment data collection pipeline\n\nHYPOTHESIS:\nWe can collect sufficient Twitter/Reddit sentiment data (80%+ coverage) for the\npast 3 years to enable sentiment-enhanced mean reversion strategy. This data\nwill differentiate panic-driven sells (buy) from news-driven sells (avoid).\n\nALGORITHM TESTED:\nSentiment Data Collection Pipeline\n- Data Sources: Twitter (via snscrape), Reddit (via PRAW API)\n- Sentiment Scoring: VADER (baseline"
+  },
+  "exp063_finbert_sentiment_model.py": {
+    "number": 63,
+    "title": "EXPERIMENT: EXP-063",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-063\nDate: 2025-11-17\nObjective: Integrate FinBERT sentiment model and validate accuracy\n\nHYPOTHESIS:\nFinBERT (finance-specific BERT model) will provide more accurate sentiment\nscoring than VADER baseline, with stronger correlation to price movements.\nThis improved sentiment signal will better differentiate panic sells from\nnews-driven sells.\n\nALGORITHM TESTED:\nFinBERT Sentiment Model\n- Model: ProsusAI/finbert (pre-trained on financial text)\n- Comparison: FinBERT vs. VADER sentime"
+  },
+  "exp063_optimize_unoptimized_stocks.py": {
+    "number": 63,
+    "title": "EXPERIMENT: EXP-063",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-063\nDate: 2025-11-17\nObjective: Optimize parameters for unoptimized Tier A stocks\n\nRESEARCH MOTIVATION:\nAfter 62 experiments and multiple expansions, 22 out of 46 stocks (48%)\nstill use default or un-optimized parameters.\n\nParameter optimization has PROVEN ROI:\n- EXP-037: 5 stocks, +16.6pp avg improvement\n- EXP-038: 12 stocks, +9.1pp avg improvement\n- EXP-043: 7 stocks, +13.2pp avg improvement (3 hit 100% win rate!)\n- EXP-044: 4 stocks, +5.8pp avg improvement (TXN hit 100% win ra"
+  },
+  "exp064_sector_diversification_screening.py": {
+    "number": 64,
+    "title": "EXPERIMENT: EXP-064",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-064\nDate: 2025-11-17\nObjective: Screen underrepresented sectors for Tier A stock candidates\n\nRESEARCH MOTIVATION:\nCurrent portfolio (46 stocks) has significant sector concentration:\n- Semiconductors: 8 stocks (17%)\n- Finance: 7 stocks (15%)\n- Tech/Software: 6 stocks (13%)\n\nBut MISSING entirely:\n- Utilities: 0 stocks\n- Telecom: 0 stocks\n\nUNDERREPRESENTED:\n- REIT: 1 stock (should have 3-5 for diversification)\n- Payments: 2 stocks (V, MA dominate but room for more)\n- Healthcare serv"
+  },
+  "exp066_ml_feature_engineering.py": {
+    "number": 66,
+    "title": "EXPERIMENT: EXP-066",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-066\nDate: 2025-11-17\nObjective: Build ML feature engineering pipeline for stock selection\n\nHYPOTHESIS:\nA comprehensive set of technical indicators (50+ features) can be used by machine\nlearning models to predict which stocks will experience profitable mean reversion\nopportunities. This enables smarter stock selection and portfolio expansion.\n\nALGORITHM TESTED:\nML Feature Engineering Pipeline\n- Technical indicators: RSI, MACD, Bollinger Bands, ATR, volume ratios\n- Price features: "
+  },
+  "exp067_xgboost_stock_prediction.py": {
+    "number": 67,
+    "title": "EXPERIMENT: EXP-067",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-067\nDate: 2025-11-17\nObjective: Train XGBoost model to predict profitable mean reversion signals\n\nHYPOTHESIS:\nMachine learning can identify stocks likely to experience profitable mean reversion\nopportunities BEFORE they occur, enabling proactive position taking and better\nportfolio allocation. Target: AUC > 0.60 for deployment.\n\nALGORITHM TESTED:\nXGBoost Gradient Boosting Classifier\n- Input: 55 technical features (returns, momentum, volatility, volume, trend, market)\n- Target: Bi"
+  },
+  "exp068_ml_enhanced_scanner.py": {
+    "number": 68,
+    "title": "EXPERIMENT: EXP-068",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-068\nDate: 2025-11-17\nObjective: Integrate XGBoost ML predictions into production scanner\n\nHYPOTHESIS:\nCombining rule-based mean reversion signals with ML probability scores creates\na hybrid system that dramatically improves signal quality. ML model (0.843 AUC)\ncan filter out low-probability signals and prioritize high-confidence opportunities.\n\nEXPECTED IMPACT:\n- 2.4x improvement in signal precision (from 15% to 37%)\n- Reduce false positives by 60%+\n- Same or better coverage of p"
+  },
+  "exp069_simplified_xgboost.py": {
+    "number": 69,
+    "title": "EXPERIMENT: EXP-069",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-069\nDate: 2025-11-17\nObjective: Retrain XGBoost with 41 production-compatible features (no SPY dependencies)\n\nHYPOTHESIS:\nXGBoost model trained on 41 technical features (excluding SPY-relative metrics)\ncan still achieve strong predictive performance (AUC > 0.70) while being\ncompatible with real-time production scanner.\n\nALGORITHM TESTED:\nXGBoost Gradient Boosting Classifier\n- Input: 41 technical features (no market-relative features)\n- Target: Binary (will have profitable panic s"
+  },
+  "exp070_ml_portfolio_expansion.py": {
+    "number": 70,
+    "title": "EXPERIMENT: EXP-070",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-070\nDate: 2025-11-17\nObjective: Use ML to screen and expand portfolio from 48 to 60+ stocks\n\nHYPOTHESIS:\nThe ML model (0.834 AUC, 35.5% precision) can identify high-quality stocks from\na broader universe (S&P 500) that will have profitable mean reversion signals.\nBy ML-screening candidates BEFORE backtesting, we can efficiently expand the\nportfolio to 60+ stocks while maintaining >70% win rate.\n\nALGORITHM:\n1. Screen S&P 500 universe (excluding current 48 stocks)\n2. Calculate ML p"
+  },
+  "exp071_batch_validate_ml_candidates.py": {
+    "number": 71,
+    "title": "EXPERIMENT: EXP-071",
+    "archived_date": "2026-01-21T09:07:26.906224",
+    "docstring": "EXPERIMENT: EXP-071\nDate: 2025-11-17\nObjective: Batch validate 30 ML-selected candidates for immediate portfolio expansion\n\nHYPOTHESIS:\nThe 30 stocks identified by ML screening (EXP-070) will have >70% win rates when\nbacktested, validating the ML model's predictive power and enabling rapid portfolio\nexpansion from 48 to 60+ stocks.\n\nALGORITHM:\n1. Load top 30 ML candidates from EXP-070\n2. Batch backtest each stock (2020-2025, baseline parameters)\n3. Validate win_rate >= 70% and total_trades >= 5\n"
+  },
+  "exp072_optimize_new_stocks.py": {
+    "number": 72,
+    "title": "EXPERIMENT: EXP-072",
+    "archived_date": "2026-01-21T09:07:26.922025",
+    "docstring": "EXPERIMENT: EXP-072\nDate: 2025-11-17\nObjective: Optimize parameters for 6 newly deployed ML-validated stocks\n\nHYPOTHESIS:\nThe 6 stocks deployed in EXP-071 are using baseline parameters (z=1.5, rsi=35, vol=1.3).\nStock-specific parameter optimization can improve win rates by +5-10pp per stock,\nsimilar to EXP-063 results (+22.5pp for SYK, +26.7pp for MA).\n\nALGORITHM:\nFor each new stock (CMCSA, TMUS, META, ETN, HD, SHW):\n1. Load historical data (2020-2025)\n2. Grid search optimal parameters:\n   - z_s"
+  },
+  "exp073_gap_trading_validation.py": {
+    "number": 73,
+    "title": "EXPERIMENT: EXP-073",
+    "archived_date": "2026-01-21T09:07:26.922025",
+    "docstring": "EXPERIMENT: EXP-073\nDate: 2025-11-17\nObjective: Validate gap trading strategy as complement to mean reversion\n\nHYPOTHESIS:\nGap-down events (>3% gap from prior close) represent extreme panic selling\nand should mean-revert with higher win rate (>85%) and larger returns (+3-5%)\nthan regular mean reversion signals.\n\nALGORITHM:\n1. Scan 54 portfolio stocks for historical gap-down events (2020-2025)\n2. Filter gaps: 3-15% gap down, volume > 1.5x average\n3. Backtest gap trading strategy (entry at open, e"
+  },
+  "exp074_exit_strategy_optimization.py": {
+    "number": 74,
+    "title": "EXPERIMENT: EXP-074",
+    "archived_date": "2026-01-21T09:07:26.922025",
+    "docstring": "EXPERIMENT: EXP-074\nDate: 2025-11-17\nObjective: Optimize exit strategy for maximum returns and win rate\n\nHYPOTHESIS:\nCurrent time-decay exit strategy (from EXP-010, 2020) is suboptimal.\nBy testing alternative exit strategies, we can improve average return per trade\nby 0.5-1.0%, which compounds to +140-280% annual improvement across 281 trades.\n\nCURRENT STRATEGY (TIME-DECAY):\n- Day 0: \u00b12.0% profit target / stop loss\n- Day 1: \u00b11.5% profit target / stop loss\n- Day 2+: \u00b11.0% profit target / stop los"
+  },
+  "exp075_trailing_stop_validation.py": {
+    "number": 75,
+    "title": "EXPERIMENT: EXP-075",
+    "archived_date": "2026-01-21T09:07:26.922025",
+    "docstring": "EXPERIMENT: EXP-075\nDate: 2025-11-17\nObjective: Validate trailing stop strategy on full 54-stock portfolio\n\nHYPOTHESIS:\nTrailing stop exit (v6.0) showed +0.60% improvement per trade on 10 test stocks.\nThis should generalize to the full 54-stock portfolio with similar or better results.\n\nALGORITHM:\n1. Backtest full 54-stock portfolio with trailing_stop strategy\n2. Compare to time_decay baseline (v5.0)\n3. Validate improvement >= +0.30% per trade\n4. Check win rate improvement and Sharpe ratio\n\nEXPE"
+  },
+  "exp076_volatility_position_sizing.py": {
+    "number": 76,
+    "title": "EXPERIMENT: EXP-076",
+    "archived_date": "2026-01-21T09:07:26.922025",
+    "docstring": "EXPERIMENT: EXP-076\nDate: 2025-11-17\nObjective: Implement volatility-adjusted position sizing for better risk-adjusted returns\n\nHYPOTHESIS:\nCurrent strategy uses fixed 100% position size for all trades.\nVolatility-adjusted sizing (based on ATR) will improve risk-adjusted returns:\n- Low volatility stocks (ATR < 1.5%): Size up to 1.2-1.5x\n- Medium volatility (ATR 1.5-3%): Standard 1.0x\n- High volatility (ATR > 3%): Size down to 0.5-0.7x\n\nThis should improve Sharpe ratio by 20-30% and reduce max dr"
+  },
+  "exp077_adaptive_exit_strategy.py": {
+    "number": 77,
+    "title": "EXPERIMENT: EXP-077",
+    "archived_date": "2026-01-21T09:07:26.933684",
+    "docstring": "EXPERIMENT: EXP-077\nDate: 2025-11-17\nObjective: Implement adaptive exit strategy based on stock volatility\n\nHYPOTHESIS:\nEXP-075 showed trailing_stop works for volatile stocks but hurts stable stocks:\n- Volatile stocks (NVDA, V, AVGO): +3 to +10pp improvement with trailing_stop\n- Stable stocks (JPM, JNJ, WMT): -4 to -18pp decline with trailing_stop\n\nAdaptive strategy: Use trailing_stop for volatile stocks, time_decay for stable stocks.\nThis should combine the best of both worlds and beat baseline"
+  },
+  "exp078_intraday_entry_timing.py": {
+    "number": 78,
+    "title": "EXPERIMENT: EXP-078",
+    "archived_date": "2026-01-21T09:07:26.934811",
+    "docstring": "EXPERIMENT: EXP-078\nDate: 2025-11-17\nObjective: Optimize intraday entry timing for mean reversion signals\n\nHYPOTHESIS:\nCurrent strategy enters at close price on signal day. Intraday price action\non panic sell days follows patterns that can be exploited for better entries:\n\nPattern 1: V-shaped recovery (panic at open, recovery by close) -> Buy at open\nPattern 2: Continued decline (weakness all day) -> Buy at close\nPattern 3: Mid-day reversal -> Buy at low of day\n\nHistorical analysis can determine"
+  },
+  "exp079_deep_learning_signals.py": {
+    "number": 79,
+    "title": "EXPERIMENT: EXP-079",
+    "archived_date": "2026-01-21T09:07:26.936809",
+    "docstring": "EXPERIMENT: EXP-079\nDate: 2025-11-17\nObjective: Deep Learning Signal Prediction using LSTM/GRU\n\nHYPOTHESIS:\nCurrent XGBoost model (0.834 AUC) uses static features and misses temporal patterns.\nLSTM/GRU networks can learn time-series dependencies in price action, volume, and\ntechnical indicators that lead to successful mean reversion trades.\n\nDeep learning advantages:\n1. Temporal pattern recognition (20-day sequences)\n2. Non-linear feature interactions\n3. Attention to critical time windows\n4. Mul"
+  },
+  "exp080_limit_order_entry.py": {
+    "number": 80,
+    "title": "EXPERIMENT: EXP-080",
+    "archived_date": "2026-01-21T09:07:26.938809",
+    "docstring": "EXPERIMENT: EXP-080\nDate: 2025-11-17\nObjective: Implement limit order entry for better intraday pricing\n\nLEARNING FROM EXP-078:\n- Perfect timing (low of day): +1.32% improvement (IMPOSSIBLE)\n- Open entry: +0.03% improvement (MINIMAL)\n- Realistic solution: Limit orders at discount to close\n\nHYPOTHESIS:\nInstead of entering at close, place limit order at 0.5% below close price.\n- If filled during day: Better entry price\n- If not filled: Skip trade (acts as additional filter)\n- Historical analysis c"
+  },
+  "exp081_signal_quality_scoring.py": {
+    "number": 81,
+    "title": "EXPERIMENT: EXP-081",
+    "archived_date": "2026-01-21T09:07:26.940809",
+    "docstring": "EXPERIMENT: EXP-081\nDate: 2025-11-17\nObjective: Implement multi-factor signal quality scoring system\n\nHYPOTHESIS:\nNot all panic sell signals are equal. High-quality signals have:\n- Stronger technical conviction (deeper z-score, lower RSI)\n- Higher volume confirmation (bigger spike)\n- Better market context (favorable regime)\n- More extreme price drops (bigger panic)\n\nBy scoring signals 0-100 and filtering for quality >= 70, we can:\n- Improve win rate by 5-8pp (remove weak signals)\n- Reduce total "
+  },
+  "exp082_microstructure_features_phase1.py": {
+    "number": 82,
+    "title": "EXPERIMENT: EXP-082 (PHASE 1 of 6-Week Feature Engineering P...",
+    "archived_date": "2026-01-21T09:07:26.941809",
+    "docstring": "EXPERIMENT: EXP-082 (PHASE 1 of 6-Week Feature Engineering Program)\nDate: 2025-11-17\nObjective: Validate market microstructure features for ML enhancement\n\nRESEARCH BASIS:\n\"Smart design of features, including appropriate preprocessing and denoising,\ntypically leads to an effective strategy\" - 2024 ML Trading Research\n\nHYPOTHESIS:\nMarket microstructure features (intraday patterns, volume quality, price action)\nwill improve XGBoost predictions beyond traditional technical indicators.\n\nNEW FEATURES"
+  },
+  "exp083_sentiment_features_phase3.py": {
+    "number": 83,
+    "title": "EXP-083: Sentiment Features Validation (PHASE 3)",
+    "archived_date": "2026-01-21T09:07:26.943809",
+    "docstring": "EXP-083: Sentiment Features Validation (PHASE 3)\nPart of 6-week feature engineering program\n\nLEARNING FROM EXP-082:\n- Microstructure features FAILED: -2.6pp AUC\n- Need higher-impact features\n\nRESEARCH BASIS:\n\"Sentiment analysis shows +3-6pp AUC improvement in ML trading systems\"\n- 2024 Journal of Financial Markets\n- Twitter/Reddit capture emotion-driven panics\n- News sentiment captures fundamental issues\n- Divergence between social/news = trading edge\n\nHYPOTHESIS:\nSentiment features will signifi"
+  },
+  "exp084_cross_sectional_features_phase2.py": {
+    "number": 84,
+    "title": "EXP-084: Cross-Sectional Features Validation (PHASE 2)",
+    "archived_date": "2026-01-21T09:07:26.944809",
+    "docstring": "EXP-084: Cross-Sectional Features Validation (PHASE 2)\nPart of 6-week feature engineering program\n\nLEARNING FROM EXP-082 & EXP-083:\n- Microstructure features FAILED: -2.6pp AUC (too noisy)\n- Sentiment features FAILED: +0.000 AUC (API limitations, no historical data)\n\nRESEARCH BASIS:\n\"Cross-sectional features improve ML trading by +2-4pp AUC\" (2024)\n- Sector rotation patterns predict stock-specific panic sells\n- Market regime context (VIX, SPY beta) separates systemic vs idiosyncratic drops\n- Rel"
+  },
+  "exp085_temporal_features_phase4.py": {
+    "number": 85,
+    "title": "EXP-085: Temporal Features Validation (PHASE 4)",
+    "archived_date": "2026-01-21T09:07:26.946810",
+    "docstring": "EXP-085: Temporal Features Validation (PHASE 4)\nPart of 6-week feature engineering program\n\nLEARNING FROM EXP-082 & EXP-083:\n- Microstructure features FAILED: -2.6pp AUC (too noisy)\n- Sentiment features FAILED: +0.000 AUC (API limitations, no historical data)\n\nRESEARCH BASIS:\n\"Temporal features improve ML trading by +2-5pp AUC\" (2024)\n- Historical pattern matching identifies similar panic sell setups\n- Momentum regime detection separates trending from mean-reverting markets\n- Time-based mean rev"
+  },
+  "exp086_deploy_temporal_features.py": {
+    "number": 86,
+    "title": "EXP-086: Deploy Validated Temporal Features to Production",
+    "archived_date": "2026-01-21T09:07:26.947810",
+    "docstring": "EXP-086: Deploy Validated Temporal Features to Production\n\nVALIDATION RESULTS (EXP-085):\n- Average AUC improvement: +2.0pp (0.694 \u2192 0.715)\n- Success rate: 90% stocks improved (9/10)\n- All validation criteria PASSED\n\nDEPLOYMENT STRATEGY:\n1. Update production XGBoost model with temporal features\n2. Test on full Proteus stock universe (all active stocks)\n3. Compare production AUC before/after deployment\n4. Monitor feature importance in production\n\nEXPECTED PRODUCTION IMPACT:\n- AUC: 0.834 \u2192 0.854 (+"
+  }
+}

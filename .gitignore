@@ -79,3 +79,4 @@ tmp/
 temp/
 nul
 CLAUDE_CONTEXT.md
+tmpclaude-*-cwd/

@@ -104,7 +104,7 @@ def prepare_simplified_ml_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Serie
 
     # Handle missing values
     df_clean = df[production_features + ['target']].copy()
-    df_clean = df_clean.fillna(method='ffill').fillna(method='bfill')
+    df_clean = df_clean.ffill().bfill()
     df_clean = df_clean.dropna()
 
     X = df_clean[production_features]

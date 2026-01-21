@@ -87,7 +87,7 @@ def prepare_ml_data(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.Series, List[str
 
     # Handle missing values (forward fill then drop remaining)
     df_clean = df[feature_cols + ['target']].copy()
-    df_clean = df_clean.fillna(method='ffill').fillna(method='bfill')
+    df_clean = df_clean.ffill().bfill()
     df_clean = df_clean.dropna()
 
     X = df_clean[feature_cols]

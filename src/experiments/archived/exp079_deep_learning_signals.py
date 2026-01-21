@@ -374,7 +374,7 @@ def train_lstm_model(train_loader, val_loader, input_size, device, epochs=50):
                 break
 
     # Load best model
-    model.load_state_dict(torch.load('logs/experiments/exp079_best_model.pth'))
+    model.load_state_dict(torch.load('logs/experiments/exp079_best_model.pth', weights_only=True))
 
     return model
 
