@@ -80,3 +80,47 @@ temp/
 nul
 CLAUDE_CONTEXT.md
 tmpclaude-*-cwd/
+
+# Generated reports
+*.html
+daily_report_*.html
+dashboard.html
+
+# Data directories (local state, not tracked)
+data/cache/
+data/models/
+data/portfolio/
+data/virtual_wallet/
+data/smart_scans/archived/
+data/research/*.json
+data/research/*.txt
+
+# Planning/session docs (local only)
+MORNING_*.md
+MORNING_*.txt
+OVERNIGHT_*.md
+OVERNIGHT_*.txt
+*_RESULTS*.txt
+*_RESULTS*.md
+RECOMMENDATION_*.md
+RESEARCH_FINDINGS_*.md
+
+# Proteus agent state
+proteus/data/
+proteus/logs/
+
+# Misc generated
+bear_prediction_report.txt
+overnight_*.log
+overnight_*.txt
+
+# Log subdirectories
+logs/bear_improvements/
+logs/errors/
+logs/trading/
+
+# Model directories
+models/
+
+# Screenshots
+screenshots/
