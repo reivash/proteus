@@ -70,11 +70,28 @@ class ProteusAdvisor:
     - LOW: Everything else (not recommended)
     """
 
-    # Quality thresholds
+    # Quality thresholds - based on backtest data
     HIGH_RAW_THRESHOLD = 70
     HIGH_ADJUSTED_THRESHOLD = 65
     MODERATE_RAW_THRESHOLD = 65
     MODERATE_ADJUSTED_THRESHOLD = 55
+
+    # Regime edge from backtests (win rate, avg return)
+    REGIME_EDGE = {
+        'bear': (0.69, 1.57),      # Best regime
+        'volatile': (0.62, 1.52),  # Good regime
+        'choppy': (0.56, 0.17),    # Bad regime - low edge
+        'bull': (0.51, 0.15)       # Worst - no edge
+    }
+
+    # Tier edge from backtests
+    TIER_EDGE = {
+        'strong': (0.685, 1.15),   # Best tier
+        'elite': (0.60, 0.56),
+        'average': (0.59, 0.57),
+        'weak': (0.55, 0.30),
+        'avoid': (0.45, -0.15)
+    }
 
     def __init__(self, quiet: bool = False):
         self.quiet = quiet
@@ -132,17 +149,18 @@ class ProteusAdvisor:
         else:
             concerns.append(f"Weak base signal ({sig.raw_strength:.0f})")
 
-        # Tier assessment
-        if sig.tier == 'elite':
-            strengths.append("Elite tier - historically best performer")
-        elif sig.tier == 'strong':
-            strengths.append("Strong tier - reliable performer")
+        # Tier assessment (based on backtest data - strong > elite)
+        tier_wr, tier_ret = self.TIER_EDGE.get(sig.tier, (0.55, 0.3))
+        if sig.tier == 'strong':
+            strengths.append(f"STRONG tier - best performer ({tier_wr:.0%} win, +{tier_ret:.1f}%)")
+        elif sig.tier == 'elite':
+            strengths.append(f"Elite tier ({tier_wr:.0%} win rate)")
         elif sig.tier == 'average':
             pass  # Neutral
         elif sig.tier == 'weak':
-            concerns.append("Weak tier - historical underperformer")
+            concerns.append(f"Weak tier ({tier_wr:.0%} win rate)")
         elif sig.tier == 'avoid':
-            concerns.append("AVOID tier - do not trade")
+            concerns.append("AVOID tier - negative expected value")
 
         # Penalty impact
         penalty = sig.raw_strength - sig.adjusted_signal if hasattr(sig, 'adjusted_signal') else sig.raw_strength - sig.adjusted_strength
@@ -283,13 +301,20 @@ class ProteusAdvisor:
         lines = []
 
         ctx = recs['market_context']
-        regime = ctx['regime'].upper()
+        regime = ctx['regime'].lower()
 
-        # Market warning if needed
-        if ctx['is_choppy'] or regime == 'CHOPPY':
-            lines.append("Market is CHOPPY - being highly selective.")
+        # Regime-based edge assessment
+        regime_wr, regime_ret = self.REGIME_EDGE.get(regime, (0.55, 0.3))
+
+        if regime in ['bear', 'volatile']:
+            lines.append(f"FAVORABLE REGIME ({regime.upper()}) - historical {regime_wr:.0%} win rate, +{regime_ret:.1f}% avg.")
+        elif regime == 'choppy':
+            lines.append(f"CHOPPY MARKET - low edge ({regime_wr:.0%} win rate). Being highly selective.")
+        elif regime == 'bull':
+            lines.append(f"BULL MARKET - mean reversion underperforms ({regime_wr:.0%} win rate). Consider sitting out.")
+
         if ctx['bear_score'] >= 40:
-            lines.append(f"Elevated bear score ({ctx['bear_score']}) - caution advised.")
+            lines.append(f"Elevated bear score ({ctx['bear_score']}) - may transition to better regime soon.")
 
         # Recommendations
         high = len(recs['high_confidence'])
