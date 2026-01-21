@@ -355,11 +355,10 @@ class SmartScannerV2:
         # Threshold based on regime
         # Note: Lowered thresholds for forward validation period (Jan 2026)
         # Will raise back once we have 30+ days of data
-        # Forward validation period (Jan 2026): lowered thresholds significantly
-        # to get signals flowing for 30-day paper trading test
+        # Quality thresholds - only pass signals with real conviction
         threshold = {
-            'bull': 45, 'volatile': 45, 'choppy': 45, 'bear': 50
-        }.get(regime, 45)
+            'bull': 55, 'volatile': 60, 'choppy': 65, 'bear': 70
+        }.get(regime, 60)
         print(f"    Signal threshold: {threshold}")
 
         # Run model scan
