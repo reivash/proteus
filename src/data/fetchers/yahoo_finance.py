@@ -3,10 +3,26 @@ Yahoo Finance data fetcher for stock market data.
 Uses yfinance library to download historical price data.
 """
 
+import time
 import yfinance as yf
 import pandas as pd
 from datetime import datetime, timedelta
 from typing import Optional
+
+
+# Rate limiting configuration
+_last_request_time = 0
+_min_request_interval = 0.2  # 200ms between requests
+
+
+def _rate_limit():
+    """Simple rate limiter for yfinance requests."""
+    global _last_request_time
+    now = time.time()
+    elapsed = now - _last_request_time
+    if elapsed < _min_request_interval:
+        time.sleep(_min_request_interval - elapsed)
+    _last_request_time = time.time()
 
 
 class YahooFinanceFetcher:
@@ -36,6 +52,7 @@ class YahooFinanceFetcher:
             DataFrame with columns: Open, High, Low, Close, Adj Close, Volume
         """
         try:
+            _rate_limit()  # Avoid hitting rate limits
             stock = yf.Ticker(ticker)
 
             if start_date and end_date:

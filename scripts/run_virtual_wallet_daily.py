@@ -140,8 +140,8 @@ Examples:
                        help='Reset wallet to initial state')
     parser.add_argument('--capital', type=float, default=100000,
                        help='Initial capital (default: 100000)')
-    parser.add_argument('--min-strength', type=float, default=65,
-                       help='Minimum signal strength (default: 65)')
+    parser.add_argument('--min-strength', type=float, default=45,
+                       help='Minimum signal strength (default: 45 for forward validation)')
     parser.add_argument('--scan-file', type=str,
                        help='Path to specific scan file to process')
 

@@ -353,9 +353,13 @@ class SmartScannerV2:
             self._is_choppy = False
 
         # Threshold based on regime
+        # Note: Lowered thresholds for forward validation period (Jan 2026)
+        # Will raise back once we have 30+ days of data
+        # Forward validation period (Jan 2026): lowered thresholds significantly
+        # to get signals flowing for 30-day paper trading test
         threshold = {
-            'bull': 60, 'volatile': 65, 'choppy': 70, 'bear': 75
-        }.get(regime, 65)
+            'bull': 45, 'volatile': 45, 'choppy': 45, 'bear': 50
+        }.get(regime, 45)
         print(f"    Signal threshold: {threshold}")
 
         # Run model scan
@@ -483,6 +487,8 @@ class SmartScannerV2:
 
             # Apply threshold
             if breakdown.final_signal < threshold:
+                if sig.signal_strength >= 50:  # Only log significant ones
+                    print(f"    [FILTERED] {sig.ticker}: {sig.signal_strength:.1f} -> {breakdown.final_signal:.1f} (threshold {threshold})")
                 filtered += 1
                 continue
 
@@ -615,10 +621,12 @@ class SmartScannerV2:
         print()
         print("[6] Applying sector filter...")
         signal_dicts = [asdict(s) for s in signals]
+        # Forward validation period (Jan 2026): relaxed sector limits
+        # to allow more signals through for paper trading test
         correlation_result = filter_correlated_signals(
             signal_dicts,
-            max_per_sector=2,
-            max_correlated_total=3,
+            max_per_sector=3,  # Was 2
+            max_correlated_total=4,  # Was 3
             strength_key='adjusted_strength'
         )
         passed_tickers = {s['ticker'] for s in correlation_result.passed_signals}
