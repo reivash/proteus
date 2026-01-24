@@ -4,86 +4,155 @@
 
 ---
 
-# Proteus - Stock Market Predictor
+# Proteus - Mean Reversion Trading System
+
+A production-ready stock trading system using ML-powered signal generation, regime detection, and automated paper trading.
 
 ---
 
-## ⚠️ DISCLAIMER - READ BEFORE USING
+## Disclaimer
 
-**THIS IS A FUN EXPERIMENTAL PROJECT FOR EDUCATIONAL AND RESEARCH PURPOSES ONLY.**
+**THIS IS AN EXPERIMENTAL PROJECT FOR EDUCATIONAL AND RESEARCH PURPOSES ONLY.**
 
-- 🚫 **NOT FINANCIAL ADVICE** - This system is an experiment in multi-agent AI collaboration, not a professional trading tool
-- 🎲 **USE AT YOUR OWN RISK** - Any trading decisions based on this project are entirely your responsibility
-- 🧪 **EXPERIMENTAL** - This is a research project exploring AI agent coordination and stock market analysis methodologies
-- 💸 **NO GUARANTEES** - Stock markets are inherently unpredictable. This project makes no claims of profitability or accuracy
-- 📚 **EDUCATIONAL ONLY** - Treat this as a learning exercise in AI systems, not as investment guidance
-
-**By using this project, you acknowledge that you understand these risks and will not hold the authors liable for any financial losses.**
+- **NOT FINANCIAL ADVICE** - This is a research project, not a professional trading tool
+- **USE AT YOUR OWN RISK** - Any trading decisions are entirely your responsibility
+- **NO GUARANTEES** - Stock markets are unpredictable. No claims of profitability
 
 ---
 
-## About
+## Features
 
-An agentic AI system for researching, analyzing, and improving stock market prediction methodologies.
+| Feature | Description |
+|---------|-------------|
+| **Smart Scanner** | Daily signal generation for 54 validated stocks |
+| **ML Ensemble** | LSTM + Transformer + MLP hybrid model (60% win rate) |
+| **Regime Detection** | HMM-based BULL/BEAR/CHOPPY/VOLATILE classification |
+| **Bear Early Warning** | 10-indicator system with 100% historical hit rate |
+| **Position Sizing** | Kelly Criterion with regime adjustments |
+| **Virtual Wallet** | Paper trading with full position tracking |
+| **Recommendations** | Daily buy signals with confidence levels |
 
-## Architecture
+---
 
-Proteus uses a multi-agent architecture where specialized Claude agents collaborate to continuously improve prediction capabilities:
+## Quick Start
 
-### Agent Hierarchy
+```bash
+# Install dependencies
+pip install -r requirements.txt
 
-1. **Owl Agent** (Orchestrator)
-   - Runs locally to manage the PowerShell Claude instance
-   - Nudges the coordinator at regular intervals
-   - Monitors overall system health
+# Run daily scan (uses GPU for ML inference)
+python scripts/signal_scanner_gpu.py
 
-2. **Zeus Agent** (Coordinator)
-   - Manages workflow between all agents
-   - Prioritizes tasks and research directions
-   - Tracks progress and maintains state
+# Check virtual wallet status
+python scripts/paper_wallet.py --status
 
-3. **Hermes Agent** (Research)
-   - Searches and reads academic papers on stock prediction
-   - Summarizes key findings and methodologies
-   - Identifies promising approaches
+# Get today's recommendations (uses GPU)
+python scripts/recommendations_gpu.py
 
-4. **Athena Agent** (Feasibility Analysis)
-   - Evaluates research findings for implementability
-   - Assesses data requirements and computational constraints
-   - Recommends achievable strategies for Claude agents
+# Check bear market warning
+python scripts/bear_alert.py --status
 
-5. **Prometheus Agent** (Implementation)
-   - Implements feasible prediction strategies
-   - Iteratively improves the predictor
-   - Runs experiments and tracks performance
+# Generate daily report
+python scripts/daily_report.py
+```
 
-## Directory Structure
+---
+
+## Project Structure
 
 ```
 proteus/
-├── agents/           # Agent configuration files
-├── data/            # Market data and research papers
-├── logs/            # Agent activity logs
-├── docs/            # Research summaries and findings
-└── src/             # Predictor implementation
+├── README.md                 # This file
+├── QUICKSTART.md             # Detailed setup guide
+├── SYSTEM_STATE.md           # Current system status and architecture
+├── CLAUDE.md                 # AI assistant context
+├── requirements.txt          # Python dependencies
+│
+├── scripts/                  # Main entry points (5 core scripts)
+│   ├── signal_scanner_gpu.py        # Daily ML signal scanning (GPU)
+│   ├── paper_wallet.py              # Paper trading wallet management
+│   ├── bear_alert.py                # Bear market early warning
+│   ├── recommendations_gpu.py       # Buy recommendations (GPU)
+│   ├── daily_report.py              # Portfolio status reports
+│   └── _internal/                   # Utility scripts, research, batch files
+│
+├── src/                      # Core library
+│   ├── analysis/             # Regime detection, bear detector
+│   ├── data/                 # Data fetchers, features, sentiment
+│   ├── models/               # ML models (LSTM, Transformer, MLP)
+│   ├── trading/              # Scanner, position sizer, signals
+│   └── notifications/        # Email, webhook alerts
+│
+├── config/                   # Configuration files
+│   └── unified_config.json   # Main config (stocks, thresholds, exits)
+│
+├── data/                     # Runtime data
+│   ├── smart_scans/          # Daily scan results
+│   ├── virtual_wallet/       # Paper trading state
+│   └── earnings_cache/       # Earnings calendar cache
+│
+├── docs/                     # Documentation
+│   ├── project_plans/        # Milestone-based development plans
+│   └── archive/              # Historical docs and summaries
+│
+├── models/                   # Trained ML models
+├── logs/                     # Application logs
+├── tests/                    # Unit tests
+└── research/                 # Research notes
 ```
-
-## Workflow
-
-1. Owl nudges Zeus at regular intervals
-2. Zeus assigns tasks to Hermes (research), Athena (analysis), or Prometheus (implementation)
-3. Hermes finds and summarizes relevant papers
-4. Athena evaluates feasibility and creates implementation plans
-5. Prometheus implements and tests improvements
-6. Results feed back to Zeus for next iteration
-
-## Running the System
-
-Run the Owl agent from this CLI instance:
-```bash
-python proteus/agents/owl.py
-```
-
-The Owl will manage the PowerShell Claude instance automatically.
 
 ---
+
+## Core Scripts
+
+| Script | Purpose | Usage |
+|--------|---------|-------|
+| `signal_scanner_gpu.py` | ML-powered signal generation (GPU) | `python scripts/signal_scanner_gpu.py` |
+| `paper_wallet.py` | Paper trading management | `python scripts/paper_wallet.py --full` |
+| `bear_alert.py` | Bear market early warning | `python scripts/bear_alert.py --status` |
+| `recommendations_gpu.py` | Buy recommendations (GPU) | `python scripts/recommendations_gpu.py` |
+| `daily_report.py` | Portfolio status report | `python scripts/daily_report.py` |
+
+---
+
+## System Architecture
+
+```
+SmartScannerV2 → UnifiedRegimeDetector → HybridSignalModel → PenaltiesCalculator → VirtualWallet
+     │                   │                      │                    │                  │
+  54 stocks         BULL/BEAR/           LSTM+Trans+MLP          88 signal         Paper
+  daily OHLCV       CHOPPY/VOLATILE      ensemble voting         modifiers         trading
+```
+
+---
+
+## Performance (2-year backtest)
+
+| Metric | Value |
+|--------|-------|
+| Win Rate | 60.4% |
+| Avg Return | +0.82% per trade |
+| Sharpe Ratio | 1.39 |
+| Max Drawdown | -8.2% |
+
+### By Regime
+| Regime | Win Rate | Sharpe |
+|--------|----------|--------|
+| Volatile | 75.5% | 4.86 |
+| Bear | 71.2% | 3.32 |
+| Choppy | 59.3% | 1.25 |
+| Bull | 58.8% | 1.00 |
+
+---
+
+## Documentation
+
+- [QUICKSTART.md](QUICKSTART.md) - Detailed setup instructions
+- [SYSTEM_STATE.md](SYSTEM_STATE.md) - Current architecture and status
+- [docs/project_plans/](docs/project_plans/) - Development roadmaps
+
+---
+
+## License
+
+MIT License - See LICENSE file for details.
