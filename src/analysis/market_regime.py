@@ -13,7 +13,7 @@ Uses SPY as market proxy with multiple timeframe analysis.
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 from dataclasses import dataclass
 from enum import Enum
 import yfinance as yf
@@ -38,6 +38,7 @@ class RegimeAnalysis:
     adv_decline_ratio: float
     breadth_score: float  # % stocks above 20d MA
     recommendation: str  # Trading recommendation
+    data_error: bool = False  # True if data fetch failed (regime is default/uncertain)
 
 
 class MarketRegimeDetector:
@@ -150,6 +151,7 @@ class MarketRegimeDetector:
         """
         # Fetch fresh data
         if not self.fetch_data():
+            print("[WARNING] Market regime detection failed - data unavailable")
             return RegimeAnalysis(
                 regime=MarketRegime.CHOPPY,
                 confidence=0.0,
@@ -159,7 +161,8 @@ class MarketRegimeDetector:
                 vix_percentile=50.0,
                 adv_decline_ratio=1.0,
                 breadth_score=0.5,
-                recommendation="Unable to fetch data - using defaults"
+                recommendation="DATA ERROR: Unable to fetch market data - using conservative defaults",
+                data_error=True
             )
 
         # Calculate indicators
@@ -196,12 +199,12 @@ class MarketRegimeDetector:
             else:
                 confidence = 0.6
 
-        # Generate recommendation
+        # Generate recommendation (Updated based on Jan 2026 backtest)
         recommendations = {
-            MarketRegime.BULL: "Reduce mean reversion size. Trends persist - consider momentum instead.",
-            MarketRegime.BEAR: "Be very selective. Only take signals with strength > 70. Widen stops.",
-            MarketRegime.CHOPPY: "Ideal for mean reversion. Use full position sizes.",
-            MarketRegime.VOLATILE: "Reduce all positions 50%. Widen stops to 3.5%. Cash is a position."
+            MarketRegime.BULL: "Good conditions (Sharpe 0.43). Use threshold 50, full position sizes.",
+            MarketRegime.BEAR: "EXCELLENT conditions (Sharpe 1.80)! Use threshold 70 for best quality.",
+            MarketRegime.CHOPPY: "POOR conditions (Sharpe ~0). Use threshold 65+, reduce size 70%, or skip.",
+            MarketRegime.VOLATILE: "Reduce positions 50%. Widen stops. Be very selective (threshold 70+)."
         }
 
         return RegimeAnalysis(
@@ -219,11 +222,17 @@ class MarketRegimeDetector:
     def get_position_multiplier(self, regime: MarketRegime) -> float:
         """
         Get position size multiplier based on regime.
+
+        Updated based on Jan 2026 backtest analysis:
+        - BULL: Good performance (Sharpe 0.43), use full size
+        - BEAR: Excellent performance (Sharpe 1.80), use full size
+        - CHOPPY: Poor performance (Sharpe ~0), reduce significantly
+        - VOLATILE: High uncertainty, reduce
         """
         multipliers = {
-            MarketRegime.BULL: 0.7,      # Reduce - trends persist
-            MarketRegime.BEAR: 0.5,      # Reduce - falling knives
-            MarketRegime.CHOPPY: 1.0,    # Full size - ideal conditions
+            MarketRegime.BULL: 1.0,      # Full size - Sharpe 0.43
+            MarketRegime.BEAR: 1.0,      # Full size - Sharpe 1.80!
+            MarketRegime.CHOPPY: 0.3,    # Reduce 70% - Sharpe ~0
             MarketRegime.VOLATILE: 0.5   # Reduce - high uncertainty
         }
         return multipliers.get(regime, 1.0)
@@ -244,12 +253,18 @@ class MarketRegimeDetector:
     def get_min_signal_threshold(self, regime: MarketRegime) -> float:
         """
         Get minimum signal strength threshold based on regime.
+
+        Updated based on Jan 2026 backtest analysis:
+        - BULL: Threshold 50 is optimal (Sharpe 0.43)
+        - BEAR: Threshold 70 is optimal (100% win rate, Sharpe 1.80!)
+        - CHOPPY: Higher threshold 65+ recommended (skip low quality)
+        - VOLATILE: Higher bar due to uncertainty
         """
         thresholds = {
-            MarketRegime.BULL: 60.0,     # Higher bar
-            MarketRegime.BEAR: 70.0,     # Much higher bar
-            MarketRegime.CHOPPY: 50.0,   # Normal
-            MarketRegime.VOLATILE: 65.0  # Higher bar
+            MarketRegime.BULL: 50.0,     # Optimal from backtest
+            MarketRegime.BEAR: 70.0,     # Optimal - 100% win rate!
+            MarketRegime.CHOPPY: 65.0,   # High bar - skip low quality signals
+            MarketRegime.VOLATILE: 70.0  # High bar - uncertain conditions
         }
         return thresholds.get(regime, 50.0)
 
@@ -362,10 +377,141 @@ class MarketRegimeDetector:
         }
 
 
+@dataclass
+class TradingDecision:
+    """Trading decision based on regime analysis."""
+    should_trade: bool
+    threshold: float
+    position_multiplier: float
+    reason: str
+    regime: MarketRegime
+    confidence: float
+
+
+class RegimeAwareFilter:
+    """
+    Applies regime-aware filtering to trading signals.
+    Based on Jan 2026 backtest showing:
+    - BULL: Sharpe 0.43 at threshold 50
+    - BEAR: Sharpe 1.80 at threshold 70 (100% win rate!)
+    - CHOPPY: Sharpe ~0 regardless of threshold
+    """
+
+    def __init__(self, skip_choppy: bool = False, min_confidence: float = 0.5):
+        """
+        Initialize the regime-aware filter.
+
+        Args:
+            skip_choppy: If True, skip all trades in CHOPPY markets
+            min_confidence: Minimum regime confidence to apply adjustments
+        """
+        self.skip_choppy = skip_choppy
+        self.min_confidence = min_confidence
+        self.detector = MarketRegimeDetector()
+        self._cached_analysis: Optional[RegimeAnalysis] = None
+        self._cache_time: Optional[datetime] = None
+        self._cache_duration = timedelta(minutes=15)
+
+    def get_regime(self, force_refresh: bool = False) -> RegimeAnalysis:
+        """Get current regime analysis with caching."""
+        now = datetime.now()
+
+        if (force_refresh or
+            self._cached_analysis is None or
+            self._cache_time is None or
+            now - self._cache_time > self._cache_duration):
+            self._cached_analysis = self.detector.detect_regime()
+            self._cache_time = now
+
+        return self._cached_analysis
+
+    def get_trading_decision(self, base_threshold: float = 50.0) -> TradingDecision:
+        """
+        Get trading decision based on current regime.
+
+        Returns TradingDecision with:
+        - should_trade: Whether to trade in current conditions
+        - threshold: Regime-adjusted threshold
+        - position_multiplier: Position size multiplier
+        - reason: Explanation for the decision
+        """
+        analysis = self.get_regime()
+
+        # Get regime-specific settings
+        threshold = self.detector.get_min_signal_threshold(analysis.regime)
+        position_mult = self.detector.get_position_multiplier(analysis.regime)
+
+        # Apply skip_choppy logic
+        if self.skip_choppy and analysis.regime == MarketRegime.CHOPPY:
+            return TradingDecision(
+                should_trade=False,
+                threshold=threshold,
+                position_multiplier=0.0,
+                reason="CHOPPY market - skipping trades (skip_choppy=True)",
+                regime=analysis.regime,
+                confidence=analysis.confidence
+            )
+
+        # In VOLATILE with high VIX, may want to skip
+        if analysis.regime == MarketRegime.VOLATILE and analysis.vix_level > 35:
+            return TradingDecision(
+                should_trade=False,
+                threshold=threshold,
+                position_multiplier=0.0,
+                reason=f"Extreme volatility (VIX {analysis.vix_level}) - skipping trades",
+                regime=analysis.regime,
+                confidence=analysis.confidence
+            )
+
+        # Generate reason based on regime
+        reasons = {
+            MarketRegime.BULL: f"BULL market - using threshold {threshold}, full size",
+            MarketRegime.BEAR: f"BEAR market - using threshold {threshold} for high quality",
+            MarketRegime.CHOPPY: f"CHOPPY market - using threshold {threshold}, size {position_mult:.0%}",
+            MarketRegime.VOLATILE: f"VOLATILE market - using threshold {threshold}, size {position_mult:.0%}"
+        }
+
+        return TradingDecision(
+            should_trade=True,
+            threshold=threshold,
+            position_multiplier=position_mult,
+            reason=reasons.get(analysis.regime, "Unknown regime"),
+            regime=analysis.regime,
+            confidence=analysis.confidence
+        )
+
+    def filter_signal(self, signal_strength: float, base_threshold: float = 50.0) -> Tuple[bool, str]:
+        """
+        Filter a signal based on current regime.
+
+        Args:
+            signal_strength: The signal strength (0-100)
+            base_threshold: Base threshold (ignored, uses regime-specific)
+
+        Returns:
+            Tuple of (passes_filter, reason)
+        """
+        decision = self.get_trading_decision(base_threshold)
+
+        if not decision.should_trade:
+            return False, decision.reason
+
+        if signal_strength < decision.threshold:
+            return False, f"Signal {signal_strength:.1f} below regime threshold {decision.threshold}"
+
+        return True, f"Signal {signal_strength:.1f} passes regime filter ({decision.regime.value})"
+
+
 def get_current_regime() -> RegimeAnalysis:
     """Quick function to get current regime."""
     detector = MarketRegimeDetector()
     return detector.detect_regime()
+
+
+def get_trading_decision(skip_choppy: bool = False) -> TradingDecision:
+    """Quick function to get trading decision."""
+    filter = RegimeAwareFilter(skip_choppy=skip_choppy)
+    return filter.get_trading_decision()
 
 
 def print_regime_report():

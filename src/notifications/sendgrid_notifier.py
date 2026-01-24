@@ -574,6 +574,66 @@ class SendGridNotifier:
             print(f"[WARNING] Failed to generate ML prediction plots: {e}")
             return ""
 
+    def _generate_bear_warning_html(self) -> str:
+        """
+        Generate bear early warning HTML section for scan emails.
+
+        Returns:
+            HTML string with bear warning or empty string if normal
+        """
+        try:
+            from src.analysis.fast_bear_detector import FastBearDetector
+
+            detector = FastBearDetector()
+            signal = detector.detect()
+
+            # Only show if elevated (WATCH or higher) or yield curve is warning
+            if signal.alert_level == 'NORMAL' and signal.yield_curve_spread >= 0.25:
+                return ""
+
+            # Color based on alert level
+            colors = {
+                'CRITICAL': ('#dc2626', '#fef2f2'),
+                'WARNING': ('#f59e0b', '#fffbeb'),
+                'WATCH': ('#3b82f6', '#eff6ff'),
+                'NORMAL': ('#10b981', '#f0fdf4')
+            }
+            text_color, bg_color = colors.get(signal.alert_level, ('#666', '#f9fafb'))
+
+            # Build triggers list
+            triggers_html = ""
+            if signal.triggers:
+                triggers_html = "<ul style='margin: 10px 0; padding-left: 20px;'>"
+                for trigger in signal.triggers[:3]:
+                    triggers_html += f"<li>{trigger}</li>"
+                triggers_html += "</ul>"
+
+            html = f"""
+    <div class="bear-warning" style="background: {bg_color}; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid {text_color};">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <strong style="color: {text_color};">Bear Early Warning: {signal.alert_level}</strong>
+            </div>
+            <div style="font-size: 1.5em; font-weight: bold; color: {text_color};">
+                {signal.bear_score:.0f}/100
+            </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.9em; color: #666;">
+            <div>VIX: {signal.vix_level:.1f} | SPY 3d: {signal.spy_roc_3d:+.2f}% | Breadth: {signal.market_breadth_pct:.0f}%</div>
+            <div>Yield Curve: {signal.yield_curve_spread:+.2f}% | Credit: {signal.credit_spread_change:+.1f}%</div>
+        </div>
+        {triggers_html}
+        <div style="margin-top: 10px; font-size: 0.95em; font-style: italic; color: #666;">
+            {signal.recommendation}
+        </div>
+    </div>
+"""
+            return html
+
+        except Exception as e:
+            print(f"[WARNING] Failed to generate bear warning HTML: {e}")
+            return ""
+
     def _generate_ml_performance_html(self, days: int = 7) -> str:
         """
         Generate ML performance metrics HTML section.
@@ -660,6 +720,9 @@ class SendGridNotifier:
         """Create email body - full HTML template."""
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
+        # Get bear score for early warning display
+        bear_html = self._generate_bear_warning_html()
+
         html = f"""
 <html>
 <head>
@@ -690,6 +753,8 @@ class SendGridNotifier:
     <div class="status">
         <strong>Scan Status:</strong> {scan_status}
     </div>
+
+    {bear_html}
 
     <div class="scanned">
         <strong>Instruments Scanned ({len(scanned_tickers) if scanned_tickers else 0}):</strong><br>

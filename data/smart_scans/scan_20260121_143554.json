@@ -1,0 +1,33 @@
+{
+  "timestamp": "2026-01-21T14:35:54.990238",
+  "regime": "choppy",
+  "regime_confidence": 0.9,
+  "vix": 20.6,
+  "bear_score": 31.0,
+  "bear_alert_level": "WATCH",
+  "bear_triggers": [
+    "VIX spike: +29.8%",
+    "Sectors down: 7/11",
+    "Yield curve INVERTED: -0.38%",
+    "Defensive rotation: +5.7% (risk-off)",
+    "A/D COLLAPSING: 0.09 (severe breadth deterioration)",
+    "SKEW elevated: 155 (complacency warning)",
+    "50d MA weakening: 50%",
+    "200d MA weak: 50% (long-term weakening)",
+    "Cross-signal confirmation: 12/30"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "stats": {
+    "total_scanned": 0,
+    "threshold": 50,
+    "passed": 0,
+    "filtered": 0,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

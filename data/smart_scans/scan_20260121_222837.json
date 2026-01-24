@@ -1,0 +1,130 @@
+{
+  "timestamp": "2026-01-21T22:28:37.666029",
+  "regime": "choppy",
+  "regime_confidence": 0.6400000000000001,
+  "vix": 17.0,
+  "bear_score": 11.0,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "Yield curve inverted: -0.25%",
+    "Defensives outperforming: +3.0%",
+    "SKEW elevated: 155 (complacency warning)",
+    "Momentum weakening: 0.35",
+    "Early warning active: 50/100",
+    "Smart money cautious: -0.33",
+    "Bond vol rising: 105",
+    "Weakening momentum: WEAKENING_MOMENTUM",
+    "Leading indicators warning: 30/100",
+    "CORRELATION BREAKDOWN: BREAKDOWN_HIGH_CORRELATION (80/100)",
+    "Institutional flow negative: 40/100",
+    "Liquidity tightening: 34/100",
+    "Economic weakness: 50/100",
+    "Tail risk rising: 41/100",
+    "Market stress building: 34/100",
+    "STRONG THRUST: Breadth down -18.2% in 3 days"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "stats": {
+    "total_scanned": 10,
+    "threshold": 45,
+    "passed": 3,
+    "filtered": 4,
+    "sector_removed": 0,
+    "skipped": 1,
+    "already_holding": 2
+  },
+  "rebalance_actions": [
+    {
+      "ticker": "MRVL",
+      "action": "profit_target_2",
+      "exit_pct": 100,
+      "pnl_pct": 3.45,
+      "recommendation": "EXIT 100% - profit_target_2 (+3.4%)"
+    }
+  ],
+  "signals": [
+    {
+      "ticker": "TMUS",
+      "timestamp": "2026-01-21 22:28:08",
+      "raw_strength": 58.9,
+      "adjusted_strength": 52.9,
+      "tier": "average",
+      "regime": "choppy",
+      "size_pct": 4.99,
+      "dollar_size": 4957.2,
+      "shares": 27,
+      "risk_dollars": 123.93,
+      "quality": "weak",
+      "skip_trade": false,
+      "profit_target_1": 2.0,
+      "profit_target_2": 2.5,
+      "stop_loss": -2.5,
+      "max_hold_days": 3,
+      "price": 183.60000610351562,
+      "sector": "Communication",
+      "sector_momentum": -1.93,
+      "boosts_applied": [
+        "marginal_base",
+        "wednesday"
+      ],
+      "near_earnings": false,
+      "earnings_warning": ""
+    },
+    {
+      "ticker": "MSFT",
+      "timestamp": "2026-01-21 22:28:06",
+      "raw_strength": 58.2,
+      "adjusted_strength": 52.2,
+      "tier": "average",
+      "regime": "choppy",
+      "size_pct": 4.99,
+      "dollar_size": 4885.21,
+      "shares": 11,
+      "risk_dollars": 122.13,
+      "quality": "weak",
+      "skip_trade": false,
+      "profit_target_1": 2.0,
+      "profit_target_2": 2.5,
+      "stop_loss": -2.5,
+      "max_hold_days": 3,
+      "price": 444.1099853515625,
+      "sector": "Technology",
+      "sector_momentum": -1.82,
+      "boosts_applied": [
+        "marginal_base",
+        "wednesday"
+      ],
+      "near_earnings": false,
+      "earnings_warning": ""
+    },
+    {
+      "ticker": "QCOM",
+      "timestamp": "2026-01-21 22:28:06",
+      "raw_strength": 50.9,
+      "adjusted_strength": 45.4,
+      "tier": "elite",
+      "regime": "choppy",
+      "size_pct": 13.12,
+      "dollar_size": 12978.71,
+      "shares": 83,
+      "risk_dollars": 389.36,
+      "quality": "weak",
+      "skip_trade": false,
+      "profit_target_1": 2.0,
+      "profit_target_2": 3.5,
+      "stop_loss": -3.0,
+      "max_hold_days": 5,
+      "price": 156.3699951171875,
+      "sector": "Technology",
+      "sector_momentum": -1.82,
+      "boosts_applied": [
+        "weak_base",
+        "wednesday"
+      ],
+      "near_earnings": false,
+      "earnings_warning": ""
+    }
+  ]
+}

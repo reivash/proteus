@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-01-22T16:10:00.864341",
+  "regime": "choppy",
+  "regime_confidence": 0.6400000000000001,
+  "vix": 16.0,
+  "bear_score": 26.0,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "Sectors down: 8/11",
+    "Yield curve INVERTED: -0.25%",
+    "DIVERGENCE: SPY near highs but breadth weak",
+    "A/D ratio: 0.68 (breadth weakening)",
+    "Vol compressing: 0.60",
+    "Weakening momentum: WEAKENING_MOMENTUM",
+    "CORRELATION BREAKDOWN: BREAKDOWN_HIGH_CORRELATION (80/100)",
+    "Liquidity tightening: 25/100",
+    "Economic indicators softening: 33/100",
+    "Tail hedging increasing: 32/100",
+    "Market stress building: 26/100",
+    "Breadth weakening: Breadth weakening: -9.1% in 3 days"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "market_signal": "neutral",
+  "fear_greed": 50,
+  "fear_greed_signal": "neutral",
+  "credit_signal": "normal",
+  "breadth_signal": "neutral",
+  "market_factors": [],
+  "stats": {
+    "total_scanned": 0,
+    "threshold": 65,
+    "passed": 0,
+    "filtered": 0,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

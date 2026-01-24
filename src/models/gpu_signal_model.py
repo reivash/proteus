@@ -186,39 +186,54 @@ class FeatureExtractor:
         return features[self.lookback:]  # Skip warmup period
 
     def _sma(self, arr: np.ndarray, period: int) -> np.ndarray:
-        """Simple moving average."""
+        """Simple moving average - vectorized with np.convolve."""
+        if len(arr) < period:
+            return np.zeros_like(arr)
+        # Use cumsum for O(n) SMA calculation
+        cumsum = np.cumsum(arr)
+        cumsum[period:] = cumsum[period:] - cumsum[:-period]
         result = np.zeros_like(arr)
-        for i in range(period - 1, len(arr)):
-            result[i] = np.mean(arr[i-period+1:i+1])
+        result[period-1:] = cumsum[period-1:] / period
         return result
 
     def _rolling_std(self, arr: np.ndarray, period: int) -> np.ndarray:
-        """Rolling standard deviation."""
-        result = np.zeros_like(arr)
-        for i in range(period - 1, len(arr)):
-            result[i] = np.std(arr[i-period+1:i+1])
+        """Rolling standard deviation - vectorized using Welford's online algorithm."""
+        if len(arr) < period:
+            return np.zeros_like(arr)
+        # Use pandas for efficient rolling std (handles edge cases well)
+        import pandas as pd
+        result = pd.Series(arr).rolling(window=period, min_periods=period).std().values
+        result = np.nan_to_num(result, nan=0.0)
         return result
 
     def _rolling_max(self, arr: np.ndarray, period: int) -> np.ndarray:
-        """Rolling maximum."""
-        result = np.zeros_like(arr)
-        for i in range(period - 1, len(arr)):
-            result[i] = np.max(arr[i-period+1:i+1])
+        """Rolling maximum - vectorized using pandas."""
+        if len(arr) < period:
+            return np.zeros_like(arr)
+        import pandas as pd
+        result = pd.Series(arr).rolling(window=period, min_periods=period).max().values
+        result = np.nan_to_num(result, nan=0.0)
         return result
 
     def _rolling_min(self, arr: np.ndarray, period: int) -> np.ndarray:
-        """Rolling minimum."""
-        result = np.zeros_like(arr)
-        for i in range(period - 1, len(arr)):
-            result[i] = np.min(arr[i-period+1:i+1])
+        """Rolling minimum - vectorized using pandas."""
+        if len(arr) < period:
+            return np.zeros_like(arr)
+        import pandas as pd
+        result = pd.Series(arr).rolling(window=period, min_periods=period).min().values
+        result = np.nan_to_num(result, nan=0.0)
         return result
 
     def _rolling_return(self, arr: np.ndarray, period: int) -> np.ndarray:
-        """Rolling return over period."""
+        """Rolling return over period - vectorized."""
         result = np.zeros_like(arr)
-        for i in range(period, len(arr)):
-            if arr[i-period] != 0:
-                result[i] = (arr[i] / arr[i-period]) - 1
+        if len(arr) <= period:
+            return result
+        # Vectorized division with safe handling
+        past = arr[:-period]
+        current = arr[period:]
+        valid = past != 0
+        result[period:] = np.where(valid, (current / np.where(valid, past, 1)) - 1, 0)
         return result
 
     def _z_score(self, arr: np.ndarray, period: int) -> np.ndarray:
@@ -381,7 +396,7 @@ class GPUSignalModel:
         """Load model weights if available."""
         weights_file = os.path.join(self.model_dir, "model_weights.pt")
         if os.path.exists(weights_file):
-            self.model.load_state_dict(torch.load(weights_file, map_location=self.device))
+            self.model.load_state_dict(torch.load(weights_file, map_location=self.device, weights_only=True))
             print(f"[GPU] Loaded weights from {weights_file}")
         else:
             print("[GPU] No existing weights - model will use random initialization")
@@ -762,10 +777,27 @@ class GPUSignalModel:
         self._last_scan_prices = {}
         self._last_scan_consecutive_down = {}
         self._last_scan_volume_ratio = {}
+        self._last_scan_is_down_day = {}
+        self._last_scan_rsi_divergence = {}
+        self._last_scan_rsi_level = {}  # RSI level for day-of-week combos (Jan 5, 2026)
+        self._last_scan_close_position = {}  # Close position in day's range (0-1)
+        self._last_scan_gap_pct = {}  # Gap percentage from previous close
+        self._last_scan_sma200_distance = {}  # Distance from SMA200 as percentage
+        self._last_scan_day_range_pct = {}  # Day range as percentage of price
+        self._last_scan_drawdown_pct = {}  # Drawdown from 20-day high
+        self._last_scan_atr_pct = {}  # ATR as percentage for volatility-based boosts (Jan 5, 2026)
+        self._last_scan_data_timestamps = {}  # Track data freshness per ticker
+        self._last_scan_time = datetime.now()  # When scan was performed
 
         for ticker, df in stock_data.items():
             if not df.empty:
                 self._last_scan_prices[ticker] = float(df['Close'].iloc[-1])
+
+                # Store data timestamp for staleness checking
+                last_date = df.index[-1]
+                if hasattr(last_date, 'tz_localize'):
+                    last_date = last_date.tz_localize(None) if last_date.tzinfo else last_date
+                self._last_scan_data_timestamps[ticker] = last_date
 
                 # Calculate consecutive down days
                 consecutive = 0
@@ -786,7 +818,159 @@ class GPUSignalModel:
                 else:
                     self._last_scan_volume_ratio[ticker] = 1.0
 
+                # Check if today is a down day (close < open)
+                self._last_scan_is_down_day[ticker] = df['Close'].iloc[-1] < df['Open'].iloc[-1]
+
+                # Detect RSI divergence (bullish: lower price low, higher RSI low)
+                # Look at last 5 days for divergence pattern
+                self._last_scan_rsi_divergence[ticker] = self._detect_rsi_divergence(df)
+
+                # Calculate RSI level for day-of-week combos (Jan 5, 2026)
+                # Research: very_oversold (<30), moderately_oversold (30-40)
+                # Tuesday + very_oversold = 46.5% TRAP
+                # Monday + moderately_oversold = 62.8% BEST
+                # Thursday + very_oversold = 63.3% STRONG
+                if len(df) >= 14:
+                    rsi_values = self.feature_extractor._rsi(df['Close'].values, 14)
+                    self._last_scan_rsi_level[ticker] = float(rsi_values[-1])
+                else:
+                    self._last_scan_rsi_level[ticker] = 50.0
+
+                # Calculate close position in day's range (0 = at low, 1 = at high)
+                # Research: close near LOW (57.4% win), close near HIGH (50.2% win)
+                high = df['High'].iloc[-1]
+                low = df['Low'].iloc[-1]
+                close = df['Close'].iloc[-1]
+                if high > low:
+                    close_pos = (close - low) / (high - low)
+                else:
+                    close_pos = 0.5
+                self._last_scan_close_position[ticker] = close_pos
+
+                # Calculate gap percentage (today's open vs yesterday's close)
+                # Research: medium gap (-2% to -3%) has 58.6% win vs large gap (-3%+) at 42.7%
+                if len(df) >= 2:
+                    prev_close = df['Close'].iloc[-2]
+                    today_open = df['Open'].iloc[-1]
+                    if prev_close > 0:
+                        gap_pct = (today_open - prev_close) / prev_close * 100
+                    else:
+                        gap_pct = 0.0
+                else:
+                    gap_pct = 0.0
+                self._last_scan_gap_pct[ticker] = gap_pct
+
+                # Calculate distance from SMA200 (Jan 5, 2026)
+                # Research: near SMA200 = 57.6% win, above = 52.6%, below = 54.3%
+                if len(df) >= 200:
+                    sma200 = df['Close'].iloc[-200:].mean()
+                    if sma200 > 0:
+                        sma200_dist = (close - sma200) / sma200 * 100
+                    else:
+                        sma200_dist = 0.0
+                else:
+                    sma200_dist = 0.0  # Not enough data
+                self._last_scan_sma200_distance[ticker] = sma200_dist
+
+                # Calculate day range as percentage (Jan 5, 2026)
+                # Research: very wide range (>6%) = 60.1% win, narrow (<1.2%) = 48.3% win
+                if low > 0:
+                    day_range_pct = (high - low) / low * 100
+                else:
+                    day_range_pct = 0.0
+                self._last_scan_day_range_pct[ticker] = day_range_pct
+
+                # Calculate drawdown from 20-day high (Jan 5, 2026)
+                # Research: severe drawdown + down days = 73%+ win rate
+                # But 5+ down days with minimal drawdown = TRAP (36.6% win)
+                if len(df) >= 20:
+                    high_20d = df['High'].iloc[-20:].max()
+                    if high_20d > 0:
+                        drawdown_pct = (close - high_20d) / high_20d * 100
+                    else:
+                        drawdown_pct = 0.0
+                else:
+                    drawdown_pct = 0.0
+                self._last_scan_drawdown_pct[ticker] = drawdown_pct
+
+                # Calculate ATR as percentage of price (Jan 5, 2026)
+                # Research: Low ATR (<2.05%) = 49.6% win, High ATR (>3.34%) = 57.4% win
+                if len(df) >= 14:
+                    high = df['High'].values
+                    low = df['Low'].values
+                    close_arr = df['Close'].values
+                    tr = np.maximum(high[1:] - low[1:],
+                                   np.maximum(np.abs(high[1:] - close_arr[:-1]),
+                                             np.abs(low[1:] - close_arr[:-1])))
+                    atr = np.mean(tr[-14:])
+                    atr_pct = (atr / close) * 100 if close > 0 else 2.5
+                else:
+                    atr_pct = 2.5  # Default to middle quartile
+                self._last_scan_atr_pct[ticker] = atr_pct
+
         return signals
+
+    def _detect_rsi_divergence(self, df: pd.DataFrame) -> bool:
+        """
+        Detect bullish RSI divergence pattern.
+        Bullish divergence: price makes lower low, but RSI makes higher low.
+
+        Based on research: +0.26% edge when detected with RSI < 35
+        """
+        if len(df) < 10:
+            return False
+
+        try:
+            # Calculate RSI if not in dataframe
+            close = df['Close'].values
+            delta = np.diff(close)
+
+            # Calculate RSI manually
+            gains = np.where(delta > 0, delta, 0)
+            losses = np.where(delta < 0, -delta, 0)
+
+            avg_gain = np.zeros(len(delta))
+            avg_loss = np.zeros(len(delta))
+
+            # First average
+            avg_gain[13] = np.mean(gains[:14])
+            avg_loss[13] = np.mean(losses[:14])
+
+            # Subsequent averages (exponential)
+            for i in range(14, len(delta)):
+                avg_gain[i] = (avg_gain[i-1] * 13 + gains[i]) / 14
+                avg_loss[i] = (avg_loss[i-1] * 13 + losses[i]) / 14
+
+            # Calculate RSI
+            rs = np.where(avg_loss > 0, avg_gain / avg_loss, 100)
+            rsi = 100 - (100 / (1 + rs))
+
+            # Check last 6 values for divergence
+            if len(rsi) < 6:
+                return False
+
+            recent_rsi = rsi[-6:]
+            recent_lows = df['Low'].iloc[-6:].values
+
+            # Current RSI must be oversold (<35)
+            if recent_rsi[-1] > 35:
+                return False
+
+            # Find lows in price and RSI over lookback
+            price_low_today = recent_lows[-1]
+            price_low_prev = np.min(recent_lows[:-1])
+
+            rsi_today = recent_rsi[-1]
+            rsi_prev_low = np.min(recent_rsi[:-1])
+
+            # Bullish divergence: price makes lower low, RSI makes higher low
+            if price_low_today < price_low_prev and rsi_today > rsi_prev_low:
+                return True
+
+            return False
+
+        except Exception:
+            return False
 
     def get_last_prices(self) -> Dict[str, float]:
         """
@@ -796,6 +980,75 @@ class GPUSignalModel:
             Dictionary of {ticker: last_close_price}
         """
         return getattr(self, '_last_scan_prices', {})
+
+    def get_data_timestamps(self) -> Dict[str, datetime]:
+        """
+        Get the timestamps of the last data point for each ticker.
+
+        Returns:
+            Dictionary of {ticker: last_data_datetime}
+        """
+        return getattr(self, '_last_scan_data_timestamps', {})
+
+    def get_scan_time(self) -> datetime:
+        """
+        Get when the last scan was performed.
+
+        Returns:
+            Datetime of last scan (or current time if no scan)
+        """
+        return getattr(self, '_last_scan_time', datetime.now())
+
+    def check_data_staleness(self, max_days: int = 3) -> Dict[str, int]:
+        """
+        Check if price data is stale (older than max_days trading days).
+
+        Args:
+            max_days: Maximum acceptable age in calendar days (default 3)
+
+        Returns:
+            Dictionary of {ticker: days_stale} for stale tickers only
+        """
+        stale = {}
+        timestamps = self.get_data_timestamps()
+        today = datetime.now().date()
+
+        for ticker, timestamp in timestamps.items():
+            if hasattr(timestamp, 'date'):
+                data_date = timestamp.date()
+            else:
+                data_date = timestamp
+
+            # Calculate calendar days difference
+            days_old = (today - data_date).days
+
+            # Account for weekends: if today is Monday, data from Friday is OK (3 days)
+            # If today is Tuesday+ and data is more than max_days old, it's stale
+            if days_old > max_days:
+                stale[ticker] = days_old
+
+        return stale
+
+    def get_fresh_prices(self, max_days: int = 3) -> tuple:
+        """
+        Get prices, filtering out stale data.
+
+        Args:
+            max_days: Maximum acceptable age in calendar days
+
+        Returns:
+            Tuple of (fresh_prices_dict, stale_tickers_list)
+        """
+        all_prices = self.get_last_prices()
+        stale_tickers = self.check_data_staleness(max_days)
+
+        fresh_prices = {
+            ticker: price
+            for ticker, price in all_prices.items()
+            if ticker not in stale_tickers
+        }
+
+        return fresh_prices, list(stale_tickers.keys())
 
     def get_consecutive_down_days(self, ticker: str) -> int:
         """
@@ -816,6 +1069,259 @@ class GPUSignalModel:
         """
         volume_data = getattr(self, '_last_scan_volume_ratio', {})
         return volume_data.get(ticker, 1.0)  # Default to 1.0 if not available
+
+    def is_down_day(self, ticker: str) -> bool:
+        """
+        Check if today is a down day (close < open) for volume exhaustion signal.
+
+        Returns:
+            True if today is a down day
+        """
+        down_day_data = getattr(self, '_last_scan_is_down_day', {})
+        return down_day_data.get(ticker, False)
+
+    def has_rsi_divergence(self, ticker: str) -> bool:
+        """
+        Check for bullish RSI divergence (lower price low, higher RSI low).
+        Based on new_multiplier_research.json: +0.26% edge, 58% win rate.
+
+        Returns:
+            True if bullish divergence detected
+        """
+        divergence_data = getattr(self, '_last_scan_rsi_divergence', {})
+        return divergence_data.get(ticker, False)
+
+    def get_rsi_level(self, ticker: str) -> float:
+        """
+        Get RSI-14 level for day-of-week + oversold combos (Jan 5, 2026).
+
+        Based on day_of_week_analysis.json:
+        - very_oversold (RSI < 30): Use carefully (Tuesday trap, Thursday/Monday combo)
+        - moderately_oversold (RSI 30-40): Best with Monday (+1.37% return)
+
+        Key combinations:
+        - Tuesday + RSI < 30 = 46.5% win (TRAP!)
+        - Monday + RSI 30-40 = 62.8% win, +1.37% return (BEST)
+        - Thursday + RSI < 30 = 63.3% win (STRONG)
+
+        Returns:
+            RSI level (0-100)
+        """
+        rsi_data = getattr(self, '_last_scan_rsi_level', {})
+        return rsi_data.get(ticker, 50.0)
+
+    def get_close_position(self, ticker: str) -> float:
+        """
+        Get close position relative to day's range (0 = at low, 1 = at high).
+
+        Based on new_multiplier_research.json:
+        - Close near LOW (<0.3): 57.4% win rate, +0.497% avg return
+        - Close near HIGH (>0.7): 50.2% win rate, -0.011% avg return
+
+        Returns:
+            Float 0-1 indicating close position in day's range
+        """
+        close_pos_data = getattr(self, '_last_scan_close_position', {})
+        return close_pos_data.get(ticker, 0.5)  # Default to middle
+
+    def is_close_near_low(self, ticker: str, threshold: float = 0.3) -> bool:
+        """
+        Check if close is near the day's low (bullish for mean reversion).
+
+        Based on research: 57.4% win rate when close is in bottom 30% of range.
+
+        Returns:
+            True if close is in bottom 30% of day's range
+        """
+        return self.get_close_position(ticker) < threshold
+
+    def is_close_near_high(self, ticker: str, threshold: float = 0.7) -> bool:
+        """
+        Check if close is near the day's high (bearish for mean reversion).
+
+        Based on research: Only 50.2% win rate when close is in top 30% of range.
+
+        Returns:
+            True if close is in top 30% of day's range
+        """
+        return self.get_close_position(ticker) > threshold
+
+    def get_gap_pct(self, ticker: str) -> float:
+        """
+        Get the gap percentage (today's open vs yesterday's close).
+
+        Based on new_multiplier_research.json:
+        - Small gap (-1% to -2%): 48.0% win rate (2d)
+        - Medium gap (-2% to -3%): 58.6% win rate (2d) <- BEST
+        - Large gap (-3%+): 42.7% win rate (2d)
+
+        Returns:
+            Gap percentage (negative = gap down)
+        """
+        gap_data = getattr(self, '_last_scan_gap_pct', {})
+        return gap_data.get(ticker, 0.0)
+
+    def is_medium_gap_down(self, ticker: str) -> bool:
+        """
+        Check if stock has a medium gap down (-2% to -3%).
+
+        Based on research: 58.6% win rate, significantly better than large gaps (42.7%).
+
+        Returns:
+            True if gap is between -2% and -3%
+        """
+        gap = self.get_gap_pct(ticker)
+        return -3.0 <= gap < -2.0
+
+    def get_sma200_distance(self, ticker: str) -> float:
+        """
+        Get the distance from SMA200 as a percentage.
+
+        Based on new_multiplier_research.json:
+        - Above SMA200 (>5%): 52.6% win rate
+        - Near SMA200 (-5% to +5%): 57.6% win rate <- BEST
+        - Below SMA200 (<-5%): 54.3% win rate
+
+        Returns:
+            Distance from SMA200 as percentage (positive = above, negative = below)
+        """
+        sma_data = getattr(self, '_last_scan_sma200_distance', {})
+        return sma_data.get(ticker, 0.0)
+
+    def is_near_sma200(self, ticker: str, threshold: float = 5.0) -> bool:
+        """
+        Check if stock is near the SMA200 (within threshold %).
+
+        Based on research: 57.6% win rate when near SMA200 (support/resistance).
+
+        Returns:
+            True if within threshold% of SMA200
+        """
+        dist = abs(self.get_sma200_distance(ticker))
+        return dist <= threshold
+
+    def get_day_range_pct(self, ticker: str) -> float:
+        """
+        Get the day's trading range as a percentage.
+
+        Based on volume_profile_analysis.json:
+        - Narrow range (<1.2%): 48.3% win rate (AVOID)
+        - Normal range (1.2-2.5%): 54.0% win rate
+        - Wide range (2.5-5%): 56.7% win rate
+        - Very wide range (>5%): 60.1% win rate (BOOST)
+
+        Returns:
+            Day range as percentage of price
+        """
+        range_data = getattr(self, '_last_scan_day_range_pct', {})
+        return range_data.get(ticker, 2.0)  # Default to normal
+
+    def is_very_wide_range(self, ticker: str, threshold: float = 5.0) -> bool:
+        """
+        Check if stock has very wide day range (>5%).
+
+        Based on research: 60.1% win rate, +1.27% avg return.
+
+        Returns:
+            True if day range > threshold%
+        """
+        return self.get_day_range_pct(ticker) > threshold
+
+    def is_narrow_range(self, ticker: str, threshold: float = 1.5) -> bool:
+        """
+        Check if stock has narrow day range (<1.5%).
+
+        Based on research: 48.3% win rate - should be penalized.
+
+        Returns:
+            True if day range < threshold%
+        """
+        return self.get_day_range_pct(ticker) < threshold
+
+    def is_low_vol_narrow_range(self, ticker: str) -> bool:
+        """
+        Check if stock has dangerous low volume + narrow range pattern.
+
+        Based on research: Only 41.1% win rate, -0.39% avg return!
+        This is a TRAP pattern - should be heavily penalized.
+
+        Returns:
+            True if volume ratio < 0.8 AND day range < 1.5%
+        """
+        vol_ratio = self.get_volume_ratio(ticker)
+        day_range = self.get_day_range_pct(ticker)
+        return vol_ratio < 0.8 and day_range < 1.5
+
+    def get_drawdown_pct(self, ticker: str) -> float:
+        """
+        Get the drawdown from 20-day high as a percentage.
+
+        Based on consecutive_down_days_analysis.json:
+        - Minimal drawdown (>-3%): 51.3% win rate
+        - Mild drawdown (-3% to -5%): 55.2% win rate
+        - Moderate drawdown (-5% to -10%): 60.4% win rate
+        - Severe drawdown (-10%+): 61.2% win rate, +1.55% return
+
+        Returns:
+            Drawdown as negative percentage (e.g., -8.5 for 8.5% drawdown)
+        """
+        dd_data = getattr(self, '_last_scan_drawdown_pct', {})
+        return dd_data.get(ticker, 0.0)
+
+    def get_atr_pct(self, ticker: str) -> float:
+        """
+        Get ATR as percentage of price for volatility-based signal boosts (Jan 5, 2026).
+
+        Based on position_sizing_analysis.json:
+        - Low ATR (<2.05%): 49.6% win rate, -0.10% return - PENALTY
+        - Med-Low (2.05-2.50%): 54.1% win rate
+        - Med-High (2.50-3.34%): 57.3% win rate
+        - High ATR (>3.34%): 57.4% win rate, +0.91% return - BOOST
+
+        Returns:
+            ATR as percentage of price
+        """
+        atr_data = getattr(self, '_last_scan_atr_pct', {})
+        return atr_data.get(ticker, 2.5)  # Default to middle quartile
+
+    def is_severe_drawdown(self, ticker: str, threshold: float = -10.0) -> bool:
+        """
+        Check if stock has severe drawdown (>10% from high).
+
+        Based on research: 61.2% win rate, +1.55% avg return.
+        Combined with 2 down days: 73.2% win rate!
+
+        Returns:
+            True if drawdown > 10%
+        """
+        return self.get_drawdown_pct(ticker) < threshold
+
+    def is_moderate_drawdown(self, ticker: str) -> bool:
+        """
+        Check if stock has moderate drawdown (5-10% from high).
+
+        Based on research: 60.4% win rate.
+        Combined with 5+ down days: 76.9% win rate!
+
+        Returns:
+            True if drawdown between 5% and 10%
+        """
+        dd = self.get_drawdown_pct(ticker)
+        return -10.0 <= dd < -5.0
+
+    def is_down_streak_trap(self, ticker: str) -> bool:
+        """
+        Check if stock has dangerous 5+ down days with minimal drawdown.
+
+        Based on research: Only 36.6% win rate, -1.09% avg return!
+        This is a MAJOR TRAP - heavily penalize.
+
+        Returns:
+            True if 5+ consecutive down days AND drawdown < 3%
+        """
+        consecutive = self.get_consecutive_down_days(ticker)
+        drawdown = self.get_drawdown_pct(ticker)
+        return consecutive >= 5 and drawdown > -3.0
 
 
 def run_gpu_scan():

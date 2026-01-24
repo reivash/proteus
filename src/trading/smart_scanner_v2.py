@@ -47,6 +47,7 @@ from trading.position_rebalancer import PositionRebalancer, ExitReason
 from trading.regime_adaptive_trader import RegimeAdaptiveTrader, TradingMode
 from data.fetchers.earnings_calendar import EarningsCalendarFetcher
 from analysis.fast_bear_detector import FastBearDetector
+from data.signals.market_signals import MarketSignalGenerator, MarketSignals
 
 # Model type for selection
 ModelType = Literal['hybrid', 'mlp', 'lstm']
@@ -110,6 +111,13 @@ class ScanResultV2:
     is_choppy: bool = False
     choppiness_score: float = 0.0
     adx: float = 25.0
+    # Market signals (Jan 2026) - macro sentiment indicators
+    market_signal: str = "neutral"  # strong_buy, buy, neutral, sell, strong_sell
+    fear_greed: int = 50
+    fear_greed_signal: str = "neutral"
+    credit_signal: str = "normal"
+    breadth_signal: str = "healthy"
+    market_factors: List[str] = None
 
 
 class SmartScannerV2:
@@ -199,6 +207,9 @@ class SmartScannerV2:
 
         # Bear detection (Jan 2026)
         self.bear_detector = FastBearDetector()
+
+        # Market signals (Jan 2026) - macro sentiment
+        self.market_signal_gen = MarketSignalGenerator()
 
         # Load config for thresholds
         self.config = self.signal_calc.config
@@ -337,7 +348,28 @@ class SmartScannerV2:
                 'recommendation': 'Normal operations'
             })()
 
-        # 2b. Choppiness/ADX detection
+        # 2b. Market signals (sentiment, breadth, cross-asset)
+        print()
+        print("[2b] Checking market signals...")
+        try:
+            market_signals = self.market_signal_gen.generate_signals()
+            print(f"    Fear/Greed: {market_signals.fear_greed} ({market_signals.fear_greed_signal})")
+            print(f"    Overall: {market_signals.overall_signal.upper()}")
+            if market_signals.factors:
+                for factor in market_signals.factors[:2]:
+                    print(f"    - {factor}")
+        except Exception as e:
+            print(f"    [WARNING] Market signals failed: {e}")
+            market_signals = type('MarketSignals', (), {
+                'overall_signal': 'neutral',
+                'fear_greed': 50,
+                'fear_greed_signal': 'neutral',
+                'credit_signal': 'normal',
+                'breadth_signal': 'healthy',
+                'factors': []
+            })()
+
+        # 2c. Choppiness/ADX detection
         try:
             adx = self.gpu_model.get_market_adx() if hasattr(self.gpu_model, 'get_market_adx') else 25.0
             choppiness_score = self.gpu_model.get_choppiness() if hasattr(self.gpu_model, 'get_choppiness') else 50.0
@@ -661,7 +693,14 @@ class SmartScannerV2:
             bear_triggers=bear_signal.triggers,
             is_choppy=is_choppy,
             choppiness_score=choppiness_score,
-            adx=adx
+            adx=adx,
+            # Market signals (Jan 2026)
+            market_signal=market_signals.overall_signal,
+            fear_greed=market_signals.fear_greed,
+            fear_greed_signal=market_signals.fear_greed_signal,
+            credit_signal=market_signals.credit_signal,
+            breadth_signal=market_signals.breadth_signal,
+            market_factors=market_signals.factors or []
         )
 
         self._print_summary(result)
@@ -744,6 +783,13 @@ class SmartScannerV2:
             'is_choppy': bool(result.is_choppy),
             'choppiness_score': float(result.choppiness_score),
             'adx': float(result.adx),
+            # Market signals (Jan 2026)
+            'market_signal': result.market_signal,
+            'fear_greed': result.fear_greed,
+            'fear_greed_signal': result.fear_greed_signal,
+            'credit_signal': result.credit_signal,
+            'breadth_signal': result.breadth_signal,
+            'market_factors': result.market_factors or [],
             'stats': result.stats,
             'rebalance_actions': result.rebalance_actions,
             'signals': [asdict(s) for s in result.signals[:20]]

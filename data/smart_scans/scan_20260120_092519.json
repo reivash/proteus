@@ -1,0 +1,40 @@
+{
+  "timestamp": "2026-01-20T09:25:19.563829",
+  "regime": "choppy",
+  "regime_confidence": 0.95,
+  "vix": 18.8,
+  "bear_score": 21.5,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "Yield curve INVERTED: -0.28%",
+    "Curve steepening: +0.15 (5d)",
+    "Defensives outperforming: +3.9%",
+    "A/D weak: 0.50 (more declining than advancing)",
+    "SKEW elevated: 154 (complacency warning)",
+    "Early warning active: 37/100",
+    "VOL COMPRESSION EXTREME: 1.00 (crash risk!)",
+    "SMART MONEY SELLING: -1.00 (heavy distribution)",
+    "Sector rotation: 0.41",
+    "ELEVATED put activity: P/C=1.11",
+    "VOL SKEW EXTREME: 1.00 (crash protection)",
+    "Weakening momentum: WEAKENING_MOMENTUM",
+    "Economic weakness: 50/100",
+    "Tail hedging increasing: 35/100",
+    "Breadth weakening: Breadth weakening: -9.1% in 3 days",
+    "Intraday weakness: Mild reversal pattern detected"
+  ],
+  "is_choppy": true,
+  "choppiness_score": 62.095011883910615,
+  "adx": 15.161995246435753,
+  "stats": {
+    "total_scanned": 8,
+    "threshold": 80,
+    "passed": 0,
+    "filtered": 8,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

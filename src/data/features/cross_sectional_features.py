@@ -31,38 +31,48 @@ SECTOR_MAP = {
     'META': 'Technology', 'NVDA': 'Technology', 'AMD': 'Technology',
     'INTC': 'Technology', 'CRM': 'Technology', 'ORCL': 'Technology',
     'ADBE': 'Technology', 'CSCO': 'Technology', 'AVGO': 'Technology',
+    'NOW': 'Technology', 'AMAT': 'Technology', 'KLAC': 'Technology',
+    'MRVL': 'Technology', 'QCOM': 'Technology', 'TXN': 'Technology',
+    'ADI': 'Technology', 'INTU': 'Technology',
 
     # Healthcare
     'JNJ': 'Healthcare', 'UNH': 'Healthcare', 'PFE': 'Healthcare',
     'ABT': 'Healthcare', 'TMO': 'Healthcare', 'MRK': 'Healthcare',
-    'LLY': 'Healthcare', 'ABBV': 'Healthcare',
+    'LLY': 'Healthcare', 'ABBV': 'Healthcare', 'SYK': 'Healthcare',
+    'GILD': 'Healthcare', 'HCA': 'Healthcare', 'IDXX': 'Healthcare',
+    'INSM': 'Healthcare', 'CVS': 'Healthcare',
 
     # Financials
     'JPM': 'Financials', 'BAC': 'Financials', 'WFC': 'Financials',
     'GS': 'Financials', 'MS': 'Financials', 'C': 'Financials',
     'BLK': 'Financials', 'SCHW': 'Financials', 'AXP': 'Financials',
+    'USB': 'Financials', 'PNC': 'Financials', 'V': 'Financials',
+    'MA': 'Financials', 'AIG': 'Financials',
 
     # Consumer Discretionary
     'AMZN': 'Consumer Discretionary', 'TSLA': 'Consumer Discretionary',
     'HD': 'Consumer Discretionary', 'MCD': 'Consumer Discretionary',
     'NKE': 'Consumer Discretionary', 'SBUX': 'Consumer Discretionary',
-    'TGT': 'Consumer Discretionary',
+    'TGT': 'Consumer Discretionary', 'LOW': 'Consumer Discretionary',
 
     # Consumer Staples
     'WMT': 'Consumer Staples', 'PG': 'Consumer Staples',
     'KO': 'Consumer Staples', 'PEP': 'Consumer Staples',
-    'COST': 'Consumer Staples', 'CVS': 'Consumer Staples',
+    'COST': 'Consumer Staples',
 
     # Industrials
     'BA': 'Industrials', 'CAT': 'Industrials', 'GE': 'Industrials',
     'UPS': 'Industrials', 'HON': 'Industrials', 'MMM': 'Industrials',
+    'ETN': 'Industrials', 'LMT': 'Industrials', 'ROAD': 'Industrials',
 
     # Energy
     'XOM': 'Energy', 'CVX': 'Energy', 'COP': 'Energy', 'SLB': 'Energy',
+    'MPC': 'Energy', 'EOG': 'Energy',
 
     # Communication Services
     'DIS': 'Communication Services', 'CMCSA': 'Communication Services',
     'VZ': 'Communication Services', 'T': 'Communication Services',
+    'TMUS': 'Communication Services',
 
     # Utilities
     'NEE': 'Utilities', 'DUK': 'Utilities', 'SO': 'Utilities',
@@ -71,7 +81,23 @@ SECTOR_MAP = {
     'AMT': 'Real Estate', 'PLD': 'Real Estate',
 
     # Materials
-    'LIN': 'Materials', 'APD': 'Materials'
+    'LIN': 'Materials', 'APD': 'Materials', 'ECL': 'Materials',
+    'MLM': 'Materials', 'SHW': 'Materials'
+}
+
+# Sector ETF mapping for fetching sector performance data
+SECTOR_ETF_MAP = {
+    'Technology': 'XLK',
+    'Healthcare': 'XLV',
+    'Financials': 'XLF',
+    'Consumer Discretionary': 'XLY',
+    'Consumer Staples': 'XLP',
+    'Industrials': 'XLI',
+    'Energy': 'XLE',
+    'Communication Services': 'XLC',
+    'Utilities': 'XLU',
+    'Real Estate': 'XLRE',
+    'Materials': 'XLB'
 }
 
 
@@ -94,9 +120,48 @@ class CrossSectionalFeatureEngineer:
         """
         self.fillna = fillna
         self.market_data_cache = {}  # Cache SPY/VIX data
+        self.sector_etf_cache = {}   # Cache sector ETF data
+
+    def _fetch_sector_etf_data(self, sector: str, start_date: str, end_date: str) -> Optional[pd.DataFrame]:
+        """
+        Fetch sector ETF data for computing sector averages.
+
+        Args:
+            sector: Sector name (e.g., 'Technology')
+            start_date: Start date for data fetch
+            end_date: End date for data fetch
+
+        Returns:
+            DataFrame with sector ETF OHLCV data or None if failed
+        """
+        etf = SECTOR_ETF_MAP.get(sector)
+        if not etf:
+            return None
+
+        cache_key = f"{etf}_{start_date}_{end_date}"
+        if cache_key in self.sector_etf_cache:
+            return self.sector_etf_cache[cache_key]
+
+        try:
+            data = yf.download(etf, start=start_date, end=end_date, progress=False)
+            if len(data) == 0:
+                return None
+
+            # Flatten multi-index columns if present
+            if isinstance(data.columns, pd.MultiIndex):
+                data.columns = data.columns.get_level_values(0)
+
+            self.sector_etf_cache[cache_key] = data
+            return data
+
+        except Exception as e:
+            print(f"[WARN] Failed to fetch sector ETF {etf}: {e}")
+            return None
 
     def add_sector_relative_features(self, df: pd.DataFrame, ticker: str,
-                                      sector_data: Optional[Dict] = None) -> pd.DataFrame:
+                                      sector_data: Optional[Dict] = None,
+                                      start_date: Optional[str] = None,
+                                      end_date: Optional[str] = None) -> pd.DataFrame:
         """
         Add features measuring stock performance relative to sector.
 
@@ -112,6 +177,8 @@ class CrossSectionalFeatureEngineer:
             df: DataFrame with price data
             ticker: Stock ticker
             sector_data: Optional pre-computed sector performance data
+            start_date: Start date for sector ETF fetch (if sector_data not provided)
+            end_date: End date for sector ETF fetch (if sector_data not provided)
 
         Returns:
             DataFrame with sector relative features
@@ -121,7 +188,7 @@ class CrossSectionalFeatureEngineer:
         # Get sector for this ticker
         sector = SECTOR_MAP.get(ticker, 'Unknown')
 
-        if sector == 'Unknown' or sector_data is None:
+        if sector == 'Unknown':
             # Cannot compute sector features - fill with neutral values
             data['sector_relative_return_1d'] = 0.0
             data['sector_relative_return_5d'] = 0.0
@@ -135,27 +202,96 @@ class CrossSectionalFeatureEngineer:
         data['return_1d'] = data['Close'].pct_change(1)
         data['return_5d'] = data['Close'].pct_change(5)
 
-        # Get sector average returns (from sector_data if provided)
-        # For now, placeholder - would need actual sector basket data
-        sector_avg_1d = 0.0  # TODO: Compute from sector basket
-        sector_avg_5d = 0.0
-        sector_std = 0.02  # TODO: Compute sector volatility
+        # Get sector ETF data for computing sector averages
+        sector_etf_df = None
+        if sector_data is not None and 'etf_data' in sector_data:
+            # Use pre-computed sector data
+            sector_etf_df = sector_data.get('etf_data')
+        elif start_date and end_date:
+            # Fetch sector ETF data
+            sector_etf_df = self._fetch_sector_etf_data(sector, start_date, end_date)
 
-        # Relative returns
-        data['sector_relative_return_1d'] = data['return_1d'] - sector_avg_1d
-        data['sector_relative_return_5d'] = data['return_5d'] - sector_avg_5d
+        if sector_etf_df is not None and len(sector_etf_df) > 0:
+            # Compute sector ETF returns
+            sector_returns_1d = sector_etf_df['Close'].pct_change(1)
+            sector_returns_5d = sector_etf_df['Close'].pct_change(5)
 
-        # Sector percentile rank (simplified - would need full sector universe)
-        # For now, use z-score as proxy for percentile
-        data['sector_percentile_rank'] = 50.0  # Placeholder
+            # Compute sector volatility (20-day rolling std of daily returns)
+            sector_volatility = sector_returns_1d.rolling(window=20).std()
 
-        # Outperformance days in last 20 days
-        data['sector_outperformance'] = (
-            (data['return_1d'] > sector_avg_1d).rolling(window=20).mean()
-        )
+            # Align sector data with stock data by date
+            # Reset index to get Date column for merging
+            sector_df = pd.DataFrame({
+                'Date': sector_etf_df.index,
+                'sector_return_1d': sector_returns_1d.values,
+                'sector_return_5d': sector_returns_5d.values,
+                'sector_volatility': sector_volatility.values
+            })
 
-        # Divergence from sector
-        data['sector_divergence'] = abs(data['return_1d'] - sector_avg_1d) / sector_std
+            # Remove timezone info if present
+            if hasattr(sector_df['Date'].iloc[0], 'tz') and sector_df['Date'].iloc[0].tz is not None:
+                sector_df['Date'] = sector_df['Date'].dt.tz_localize(None)
+
+            # Ensure data has Date column for merge
+            if 'Date' not in data.columns:
+                if data.index.name == 'Date' or isinstance(data.index, pd.DatetimeIndex):
+                    data = data.reset_index()
+
+            if 'Date' in data.columns:
+                # Remove timezone from main data
+                if hasattr(data['Date'].dtype, 'tz') and data['Date'].dt.tz is not None:
+                    data['Date'] = data['Date'].dt.tz_localize(None)
+
+                # Merge sector data
+                data = pd.merge(data, sector_df, on='Date', how='left')
+
+                # Forward fill missing sector data
+                data['sector_return_1d'] = data['sector_return_1d'].ffill()
+                data['sector_return_5d'] = data['sector_return_5d'].ffill()
+                data['sector_volatility'] = data['sector_volatility'].fillna(0.02)  # Default 2% daily vol
+
+                # Compute relative returns
+                data['sector_relative_return_1d'] = data['return_1d'] - data['sector_return_1d']
+                data['sector_relative_return_5d'] = data['return_5d'] - data['sector_return_5d']
+
+                # Compute divergence (z-score of stock return vs sector)
+                data['sector_divergence'] = np.where(
+                    data['sector_volatility'] > 0,
+                    abs(data['return_1d'] - data['sector_return_1d']) / data['sector_volatility'],
+                    0.0
+                )
+
+                # Outperformance ratio in last 20 days
+                data['sector_outperformance'] = (
+                    (data['return_1d'] > data['sector_return_1d']).rolling(window=20).mean()
+                )
+
+                # Percentile rank based on relative performance (using z-score approximation)
+                # z-score of 0 = 50th percentile, z-score of 2 = ~98th percentile
+                relative_z = np.where(
+                    data['sector_volatility'] > 0,
+                    (data['return_1d'] - data['sector_return_1d']) / data['sector_volatility'],
+                    0.0
+                )
+                # Convert z-score to approximate percentile (sigmoid-like transform)
+                data['sector_percentile_rank'] = 50 + 50 * np.tanh(relative_z / 2)
+
+                # Clean up temporary sector columns
+                data = data.drop(columns=['sector_return_1d', 'sector_return_5d', 'sector_volatility'], errors='ignore')
+            else:
+                # No Date column - use neutral values
+                data['sector_relative_return_1d'] = 0.0
+                data['sector_relative_return_5d'] = 0.0
+                data['sector_percentile_rank'] = 50.0
+                data['sector_outperformance'] = 0.5
+                data['sector_divergence'] = 0.0
+        else:
+            # No sector data available - use neutral values
+            data['sector_relative_return_1d'] = 0.0
+            data['sector_relative_return_5d'] = 0.0
+            data['sector_percentile_rank'] = 50.0
+            data['sector_outperformance'] = 0.5
+            data['sector_divergence'] = 0.0
 
         # Laggard flag (bottom quartile)
         data['is_sector_laggard'] = (data['sector_percentile_rank'] < 25).astype(int)
@@ -241,9 +377,9 @@ class CrossSectionalFeatureEngineer:
         data = pd.merge(data, vix_df, on='Date', how='left')
 
         # Forward fill missing values (for days when market was open but SPY/VIX wasn't)
-        data['spy_returns'] = data['spy_returns'].fillna(method='ffill')
-        data['SPY_Close'] = data['SPY_Close'].fillna(method='ffill')
-        data['VIX_Close'] = data['VIX_Close'].fillna(method='ffill')
+        data['spy_returns'] = data['spy_returns'].ffill()
+        data['SPY_Close'] = data['SPY_Close'].ffill()
+        data['VIX_Close'] = data['VIX_Close'].ffill()
 
         # Calculate stock returns
         data_returns = data['Close'].pct_change()
@@ -372,8 +508,8 @@ class CrossSectionalFeatureEngineer:
 
         data = df.copy()
 
-        # Add feature groups
-        data = self.add_sector_relative_features(data, ticker)
+        # Add feature groups (pass dates to enable sector ETF fetching)
+        data = self.add_sector_relative_features(data, ticker, start_date=start_date, end_date=end_date)
         data = self.add_market_context_features(data, start_date, end_date)
         data = self.add_peer_comparison_features(data, ticker)
 

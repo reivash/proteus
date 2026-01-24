@@ -1,0 +1,101 @@
+2026-01-21 14:28:14 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:28:15 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:28:16 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:28:16 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:28:17 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:28:46 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:28:46 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:28:47 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:13 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:30:13 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:14 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:30:15 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:15 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:43 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:43 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:30:44 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:31:42 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:31:43 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:31:44 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:31:44 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:31:45 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:32:12 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:32:13 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:32:13 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:33:38 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:33:38 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:33:39 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:33:40 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:33:40 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:34:08 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:34:09 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:34:09 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:09 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:35:09 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:10 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:35:11 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:12 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:39 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:39 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:35:40 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:38:08 | ERROR    | yfinance                  | $V: possibly delisted; no price data found  (period=6mo)
+2026-01-21 14:44:00 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:44:01 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:44:01 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:44:02 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:44:03 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:44:29 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:44:30 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:44:30 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:12 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:47:12 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:13 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:47:14 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:14 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:42 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:42 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:47:42 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:48:18 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:48:18 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:48:19 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:49:33 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:49:34 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:49:35 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:49:36 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:49:37 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:03 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:03 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:03 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:39 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:39 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:50:39 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:53:53 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 14:53:53 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:53:54 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 14:53:55 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:53:56 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:25 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:25 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:25 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:59 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:59 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 14:54:59 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:10 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 22:27:10 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:11 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 22:27:12 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:12 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:38 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:38 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:27:38 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:28:13 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:28:14 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:28:14 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:30:47 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: ^PCALL"}}}
+2026-01-21 22:30:47 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:30:48 | ERROR    | yfinance                  | HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: PCALL"}}}
+2026-01-21 22:30:48 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:30:49 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:31:16 | ERROR    | yfinance                  | $^PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:31:16 | ERROR    | yfinance                  | $PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")
+2026-01-21 22:31:16 | ERROR    | yfinance                  | $$PCALL: possibly delisted; no price data found  (period=5d) (Yahoo error = "No data found, symbol may be delisted")

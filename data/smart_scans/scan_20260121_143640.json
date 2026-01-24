@@ -1,0 +1,27 @@
+{
+  "timestamp": "2026-01-21T14:36:40.206501",
+  "regime": "choppy",
+  "regime_confidence": 0.5,
+  "vix": 20.0,
+  "bear_score": 10.0,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "A/D weak: 0.50 (more declining than advancing)",
+    "50d MA weakening: 50%",
+    "200d MA weak: 50% (long-term weakening)"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "stats": {
+    "total_scanned": 0,
+    "threshold": 50,
+    "passed": 0,
+    "filtered": 0,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

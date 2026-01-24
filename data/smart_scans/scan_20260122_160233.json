@@ -1,0 +1,56 @@
+{
+  "timestamp": "2026-01-22T16:02:33.283189",
+  "regime": "choppy",
+  "regime_confidence": 0.6400000000000001,
+  "vix": 15.9,
+  "bear_score": 16.0,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "Sectors down: 8/11",
+    "Yield curve INVERTED: -0.29%",
+    "A/D ratio: 0.68 (breadth weakening)",
+    "Momentum weakening: 0.35",
+    "Early warning active: 38/100",
+    "Vol compressing: 0.60",
+    "Smart money cautious: -0.33",
+    "UNUSUAL put activity: P/C=1.36 (institutional hedging)",
+    "Weakening momentum: WEAKENING_MOMENTUM",
+    "CORRELATION BREAKDOWN: BREAKDOWN_HIGH_CORRELATION (80/100)",
+    "Liquidity tightening: 25/100",
+    "Economic indicators softening: 25/100",
+    "Tail hedging increasing: 32/100",
+    "Market stress building: 26/100",
+    "STRONG THRUST: Breadth down -18.2% in 3 days"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "market_signal": "sell",
+  "fear_greed": 87,
+  "fear_greed_signal": "extreme_greed",
+  "credit_signal": "normal",
+  "breadth_signal": "healthy",
+  "market_factors": [
+    "Extreme greed (87) - contrarian bearish",
+    "High stock-bond correlation (0.56) - macro risk"
+  ],
+  "stats": {
+    "total_scanned": 1,
+    "threshold": 65,
+    "passed": 0,
+    "filtered": 1,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [
+    {
+      "ticker": "MRVL",
+      "action": "profit_target_2",
+      "exit_pct": 100,
+      "pnl_pct": 4.15,
+      "recommendation": "EXIT 100% - profit_target_2 (+4.1%)"
+    }
+  ],
+  "signals": []
+}

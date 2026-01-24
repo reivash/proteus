@@ -104,7 +104,7 @@ class MarketContextFetcher:
             merged[f'{name}_Relative'] = merged['Close'] / merged[f'{name}_Close']
 
         # Forward fill missing values (e.g., VIX not available on weekends)
-        merged = merged.fillna(method='ffill').fillna(method='bfill')
+        merged = merged.ffill().bfill()
 
         return merged
 

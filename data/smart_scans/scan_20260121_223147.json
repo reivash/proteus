@@ -1,0 +1,48 @@
+{
+  "timestamp": "2026-01-21T22:31:47.021284",
+  "regime": "choppy",
+  "regime_confidence": 0.6400000000000001,
+  "vix": 16.9,
+  "bear_score": 11.0,
+  "bear_alert_level": "NORMAL",
+  "bear_triggers": [
+    "Yield curve inverted: -0.25%",
+    "Defensives outperforming: +3.1%",
+    "SKEW elevated: 155 (complacency warning)",
+    "Momentum weakening: 0.35",
+    "Early warning active: 50/100",
+    "Smart money cautious: -0.33",
+    "Bond vol rising: 105",
+    "Weakening momentum: WEAKENING_MOMENTUM",
+    "Leading indicators warning: 30/100",
+    "CORRELATION BREAKDOWN: BREAKDOWN_HIGH_CORRELATION (80/100)",
+    "Institutional flow negative: 40/100",
+    "Liquidity tightening: 34/100",
+    "Economic weakness: 50/100",
+    "Tail risk rising: 41/100",
+    "Market stress building: 34/100",
+    "STRONG THRUST: Breadth down -18.2% in 3 days"
+  ],
+  "is_choppy": false,
+  "choppiness_score": 50.0,
+  "adx": 25.0,
+  "stats": {
+    "total_scanned": 10,
+    "threshold": 65,
+    "passed": 0,
+    "filtered": 7,
+    "sector_removed": 0,
+    "skipped": 1,
+    "already_holding": 2
+  },
+  "rebalance_actions": [
+    {
+      "ticker": "MRVL",
+      "action": "profit_target_2",
+      "exit_pct": 100,
+      "pnl_pct": 3.45,
+      "recommendation": "EXIT 100% - profit_target_2 (+3.4%)"
+    }
+  ],
+  "signals": []
+}
