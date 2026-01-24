@@ -34,6 +34,116 @@ A production-ready stock trading system using ML-powered signal generation, regi
 
 ---
 
+## For Finance Professionals
+
+### What Proteus Is
+
+Proteus is a **technical/quantitative mean reversion system** for short-term trading (3-5 day holds). It identifies oversold conditions in US equities and generates buy signals when technical indicators suggest a bounce is likely.
+
+**Core Philosophy**: "Panic sells are technical events. Trade the technicals, but avoid trades near earnings where panic might be fundamental."
+
+### Asset Coverage
+
+| Supported | Not Supported |
+|-----------|---------------|
+| US Equities (54 validated large-caps) | Options, Futures, Forex |
+| | Bonds, Fixed Income |
+| | Commodities |
+| | Crypto, ETFs (except as indicators) |
+| | International stocks |
+
+### What Proteus Analyzes
+
+#### Technical Indicators (Extensive)
+- **Moving Averages**: SMA (10, 20, 50, 200), EMA (12, 26)
+- **Momentum**: RSI (14), MACD, Stochastic, Williams %R
+- **Volatility**: Bollinger Bands, ATR, 5/20-day volatility
+- **Volume**: OBV, Volume-to-MA ratio, VWAP
+- **Price Action**: Gap %, drawdown, consecutive down days, falling knife detection
+
+#### Market Regime Detection
+- **HMM + Rule-based ensemble** classifying: BULL, BEAR, CHOPPY, VOLATILE
+- SPY trend (20d/50d), VIX level/percentile, advance-decline ratio
+- Market breadth, new highs/lows, yield curve spread
+
+#### Bear Market Early Warning (22+ indicators)
+- VIX spikes and term structure
+- Credit spreads (HY OAS, HYG vs LQD)
+- Yield curve (10Y-2Y Treasury)
+- Sector breadth, defensive rotation
+- Put/Call ratio, SKEW index
+- Dollar strength (DXY), international weakness
+
+#### Macroeconomic Signals (via FRED)
+- M2 growth, initial jobless claims
+- PMI, recession probability scoring
+- Yield curve inversion detection
+
+#### Cross-Asset Signals
+- SPY-TLT correlation (stocks vs bonds)
+- Dollar strength, Treasury yields
+- International equity weakness (EEM/EFA)
+
+#### ML Features (3-model ensemble)
+- 50+ technical features fed to LSTM, Transformer, and MLP
+- Cross-sectional features (18), temporal features
+- Ensemble voting with confidence weighting
+
+### What Proteus Does NOT Analyze (Known Gaps)
+
+#### Fundamental Data (None)
+| Not Used | Notes |
+|----------|-------|
+| P/E, P/B, PEG ratios | No valuation metrics |
+| Revenue/earnings growth | No income statement analysis |
+| Profit margins, ROE/ROA | No profitability metrics |
+| Debt-to-equity, FCF | No balance sheet analysis |
+| Dividend yield | No income investing |
+
+#### Qualitative/Research Data
+- Analyst ratings, price targets, estimate revisions
+- Company news, press releases, SEC filings
+- Management changes, M&A activity
+- Product launches, regulatory events
+
+#### Order Flow & Market Microstructure
+- Dark pool activity, block trades
+- Level 2 order book, tape reading
+- Gamma exposure, options flow (beyond P/C ratio)
+
+#### Other Gaps
+| Category | What's Missing |
+|----------|----------------|
+| Insider Activity | No insider buying/selling signals |
+| Sentiment | No social media, news NLP (Fear & Greed only) |
+| Seasonality | Day-of-week only (no month-end, Q4 effects) |
+| Factor Exposure | No explicit value/growth/quality tilts |
+| Pairs/StatArb | No cointegration or pairs trading |
+| ESG | No environmental/social/governance data |
+
+### Trading Strategy Summary
+
+| Aspect | Approach |
+|--------|----------|
+| **Strategy** | Mean reversion (buy oversold, sell on bounce) |
+| **Hold Period** | 3-5 days (tier-dependent) |
+| **Universe** | 54 pre-validated US large-caps |
+| **Entry** | ML ensemble signal > threshold + regime filter |
+| **Exit** | Profit target, stop loss, or time limit |
+| **Sizing** | Kelly Criterion with regime multipliers |
+| **Risk** | Max 6 positions, 15% portfolio heat, sector limits |
+
+### Key Limitations
+
+1. **Backtested, not battle-tested** - 2-year backtest, limited live trading
+2. **Large-cap bias** - No small/mid-cap coverage
+3. **US-only** - No international diversification
+4. **Technical-only** - Ignores fundamentals entirely
+5. **Mean reversion only** - Does not capture momentum/trend-following
+6. **Equity-only** - Cannot hedge with options or futures
+
+---
+
 ## Quick Start
 
 ```bash
