@@ -175,7 +175,7 @@ python scripts/run_virtual_wallet_daily.py --status
 python scripts/generate_daily_report.py
 
 # Run smoke tests
-python tests/test_smoke.py
+python features/daily_picks/tests/test_smoke.py
 
 # Health check
 python -c "from common.trading.scanner_runner import ScannerRunner; r=ScannerRunner(); print(r.run_health_checks())"

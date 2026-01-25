@@ -79,7 +79,7 @@ python features/buy_signals/run.py
 python features/reporting/run.py
 
 # Run tests
-python tests/test_smoke.py
+python features/daily_picks/tests/test_smoke.py
 ```
 
 ## Key Conclusions (from 96+ experiments)
@@ -102,7 +102,7 @@ python tests/test_smoke.py
 
 1. Check wallet: `python features/simulation/run.py --status`
 2. Check recent scan: `features/daily_picks/data/smart_scans/latest_scan.json`
-3. Run smoke tests if making changes: `python tests/test_smoke.py`
+3. Run smoke tests if making changes: `python features/daily_picks/tests/test_smoke.py`
 4. Read `SYSTEM_STATE.md` for deeper context if needed
 
 ## Known Issues

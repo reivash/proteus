@@ -8,12 +8,13 @@ Quick tests that verify the entire scanning pipeline can:
 
 These are NOT comprehensive tests - they just verify the system boots up correctly.
 
-Run with: python tests/test_smoke.py
+Run with: python features/daily_picks/tests/test_smoke.py
 """
 
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Go up 3 levels: tests → daily_picks → features → project root
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
 
 from datetime import datetime
 from typing import Tuple
