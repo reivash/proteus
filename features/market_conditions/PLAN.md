@@ -7,11 +7,21 @@
 ## Q1: Foundation & Research (Jan-Mar)
 
 ### Week 1-2: Understand Current System
-- [ ] Document current HMM implementation strengths and weaknesses
-- [ ] Analyze last 50 regime transitions - how many did we catch early vs late?
-- [ ] Identify the 5 worst regime misclassifications and root cause each
-- [ ] Benchmark current system: accuracy, latency, false positive rate
-- [ ] Create regime detection performance dashboard
+- [x] Document current HMM implementation strengths and weaknesses ✅ Jan 25, 2026
+  - See `research/hmm_analysis.md`
+- [x] Analyze last 50 regime transitions - how many did we catch early vs late? ✅ Jan 25, 2026
+  - **RESULT: Only 10.4% early detection (target: 50%)**
+  - Average lag: -1.9 days
+  - See `research/transition_analysis.md`
+- [x] Identify the 5 worst regime misclassifications and root cause each ✅ Jan 25, 2026
+  - Top causes: vol_underweight, momentum_lag
+  - See `research/misclassification_analysis.md`
+- [x] Benchmark current system: accuracy, latency, false positive rate ✅ Jan 25, 2026
+  - **HMM: 46% accuracy, Rule-based: 87% accuracy**
+  - HMM false positive rate: 13.8%
+  - See `research/benchmark_results.md`
+- [x] Create regime detection performance dashboard ✅ Jan 25, 2026
+  - Run: `python features/market_conditions/scripts/performance_dashboard.py`
 
 ### Week 3-4: Competitive Intelligence
 - [ ] Study AQR's "Market Regime Indicators" whitepaper

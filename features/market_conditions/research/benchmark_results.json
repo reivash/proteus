@@ -1,0 +1,38 @@
+{
+  "HMM": {
+    "method": "HMM",
+    "accuracy": 45.97701149425287,
+    "bear_precision": 0.0,
+    "bear_recall": 0,
+    "bear_f1": 0,
+    "avg_detection_latency": 0,
+    "false_positive_rate": 13.793103448275861,
+    "false_negative_rate": 0,
+    "regime_stability": 2.71875,
+    "avg_inference_time_ms": 1.9294034482927287
+  },
+  "Rule-based": {
+    "method": "Rule-based",
+    "accuracy": 87.35632183908046,
+    "bear_precision": 0.0,
+    "bear_recall": 0,
+    "bear_f1": 0,
+    "avg_detection_latency": 0,
+    "false_positive_rate": 2.2988505747126435,
+    "false_negative_rate": 0,
+    "regime_stability": 3.9545454545454546,
+    "avg_inference_time_ms": 0.09821149408174999
+  },
+  "Ensemble": {
+    "method": "Ensemble",
+    "accuracy": 73.5632183908046,
+    "bear_precision": 0.0,
+    "bear_recall": 0,
+    "bear_f1": 0,
+    "avg_detection_latency": 0,
+    "false_positive_rate": 12.643678160919542,
+    "false_negative_rate": 0,
+    "regime_stability": 3.782608695652174,
+    "avg_inference_time_ms": 2.3927712652781423
+  }
+}
