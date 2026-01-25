@@ -1,216 +1,283 @@
-# Market Regime Detection - Development Plan
+# Regime Detection 2.0 - 2026 Development Plan
 
-> **Goal**: Build best-in-class regime detection that outperforms existing solutions
-> **Timeline**: 8-12 weeks
-> **Status**: Planning
+> **Mission**: Build a regime detection system that predicts market conditions before they're obvious, giving us 1-3 days of edge over reactive traders.
 
 ---
 
-## Vision
+## Q1: Foundation & Research (Jan-Mar)
 
-Create a regime detection system that:
-1. **Predicts regime changes 1-3 days early** (not just identifies current regime)
-2. **Quantifies confidence** in regime classification (not binary output)
-3. **Adapts to market evolution** (regimes change character over decades)
-4. **Provides actionable signals** (not just labels, but position sizing multipliers)
+### Week 1-2: Understand Current System
+- [ ] Document current HMM implementation strengths and weaknesses
+- [ ] Analyze last 50 regime transitions - how many did we catch early vs late?
+- [ ] Identify the 5 worst regime misclassifications and root cause each
+- [ ] Benchmark current system: accuracy, latency, false positive rate
+- [ ] Create regime detection performance dashboard
 
----
+### Week 3-4: Competitive Intelligence
+- [ ] Study AQR's "Market Regime Indicators" whitepaper
+- [ ] Analyze JPMorgan's "Macro Regime Framework" methodology
+- [ ] Review Goldman's "Risk Appetite Indicator" construction
+- [ ] Document how Bloomberg Terminal classifies market regimes
+- [ ] Extract key features used by institutional regime models
+- [ ] Write summary: `research/institutional_approaches.md`
 
-## Current State Assessment
+### Week 5-6: Academic Research Deep Dive
+- [ ] Read Hamilton (1989) - foundational regime-switching paper
+- [ ] Read Ang & Timmermann (2012) - regime changes and asset allocation
+- [ ] Read Bulla & Bulla (2006) - stylized facts of financial time series
+- [ ] Study recent ML papers on regime detection (2020-2025)
+- [ ] Identify 3 novel techniques not in current implementation
+- [ ] Write summary: `research/academic_insights.md`
 
-### What We Have
-- HMM + rule-based ensemble (4 regimes: BULL/BEAR/CHOPPY/VOLATILE)
-- ~80% accuracy on historical classification
-- Integrated with signal scanner for threshold adjustment
+### Week 7-8: Feature Discovery
+- [ ] List all potential regime indicators (aim for 100+)
+- [ ] Categorize: volatility, breadth, sentiment, flow, macro, technical
+- [ ] Research data sources for each (free vs paid)
+- [ ] Rank by: predictive power (estimated), data availability, update frequency
+- [ ] Select top 30 candidates for testing
+- [ ] Write summary: `research/feature_candidates.md`
 
-### Current Limitations
-1. **Reactive, not predictive** - detects regime after it's established
-2. **Binary classification** - no confidence/probability output
-3. **Fixed features** - doesn't incorporate sentiment, options flow, or cross-asset signals
-4. **No regime transition modeling** - doesn't predict WHEN regime will change
-5. **Single timeframe** - no multi-scale regime analysis
+### Week 9-10: Data Infrastructure
+- [ ] Audit current data pipeline for gaps
+- [ ] Set up options data feed (CBOE or Yahoo Options)
+- [ ] Integrate VIX term structure (VIX, VIX3M, VIX6M)
+- [ ] Add put/call ratio with 5-day smoothing
+- [ ] Add SKEW index
+- [ ] Add high-yield spread (HYG-TLT or similar)
+- [ ] Add advance-decline line and McClellan Oscillator
+- [ ] Validate all new data sources have 5+ year history
 
----
-
-## Phase 1: Research (Weeks 1-2)
-
-### 1.1 Competitive Analysis
-- [ ] Study how hedge funds detect regimes (AQR, Two Sigma papers)
-- [ ] Analyze Bloomberg Terminal regime indicators
-- [ ] Review academic literature on regime-switching models
-- [ ] Document features used by top quant funds
-
-**Deliverable**: `research/competitive_analysis.md`
-
-### 1.2 Feature Research
-- [ ] Options market signals (put/call skew, term structure, gamma exposure)
-- [ ] Cross-asset correlations (stocks-bonds, dollar, commodities)
-- [ ] Sentiment indicators (AAII, Fear & Greed, social media)
-- [ ] Flow data (ETF flows, dark pool activity)
-- [ ] Volatility surface analysis (VIX term structure, VVIX)
-
-**Deliverable**: `research/feature_candidates.md`
-
-### 1.3 Academic Deep Dive
-- [ ] Hamilton (1989) regime-switching models
-- [ ] Ang & Bekaert (2002) regime changes in equity risk premium
-- [ ] Guidolin & Timmermann (2007) international asset allocation
-- [ ] Recent ML approaches to regime detection
-
-**Deliverable**: `research/academic_review.md`
-
----
-
-## Phase 2: Design (Weeks 3-4)
-
-### 2.1 Architecture Design
-- [ ] Define regime taxonomy (expand beyond 4 regimes?)
-- [ ] Design probabilistic output (regime probabilities, not just labels)
-- [ ] Plan multi-timeframe integration (daily, weekly, monthly regimes)
-- [ ] Design regime transition prediction module
-
-**Deliverable**: `design/architecture.md`
-
-### 2.2 Feature Engineering Design
-- [ ] Select top 20 predictive features from research
-- [ ] Design feature normalization (z-scores, percentiles, adaptive)
-- [ ] Plan feature importance tracking over time
-- [ ] Design online learning component for adaptation
-
-**Deliverable**: `design/features.md`
-
-### 2.3 Model Selection
-- [ ] Compare: Enhanced HMM vs LSTM vs Transformer vs Ensemble
-- [ ] Design backtesting framework for regime models
-- [ ] Define success metrics (accuracy, early detection, stability)
-- [ ] Plan A/B testing infrastructure
-
-**Deliverable**: `design/model_comparison.md`
+### Week 11-12: Feature Engineering V1
+- [ ] Implement VIX term structure slope (contango/backwardation score)
+- [ ] Implement volatility of volatility (VVIX or realized vol of VIX)
+- [ ] Implement credit spread momentum (rate of change)
+- [ ] Implement breadth thrust indicator
+- [ ] Implement correlation regime (SPY vs TLT rolling correlation)
+- [ ] Implement momentum breadth (% stocks above 20/50/200 MA)
+- [ ] Backtest each feature's predictive power independently
+- [ ] Document findings: `research/feature_backtest_q1.md`
 
 ---
 
-## Phase 3: Core Implementation (Weeks 5-8)
+## Q2: Model Development (Apr-Jun)
 
-### Milestone 3.1: Enhanced Feature Pipeline
-- [ ] Implement options flow features (put/call, skew, term structure)
-- [ ] Add cross-asset correlation features
-- [ ] Integrate sentiment data sources
-- [ ] Build feature store with historical data
+### Week 13-14: Probabilistic Framework Design
+- [ ] Design output schema: regime probabilities (sum to 1.0)
+- [ ] Define confidence metric (entropy of probability distribution)
+- [ ] Design "regime stability" score (how likely to persist)
+- [ ] Design "transition alert" (probability of regime change in N days)
+- [ ] Create mock outputs and validate usefulness with trading logic
+- [ ] Document: `design/probabilistic_output.md`
 
-**Acceptance**: 30+ features available with 5-year history
+### Week 15-16: Multi-Timeframe Architecture
+- [ ] Design daily regime (1-5 day tactical view)
+- [ ] Design weekly regime (1-4 week strategic view)
+- [ ] Design monthly regime (1-6 month secular view)
+- [ ] Define how timeframes interact (hierarchy vs voting)
+- [ ] Design conflict resolution (when timeframes disagree)
+- [ ] Document: `design/multi_timeframe.md`
 
-### Milestone 3.2: Probabilistic Regime Model
-- [ ] Implement regime probability output (not binary)
-- [ ] Add confidence intervals to predictions
-- [ ] Build regime transition probability matrix
-- [ ] Create "regime stability" indicator
+### Week 17-18: Model Experimentation - HMM Enhancements
+- [ ] Implement Bayesian HMM with uncertainty quantification
+- [ ] Add duration-dependent transition probabilities
+- [ ] Experiment with 4 vs 5 vs 6 hidden states
+- [ ] Add exogenous variables to HMM (VIX as input, not just observation)
+- [ ] Implement online HMM updating (adapt without full retrain)
+- [ ] Benchmark against current HMM
 
-**Acceptance**: Model outputs P(bull), P(bear), P(choppy), P(volatile) summing to 1
+### Week 19-20: Model Experimentation - Deep Learning
+- [ ] Implement LSTM regime classifier
+- [ ] Implement Temporal Convolutional Network (TCN) variant
+- [ ] Implement Transformer with regime attention
+- [ ] Test ensemble of HMM + neural network
+- [ ] Compare: accuracy, calibration, early detection, stability
+- [ ] Document: `experiments/model_comparison.md`
 
-### Milestone 3.3: Predictive Component
-- [ ] Build regime change early warning system
-- [ ] Implement "regime stress" indicator (probability of transition)
-- [ ] Create 1-day, 3-day, 5-day regime forecasts
-- [ ] Backtest prediction accuracy
+### Week 21-22: Regime Transition Prediction
+- [ ] Build "days until regime change" predictor
+- [ ] Identify leading indicators of each transition type
+- [ ] Bull→Bear: what signals precede by 1-5 days?
+- [ ] Choppy→Trending: what breaks the range?
+- [ ] Implement early warning score (0-100)
+- [ ] Backtest on major transitions (2008, 2011, 2015, 2018, 2020, 2022)
 
-**Acceptance**: Detect regime changes 1-2 days early with >60% accuracy
-
-### Milestone 3.4: Multi-Timeframe Integration
-- [ ] Implement daily regime (tactical)
-- [ ] Implement weekly regime (strategic)
-- [ ] Implement monthly regime (secular)
-- [ ] Create composite signal combining all timeframes
-
-**Acceptance**: Three-tier regime system with clear hierarchy
-
----
-
-## Phase 4: Advanced Features (Weeks 9-10)
-
-### Milestone 4.1: Adaptive Learning
-- [ ] Implement online learning for feature weights
-- [ ] Add regime characteristic drift detection
-- [ ] Build automatic retraining triggers
-- [ ] Create model performance monitoring
-
-**Acceptance**: Model adapts to changing market character without manual intervention
-
-### Milestone 4.2: Actionable Output
-- [ ] Generate position sizing multipliers per regime
-- [ ] Create "regime-adjusted expected return" for signals
-- [ ] Build regime-specific stop loss recommendations
-- [ ] Design regime dashboard for visualization
-
-**Acceptance**: Scanner automatically adjusts sizing based on regime confidence
+### Week 23-24: Integration & Testing
+- [ ] Integrate new model with existing scanner
+- [ ] A/B test: old regime vs new regime detection
+- [ ] Run parallel for 2 weeks, compare classifications
+- [ ] Measure impact on signal quality
+- [ ] Fix critical bugs and edge cases
+- [ ] Document: `experiments/integration_results.md`
 
 ---
 
-## Phase 5: Validation (Weeks 11-12)
+## Q3: Advanced Features (Jul-Sep)
 
-### 5.1 Historical Backtesting
-- [ ] Test on 2008 financial crisis
-- [ ] Test on 2020 COVID crash
-- [ ] Test on 2022 rate hike cycle
-- [ ] Test on various choppy periods (2015, 2018)
+### Week 25-26: Options-Based Regime Signals
+- [ ] Implement put/call skew indicator (25-delta skew)
+- [ ] Implement volatility risk premium (VIX vs realized vol)
+- [ ] Implement gamma exposure estimation (GEX proxy)
+- [ ] Implement options volume regime (call vs put volume trends)
+- [ ] Test predictive power of each
+- [ ] Integrate best performers into model
 
-**Success Criteria**:
-- Detect bear markets 2+ days before 10% drawdown
-- Identify choppy periods with <5% false positive rate
-- Improve trading Sharpe by 0.3+ vs no regime filter
+### Week 27-28: Sentiment Integration
+- [ ] Implement AAII sentiment indicator
+- [ ] Implement CNN Fear & Greed index tracking
+- [ ] Implement news sentiment score (if API available)
+- [ ] Implement social media sentiment proxy (if feasible)
+- [ ] Study sentiment extremes as regime change signals
+- [ ] Document: `research/sentiment_indicators.md`
 
-### 5.2 Live Paper Trading
-- [ ] Run parallel with current system for 4 weeks
-- [ ] Compare regime calls with actual outcomes
-- [ ] Measure prediction accuracy in real-time
-- [ ] Document edge cases and failures
+### Week 29-30: Cross-Asset Regime Signals
+- [ ] Implement stock-bond correlation regime
+- [ ] Implement dollar strength regime (DXY trends)
+- [ ] Implement commodity correlation (gold, oil vs stocks)
+- [ ] Implement yield curve regime (steepening/flattening/inversion)
+- [ ] Implement international divergence (US vs EAFE vs EM)
+- [ ] Test cross-asset signals as leading indicators
 
-### 5.3 Documentation
-- [ ] Write technical documentation
-- [ ] Create user guide with interpretation examples
-- [ ] Document known limitations
-- [ ] Publish research findings
+### Week 31-32: Adaptive Learning System
+- [ ] Implement feature importance tracking over time
+- [ ] Build drift detection for regime characteristics
+- [ ] Implement automatic feature weight adjustment
+- [ ] Build model performance monitoring dashboard
+- [ ] Set up automatic retraining triggers
+- [ ] Test adaptation on out-of-sample period
 
----
+### Week 33-34: Regime-Specific Strategy Optimization
+- [ ] Optimize signal thresholds per regime (not just 4 values)
+- [ ] Optimize position sizing multipliers per regime
+- [ ] Optimize stop-loss levels per regime
+- [ ] Optimize holding periods per regime
+- [ ] Backtest regime-specific parameters vs uniform
+- [ ] Document: `research/regime_specific_optimization.md`
 
-## Success Metrics
-
-| Metric | Current | Target |
-|--------|---------|--------|
-| Regime classification accuracy | ~80% | 90%+ |
-| Early detection (days before confirmation) | 0 | 1-2 days |
-| False positive rate (choppy detection) | ~15% | <5% |
-| Trading Sharpe improvement | baseline | +0.3 |
-| Regime transition prediction | none | 60%+ accuracy |
-
----
-
-## Risks & Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Overfitting to historical regimes | Model fails on new regime types | Use walk-forward validation, regime-agnostic features |
-| Data snooping in feature selection | Inflated backtest results | Out-of-sample validation, multiple test periods |
-| Regime labels are subjective | No ground truth for training | Use market-based labels (drawdown, volatility) not subjective |
-| Computational complexity | Slow inference | Cache features, optimize model architecture |
-
----
-
-## Resources Needed
-
-- [ ] Options data source (CBOE, or derived from Yahoo)
-- [ ] Sentiment data API (or scrape Fear & Greed index)
-- [ ] GPU compute for model training
-- [ ] 10+ years of historical data for validation
+### Week 35-36: Stress Testing
+- [ ] Test on 2008 financial crisis (detect bear early?)
+- [ ] Test on 2010 flash crash (handle sudden volatility?)
+- [ ] Test on 2015-2016 chop (avoid false signals?)
+- [ ] Test on 2018 Q4 selloff (catch the turn?)
+- [ ] Test on 2020 COVID crash (fastest bear ever)
+- [ ] Test on 2022 rate hike bear (slow grind)
+- [ ] Document failures and edge cases
 
 ---
 
-## Quick Wins (Can Start Immediately)
+## Q4: Production & Polish (Oct-Dec)
 
-1. **Add regime confidence score** - Output probability, not just label
-2. **Add VIX term structure** - Contango/backwardation is highly predictive
-3. **Add regime persistence metric** - How long has current regime lasted?
-4. **Improve choppy detection** - Current biggest weakness
+### Week 37-38: Performance Optimization
+- [ ] Profile regime detection latency
+- [ ] Optimize feature calculation (vectorize, cache)
+- [ ] Reduce model inference time to <100ms
+- [ ] Implement feature caching with smart invalidation
+- [ ] Benchmark memory usage and optimize
+
+### Week 39-40: Robustness & Error Handling
+- [ ] Handle missing data gracefully (feature fallbacks)
+- [ ] Add data quality checks before classification
+- [ ] Implement regime "uncertainty" mode when data is stale
+- [ ] Add circuit breakers for extreme readings
+- [ ] Test with corrupted/delayed data feeds
+
+### Week 41-42: Visualization & Reporting
+- [ ] Build regime probability time series chart
+- [ ] Build regime transition heatmap
+- [ ] Build feature contribution dashboard
+- [ ] Build historical regime accuracy report
+- [ ] Add regime context to daily scan emails
+- [ ] Create regime explanation generator (why this regime?)
+
+### Week 43-44: Documentation & Knowledge Transfer
+- [ ] Write technical documentation (architecture, algorithms)
+- [ ] Write user guide (how to interpret outputs)
+- [ ] Document all features and their rationale
+- [ ] Create troubleshooting guide
+- [ ] Record video walkthrough of system
+
+### Week 45-46: Live Validation
+- [ ] Run new system in production (shadow mode)
+- [ ] Compare predictions vs actual outcomes daily
+- [ ] Track early detection success rate
+- [ ] Measure false positive/negative rates
+- [ ] Gather 6 weeks of live performance data
+
+### Week 47-48: Final Tuning & Launch
+- [ ] Analyze live validation results
+- [ ] Fine-tune thresholds based on live data
+- [ ] Fix any issues discovered in production
+- [ ] Gradual rollout: 25% → 50% → 100% of signals
+- [ ] Celebrate and document lessons learned
 
 ---
 
-*Last Updated: January 2026*
+## Success Criteria
+
+### Must Have (Launch Blockers)
+- [ ] Regime classification accuracy ≥85% (currently ~80%)
+- [ ] Early detection: catch 50%+ of regime changes 1+ day early
+- [ ] False positive rate for "bear" ≤10%
+- [ ] Inference latency <500ms
+- [ ] No degradation in current trading performance
+
+### Should Have (High Value)
+- [ ] Probabilistic output with calibrated confidence
+- [ ] Multi-timeframe regime view
+- [ ] Regime transition early warning
+- [ ] Automated adaptation to market evolution
+
+### Nice to Have (Future)
+- [ ] Real-time regime updates (intraday)
+- [ ] Regime-specific stock selection (not just timing)
+- [ ] Custom regime definitions per strategy
+
+---
+
+## Key Metrics to Track
+
+| Metric | Current | Q2 Target | Q4 Target |
+|--------|---------|-----------|-----------|
+| Classification accuracy | ~80% | 83% | 88% |
+| Early detection rate | ~20% | 40% | 60% |
+| Bear false positive rate | ~15% | 12% | 8% |
+| Choppy detection accuracy | ~70% | 78% | 85% |
+| Trading Sharpe (regime-filtered) | 1.39 | 1.50 | 1.70 |
+
+---
+
+## Resources & Dependencies
+
+### Data Sources Needed
+- [ ] VIX term structure (VIX, VIX3M, VIX6M) - Yahoo Finance
+- [ ] Put/call ratio - CBOE (may need subscription)
+- [ ] SKEW index - CBOE
+- [ ] High-yield spreads - FRED
+- [ ] Breadth data - Yahoo Finance (calculate from components)
+- [ ] AAII sentiment - AAII website (scrape or manual)
+- [ ] Fear & Greed - CNN (scrape)
+
+### Compute Resources
+- [ ] GPU for neural network training (RTX 4080 sufficient)
+- [ ] Storage for 10+ years of feature history (~10GB)
+- [ ] Ability to run backtests overnight
+
+### Time Investment
+- Estimated: 8-12 hours/week
+- Can be done incrementally alongside daily trading
+
+---
+
+## Quick Wins (Start This Week)
+
+These require minimal effort but add immediate value:
+
+- [x] Add regime confidence score to scan output (use HMM posterior probability) ✅ Jan 25, 2026
+- [x] Add VIX term structure (VIX/VIX3M ratio) as feature ✅ Jan 25, 2026
+- [x] Add "regime age" - days since last regime change ✅ Jan 25, 2026
+- [x] Log regime transitions for future analysis ✅ Jan 25, 2026
+- [ ] Add regime context to email notifications
+
+---
+
+*Plan created: January 2026*
+*Review schedule: Monthly*

@@ -34,7 +34,7 @@ logger = get_logger('proteus.scanner')
 
 from models.gpu_signal_model import GPUSignalModel
 # Jan 5, 2026: Switch to unified regime detector (HMM + rule-based ensemble)
-from analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod, UnifiedRegimeResult
+from analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod, UnifiedRegimeResult, log_regime_state
 from trading.sector_correlation import filter_correlated_signals
 from trading.sector_momentum import get_sector_momentum_calculator
 # Jan 5, 2026: Switch to penalties-only calculator
@@ -118,6 +118,12 @@ class ScanResultV2:
     credit_signal: str = "normal"
     breadth_signal: str = "healthy"
     market_factors: List[str] = None
+    # Regime enhancements (Jan 2026 Quick Wins)
+    hmm_probabilities: Dict[str, float] = None  # Full HMM posterior
+    days_in_regime: int = 0                     # Days since last regime change
+    vix_term_structure: float = 1.0             # VIX/VIX3M ratio
+    vix_3m: float = 0.0                         # 3-month VIX
+    transition_signal: str = "stable"           # entering/exiting/stable
 
 
 class SmartScannerV2:
@@ -320,6 +326,14 @@ class SmartScannerV2:
             regime = regime_analysis.regime.value if hasattr(regime_analysis.regime, 'value') else str(regime_analysis.regime)
             print(f"    Regime: {regime.upper()} (confidence: {regime_analysis.confidence:.0%})")
             print(f"    VIX: {regime_analysis.vix_level:.1f}")
+            print(f"    Days in regime: {regime_analysis.days_in_regime}")
+            print(f"    VIX term structure: {regime_analysis.vix_term_structure:.3f}")
+
+            # Log regime state for future analysis (Quick Win #4)
+            try:
+                log_regime_state(regime_analysis)
+            except Exception as log_err:
+                print(f"    [WARNING] Regime logging failed: {log_err}")
         except Exception as e:
             print(f"    [WARNING] Regime detection failed: {e}")
             regime = 'choppy'  # Conservative default
@@ -700,7 +714,13 @@ class SmartScannerV2:
             fear_greed_signal=market_signals.fear_greed_signal,
             credit_signal=market_signals.credit_signal,
             breadth_signal=market_signals.breadth_signal,
-            market_factors=market_signals.factors or []
+            market_factors=market_signals.factors or [],
+            # Regime enhancements (Jan 2026 Quick Wins)
+            hmm_probabilities=getattr(regime_analysis, 'hmm_probabilities', None),
+            days_in_regime=getattr(regime_analysis, 'days_in_regime', 0),
+            vix_term_structure=getattr(regime_analysis, 'vix_term_structure', 1.0),
+            vix_3m=getattr(regime_analysis, 'vix_3m', 0.0),
+            transition_signal=getattr(regime_analysis, 'transition_signal', 'stable')
         )
 
         self._print_summary(result)
@@ -724,9 +744,18 @@ class SmartScannerV2:
         }.get(result.bear_alert_level, '')
 
         choppy_indicator = " [CHOPPY]" if result.is_choppy else ""
-        print(f"\nRegime: {result.regime.upper()} | VIX: {result.vix:.1f} | "
-              f"Bear: {result.bear_score:.0f}/100 {bear_indicator} | "
-              f"ADX: {result.adx:.1f}{choppy_indicator}")
+
+        # VIX term structure indicator
+        term_indicator = ""
+        if result.vix_term_structure > 1.05:
+            term_indicator = " [BACKWARDATION]"
+        elif result.vix_term_structure < 0.95:
+            term_indicator = " [CONTANGO]"
+
+        print(f"\nRegime: {result.regime.upper()} ({result.days_in_regime}d) | "
+              f"VIX: {result.vix:.1f} (3M: {result.vix_3m:.1f}, Ratio: {result.vix_term_structure:.2f}){term_indicator} | "
+              f"Bear: {result.bear_score:.0f}/100 {bear_indicator}")
+        print(f"ADX: {result.adx:.1f}{choppy_indicator} | Transition: {result.transition_signal}")
         print(f"Signals: {len(result.signals)} actionable")
 
         if result.rebalance_actions:
@@ -777,6 +806,13 @@ class SmartScannerV2:
             'regime': result.regime,
             'regime_confidence': result.regime_confidence,
             'vix': result.vix,
+            # Regime enhancements (Jan 2026 Quick Wins)
+            'hmm_probabilities': result.hmm_probabilities,
+            'days_in_regime': result.days_in_regime,
+            'vix_term_structure': result.vix_term_structure,
+            'vix_3m': result.vix_3m,
+            'transition_signal': result.transition_signal,
+            # Bear detection
             'bear_score': result.bear_score,
             'bear_alert_level': result.bear_alert_level,
             'bear_triggers': result.bear_triggers or [],

@@ -56,6 +56,12 @@ class UnifiedRegimeResult:
     transition_signal: str
     recommendation: str
     method_used: str          # Which method determined final result
+    # Quick Win #1: HMM posterior probabilities (Jan 2026)
+    hmm_probabilities: dict = None  # Full posterior: {'volatile': 0.1, 'bear': 0.2, ...}
+    days_in_regime: int = 0         # Days since last regime change
+    # Quick Win #2: VIX term structure (Jan 2026)
+    vix_term_structure: float = 1.0  # VIX/VIX3M ratio (>1 = backwardation/fear, <1 = contango/complacent)
+    vix_3m: float = 0.0              # 3-month VIX futures proxy
     # Fast bear early warning (Jan 2026)
     early_warning: bool = False        # True if bear score >= 30
     early_warning_score: float = 0.0   # Bear score 0-100
@@ -158,6 +164,11 @@ class UnifiedRegimeDetector:
         result.correlation_regime = corr_result.correlation_regime
         result.avg_correlation = corr_result.avg_correlation
         result.correlation_risk_mult = corr_result.risk_multiplier
+
+        # Get VIX term structure (Quick Win #2)
+        vix_term, vix_3m = self._get_vix_term_structure(result.vix_level)
+        result.vix_term_structure = vix_term
+        result.vix_3m = vix_3m
 
         return result
 
@@ -265,6 +276,39 @@ class UnifiedRegimeDetector:
                 recommendation='Macro data unavailable'
             )
 
+    def _get_vix_term_structure(self, vix_level: float) -> tuple:
+        """
+        Get VIX term structure (VIX/VIX3M ratio).
+
+        Returns:
+            (vix_term_structure, vix_3m)
+
+        Interpretation:
+        - Ratio > 1.0: Backwardation (near-term fear exceeds long-term)
+          → Warning sign, potential crash ahead
+        - Ratio < 1.0: Contango (normal, complacent markets)
+          → Normal conditions
+        - Ratio >> 1.1: Severe backwardation → High crash probability
+        """
+        try:
+            import yfinance as yf
+
+            # Fetch VIX3M (3-month VIX)
+            vix3m = yf.Ticker("^VIX3M")
+            vix3m_data = vix3m.history(period="5d")
+
+            if len(vix3m_data) > 0:
+                vix_3m = vix3m_data['Close'].iloc[-1]
+                if vix_3m > 0:
+                    term_structure = vix_level / vix_3m
+                    return round(term_structure, 3), round(vix_3m, 2)
+
+            return 1.0, vix_level  # Default if VIX3M unavailable
+
+        except Exception as e:
+            print(f"[REGIME] VIX term structure fetch failed: {e}")
+            return 1.0, vix_level
+
     def _get_correlation_regime(self) -> CorrelationRegimeResult:
         """Get correlation regime analysis."""
         try:
@@ -361,6 +405,8 @@ class UnifiedRegimeDetector:
             transition_signal=hmm.transition_signal,
             recommendation=hmm.recommendation,
             method_used='hmm',
+            hmm_probabilities=hmm.probabilities,
+            days_in_regime=hmm.days_in_regime,
             data_error=has_data_error
         )
 
@@ -381,6 +427,8 @@ class UnifiedRegimeDetector:
             transition_signal=hmm.transition_signal,
             recommendation=rule.recommendation,
             method_used='rule_based',
+            hmm_probabilities=hmm.probabilities,
+            days_in_regime=hmm.days_in_regime,
             data_error=has_data_error
         )
 
@@ -415,6 +463,8 @@ class UnifiedRegimeDetector:
                 transition_signal=hmm.transition_signal,
                 recommendation=self._combine_recommendations(hmm, rule),
                 method_used='ensemble_agree',
+                hmm_probabilities=hmm.probabilities,
+                days_in_regime=hmm.days_in_regime,
                 data_error=has_data_error
             )
 
@@ -474,6 +524,8 @@ class UnifiedRegimeDetector:
             transition_signal=hmm.transition_signal,
             recommendation=recommendation,
             method_used=method,
+            hmm_probabilities=hmm.probabilities,
+            days_in_regime=hmm.days_in_regime,
             data_error=has_data_error
         )
 
@@ -481,6 +533,88 @@ class UnifiedRegimeDetector:
         """Combine recommendations when methods agree."""
         # Use HMM recommendation but add VIX context
         return f"{hmm.recommendation} VIX: {rule.vix_level:.1f}"
+
+
+def log_regime_state(result: UnifiedRegimeResult, history_file: str = None):
+    """
+    Log regime state to history file for future analysis (Quick Win #4).
+
+    Logs every regime detection with full context for:
+    - Transition analysis
+    - Pattern discovery
+    - Performance attribution
+
+    Args:
+        result: UnifiedRegimeResult from detect_regime()
+        history_file: Path to history JSON file
+    """
+    import json
+    from pathlib import Path
+
+    if history_file is None:
+        history_file = Path(__file__).resolve().parent.parent.parent / 'features' / 'market_conditions' / 'data' / 'regime_history.json'
+
+    history_file = Path(history_file)
+    history_file.parent.mkdir(parents=True, exist_ok=True)
+
+    # Load existing history
+    history = []
+    if history_file.exists():
+        try:
+            with open(history_file, 'r') as f:
+                history = json.load(f)
+        except (json.JSONDecodeError, IOError):
+            history = []
+
+    # Create enhanced log entry
+    entry = {
+        'timestamp': datetime.now().isoformat(),
+        'regime': result.regime,
+        'confidence': round(result.confidence, 3),
+        'method_used': result.method_used,
+        'agreement': result.agreement,
+        # HMM details
+        'hmm_regime': result.hmm_regime,
+        'hmm_confidence': round(result.hmm_confidence, 3),
+        'hmm_probabilities': {k: round(v, 3) for k, v in (result.hmm_probabilities or {}).items()},
+        'days_in_regime': result.days_in_regime,
+        'transition_signal': result.transition_signal,
+        # VIX data
+        'vix': round(result.vix_level, 2),
+        'vix_3m': round(result.vix_3m, 2),
+        'vix_term_structure': round(result.vix_term_structure, 3),
+        # Rule-based details
+        'rule_regime': result.rule_regime,
+        'rule_confidence': round(result.rule_confidence, 3),
+        # Risk multipliers
+        'hierarchical_risk_mult': round(result.hierarchical_risk_mult, 3),
+        'macro_risk_mult': round(result.macro_risk_mult, 3),
+        'disagreement_risk_mult': round(result.disagreement_risk_mult, 3),
+        'correlation_risk_mult': round(result.correlation_risk_mult, 3),
+        # Early warning
+        'early_warning_score': round(result.early_warning_score, 1),
+        'early_warning_level': result.early_warning_level,
+        # Meta regime
+        'meta_regime': result.meta_regime,
+        'recession_signal': result.recession_signal
+    }
+
+    history.append(entry)
+
+    # Keep last 1000 entries (about 3 years of daily scans)
+    if len(history) > 1000:
+        history = history[-1000:]
+
+    # Save
+    with open(history_file, 'w') as f:
+        json.dump(history, f, indent=2)
+
+    # Log transition detection
+    if len(history) >= 2:
+        prev = history[-2]
+        if prev['regime'] != entry['regime']:
+            print(f"[REGIME] TRANSITION: {prev['regime'].upper()} -> {entry['regime'].upper()} "
+                  f"(after {prev.get('days_in_regime', '?')} days)")
 
 
 def get_current_regime(method: str = 'ensemble') -> UnifiedRegimeResult:
@@ -525,7 +659,19 @@ def print_regime_comparison():
     print(f"Agreement: {'YES' if result.agreement else 'NO'}")
     print(f"Method used: {result.method_used}")
     print(f"VIX Level: {result.vix_level:.1f}")
+    print(f"VIX 3M: {result.vix_3m:.1f}")
+    term_indicator = "BACKWARDATION (fear)" if result.vix_term_structure > 1.05 else "CONTANGO (normal)" if result.vix_term_structure < 0.95 else "FLAT"
+    print(f"VIX Term Structure: {result.vix_term_structure:.3f} ({term_indicator})")
+    print(f"Days in Regime: {result.days_in_regime}")
     print(f"Transition: {result.transition_signal}")
+    print()
+
+    # HMM Probabilities section
+    print("--- HMM PROBABILITIES ---")
+    if result.hmm_probabilities:
+        for regime, prob in sorted(result.hmm_probabilities.items(), key=lambda x: -x[1]):
+            bar = "#" * int(prob * 20)
+            print(f"  {regime.upper():<10} {prob*100:5.1f}% {bar}")
     print()
 
     # Hierarchical HMM section (MDPI 2025 research)
