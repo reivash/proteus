@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/proteus-logo.png" alt="Proteus Logo" width="600"/>
+  <img src="proteus-logo.png" alt="Proteus Logo" width="600"/>
 </div>
 
 ---
