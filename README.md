@@ -24,12 +24,11 @@ A production-ready stock trading system using ML-powered signal generation, regi
 
 | Feature | What It Does | How It Works |
 |---------|--------------|--------------|
-| **Daily Stock Recommendations** | Tells you which stocks to buy each morning | ML ensemble (LSTM + Transformer + MLP) scans 54 validated stocks |
-| **Confidence Levels** | Shows how strong each recommendation is | Backtest-validated edge metrics with HIGH/MODERATE/LOW ratings |
+| **Daily Stock Recommendations** | Tells you which stocks to buy each morning | ML ensemble (LSTM + Transformer + MLP) scans 54 stocks with confidence levels |
 | **Market Crash Early Warning** | Alerts you before market downturns | 22 leading indicators (VIX, credit spreads, yield curve, breadth) |
-| **Market Condition Awareness** | Tells you when to trade aggressively or sit out | HMM-based regime detection (BULL/BEAR/CHOPPY/VOLATILE) |
+| **Market Regime Detection** | Tells you when to trade aggressively or sit out | HMM-based classification (BULL/BEAR/CHOPPY/VOLATILE) |
 | **Position Sizing** | Calculates how much to invest in each trade | Kelly Criterion with regime and tier adjustments |
-| **Paper Trading Simulation** | Test the system risk-free before using real money | Virtual wallet tracks positions, P&L, and performance metrics |
+| **Paper Trading** | Test the system risk-free before using real money | Virtual wallet tracks positions, P&L, and performance metrics |
 | **Exit Timing** | Tells you when to sell for profit or cut losses | Tier-based profit targets, stop losses, and time limits |
 
 ---
