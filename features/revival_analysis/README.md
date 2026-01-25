@@ -45,5 +45,4 @@ None yet - in planning phase.
 
 ## See Also
 
-- [PLAN.md](PLAN.md) - Detailed 81-checkbox development plan
-- [experiments/](experiments/) - Research experiments
+- [PLAN.md](PLAN.md) - Development roadmap

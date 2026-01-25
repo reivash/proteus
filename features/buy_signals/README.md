@@ -31,24 +31,13 @@ Transforms raw scanner signals into actionable recommendations with:
 
 | File | Purpose |
 |------|---------|
-| `scripts/recommendations_gpu.py` | Entry point |
+| `run.py` | Entry point |
 | `common/trading/smart_scanner_v2.py` | Signal generation |
 
 ## Usage
 
 ```bash
-python scripts/recommendations_gpu.py          # Full report
-python scripts/recommendations_gpu.py --quiet  # Summary only
-python scripts/recommendations_gpu.py --json   # JSON output
+python features/buy_signals/run.py          # Full report
+python features/buy_signals/run.py --quiet  # Summary only
+python features/buy_signals/run.py --json   # JSON output
 ```
-
-## Delivery Channels
-
-- Console output (default)
-- Email (via Mailjet/SendGrid)
-- JSON file export
-
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap with checkboxes
-- [results/](results/) - Recommendation accuracy tracking

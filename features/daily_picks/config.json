@@ -1,0 +1,124 @@
+{
+  "_comment": "Penalties-Only Config - No positive boosts, only filters",
+  "_version": "3.0-penalties",
+  "_created": "2026-01-05",
+  "_rationale": "Research shows modifiers ADD trades but REDUCE quality. This config only uses penalties to filter bad setups.",
+
+  "signal_boosts": {
+    "_comment": "Only penalties - no positive boosts allowed",
+    "_total_penalties": 12,
+    "_total_boosts": 0,
+
+    "day_of_week_penalties": {
+      "friday_penalty": {
+        "enabled": true,
+        "penalty": -5,
+        "win_rate": 51.2,
+        "_note": "Friday is worst day - weekend risk"
+      },
+      "wednesday_penalty": {
+        "enabled": true,
+        "penalty": -3,
+        "_note": "Mid-week trap"
+      }
+    },
+
+    "base_signal_quality": {
+      "weak_base_penalty": {
+        "enabled": true,
+        "penalty": -5,
+        "condition": "base_signal_below_55",
+        "_note": "Reduced from -15 to -5 for forward validation (Jan 2026)"
+      },
+      "marginal_base_penalty": {
+        "enabled": true,
+        "penalty": -3,
+        "condition": "base_signal_55_to_60",
+        "_note": "Reduced from -8 to -3 for forward validation (Jan 2026)"
+      }
+    },
+
+    "falling_knife": {
+      "seven_plus_down": {
+        "enabled": true,
+        "penalty": -10,
+        "_note": "Falling knife - fundamental issues"
+      },
+      "five_six_down": {
+        "enabled": true,
+        "penalty": -5,
+        "_note": "Extended decline - caution"
+      }
+    },
+
+    "regime_penalties": {
+      "bull_regime": {
+        "enabled": true,
+        "penalty": -6,
+        "_note": "Mean reversion underperforms in bull markets"
+      }
+    },
+
+    "volume_penalties": {
+      "low_volume": {
+        "enabled": true,
+        "penalty": -3,
+        "max_ratio": 0.5,
+        "_note": "Reduced from -5 to -3, stricter threshold 0.5 for forward validation (Jan 21, 2026)"
+      }
+    },
+
+    "technical_penalties": {
+      "far_from_sma200": {
+        "enabled": true,
+        "penalty": -2,
+        "min_distance_pct": 15,
+        "_note": "Reduced from -4 to -2 for forward validation (Jan 21, 2026)"
+      },
+      "minimal_drawdown": {
+        "enabled": false,
+        "penalty": -2,
+        "max_drawdown": -3,
+        "_note": "Disabled for forward validation - too many false positives (Jan 21, 2026)"
+      }
+    },
+
+    "sector_traps": {
+      "consumer_trap": {
+        "enabled": true,
+        "penalty": -6,
+        "_note": "Consumer discretionary underperforms"
+      }
+    }
+  },
+
+  "stock_tiers": {
+    "_comment": "Keep tier system for position sizing",
+    "elite": {
+      "tickers": ["MPC", "V", "KLAC", "SHW", "QCOM", "COP", "SLB", "EOG", "GILD"],
+      "signal_multiplier": 1.05
+    },
+    "strong": {
+      "tickers": ["JNJ", "MS", "AMAT", "ADI", "TXN", "JPM", "CVS", "XOM", "IDXX"],
+      "signal_multiplier": 1.02
+    },
+    "average": {
+      "tickers": ["MSFT", "ABBV", "SYK", "PFE", "USB", "PNC", "APD", "NEE", "MLM", "AXP", "MA", "ECL", "WMT", "LOW", "INTU", "CRM", "NOW", "HCA", "CMCSA", "TMUS", "HD"],
+      "signal_multiplier": 1.0
+    },
+    "weak": {
+      "tickers": ["NVDA", "AVGO", "ORCL", "MRVL", "SCHW", "AIG", "LMT", "CAT", "ADBE", "TGT", "META", "ETN"],
+      "signal_multiplier": 0.95
+    },
+    "avoid": {
+      "tickers": ["INSM", "EXR", "ROAD"],
+      "signal_multiplier": 0.85
+    }
+  },
+
+  "signal_thresholds": {
+    "base_threshold": 50,
+    "min_threshold": 35,
+    "max_threshold": 80
+  }
+}

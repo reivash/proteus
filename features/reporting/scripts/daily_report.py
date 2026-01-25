@@ -32,7 +32,7 @@ def load_positions() -> Dict:
 
 def load_latest_scan() -> Dict:
     """Load latest scan results."""
-    scan_file = Path('data/smart_scans/latest_scan.json')
+    scan_file = Path('features/daily_picks/data/smart_scans/latest_scan.json')
     if scan_file.exists():
         with open(scan_file) as f:
             return json.load(f)

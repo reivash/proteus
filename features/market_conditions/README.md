@@ -35,8 +35,3 @@ Regime detection is integrated into the signal scanner. It automatically adjusts
 - Position sizes (larger in volatile/bear)
 - Trading mode (aggressive skips low-edge regimes)
 
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap
-- [results/](results/) - Regime classification history
-- [experiments/](experiments/) - Related experiments

@@ -173,28 +173,30 @@ python features/reporting/run.py
 ```
 proteus/
 ├── features/                 # Self-contained feature modules
-│   ├── daily_picks/          # Stock buy recommendations
-│   ├── crash_warnings/       # Bear market early warning
-│   ├── market_conditions/    # Regime detection (BULL/BEAR/CHOPPY)
-│   ├── trade_sizing/         # Position sizing calculations
+│   ├── daily_picks/          # ML-powered stock recommendations
+│   │   ├── run.py            # Entry point
+│   │   ├── config.json       # Stock tiers, signal thresholds
+│   │   ├── data/             # Scans, earnings cache
+│   │   ├── models/           # Trained ML weights (LSTM, Transformer, MLP)
+│   │   ├── tests/            # Feature tests
+│   │   └── scripts/          # Analysis tools
+│   │
+│   ├── crash_warnings/       # Bear market early warning (22 indicators)
+│   ├── market_conditions/    # HMM regime detection (BULL/BEAR/CHOPPY/VOLATILE)
+│   ├── trade_sizing/         # Kelly Criterion position sizing
 │   ├── buy_signals/          # Recommendation formatting
-│   ├── simulation/           # Paper trading
-│   └── reporting/            # Daily email reports
+│   ├── simulation/           # Paper trading with VirtualWallet
+│   ├── reporting/            # Email reports and dashboards
+│   └── scheduling/           # Windows Task Scheduler automation
 │
-├── common/                   # Shared library code
-│   ├── analysis/             # Regime detection, bear detector
-│   ├── models/               # ML models (LSTM, Transformer, MLP)
-│   ├── trading/              # Scanner, position sizer, signals
-│   └── data/                 # Data fetchers, features
-│
-├── config/                   # Global configuration
-├── data/                     # Global caches and models
-├── docs/                     # System-wide documentation
-├── tests/                    # Integration tests
-└── scripts/_internal/        # Utility scripts
+└── common/                   # Shared library code
+    ├── analysis/             # Regime detection, bear detector
+    ├── models/               # ML model classes
+    ├── trading/              # Scanner, position sizer, signals
+    └── data/                 # Data fetchers, features
 ```
 
-Each feature contains: `run.py` (entry point), `PLAN.md`, `config.json`, `data/`, `tests/`
+Each feature is self-contained with: `run.py`, `config.json`, `data/`, `tests/`, `scripts/`
 
 ---
 

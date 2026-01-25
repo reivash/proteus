@@ -8,30 +8,24 @@ Simulates real trading with:
 - Virtual capital ($100,000 default)
 - Position tracking with entry/exit prices
 - P&L calculation and performance metrics
-- Daily snapshots and trade history
+- Tier-based exit rules (profit targets, stop losses, time limits)
 
-## Features
+## Usage
 
-- **Position Management**: Open, track, and close positions
-- **Exit Rules**: Profit targets, stop losses, time limits
-- **Performance Tracking**: Win rate, Sharpe, drawdown
-- **Email Summaries**: Daily portfolio updates
+```bash
+python features/simulation/run.py --status   # View current status
+python features/simulation/run.py --full     # Full daily cycle
+python features/simulation/run.py --reset    # Reset to initial state
+```
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
+| `run.py` | Entry point |
+| `config.json` | Exit strategy rules |
 | `common/trading/virtual_wallet.py` | Core wallet logic |
-| `scripts/paper_wallet.py` | Entry point |
-| `features/simulation/data/virtual_wallet/` | State files |
-
-## Usage
-
-```bash
-python scripts/paper_wallet.py --status      # View current status
-python scripts/paper_wallet.py --full        # Full daily cycle
-python scripts/paper_wallet.py --reset       # Reset to initial state
-```
+| `data/virtual_wallet/` | State files |
 
 ## Data Files
 
@@ -40,18 +34,3 @@ python scripts/paper_wallet.py --reset       # Reset to initial state
 | `wallet_state.json` | Current positions, cash, equity |
 | `trade_history.json` | All completed trades |
 | `daily_snapshots.json` | Daily equity curve |
-
-## Performance Metrics
-
-The wallet tracks:
-- Total return %
-- Win rate
-- Sharpe ratio
-- Max drawdown
-- Profit factor
-- Average hold days
-
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap
-- [results/](results/) - Performance history

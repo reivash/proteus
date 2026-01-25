@@ -40,8 +40,8 @@ SECTOR_ETFS = ['XLK', 'XLF', 'XLE', 'XLV', 'XLI', 'XLY', 'XLP', 'XLU', 'XLB', 'X
 # Market benchmarks
 BENCHMARKS = ['SPY', 'QQQ', 'IWM', 'VIX']
 
-CACHE_DIR = Path('data/cache')
-LOG_DIR = Path('logs/overnight')
+CACHE_DIR = Path('features/daily_picks/data/cache')
+LOG_DIR = Path('features/daily_picks/logs')
 
 
 @dataclass

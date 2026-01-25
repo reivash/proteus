@@ -41,7 +41,7 @@ def run_gpu_model():
         model = GPUSignalModel()
 
         # Train if needed
-        weights_file = "models/gpu_signal/model_weights.pt"
+        weights_file = "features/daily_picks/models/gpu_signal/model_weights.pt"
         if not os.path.exists(weights_file):
             print("[INFO] Training GPU model...")
             model.train_on_history(epochs=50)
@@ -67,8 +67,8 @@ def run_gpu_model():
             ]
         }
 
-        os.makedirs("data/gpu_signals", exist_ok=True)
-        with open("data/gpu_signals/latest_scan.json", 'w') as f:
+        os.makedirs("features/daily_picks/data/gpu_signals", exist_ok=True)
+        with open("features/daily_picks/data/gpu_signals/latest_scan.json", 'w') as f:
             json.dump(output, f, indent=2)
 
         print(f"[OK] GPU scan complete - {len(signals)} stocks analyzed")
@@ -103,8 +103,8 @@ def run_earnings_watcher():
             'recent': recent
         }
 
-        os.makedirs("data/earnings_analysis", exist_ok=True)
-        with open("data/earnings_analysis/latest_calendar.json", 'w') as f:
+        os.makedirs("features/daily_picks/data/earnings_analysis", exist_ok=True)
+        with open("features/daily_picks/data/earnings_analysis/latest_calendar.json", 'w') as f:
             json.dump(output, f, indent=2)
 
         print(f"[OK] Earnings calendar updated")
@@ -178,7 +178,7 @@ def run_deep_dives():
     print_header("DEEP DIVE ANALYSIS")
     try:
         # Check for stale analyses
-        deep_dive_dir = "data/deep_dives"
+        deep_dive_dir = "features/daily_picks/data/deep_dives"
         os.makedirs(deep_dive_dir, exist_ok=True)
 
         from trading.signal_scanner import SignalScanner
@@ -195,7 +195,7 @@ def run_deep_dives():
         print(f"[INFO] {existing}/{len(tickers)} stocks have deep dive analyses")
 
         # Run overnight deep dives if not done recently
-        summary_file = f"data/deep_dives/overnight_summary_{datetime.now().strftime('%Y-%m-%d')}.json"
+        summary_file = f"features/daily_picks/data/deep_dives/overnight_summary_{datetime.now().strftime('%Y-%m-%d')}.json"
         if not os.path.exists(summary_file):
             print("[INFO] Running overnight deep dives...")
             exec(open("run_overnight_deep_dives.py").read())
@@ -301,8 +301,8 @@ def generate_consolidated_report(results: Dict) -> str:
     report = "\n".join(report_lines)
 
     # Save report
-    report_file = f"data/research_reports/suite_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-    os.makedirs("data/research_reports", exist_ok=True)
+    report_file = f"features/daily_picks/data/research_reports/suite_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
+    os.makedirs("features/daily_picks/data/research_reports", exist_ok=True)
     with open(report_file, 'w') as f:
         f.write(report)
     print(f"[SAVED] {report_file}")
@@ -338,7 +338,7 @@ def main():
     print(f"\n[COMPLETE] Research suite finished in {elapsed/60:.1f} minutes")
 
     # Save full results
-    results_file = f"data/research_reports/full_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+    results_file = f"features/daily_picks/data/research_reports/full_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
     with open(results_file, 'w') as f:
         json.dump(results, f, indent=2, default=str)
     print(f"[SAVED] {results_file}")

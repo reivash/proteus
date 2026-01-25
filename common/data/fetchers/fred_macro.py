@@ -78,7 +78,7 @@ class FREDMacroFetcher:
     }
 
     # Cache directory
-    CACHE_DIR = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data', 'cache', 'fred')
+    CACHE_DIR = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'features', 'market_conditions', 'data', 'cache', 'fred')
     CACHE_HOURS = 12  # Cache validity in hours
 
     def __init__(self, api_key: Optional[str] = None):

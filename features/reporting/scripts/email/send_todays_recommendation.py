@@ -10,7 +10,7 @@ sys.path.insert(0, 'src')
 from notifications.sendgrid_notifier import SendGridNotifier
 
 # Load latest scan
-with open('data/smart_scans/latest_scan.json') as f:
+with open('features/daily_picks/data/smart_scans/latest_scan.json') as f:
     scan = json.load(f)
 
 # Initialize notifier

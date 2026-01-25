@@ -26,7 +26,7 @@ class EarningsCalendar:
     Provides methods to check if a date is near earnings.
     """
 
-    def __init__(self, cache_dir: str = 'data/earnings_cache'):
+    def __init__(self, cache_dir: str = 'features/daily_picks/data/earnings_cache'):
         """
         Initialize earnings calendar.
 

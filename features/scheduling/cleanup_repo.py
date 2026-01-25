@@ -26,7 +26,7 @@ class RepoCleanup:
 
     def __init__(self):
         self.project_root = Path(__file__).parent.parent
-        self.scans_dir = self.project_root / 'data' / 'smart_scans'
+        self.scans_dir = self.project_root / 'features' / 'daily_picks' / 'data' / 'smart_scans'
         self.archive_dir = self.scans_dir / 'archived'
 
     def get_old_scans(self, days_to_keep: int = 7) -> List[Path]:

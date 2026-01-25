@@ -16,7 +16,7 @@ from typing import Dict, List, Optional
 
 def generate_dashboard(scan_data: Optional[Dict] = None,
                        paper_perf: Optional[Dict] = None,
-                       output_path: str = "data/web_dashboard/index.html"):
+                       output_path: str = "features/reporting/data/web_dashboard/index.html"):
     """
     Generate HTML dashboard from latest scan data.
     """

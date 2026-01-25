@@ -66,7 +66,7 @@ class EarningsWatcher:
         "META", "ETN", "HD", "SHW"
     ]
 
-    def __init__(self, output_dir: str = "data/earnings_analysis"):
+    def __init__(self, output_dir: str = "features/daily_picks/data/earnings_analysis"):
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
         self.client = anthropic.Anthropic()
@@ -122,7 +122,7 @@ class EarningsWatcher:
         for ticker in self.PROTEUS_TICKERS:
             try:
                 # Check earnings cache
-                cache_file = f"data/earnings_cache/{ticker}_earnings.json"
+                cache_file = f"features/daily_picks/data/earnings_cache/{ticker}_earnings.json"
                 if os.path.exists(cache_file):
                     with open(cache_file, 'r') as f:
                         data = json.load(f)

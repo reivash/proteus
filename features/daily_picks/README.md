@@ -1,27 +1,26 @@
-# Signal Scanner
+# Daily Picks
 
-Daily ML-powered signal generation for stock buy recommendations.
+ML-powered stock recommendations for mean reversion trading.
 
 ## What It Does
 
-Scans 54 validated US large-cap stocks each morning to identify oversold conditions likely to bounce. Uses a 3-model ML ensemble (LSTM + Transformer + MLP) with 88 signal modifiers.
+Scans 54 validated US large-cap stocks to identify oversold conditions likely to bounce. Uses a 3-model ML ensemble (LSTM + Transformer + MLP) with 88 signal modifiers.
+
+## Usage
+
+```bash
+python features/daily_picks/run.py              # Run daily scan
+python features/daily_picks/run.py --dry-run    # Test without saving
+```
 
 ## Key Files
 
 | File | Purpose |
 |------|---------|
-| `common/trading/smart_scanner_v2.py` | Main scanner orchestration |
-| `common/trading/penalties_only_calculator.py` | Signal adjustments (88 modifiers) |
-| `common/models/hybrid_signal_model.py` | ML ensemble (LSTM + Transformer + MLP) |
-| `scripts/signal_scanner_gpu.py` | Entry point script |
-
-## Usage
-
-```bash
-python scripts/signal_scanner_gpu.py                    # Default scan
-python scripts/signal_scanner_gpu.py --model hybrid     # Explicit hybrid model
-python scripts/signal_scanner_gpu.py --mode aggressive  # Skip low-edge regimes
-```
+| `run.py` | Entry point |
+| `config.json` | Stock tiers, signal thresholds |
+| `common/trading/smart_scanner_v2.py` | Scanner orchestration |
+| `common/models/hybrid_signal_model.py` | ML ensemble |
 
 ## Performance
 
@@ -30,9 +29,3 @@ python scripts/signal_scanner_gpu.py --mode aggressive  # Skip low-edge regimes
 | Win Rate | 60.4% |
 | Avg Return | +0.82% per trade |
 | Sharpe Ratio | 1.39 |
-
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap with checkboxes
-- [results/](results/) - Backtest results and analysis
-- [experiments/](experiments/) - Related experiments

@@ -32,7 +32,7 @@ def load_data():
         data['positions'] = {'positions': {}}
 
     # Latest scan
-    scan_file = Path('data/smart_scans/latest_scan.json')
+    scan_file = Path('features/daily_picks/data/smart_scans/latest_scan.json')
     if scan_file.exists():
         with open(scan_file) as f:
             data['scan'] = json.load(f)

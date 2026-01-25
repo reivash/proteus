@@ -4,24 +4,16 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Virtual environments
 env/
 venv/
+.venv/
 ENV/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
 
 # Jupyter
 .ipynb_checkpoints/
@@ -32,35 +24,31 @@ wheels/
 *.parquet
 *.h5
 *.hdf5
-data/*.json
-!data/owl_state.json
 
 # Model files
 *.pkl
 *.joblib
-*.h5
 *.pt
 *.pth
-models/saved/
 
-# Logs (anywhere in project)
+# Logs
 *.log
 logs/
 
-# Environment
-.env
-.venv
-api_keys.txt
-config.json
-email_config.json
-
-# API Credentials (EXP-011 Sentiment Analysis)
-twitter_config.json
-reddit_config.json
-news_config.json
+# Credentials and secrets (NEVER commit these)
+*.env
+.env*
 *_config.json
 *_credentials.json
-*.env
+*_secrets.json
+api_keys.txt
+api_keys.json
+secrets.json
+credentials.json
+*.pem
+*.key
+**/secrets/
+**/credentials/
 
 # IDE
 .vscode/
@@ -73,52 +61,26 @@ news_config.json
 .DS_Store
 Thumbs.db
 
-# Temporary files
-current_nudge.txt
+# Temporary
 tmp/
 temp/
 nul
-CLAUDE_CONTEXT.md
 tmpclaude-*-cwd/
 
-# Generated reports
+# Generated
 *.html
-daily_report_*.html
-dashboard.html
+results/
+screenshots/
 
-# Data directories (local state, not tracked)
-data/cache/
-data/models/
-data/portfolio/
-features/simulation/data/virtual_wallet/
-data/smart_scans/archived/
-data/research/*.json
-data/research/*.txt
+# Feature data (local state)
+features/*/data/
 
-# Planning/session docs (local only)
+# Planning docs (local only)
 MORNING_*.md
-MORNING_*.txt
 OVERNIGHT_*.md
-OVERNIGHT_*.txt
-*_RESULTS*.txt
 *_RESULTS*.md
 RECOMMENDATION_*.md
-RESEARCH_FINDINGS_*.md
+CLAUDE_CONTEXT.md
 
 # Proteus agent state
-proteus/data/
-proteus/logs/
-
-# Misc generated
-bear_prediction_report.txt
-overnight_*.log
-overnight_*.txt
-
-# Results (generated)
-results/
-
-# Model directories
-models/
-
-# Screenshots
-screenshots/
+proteus/

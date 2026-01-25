@@ -25,7 +25,7 @@ class EarningsCalendarFetcher:
     """
 
     def __init__(self, exclusion_days_before=3, exclusion_days_after=3,
-                 cache_dir='data/earnings_cache', cache_ttl_days=7):
+                 cache_dir='features/daily_picks/data/earnings_cache', cache_ttl_days=7):
         """
         Initialize earnings calendar fetcher.
 

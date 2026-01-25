@@ -373,7 +373,7 @@ class GPUSignalModel:
         "META", "ETN", "HD", "SHW"
     ]
 
-    def __init__(self, model_dir: str = "models/gpu_signal"):
+    def __init__(self, model_dir: str = "features/daily_picks/models/gpu_signal"):
         self.model_dir = model_dir
         os.makedirs(model_dir, exist_ok=True)
 

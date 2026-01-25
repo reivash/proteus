@@ -66,7 +66,7 @@ current_signals = []
 scan_status = "Not started"
 
 # Data directory
-DATA_DIR = 'data/web_dashboard'
+DATA_DIR = 'features/reporting/data/web_dashboard'
 os.makedirs(DATA_DIR, exist_ok=True)
 
 SIGNALS_FILE = os.path.join(DATA_DIR, 'current_signals.json')

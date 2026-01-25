@@ -1,0 +1,59 @@
+{
+  "_comment": "Position sizing and portfolio constraints",
+  "_version": "1.0",
+  "_updated": "2026-01-25",
+
+  "portfolio_constraints": {
+    "max_positions": 6,
+    "max_portfolio_heat_pct": 15,
+    "min_position_size_pct": 2,
+    "max_position_size_pct": 15,
+    "max_per_sector": 2,
+    "max_correlated": 3,
+    "risk_per_trade_pct": 2
+  },
+
+  "tier_sizing": {
+    "_comment": "Position size multipliers by stock tier",
+    "elite": {
+      "position_size_pct": 15.0,
+      "size_multiplier": 1.25
+    },
+    "strong": {
+      "position_size_pct": 12.0,
+      "size_multiplier": 1.1
+    },
+    "average": {
+      "position_size_pct": 7.5,
+      "size_multiplier": 1.0
+    },
+    "weak": {
+      "position_size_pct": 4.0,
+      "size_multiplier": 0.75
+    },
+    "avoid": {
+      "position_size_pct": 0.0,
+      "size_multiplier": 0.0
+    }
+  },
+
+  "regime_sizing": {
+    "_comment": "Position size multipliers by market regime",
+    "volatile": {
+      "position_multiplier": 1.3,
+      "_note": "Volatile = best mean reversion, increase size"
+    },
+    "bear": {
+      "position_multiplier": 1.2,
+      "_note": "Bear = good mean reversion, increase size"
+    },
+    "choppy": {
+      "position_multiplier": 1.0,
+      "_note": "Choppy = standard conditions"
+    },
+    "bull": {
+      "position_multiplier": 0.8,
+      "_note": "Bull = harder for mean reversion, reduce size"
+    }
+  }
+}

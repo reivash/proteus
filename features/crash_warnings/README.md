@@ -28,21 +28,13 @@ Monitors market conditions and alerts when bearish signals accumulate. Provides 
 
 | File | Purpose |
 |------|---------|
+| `run.py` | Entry point |
 | `common/analysis/fast_bear_detector.py` | Core detection logic |
-| `common/trading/bearish_alert_service.py` | Alert management |
-| `scripts/bear_alert.py` | Entry point script |
 
 ## Usage
 
 ```bash
-python scripts/bear_alert.py              # Single check with alerts
-python scripts/bear_alert.py --status     # Show current status
-python scripts/bear_alert.py --trend      # Show 24h trend
-python scripts/bear_alert.py --continuous # Monitor every 60 min
+python features/crash_warnings/run.py              # Single check with alerts
+python features/crash_warnings/run.py --status     # Show current status
+python features/crash_warnings/run.py --continuous # Monitor every 60 min
 ```
-
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap with checkboxes
-- [results/](results/) - Historical bear scores and alerts
-- [experiments/](experiments/) - Related experiments

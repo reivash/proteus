@@ -50,7 +50,3 @@ final_size = clamp(adjusted_size, min=2%, max=15%)
 | `common/trading/unified_position_sizer.py` | Main sizer |
 | `common/trading/position_rebalancer.py` | Exit monitoring |
 
-## See Also
-
-- [PLAN.md](PLAN.md) - Development roadmap with checkboxes
-- [results/](results/) - Sizing analysis results

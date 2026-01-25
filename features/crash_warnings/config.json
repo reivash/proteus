@@ -1,0 +1,122 @@
+{
+  "_description": "Bear Detection System Configuration",
+  "_note": "Modify weights and thresholds to tune detection sensitivity",
+  "_updated": "Jan 2026 - Added VIX term structure indicator",
+
+  "weights": {
+    "_total": "Sum should equal 1.0 (100 points) - OPTIMIZED Jan 15 2026 for 5.3d lead time",
+    "_note": "Key insight: Credit spread and put/call most predictive; VIX less important for early warning",
+    "spy_roc": 0.100,
+    "vix": 0.042,
+    "breadth": 0.061,
+    "sector_breadth": 0.145,
+    "volume": 0.047,
+    "yield_curve": 0.055,
+    "credit_spread": 0.193,
+    "high_yield": 0.104,
+    "put_call": 0.138,
+    "vix_term": 0.082,
+    "divergence": 0.033
+  },
+
+  "thresholds": {
+    "spy_roc": {
+      "_description": "SPY 3-day rate of change thresholds",
+      "watch": -2.0,
+      "warning": -3.0,
+      "critical": -5.0
+    },
+    "vix_level": {
+      "_description": "VIX absolute level thresholds",
+      "watch": 25,
+      "warning": 30,
+      "critical": 35
+    },
+    "vix_spike": {
+      "_description": "VIX 2-day percentage change thresholds",
+      "watch": 20,
+      "warning": 30,
+      "critical": 50
+    },
+    "breadth": {
+      "_description": "Market breadth (% above 20d MA) thresholds",
+      "watch": 40,
+      "warning": 30,
+      "critical": 20
+    },
+    "sector_breadth": {
+      "_description": "Number of declining sectors (out of 11) thresholds",
+      "watch": 6,
+      "warning": 8,
+      "critical": 10
+    },
+    "yield_curve": {
+      "_description": "10Y-2Y yield spread thresholds",
+      "watch": 0.25,
+      "warning": 0.0,
+      "critical": -0.25
+    },
+    "credit_spread": {
+      "_description": "Credit spread 5-day change thresholds",
+      "watch": 5,
+      "warning": 10,
+      "critical": 20
+    },
+    "high_yield": {
+      "_description": "High-yield spread (HYG vs LQD) thresholds - junk bond stress",
+      "watch": 3,
+      "warning": 5,
+      "critical": 8
+    },
+    "put_call": {
+      "_description": "Put/Call ratio thresholds (INVERTED - lower is worse/more complacent)",
+      "watch": 0.75,
+      "warning": 0.65,
+      "critical": 0.55
+    },
+    "vix_term": {
+      "_description": "VIX term structure (VIX/VIX3M ratio) - backwardation = panic",
+      "watch": 1.05,
+      "warning": 1.15,
+      "critical": 1.25
+    }
+  },
+
+  "alert_levels": {
+    "_description": "Score ranges for each alert level",
+    "normal": {"min": 0, "max": 29},
+    "watch": {"min": 30, "max": 49},
+    "warning": {"min": 50, "max": 69},
+    "critical": {"min": 70, "max": 100}
+  },
+
+  "scoring": {
+    "_description": "Points awarded at each threshold level - OPTIMIZED via 5-year backtest",
+    "spy_roc": {"watch": 2, "warning": 4, "critical": 5},
+    "vix": {"watch": 1, "warning": 1, "critical": 2},
+    "breadth": {"watch": 5, "warning": 10, "critical": 14},
+    "sector_breadth": {"watch": 4, "warning": 8, "critical": 12},
+    "volume": {"confirmed": 9},
+    "yield_curve": {"watch": 1, "warning": 3, "critical": 4},
+    "credit_spread": {"watch": 2, "warning": 7, "critical": 11},
+    "high_yield": {"watch": 4, "warning": 7, "critical": 11},
+    "put_call": {"watch": 3, "warning": 7, "critical": 10},
+    "vix_term": {"watch": 4, "warning": 8, "critical": 12},
+    "divergence": {"detected": 10}
+  },
+
+  "cooldowns": {
+    "_description": "Alert cooldown periods in hours",
+    "watch": 24,
+    "warning": 4,
+    "critical": 1
+  },
+
+  "position_sizing": {
+    "_description": "Position size multipliers for each alert level",
+    "normal": 1.0,
+    "watch": 0.85,
+    "warning": 0.65,
+    "critical": 0.40
+  }
+}

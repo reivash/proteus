@@ -166,19 +166,18 @@
 
 ```bash
 # Daily workflow
-python scripts/run_virtual_wallet_daily.py --full
+python features/daily_picks/run.py
+python features/simulation/run.py --full
 
 # Check status
-python scripts/run_virtual_wallet_daily.py --status
+python features/simulation/run.py --status
+python features/crash_warnings/run.py --status
 
 # Generate report
-python scripts/generate_daily_report.py
+python features/reporting/run.py
 
 # Run smoke tests
 python features/daily_picks/tests/test_smoke.py
-
-# Health check
-python -c "from common.trading.scanner_runner import ScannerRunner; r=ScannerRunner(); print(r.run_health_checks())"
 ```
 
 ---
@@ -197,9 +196,8 @@ python -c "from common.trading.scanner_runner import ScannerRunner; r=ScannerRun
 When starting a new session:
 1. Read this file for context
 2. Check `features/simulation/data/virtual_wallet/wallet_state.json` for current positions
-3. Check `data/smart_scans/latest_scan.json` for recent signals
-4. Run smoke tests to verify system health
-5. Review any pending experiments in `common/experiments/`
+3. Check `features/daily_picks/data/smart_scans/latest_scan.json` for recent signals
+4. Run smoke tests: `python features/daily_picks/tests/test_smoke.py`
 
 ---
 
