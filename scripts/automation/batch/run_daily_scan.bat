@@ -37,7 +37,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo.
 echo ============================================================
 echo Scan completed successfully!
-echo Results saved to: data/smart_scans/latest_scan.json
+echo Results saved to: features/daily_picks/data/smart_scans/latest_scan.json
 echo ============================================================
 echo Finished: %date% %time%
 
