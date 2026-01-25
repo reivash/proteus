@@ -170,7 +170,7 @@ Expanded the AI/ML IPO analysis system from 18 to **21 companies** with advanced
 2. `test_portfolios.py` - Quick portfolio testing
 3. `UPCOMING_AI_IPO_PIPELINE.md` - IPO pipeline tracker
 4. Updated `analyze_ai_ml_ipos_expanded.py` - Now tracks 21 companies
-5. Updated `src/data/fetchers/ipo_database.py` - Added 3 new IPOs
+5. Updated `common/data/fetchers/ipo_database.py` - Added 3 new IPOs
 6. Updated `CURRENT_STATE.md` - Phase 4 complete
 
 ---

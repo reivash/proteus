@@ -217,7 +217,7 @@ Automatically calculated for each stock:
 
 #### Test Email
 ```bash
-python src/notifications/sendgrid_notifier.py
+python common/notifications/sendgrid_notifier.py
 ```
 
 ---
@@ -276,12 +276,12 @@ python src/notifications/sendgrid_notifier.py
 
 #### Experiment Template
 ```python
-from src.experiments.exp014_stock_selection_optimization import run_exp014_stock_selection
+from common.experiments.exp014_stock_selection_optimization import run_exp014_stock_selection
 
 results = run_exp014_stock_selection(symbols, period='3y')
 
 # Automatic email report
-from src.notifications.sendgrid_notifier import SendGridNotifier
+from common.notifications.sendgrid_notifier import SendGridNotifier
 notifier = SendGridNotifier()
 notifier.send_experiment_report('EXP-XXX', results)
 ```
@@ -296,7 +296,7 @@ notifier.send_experiment_report('EXP-XXX', results)
 
 **Status:** Code ready, awaiting data access
 
-**Location:** `src/data/sentiment/news_sentiment.py`
+**Location:** `common/data/sentiment/news_sentiment.py`
 
 **Capabilities:**
 - News API integration for headlines
@@ -317,7 +317,7 @@ notifier.send_experiment_report('EXP-XXX', results)
 
 **Status:** Infrastructure ready, awaiting data source
 
-**Location:** `src/data/sentiment/twitter_collector.py`
+**Location:** `common/data/sentiment/twitter_collector.py`
 
 **Capabilities:**
 - Twitter/Reddit sentiment analysis
@@ -470,7 +470,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 ### Components
 
 #### 1. Trading Strategy Engine
-**Location:** `src/trading/`
+**Location:** `common/trading/`
 
 **Files:**
 - `mean_reversion_detector.py` - Core signal detection
@@ -485,7 +485,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 - Position tracking
 
 #### 2. Data Management
-**Location:** `src/data/`
+**Location:** `common/data/`
 
 **Files:**
 - `market_data_fetcher.py` - Yahoo Finance integration
@@ -498,7 +498,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 - Sentiment data collection (ready)
 
 #### 3. Configuration
-**Location:** `src/config/`
+**Location:** `common/config/`
 
 **Files:**
 - `mean_reversion_params.py` - v8.0 stock parameters
@@ -511,7 +511,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 - v8.0: Expanded to 10 stocks (EXP-024)
 
 #### 4. Web Dashboard
-**Location:** `src/web/`
+**Location:** `common/web/`
 
 **Files:**
 - `app.py` - Flask application
@@ -525,7 +525,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 - Real-time: AJAX updates
 
 #### 5. Notifications
-**Location:** `src/notifications/`
+**Location:** `common/notifications/`
 
 **Files:**
 - `sendgrid_notifier.py` - Email notifications
@@ -537,7 +537,7 @@ None currently - v8.0 is near-optimal. Next frontier: More Tier A stock discover
 - Test emails
 
 #### 6. Experimentation
-**Location:** `src/experiments/`
+**Location:** `common/experiments/`
 
 **Files:**
 - `exp014_stock_selection_optimization.py` - Stock screening
@@ -594,7 +594,7 @@ pip install -r requirements.txt
 
 #### 3. Start Dashboard
 ```bash
-python src/web/app.py
+python common/web/app.py
 ```
 
 **Dashboard:** http://localhost:5000
@@ -605,14 +605,14 @@ python src/web/app.py
 
 #### 4. Run Backtest (Optional)
 ```bash
-python src/experiments/exp014_stock_selection_optimization.py
+python common/experiments/exp014_stock_selection_optimization.py
 ```
 
 Tests current Tier A stocks on 3-year historical data.
 
 ### Configuration Files
 
-#### Stock Parameters (`src/config/mean_reversion_params.py`)
+#### Stock Parameters (`common/config/mean_reversion_params.py`)
 
 **Current Version:** 8.0
 
@@ -646,7 +646,7 @@ Set `enabled: false` to disable all email notifications.
 - Don't trade live
 
 ```bash
-python src/experiments/exp024_expand_tier_a_round2.py
+python common/experiments/exp024_expand_tier_a_round2.py
 ```
 
 #### 2. Monitoring Mode (Current)
@@ -656,7 +656,7 @@ python src/experiments/exp024_expand_tier_a_round2.py
 - No live trading (paper trading)
 
 ```bash
-python src/web/app.py
+python common/web/app.py
 ```
 
 #### 3. Live Trading (Not Implemented Yet)
@@ -817,7 +817,7 @@ python src/web/app.py
 
 ### Running Experiments
 
-1. Create new experiment file: `src/experiments/expXXX_description.py`
+1. Create new experiment file: `common/experiments/expXXX_description.py`
 2. Use template from `exp024_expand_tier_a_round2.py`
 3. Run backtest on 3-year data
 4. Create findings document: `EXP-XXX-FINDINGS.md`
@@ -860,22 +860,22 @@ python src/web/app.py
 ### Commands
 ```bash
 # Start dashboard
-python src/web/app.py
+python common/web/app.py
 
 # Run backtest
-python src/experiments/exp014_stock_selection_optimization.py
+python common/experiments/exp014_stock_selection_optimization.py
 
 # Test email
-python src/notifications/sendgrid_notifier.py
+python common/notifications/sendgrid_notifier.py
 
 # Run experiment
-python src/experiments/exp024_expand_tier_a_round2.py
+python common/experiments/exp024_expand_tier_a_round2.py
 ```
 
 ### Files to Edit
-- `src/config/mean_reversion_params.py` - Add stocks
+- `common/config/mean_reversion_params.py` - Add stocks
 - `email_config.json` - Email settings
-- `src/web/app.py` - Dashboard customization
+- `common/web/app.py` - Dashboard customization
 
 ### Files NOT to Edit (Unless Experimenting)
 - Strategy parameters (optimized via backtests)

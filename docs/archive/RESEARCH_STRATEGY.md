@@ -371,7 +371,7 @@ Based on comprehensive research from **ChatGPT Strategy Research Report** (Deskt
 ### During Experiment
 
 - [ ] Document all code changes with comments
-- [ ] Save experiment code as `src/experiments/expXXX_description.py`
+- [ ] Save experiment code as `common/experiments/expXXX_description.py`
 - [ ] Log all results to `logs/experiments/expXXX_description.json`
 - [ ] Send comprehensive email report with hypothesis and stocks tested
 - [ ] Git commit with clear message: "EXP-XXX: Description - Result"
@@ -419,9 +419,9 @@ Based on comprehensive research from **ChatGPT Strategy Research Report** (Deskt
 ### Key Files
 - **This file:** `RESEARCH_STRATEGY.md` - Master research plan
 - **Deployment:** `PRODUCTION_DEPLOYMENT.md` - Current system specs
-- **Parameters:** `src/config/mean_reversion_params.py` - All stock configs
-- **Scanner:** `src/experiments/exp056_production_scanner.py` - Daily signal detection
-- **Email Reports:** `src/notifications/sendgrid_notifier.py` - Experiment reporting (FIXED)
+- **Parameters:** `common/config/mean_reversion_params.py` - All stock configs
+- **Scanner:** `common/experiments/exp056_production_scanner.py` - Daily signal detection
+- **Email Reports:** `common/notifications/sendgrid_notifier.py` - Experiment reporting (FIXED)
 
 ### External Resources
 - **ChatGPT Research PDF:** `C:\Users\javie\Desktop\Predicting and Profiting from the Stock Market_ A Comprehensive Strategy Research Report.pdf`

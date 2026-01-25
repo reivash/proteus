@@ -318,9 +318,9 @@ Test dynamic position sizing to maximize capital allocation to highest-performin
 ### Code Created
 
 **Files:**
-1. `src/config/position_sizing.py` - Position sizing configuration (tier-based)
-2. `src/experiments/exp008_position_sizing.py` - Testing framework
-3. Updated `src/models/trading/mean_reversion.py` - Added position_size_multiplier parameter
+1. `common/config/position_sizing.py` - Position sizing configuration (tier-based)
+2. `common/experiments/exp008_position_sizing.py` - Testing framework
+3. Updated `common/models/trading/mean_reversion.py` - Added position_size_multiplier parameter
 
 **Functionality:**
 - Performance tier definitions (Tier 1/2/3)
@@ -331,8 +331,8 @@ Test dynamic position sizing to maximize capital allocation to highest-performin
 ### Usage Example (Not Recommended)
 
 ```python
-from src.config.position_sizing import get_position_size
-from src.models.trading.mean_reversion import MeanReversionBacktester
+from common.config.position_sizing import get_position_size
+from common.models.trading.mean_reversion import MeanReversionBacktester
 
 # Get position size for stock
 position_size = get_position_size('NVDA')  # Returns 1.0 (Tier 1)

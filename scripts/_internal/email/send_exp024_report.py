@@ -7,7 +7,7 @@ import json
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from src.notifications.sendgrid_notifier import SendGridNotifier
+from common.notifications.sendgrid_notifier import SendGridNotifier
 
 # Load experiment results
 with open('logs/experiments/exp024_expand_tier_a_round2.json', 'r') as f:

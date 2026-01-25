@@ -14,9 +14,9 @@ The Proteus experimental framework experienced a critical concurrency bottleneck
 
 Experiments were launched using background bash (`&`) without concurrency control:
 ```bash
-python src/experiments/exp125_adaptive_stop_loss.py &
-python src/experiments/exp126_adaptive_profit_targets.py &
-python src/experiments/exp127_adaptive_max_hold_days.py &
+python common/experiments/exp125_adaptive_stop_loss.py &
+python common/experiments/exp126_adaptive_profit_targets.py &
+python common/experiments/exp127_adaptive_max_hold_days.py &
 # ... 97 more experiments ...
 ```
 
@@ -28,7 +28,7 @@ This exhausted API rate limits within minutes, causing:
 
 ## Solution: Staged Execution Framework
 
-New tool: `src/tools/experiment_runner.py`
+New tool: `common/tools/experiment_runner.py`
 
 ### Features
 
@@ -42,17 +42,17 @@ New tool: `src/tools/experiment_runner.py`
 
 #### Run High-Priority Experiments Only
 ```bash
-python src/tools/experiment_runner.py --priority high --max-concurrent 3
+python common/tools/experiment_runner.py --priority high --max-concurrent 3
 ```
 
 #### Run Specific Experiments
 ```bash
-python src/tools/experiment_runner.py --experiments exp125,exp126,exp127 --max-concurrent 3
+python common/tools/experiment_runner.py --experiments exp125,exp126,exp127 --max-concurrent 3
 ```
 
 #### Run All Queued Experiments
 ```bash
-python src/tools/experiment_runner.py --max-concurrent 5
+python common/tools/experiment_runner.py --max-concurrent 5
 ```
 
 ### Priority Levels
@@ -108,16 +108,16 @@ With staged execution (max 3 concurrent):
 ### Before (❌ Bad - Exhausts API)
 ```bash
 cd proteus
-python src/experiments/exp125_adaptive_stop_loss.py &
-python src/experiments/exp126_adaptive_profit_targets.py &
-python src/experiments/exp127_adaptive_max_hold_days.py &
+python common/experiments/exp125_adaptive_stop_loss.py &
+python common/experiments/exp126_adaptive_profit_targets.py &
+python common/experiments/exp127_adaptive_max_hold_days.py &
 # ... runs 100+ experiments simultaneously ...
 ```
 
 ### After (✅ Good - Controlled Execution)
 ```bash
 cd proteus
-python src/tools/experiment_runner.py \
+python common/tools/experiment_runner.py \
     --experiments exp125,exp126,exp127 \
     --max-concurrent 3
 ```
@@ -152,7 +152,7 @@ All three experiments completed successfully using the staged runner:
 - ❌ Execution strategy: BOTTLENECKED (FIXED)
 
 **Improvements Made**:
-1. Created `src/tools/experiment_runner.py` - Staged execution framework
+1. Created `common/tools/experiment_runner.py` - Staged execution framework
 2. Documented staged execution best practices
 3. Established priority-based scheduling
 

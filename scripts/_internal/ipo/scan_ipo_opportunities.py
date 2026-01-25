@@ -18,7 +18,7 @@ import argparse
 from datetime import datetime
 
 sys.path.insert(0, 'src')
-from src.trading.ipo_niche_screener import IPONicheScreener
+from common.trading.ipo_niche_screener import IPONicheScreener
 
 
 def run_scan(mode='balanced'):

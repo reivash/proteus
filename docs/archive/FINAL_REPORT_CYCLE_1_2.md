@@ -431,7 +431,7 @@ With 2 years of data:
 
 ### Code Implementation
 ```
-src/
+common/
 ├── data/
 │   ├── fetchers/
 │   │   ├── yahoo_finance.py           ✅ Stock data
@@ -485,7 +485,7 @@ docs/
 ```bash
 # Reproduce winner
 cd proteus
-python src/experiments/exp002_xgboost.py
+python common/experiments/exp002_xgboost.py
 
 # Expected output:
 # Directional Accuracy:  58.94%
@@ -496,9 +496,9 @@ python src/experiments/exp002_xgboost.py
 ### Making Predictions on New Data
 
 ```python
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
-from src.data.features.technical_indicators import TechnicalFeatureEngineer
-from src.models.ml.xgboost_classifier import XGBoostStockClassifier
+from common.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from common.data.features.technical_indicators import TechnicalFeatureEngineer
+from common.models.ml.xgboost_classifier import XGBoostStockClassifier
 
 # Fetch latest data
 fetcher = YahooFinanceFetcher()
@@ -592,14 +592,14 @@ The GPU is ready, the infrastructure is built, and the system works. Now we need
 cat logs/experiments/*.json | jq '.metrics.accuracy'
 
 # Run best model
-python src/experiments/exp002_xgboost.py
+python common/experiments/exp002_xgboost.py
 
 # Check system state
 cat data/system_state.json | jq '.best_performance'
 
 # Test on different stock
 # Edit exp004_tech_stocks.py, change ticker
-python src/experiments/exp004_tech_stocks.py
+python common/experiments/exp004_tech_stocks.py
 ```
 
 ---

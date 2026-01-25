@@ -177,14 +177,14 @@ for signal in signals:
 
 ## 📊 Modules Created (Production-Ready)
 
-### 1. `src/trading/risk_management/position_sizer.py`
+### 1. `common/trading/risk_management/position_sizer.py`
 - **PositionSizer class:** Dynamic sizing calculator
 - **Volatility adjustment:** ATR-based sizing
 - **Kelly Criterion:** Optimal bet sizing
 - **Portfolio heat tracking:** Risk management
 - **Confidence multipliers:** Sentiment integration
 
-### 2. `src/experiments/exp012_dynamic_position_sizing.py`
+### 2. `common/experiments/exp012_dynamic_position_sizing.py`
 - **Backtest framework:** Fixed vs Dynamic comparison
 - **Time-decay exits:** Same as v5.0
 - **Performance metrics:** Full analysis

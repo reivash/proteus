@@ -251,7 +251,7 @@ class ScoreTracker:
 
 def main():
     """Main function to demonstrate score tracking."""
-    from src.trading.ipo_advanced_screener import AdvancedIPOScreener
+    from common.trading.ipo_advanced_screener import AdvancedIPOScreener
 
     print("=" * 80)
     print("AI/ML IPO SCORE TRACKING SYSTEM")

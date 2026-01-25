@@ -50,14 +50,14 @@ The Proteus trading system is a GPU-accelerated mean reversion scanner that gene
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| SmartScanner | `src/trading/smart_scanner.py` | Main entry point for daily scans |
-| GPUSignalModel | `src/models/gpu_signal_model.py` | PyTorch model on RTX 4080 SUPER |
-| MarketRegimeDetector | `src/analysis/market_regime.py` | VIX-based regime classification |
-| VolatilitySizer | `src/trading/volatility_sizing.py` | ATR-based position sizing |
-| EarningsCalendar | `src/data/fetchers/earnings_calendar.py` | Earnings date filtering |
-| DashboardGenerator | `src/web/dashboard_generator.py` | HTML dashboard output |
-| SignalQualityValidator | `src/research/signal_quality_validator.py` | Backtesting and validation |
-| PaperTrader | `src/trading/paper_trader.py` | Simulated trading for validation |
+| SmartScanner | `common/trading/smart_scanner.py` | Main entry point for daily scans |
+| GPUSignalModel | `common/models/gpu_signal_model.py` | PyTorch model on RTX 4080 SUPER |
+| MarketRegimeDetector | `common/analysis/market_regime.py` | VIX-based regime classification |
+| VolatilitySizer | `common/trading/volatility_sizing.py` | ATR-based position sizing |
+| EarningsCalendar | `common/data/fetchers/earnings_calendar.py` | Earnings date filtering |
+| DashboardGenerator | `common/web/dashboard_generator.py` | HTML dashboard output |
+| SignalQualityValidator | `common/research/signal_quality_validator.py` | Backtesting and validation |
+| PaperTrader | `common/trading/paper_trader.py` | Simulated trading for validation |
 
 ## Signal Tier Classification
 
@@ -90,7 +90,7 @@ proteus/
 │   └── stock_configs/       # Per-stock configuration
 ├── models/
 │   └── gpu_signal/          # Trained PyTorch weights
-├── src/
+├── common/
 │   ├── trading/             # Core trading logic
 │   ├── models/              # ML models
 │   ├── analysis/            # Regime detection
@@ -116,7 +116,7 @@ proteus/
 
 ```python
 # Run a smart scan
-from src.trading.smart_scanner import run_smart_scan
+from common.trading.smart_scanner import run_smart_scan
 result = run_smart_scan()
 
 # View results
@@ -143,5 +143,5 @@ The system is validated through:
 
 Run validation:
 ```bash
-python src/research/signal_quality_validator.py
+python common/research/signal_quality_validator.py
 ```

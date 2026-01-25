@@ -2537,7 +2537,7 @@ Based on this investigation, here are concrete recommendations:
 **1. Honest Vol Targeting Module**
 
 ```python
-# proteus/src/risk/vol_targeting.py
+# proteus/common/risk/vol_targeting.py
 """
 Vol targeting module - implements what actually works.
 No claims of alpha - this is risk management.
@@ -2599,7 +2599,7 @@ class VolTargetingRiskManager:
 **2. Strategy Evaluation Framework**
 
 ```python
-# proteus/src/evaluation/strategy_evaluator.py
+# proteus/common/evaluation/strategy_evaluator.py
 """
 Honest strategy evaluation with proper adjustments.
 """
@@ -2713,7 +2713,7 @@ class HonestStrategyEvaluator:
 **3. Ablation Test Framework**
 
 ```python
-# proteus/src/evaluation/ablation.py
+# proteus/common/evaluation/ablation.py
 """
 Ablation testing to verify ML adds value over simple baselines.
 """

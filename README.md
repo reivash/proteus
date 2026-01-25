@@ -186,7 +186,7 @@ proteus/
 │   ├── daily_report.py              # Portfolio status reports
 │   └── _internal/                   # Utility scripts, research, batch files
 │
-├── src/                      # Core library
+├── common/                      # Core library
 │   ├── analysis/             # Regime detection, bear detector
 │   ├── data/                 # Data fetchers, features, sentiment
 │   ├── models/               # ML models (LSTM, Transformer, MLP)

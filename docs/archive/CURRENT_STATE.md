@@ -431,11 +431,11 @@ ALAB (Astera Labs):
 ### 1. IPO Niche Detection System (COMPLETE)
 **Status:** Production Ready with Advanced Features
 **Key Components:**
-- IPO Data Fetcher (`src/data/fetchers/ipo_data_fetcher.py`)
-- YC-style Niche Analyzer (`src/data/features/ipo_niche_analyzer.py`)
-- Competitive Positioning Analyzer (`src/data/features/competitive_positioning.py`)
-- Growth Trajectory Analyzer (`src/data/features/growth_trajectory_analyzer.py`)
-- Advanced IPO Screener (`src/trading/ipo_advanced_screener.py`)
+- IPO Data Fetcher (`common/data/fetchers/ipo_data_fetcher.py`)
+- YC-style Niche Analyzer (`common/data/features/ipo_niche_analyzer.py`)
+- Competitive Positioning Analyzer (`common/data/features/competitive_positioning.py`)
+- Growth Trajectory Analyzer (`common/data/features/growth_trajectory_analyzer.py`)
+- Advanced IPO Screener (`common/trading/ipo_advanced_screener.py`)
 
 **Quick Start Scripts:**
 - `scan_ipo_opportunities.py` - Basic IPO scanning
@@ -584,7 +584,7 @@ ALAB (Astera Labs):
     - Category breakdown (advertising, memory, chips, SaaS, etc.)
     - 10-year projections for each strategy
     - Complete buying and rebalancing guidance
-37. ✅ Added Figma to IPO database (src/data/fetchers/ipo_database.py)
+37. ✅ Added Figma to IPO database (common/data/fetchers/ipo_database.py)
 
 **System Now Covers:**
 - 22 AI/ML companies (vs 21 before)

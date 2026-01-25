@@ -7,8 +7,8 @@ Checks each company against screening filters to understand why they didn't pass
 import sys
 sys.path.insert(0, 'src')
 
-from src.data.fetchers.ipo_data_fetcher import IPODataFetcher
-from src.data.features.ipo_niche_analyzer import IPONicheAnalyzer
+from common.data.fetchers.ipo_data_fetcher import IPODataFetcher
+from common.data.features.ipo_niche_analyzer import IPONicheAnalyzer
 
 
 def diagnose_company(ticker: str, filters: dict):
@@ -149,7 +149,7 @@ def main():
     print("1. If companies failed due to IPO age: Increase max_ipo_age_months")
     print("2. If companies failed due to market cap: Adjust market cap range")
     print("3. If companies failed due to YC score: Lower min_yc_score threshold")
-    print("4. If no IPO date: Add to IPO database (src/data/fetchers/ipo_database.py)")
+    print("4. If no IPO date: Add to IPO database (common/data/fetchers/ipo_database.py)")
     print()
 
 

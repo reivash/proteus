@@ -607,7 +607,7 @@ Position Size:      2-3% of portfolio (elevated risk)
 #### 1.1 Project Setup
 - [ ] **1.1.1 Create directory structure**
   ```
-  src/analysis/phoenix/
+  common/analysis/phoenix/
   ├── __init__.py
   ├── analyzer.py
   ├── components/
@@ -618,8 +618,8 @@ Position Size:      2-3% of portfolio (elevated risk)
   **DoD**:
   - [ ] All directories created
   - [ ] `__init__.py` files in place with proper exports
-  - [ ] Can import: `from src.analysis.phoenix import PhoenixAnalyzer`
-  - [ ] No import errors when running `python -c "from src.analysis.phoenix import *"`
+  - [ ] Can import: `from common.analysis.phoenix import PhoenixAnalyzer`
+  - [ ] No import errors when running `python -c "from common.analysis.phoenix import *"`
 
 - [ ] **1.1.2 Create base classes and interfaces**
   **DoD**:
@@ -1332,7 +1332,7 @@ Use this table to track overall progress:
 
 ### Directory Structure
 ```
-src/analysis/phoenix/
+common/analysis/phoenix/
 ├── __init__.py
 ├── analyzer.py              # Main PhoenixAnalyzer class
 ├── components/
@@ -1465,12 +1465,12 @@ class PhoenixAnalyzer:
 - [Deloitte Turnaround Outlook 2025](https://www.deloitte.com/us/en/services/consulting/articles/turnaround-and-restructuring-outlook.html)
 
 ### Existing Proteus Infrastructure
-- `src/analysis/unified_regime_detector.py` - Market regime detection
-- `src/data/sentiment/unified_sentiment.py` - Sentiment pipeline
-- `src/data/features/technical_indicators.py` - Technical features
-- `src/data/features/cross_sectional_features.py` - Sector analysis
-- `src/data/fetchers/fred_macro.py` - Macro data
-- `src/models/hybrid_signal_model.py` - ML ensemble
+- `common/analysis/unified_regime_detector.py` - Market regime detection
+- `common/data/sentiment/unified_sentiment.py` - Sentiment pipeline
+- `common/data/features/technical_indicators.py` - Technical features
+- `common/data/features/cross_sectional_features.py` - Sector analysis
+- `common/data/fetchers/fred_macro.py` - Macro data
+- `common/models/hybrid_signal_model.py` - ML ensemble
 
 ---
 

@@ -379,7 +379,7 @@ detector = MeanReversionDetector(
 
 ### Proposed: Parameter Configuration File
 
-**Create `src/config/mean_reversion_params.py`:**
+**Create `common/config/mean_reversion_params.py`:**
 
 ```python
 """
@@ -427,7 +427,7 @@ def get_params(ticker):
 **Usage:**
 
 ```python
-from src.config.mean_reversion_params import get_params
+from common.config.mean_reversion_params import get_params
 
 # Get stock-specific parameters
 params = get_params('TSLA')

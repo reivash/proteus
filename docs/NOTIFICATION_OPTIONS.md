@@ -36,7 +36,7 @@ That's it! NO passwords, NO configuration, NO setup files.
 
 **Test it:**
 ```bash
-python -c "from src.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
+python -c "from common.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
 ```
 
 ## Option 2: Email via Gmail (Full Featured)
@@ -101,7 +101,7 @@ pip install sendgrid
 
 **Test it:**
 ```bash
-python -c "from src.notifications.sendgrid_notifier import SendGridNotifier; SendGridNotifier().send_test_email()"
+python -c "from common.notifications.sendgrid_notifier import SendGridNotifier; SendGridNotifier().send_test_email()"
 ```
 
 ## Can I Use Multiple Methods?
@@ -128,10 +128,10 @@ Then later, if you want email alerts on your phone, add Gmail or SendGrid.
 pip install windows-toasts
 
 # 2. Test
-python -c "from src.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
+python -c "from common.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
 
 # 3. Run dashboard
-python src/web/app.py
+python common/web/app.py
 ```
 
 You'll see: `✓ Windows Notifications: Enabled (NO PASSWORD NEEDED!)`
@@ -176,7 +176,7 @@ pip list | findstr windows-toasts
 pip install --upgrade windows-toasts
 
 # Test
-python -c "from src.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
+python -c "from common.notifications.windows_notifier import send_test_windows_notification; send_test_windows_notification()"
 ```
 
 ### Email Not Working
@@ -194,7 +194,7 @@ See troubleshooting in `docs/EMAIL_NOTIFICATIONS_SETUP.md`
 Literally 30 seconds:
 ```bash
 pip install windows-toasts
-python src/web/app.py
+python common/web/app.py
 ```
 
 No passwords, no configuration, no hassle!

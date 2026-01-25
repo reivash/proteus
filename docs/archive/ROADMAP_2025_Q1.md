@@ -23,7 +23,7 @@
 - [ ] Analyze time-of-day exit patterns (morning vs afternoon) - DEFERRED
 
 ### Week 2: Implementation - DONE Dec 22
-- [x] Build `ExitOptimizer` class in `src/trading/exit_optimizer.py`
+- [x] Build `ExitOptimizer` class in `common/trading/exit_optimizer.py`
 - [x] Implement dynamic profit target based on signal strength
 - [x] Add stop-loss calibration per stock tier
 - [x] Backtest new exit rules over 365 days
@@ -53,7 +53,7 @@
 - [x] Study portfolio heat limits and max drawdown
 
 ### Week 4: Implementation - DONE (Jan 4)
-- [x] Build `PositionSizer` class in `src/trading/position_sizer.py`
+- [x] Build `PositionSizer` class in `common/trading/position_sizer.py`
 - [x] Implement Kelly fraction with half-Kelly safety
 - [x] Add volatility normalization (equal risk per trade)
 - [x] Integrate with SmartScanner output
@@ -81,7 +81,7 @@
 - [x] Document architecture plan in `research/NEURAL_NETWORK_V2_RESEARCH.md`
 
 ### Week 6: Implementation - STARTED (Jan 4)
-- [x] Implement LSTM baseline model (`src/models/lstm_signal_model.py`)
+- [x] Implement LSTM baseline model (`common/models/lstm_signal_model.py`)
 - [ ] Add cross-stock correlation features
 - [ ] Train on 2-year historical data
 - [ ] A/B test against current model

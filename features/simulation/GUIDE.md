@@ -20,7 +20,7 @@ This paper trading system validates the Mean Reversion Strategy v4.0 with simula
 
 ## System Components
 
-### 1. Signal Scanner (`src/trading/signal_scanner.py`)
+### 1. Signal Scanner (`common/trading/signal_scanner.py`)
 
 Scans all 10 stocks daily for mean reversion signals.
 
@@ -34,7 +34,7 @@ Scans all 10 stocks daily for mean reversion signals.
 
 **Usage:**
 ```python
-from src.trading.signal_scanner import SignalScanner
+from common.trading.signal_scanner import SignalScanner
 
 scanner = SignalScanner(lookback_days=90)
 
@@ -47,7 +47,7 @@ signals = scanner.scan_all_stocks(date='2025-11-14')
 print(f"Found {len(signals)} signals")
 ```
 
-### 2. Paper Trader (`src/trading/paper_trader.py`)
+### 2. Paper Trader (`common/trading/paper_trader.py`)
 
 Simulates trade execution with position tracking and P&L calculation.
 
@@ -69,7 +69,7 @@ Simulates trade execution with position tracking and P&L calculation.
 
 **Usage:**
 ```python
-from src.trading.paper_trader import PaperTrader
+from common.trading.paper_trader import PaperTrader
 
 trader = PaperTrader(
     initial_capital=100000,
@@ -96,7 +96,7 @@ print(f"Total return: {performance['total_return']:.2f}%")
 trader.save()
 ```
 
-### 3. Performance Tracker (`src/trading/performance_tracker.py`)
+### 3. Performance Tracker (`common/trading/performance_tracker.py`)
 
 Tracks performance and compares to backtest expectations.
 
@@ -116,7 +116,7 @@ Tracks performance and compares to backtest expectations.
 
 **Usage:**
 ```python
-from src.trading.performance_tracker import PerformanceTracker
+from common.trading.performance_tracker import PerformanceTracker
 
 tracker = PerformanceTracker()
 
@@ -143,7 +143,7 @@ print(f"Max drawdown: {stats['max_drawdown']:.2f}%")
 tracker.export_to_csv('performance_history.csv')
 ```
 
-### 4. Daily Runner (`src/trading/daily_runner.py`)
+### 4. Daily Runner (`common/trading/daily_runner.py`)
 
 Orchestrates the complete daily workflow.
 
@@ -159,19 +159,19 @@ Orchestrates the complete daily workflow.
 
 ```bash
 # Run today's workflow
-python src/trading/daily_runner.py
+python common/trading/daily_runner.py
 
 # Run for specific date (historical testing)
-python src/trading/daily_runner.py --date 2025-11-14
+python common/trading/daily_runner.py --date 2025-11-14
 
 # Custom configuration
-python src/trading/daily_runner.py \
+python common/trading/daily_runner.py \
   --capital 100000 \
   --position-size 0.1 \
   --max-positions 5
 
 # Generate report only (no trading)
-python src/trading/daily_runner.py --report-only
+python common/trading/daily_runner.py --report-only
 ```
 
 **Output:**
@@ -201,27 +201,27 @@ python src/trading/daily_runner.py --report-only
    ```
 
 2. **Verify configuration:**
-   - Check `src/config/mean_reversion_params.py` has all 10 stocks configured
+   - Check `common/config/mean_reversion_params.py` has all 10 stocks configured
    - Verify stock-specific parameters are set
    - Confirm universe: NVDA, TSLA, AAPL, AMZN, MSFT, JPM, JNJ, UNH, INTC, CVX
 
 3. **Test components individually:**
    ```bash
    # Test signal scanner
-   python -c "from src.trading.signal_scanner import SignalScanner; \
+   python -c "from common.trading.signal_scanner import SignalScanner; \
               scanner = SignalScanner(); \
               print(f'Regime: {scanner.get_market_regime()}')"
 
    # Test paper trader
-   python src/trading/paper_trader.py
+   python common/trading/paper_trader.py
 
    # Test performance tracker
-   python src/trading/performance_tracker.py
+   python common/trading/performance_tracker.py
    ```
 
 4. **Run first daily workflow:**
    ```bash
-   python src/trading/daily_runner.py
+   python common/trading/daily_runner.py
    ```
 
 ---
@@ -234,7 +234,7 @@ python src/trading/daily_runner.py --report-only
 
 1. **Run daily workflow** (before market open or after market close):
    ```bash
-   python src/trading/daily_runner.py
+   python common/trading/daily_runner.py
    ```
 
 2. **Review daily report:**
@@ -261,7 +261,7 @@ python src/trading/daily_runner.py --report-only
 
 1. **Generate weekly summary:**
    ```bash
-   python src/trading/daily_runner.py --report-only
+   python common/trading/daily_runner.py --report-only
    ```
 
 2. **Analyze metrics:**
@@ -278,7 +278,7 @@ python src/trading/daily_runner.py --report-only
 
 4. **Export data for analysis:**
    ```bash
-   python -c "from src.trading.performance_tracker import PerformanceTracker; \
+   python -c "from common.trading.performance_tracker import PerformanceTracker; \
               tracker = PerformanceTracker(); \
               tracker.export_to_csv('week_X_performance.csv')"
    ```
@@ -424,7 +424,7 @@ After 5 weeks of operation (Weeks 2-6), evaluate:
 
 - **Production Guide:** `PRODUCTION_DEPLOYMENT_GUIDE.md`
 - **Experiment Results:** `EXPERIMENT_RESULTS_SUMMARY.md`
-- **Configuration:** `src/config/mean_reversion_params.py`
+- **Configuration:** `common/config/mean_reversion_params.py`
 - **Backtest Results:** `docs/experiments/`
 
 ---

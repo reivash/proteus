@@ -35,7 +35,7 @@ def test_price_validation():
 
     # Test 1: Valid price range check
     try:
-        from src.config.trading_constants import DATA_QUALITY
+        from common.config.trading_constants import DATA_QUALITY
 
         valid_prices = [10.0, 100.0, 500.0, 1000.0]
         invalid_prices = [0.0, -5.0, 0.50, 15000.0]
@@ -58,7 +58,7 @@ def test_price_validation():
 
     # Test 2: Staleness check
     try:
-        from src.models.gpu_signal_model import GPUSignalModel
+        from common.models.gpu_signal_model import GPUSignalModel
         model = GPUSignalModel()
 
         # Mock stale data
@@ -335,7 +335,7 @@ def test_vectorized_operations():
 
     # Test 1: Vectorized SMA vs loop
     try:
-        from src.models.gpu_signal_model import GPUSignalModel
+        from common.models.gpu_signal_model import GPUSignalModel
         model = GPUSignalModel()
 
         arr = np.arange(100, dtype=float)
@@ -390,7 +390,7 @@ def test_sector_feature_quality():
 
     # Test 1: Sector mapping coverage
     try:
-        from src.data.features.cross_sectional_features import SECTOR_MAP, SECTOR_ETF_MAP
+        from common.data.features.cross_sectional_features import SECTOR_MAP, SECTOR_ETF_MAP
 
         # Check coverage
         assert len(SECTOR_MAP) >= 50
@@ -416,7 +416,7 @@ def test_sector_feature_quality():
 
     # Test 3: Sector momentum categories
     try:
-        from src.trading.sector_momentum import SectorMomentumCalculator
+        from common.trading.sector_momentum import SectorMomentumCalculator
         calc = SectorMomentumCalculator()
 
         # Test category boundaries

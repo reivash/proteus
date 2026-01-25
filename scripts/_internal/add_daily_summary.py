@@ -480,7 +480,7 @@ DAILY_SUMMARY_METHODS = '''
 '''
 
 def main():
-    with open('src/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
         content = f.read()
 
     # Find insertion point - before the standalone functions
@@ -493,7 +493,7 @@ def main():
         print("Could not find insertion point")
         return
 
-    with open('src/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
         f.write(content)
 
     print("Done")

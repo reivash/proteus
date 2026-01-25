@@ -18,7 +18,7 @@ from datetime import datetime
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.analysis.fast_bear_detector import FastBearDetector
+from common.analysis.fast_bear_detector import FastBearDetector
 
 
 def log_message(message: str, log_file: str = 'logs/bear_monitor.log'):

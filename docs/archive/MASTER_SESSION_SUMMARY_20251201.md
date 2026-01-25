@@ -479,7 +479,7 @@ Plus core system components (screeners, analyzers, data fetchers)
 
 ### Data Files
 - `data/score_history.json` - Historical scores for 19 companies
-- `src/data/fetchers/ipo_database.py` - 21 companies with IPO dates
+- `common/data/fetchers/ipo_database.py` - 21 companies with IPO dates
 - `results/ai_ml_expanded_analysis_[timestamp].txt` - Analysis reports
 - `results/portfolio_recommendations_[timestamp].json` - Portfolio outputs
 

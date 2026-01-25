@@ -20,7 +20,7 @@ proteus/
 │   ├── daily_report.py              # Portfolio status reports
 │   └── _internal/                   # Utility scripts, research, batch files
 │
-├── src/                      # Core library
+├── common/                      # Core library
 │   ├── analysis/             # Regime detection, bear detector
 │   ├── data/                 # Data fetchers, features, sentiment
 │   ├── models/               # ML models (LSTM, Transformer, MLP)
@@ -45,11 +45,11 @@ SmartScannerV2 → UnifiedRegimeDetector → HybridSignalModel → PenaltiesOnly
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| Scanner | `src/trading/smart_scanner_v2.py` | Main orchestration |
-| Regime | `src/analysis/unified_regime_detector.py` | BULL/BEAR/CHOPPY/VOLATILE |
-| Models | `src/models/hybrid_signal_model.py` | LSTM+Transformer+MLP ensemble |
-| Signals | `src/trading/penalties_only_calculator.py` | Signal adjustments |
-| Wallet | `src/trading/virtual_wallet.py` | Paper trading |
+| Scanner | `common/trading/smart_scanner_v2.py` | Main orchestration |
+| Regime | `common/analysis/unified_regime_detector.py` | BULL/BEAR/CHOPPY/VOLATILE |
+| Models | `common/models/hybrid_signal_model.py` | LSTM+Transformer+MLP ensemble |
+| Signals | `common/trading/penalties_only_calculator.py` | Signal adjustments |
+| Wallet | `common/trading/virtual_wallet.py` | Paper trading |
 | Config | `config/unified_config.json` | Stock tiers, exit rules |
 
 ## Core Scripts

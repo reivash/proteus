@@ -7,9 +7,9 @@ from datetime import timedelta
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
-from src.data.features.technical_indicators import TechnicalFeatureEngineer
-from src.models.trading.mean_reversion import MeanReversionDetector
+from common.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from common.data.features.technical_indicators import TechnicalFeatureEngineer
+from common.models.trading.mean_reversion import MeanReversionDetector
 
 # Test with NVDA
 ticker = 'NVDA'

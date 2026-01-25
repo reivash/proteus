@@ -74,7 +74,7 @@ Both Claude and Codex share the same:
 - **data/state.json** - Current system state
 - **docs/research/** - Research papers and summaries
 - **docs/feasibility/** - Feasibility analyses
-- **src/** - Implementation code
+- **common/** - Implementation code
 - **logs/** - Activity logs
 
 This means you can switch between them seamlessly - they'll both continue from where the other left off.

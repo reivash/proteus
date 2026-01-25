@@ -264,7 +264,7 @@ TREND_METHODS = '''
 '''
 
 def main():
-    with open('src/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
         content = f.read()
 
     # Find insertion point before if __name__
@@ -277,7 +277,7 @@ def main():
         print("Could not find insertion marker")
         return
 
-    with open('src/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
         f.write(content)
 
     print("Done")

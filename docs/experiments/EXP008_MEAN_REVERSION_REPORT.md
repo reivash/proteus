@@ -415,9 +415,9 @@ Average Sharpe Ratio:       3.56
 ### Technical Implementation
 
 **Files Created:**
-- `src/models/trading/mean_reversion.py` - Detection and backtesting classes
-- `src/experiments/exp008_mean_reversion.py` - Single stock tester
-- `src/experiments/exp008_multi_stock_test.py` - Multi-stock batch tester
+- `common/models/trading/mean_reversion.py` - Detection and backtesting classes
+- `common/experiments/exp008_mean_reversion.py` - Single stock tester
+- `common/experiments/exp008_multi_stock_test.py` - Multi-stock batch tester
 
 **Classes Implemented:**
 - `MeanReversionDetector` - Signal detection

@@ -36,22 +36,22 @@ The system applies Paul Graham's Y Combinator investment thesis:
 
 ### Core Components
 
-#### 1. IPO Data Fetcher (`src/data/fetchers/ipo_data_fetcher.py`)
+#### 1. IPO Data Fetcher (`common/data/fetchers/ipo_data_fetcher.py`)
 - Fetches IPO dates and fundamental data
 - Uses curated database + yfinance fallback
 - Tracks market cap, revenue growth, margins
 
-#### 2. IPO Database (`src/data/fetchers/ipo_database.py`)
+#### 2. IPO Database (`common/data/fetchers/ipo_database.py`)
 - Curated database of IPO dates (2015-2024)
 - 40+ notable tech/fintech/emerging category IPOs
 - More reliable than API lookups
 
-#### 3. Niche Market Analyzer (`src/data/features/ipo_niche_analyzer.py`)
+#### 3. Niche Market Analyzer (`common/data/features/ipo_niche_analyzer.py`)
 - Identifies niche categories and market dominance
 - Calculates YC-style scores across 4 dimensions
 - Detects emerging categories and scaling inflections
 
-#### 4. IPO Screener (`src/trading/ipo_niche_screener.py`)
+#### 4. IPO Screener (`common/trading/ipo_niche_screener.py`)
 - Main user interface for screening
 - Configurable filters (market cap, IPO age, YC score)
 - Generates detailed reports
@@ -99,7 +99,7 @@ Identifies inflection points:
 ### Basic Screening
 
 ```python
-from src.trading.ipo_niche_screener import IPONicheScreener
+from common.trading.ipo_niche_screener import IPONicheScreener
 
 # Initialize screener
 screener = IPONicheScreener(
@@ -120,7 +120,7 @@ report = screener.generate_report(candidates, filename="ipo_report.txt")
 
 ```bash
 # Run with default settings
-python src/trading/ipo_niche_screener.py
+python common/trading/ipo_niche_screener.py
 
 # Expected output:
 # - Screen 40+ IPO tickers
@@ -233,7 +233,7 @@ screener = IPONicheScreener(
 
 ### Updating IPO Database
 
-Add new IPOs to `src/data/fetchers/ipo_database.py`:
+Add new IPOs to `common/data/fetchers/ipo_database.py`:
 
 ```python
 IPO_DATABASE = {
@@ -324,7 +324,7 @@ emerging = emerging[emerging['revenue_growth_yoy'] > 0.5]  # >50%
 
 ```
 proteus/
-├── src/
+├── common/
 │   ├── data/
 │   │   ├── fetchers/
 │   │   │   ├── ipo_data_fetcher.py     # IPO data + fundamentals

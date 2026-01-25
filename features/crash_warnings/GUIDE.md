@@ -108,7 +108,7 @@ python generate_dashboard.py
 ### Regime Detection
 Bear early warning is included in regime analysis:
 ```python
-from src.analysis.unified_regime_detector import UnifiedRegimeDetector
+from common.analysis.unified_regime_detector import UnifiedRegimeDetector
 detector = UnifiedRegimeDetector()
 result = detector.detect_regime()
 print(f"Bear Score: {result.early_warning_score}/100")
@@ -274,7 +274,7 @@ Key insight: Optimized weights generalize well across different market condition
 ## Python API
 
 ```python
-from src.analysis.fast_bear_detector import FastBearDetector
+from common.analysis.fast_bear_detector import FastBearDetector
 
 # Get current bear signal
 detector = FastBearDetector()
@@ -304,15 +304,15 @@ All data is free from:
 
 | File | Purpose |
 |------|---------|
-| `src/analysis/fast_bear_detector.py` | Core detection engine |
-| `src/trading/bearish_alert_service.py` | Email alerts & daily summary |
-| `src/notifications/webhook_notifier.py` | Discord/Slack/Pushover webhooks |
+| `common/analysis/fast_bear_detector.py` | Core detection engine |
+| `common/trading/bearish_alert_service.py` | Email alerts & daily summary |
+| `common/notifications/webhook_notifier.py` | Discord/Slack/Pushover webhooks |
 | `scripts/run_bear_monitor.py` | CLI tool |
 | `scripts/bear_api_server.py` | HTTP API server |
 | `scripts/validate_bear_detection.py` | Historical validation |
 | `scripts/validate_bear_weights_oos.py` | Out-of-sample validation |
 | `scripts/optimize_bear_weights.py` | Weight optimization (genetic algorithm) |
 | `config/bear_detection_config.json` | Customizable configuration |
-| `src/config/bear_config.py` | Configuration loader |
+| `common/config/bear_config.py` | Configuration loader |
 | `data/bear_score_history.json` | Score history for trends |
 | `data/bear_alert_state.json` | Alert cooldown state |

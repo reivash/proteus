@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.trading.signal_scanner import SignalScanner
+from common.trading.signal_scanner import SignalScanner
 
 
 def calculate_recent_q4_threshold(days_back=30):
@@ -80,7 +80,7 @@ def update_daily_runner(q4_threshold):
     Args:
         q4_threshold: Minimum signal strength threshold
     """
-    runner_path = Path('src/trading/daily_runner.py')
+    runner_path = Path('common/trading/daily_runner.py')
 
     if not runner_path.exists():
         print(f"\n[ERROR] daily_runner.py not found at {runner_path}")

@@ -2,7 +2,7 @@
 Quick test to diagnose SendGrid email issue
 """
 import sys
-from src.notifications.sendgrid_notifier import SendGridNotifier
+from common.notifications.sendgrid_notifier import SendGridNotifier
 
 def test_sendgrid():
     """Test SendGrid email delivery with detailed error logging."""

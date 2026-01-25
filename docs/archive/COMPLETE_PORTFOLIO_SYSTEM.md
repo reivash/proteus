@@ -476,7 +476,7 @@ Between quarterly rebalances, you may want to:
 ### Data Files
 
 **Input:**
-- `src/data/fetchers/ipo_database.py` - 50 companies with IPO dates
+- `common/data/fetchers/ipo_database.py` - 50 companies with IPO dates
 - `data/score_history.json` - Historical score tracking (19 companies)
 
 **Output:**

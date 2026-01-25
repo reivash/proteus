@@ -1,6 +1,6 @@
 """Send bearish market prediction email."""
-from src.notifications.sendgrid_notifier import SendGridNotifier, SENDGRID_AVAILABLE
-from src.analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod
+from common.notifications.sendgrid_notifier import SendGridNotifier, SENDGRID_AVAILABLE
+from common.analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod
 from datetime import datetime
 
 print('Generating bearish market prediction email...')

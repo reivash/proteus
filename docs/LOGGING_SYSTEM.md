@@ -140,7 +140,7 @@ cat logs/scans/summary/latest_scans.log
 ### Programmatic Access
 
 ```python
-from src.utils.scan_logger import ScanLogger
+from common.utils.scan_logger import ScanLogger
 
 logger = ScanLogger()
 

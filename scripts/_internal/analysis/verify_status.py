@@ -25,9 +25,9 @@ def check_files():
     critical_files = {
         'Research Strategy': 'RESEARCH_STRATEGY.md',
         'Production Deployment': 'PRODUCTION_DEPLOYMENT.md',
-        'Parameters Config': 'src/config/mean_reversion_params.py',
-        'Production Scanner': 'src/experiments/exp056_production_scanner.py',
-        'Email Notifier': 'src/notifications/sendgrid_notifier.py',
+        'Parameters Config': 'common/config/mean_reversion_params.py',
+        'Production Scanner': 'common/experiments/exp056_production_scanner.py',
+        'Email Notifier': 'common/notifications/sendgrid_notifier.py',
         'Email Config': 'email_config.json'
     }
 
@@ -121,7 +121,7 @@ def get_next_actions():
     print()
     print("[START] How to Begin:")
     print("  1. Read RESEARCH_STRATEGY.md for full context")
-    print("  2. Run: python src/experiments/exp062_sentiment_data_collection.py")
+    print("  2. Run: python common/experiments/exp062_sentiment_data_collection.py")
     print("  3. After each experiment, send email report")
     print("  4. Update RESEARCH_STRATEGY.md with findings")
 

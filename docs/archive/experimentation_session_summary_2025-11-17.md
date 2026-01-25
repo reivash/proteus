@@ -38,7 +38,7 @@
 
 **Impact**: Significant improvement to portfolio performance through systematic parameter tuning
 
-**File Modified**: `src/config/mean_reversion_params.py` (v15.5-EXP072)
+**File Modified**: `common/config/mean_reversion_params.py` (v15.5-EXP072)
 
 ---
 
@@ -232,21 +232,21 @@
 ### Files Modified
 
 **Production Code**:
-- `src/models/trading/mean_reversion.py` - Deployed trailing stop (v6.0), then REVERTED to time_decay (v5.0)
-- `src/config/mean_reversion_params.py` - Updated with EXP-072 optimized parameters (v15.5-EXP072)
+- `common/models/trading/mean_reversion.py` - Deployed trailing stop (v6.0), then REVERTED to time_decay (v5.0)
+- `common/config/mean_reversion_params.py` - Updated with EXP-072 optimized parameters (v15.5-EXP072)
 
 **New Files Created**:
-- `src/experiments/exp073_gap_trading.py` - Gap trading strategy (FAILED)
-- `src/experiments/exp074_exit_strategy_optimization.py` - Exit strategy tests
-- `src/experiments/exp075_trailing_stop_validation.py` - Full portfolio validation
-- `src/experiments/exp076_volatility_position_sizing.py` - Volatility-based sizing (INCOMPLETE)
-- `src/experiments/exp077_adaptive_exit_strategy.py` - ATR-based exits (INCOMPLETE)
-- `src/experiments/exp078_intraday_entry_timing.py` - Entry timing analysis (IMPRACTICAL)
-- `src/experiments/exp079_deep_learning_signals.py` - LSTM signal prediction (FAILED)
-- `src/experiments/exp080_limit_order_entry.py` - Limit order testing (SELECTION BIAS)
-- `src/experiments/exp081_signal_quality_scoring.py` - Quality filtering (CATASTROPHIC)
-- `src/models/trading/gap_trading.py` - Gap trading implementation (NOT VIABLE)
-- `src/data/ml/ml_performance_tracker.py` - Production ML validation tracking
+- `common/experiments/exp073_gap_trading.py` - Gap trading strategy (FAILED)
+- `common/experiments/exp074_exit_strategy_optimization.py` - Exit strategy tests
+- `common/experiments/exp075_trailing_stop_validation.py` - Full portfolio validation
+- `common/experiments/exp076_volatility_position_sizing.py` - Volatility-based sizing (INCOMPLETE)
+- `common/experiments/exp077_adaptive_exit_strategy.py` - ATR-based exits (INCOMPLETE)
+- `common/experiments/exp078_intraday_entry_timing.py` - Entry timing analysis (IMPRACTICAL)
+- `common/experiments/exp079_deep_learning_signals.py` - LSTM signal prediction (FAILED)
+- `common/experiments/exp080_limit_order_entry.py` - Limit order testing (SELECTION BIAS)
+- `common/experiments/exp081_signal_quality_scoring.py` - Quality filtering (CATASTROPHIC)
+- `common/models/trading/gap_trading.py` - Gap trading implementation (NOT VIABLE)
+- `common/data/ml/ml_performance_tracker.py` - Production ML validation tracking
 
 ---
 

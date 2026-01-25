@@ -25,12 +25,12 @@
 ### Key Files
 | Component | File | Purpose |
 |-----------|------|---------|
-| Scanner | `src/trading/smart_scanner_v2.py` | Main scan orchestration |
-| Regime | `src/analysis/unified_regime_detector.py` | Market regime classification |
-| Bear Detection | `src/analysis/fast_bear_detector.py` | Early warning system |
-| Signals | `src/trading/penalties_only_calculator.py` | Signal adjustments |
-| Models | `src/models/hybrid_signal_model.py` | 3-model ensemble |
-| Wallet | `src/trading/virtual_wallet.py` | Paper trading |
+| Scanner | `common/trading/smart_scanner_v2.py` | Main scan orchestration |
+| Regime | `common/analysis/unified_regime_detector.py` | Market regime classification |
+| Bear Detection | `common/analysis/fast_bear_detector.py` | Early warning system |
+| Signals | `common/trading/penalties_only_calculator.py` | Signal adjustments |
+| Models | `common/models/hybrid_signal_model.py` | 3-model ensemble |
+| Wallet | `common/trading/virtual_wallet.py` | Paper trading |
 | Config | `config/unified_config.json` | Stock tiers, exit rules |
 
 ---
@@ -178,7 +178,7 @@ python scripts/generate_daily_report.py
 python tests/test_smoke.py
 
 # Health check
-python -c "from src.trading.scanner_runner import ScannerRunner; r=ScannerRunner(); print(r.run_health_checks())"
+python -c "from common.trading.scanner_runner import ScannerRunner; r=ScannerRunner(); print(r.run_health_checks())"
 ```
 
 ---
@@ -199,7 +199,7 @@ When starting a new session:
 2. Check `features/simulation/data/virtual_wallet/wallet_state.json` for current positions
 3. Check `data/smart_scans/latest_scan.json` for recent signals
 4. Run smoke tests to verify system health
-5. Review any pending experiments in `src/experiments/`
+5. Review any pending experiments in `common/experiments/`
 
 ---
 

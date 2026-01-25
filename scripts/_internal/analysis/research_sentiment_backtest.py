@@ -210,7 +210,7 @@ def simulate_sentiment_filter():
 
 def test_live_sentiment():
     """Test live sentiment on current signals."""
-    from src.data.sentiment.unified_sentiment import UnifiedSentimentScorer
+    from common.data.sentiment.unified_sentiment import UnifiedSentimentScorer
 
     print()
     print("=" * 70)

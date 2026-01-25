@@ -12,7 +12,7 @@ from datetime import datetime
 
 sys.path.insert(0, 'src')
 
-from src.notifications.sendgrid_notifier import SendGridNotifier
+from common.notifications.sendgrid_notifier import SendGridNotifier
 
 
 def send_recommendation_email():

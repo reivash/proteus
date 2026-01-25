@@ -65,7 +65,7 @@ def main():
     args = parser.parse_args()
 
     # Import detector
-    from src.analysis.fast_bear_detector import FastBearDetector
+    from common.analysis.fast_bear_detector import FastBearDetector
 
     detector = FastBearDetector()
 

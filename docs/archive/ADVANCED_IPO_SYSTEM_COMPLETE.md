@@ -12,7 +12,7 @@ The IPO Niche Detection System has been **significantly enhanced** with advanced
 ## 🎯 What's New - Advanced Enhancements
 
 ### 1. **Competitive Positioning Analyzer** ✨
-**File:** `src/data/features/competitive_positioning.py`
+**File:** `common/data/features/competitive_positioning.py`
 
 Analyzes companies vs. peers to identify market dominators:
 
@@ -32,7 +32,7 @@ Competitive Moat: 90/100
 ```
 
 ### 2. **Growth Trajectory Analyzer** 📈
-**File:** `src/data/features/growth_trajectory_analyzer.py`
+**File:** `common/data/features/growth_trajectory_analyzer.py`
 
 Tracks performance since IPO and identifies inflection points:
 
@@ -52,7 +52,7 @@ Outpacing Market: Yes (67.9% vs 24.6%)
 ```
 
 ### 3. **Advanced IPO Screener** 🔬
-**File:** `src/trading/ipo_advanced_screener.py`
+**File:** `common/trading/ipo_advanced_screener.py`
 
 Integrates all analyses into comprehensive scoring:
 
@@ -78,7 +78,7 @@ Advanced YC Score =
 
 ```
 proteus/
-├── src/
+├── common/
 │   ├── data/
 │   │   ├── fetchers/
 │   │   │   ├── ipo_data_fetcher.py          # IPO data + fundamentals
@@ -117,12 +117,12 @@ python scan_ipo_opportunities.py exploratory
 ### Deep Analysis (Advanced) - NEW! ✨
 ```bash
 # Comprehensive analysis with all features
-python src/trading/ipo_advanced_screener.py
+python common/trading/ipo_advanced_screener.py
 ```
 
 ### Custom Advanced Screening
 ```python
-from src.trading.ipo_advanced_screener import AdvancedIPOScreener
+from common.trading.ipo_advanced_screener import AdvancedIPOScreener
 
 # Initialize
 screener = AdvancedIPOScreener(
@@ -304,7 +304,7 @@ Check:
 ### 4. Track Portfolio Candidates
 Run weekly:
 ```bash
-python src/trading/ipo_advanced_screener.py
+python common/trading/ipo_advanced_screener.py
 ```
 
 Monitor score changes over time to detect deterioration or improvement.
@@ -406,10 +406,10 @@ From analyzing RDDT and ASND, the pattern is clear:
 python scan_ipo_opportunities.py exploratory
 
 # 2. Advanced screening (comprehensive) ✨ NEW
-python src/trading/ipo_advanced_screener.py
+python common/trading/ipo_advanced_screener.py
 
 # 3. Test individual components
-cd src/data/features
+cd common/data/features
 python competitive_positioning.py          # Test competitive analysis
 python growth_trajectory_analyzer.py       # Test trajectory analysis
 ```

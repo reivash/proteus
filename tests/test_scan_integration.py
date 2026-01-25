@@ -32,7 +32,7 @@ def test_regime_detection():
 
     # Test 1: MarketRegimeDetector loads
     try:
-        from src.analysis.market_regime import MarketRegimeDetector, RegimeAnalysis
+        from common.analysis.market_regime import MarketRegimeDetector, RegimeAnalysis
         detector = MarketRegimeDetector()
         print("[PASS] MarketRegimeDetector imports successfully")
         passed += 1
@@ -64,7 +64,7 @@ def test_regime_detection():
 
     # Test 4: Regime multipliers are valid
     try:
-        from src.analysis.market_regime import MarketRegime
+        from common.analysis.market_regime import MarketRegime
         for regime in MarketRegime:
             mult = detector.get_position_multiplier(regime)
             assert 0 < mult <= 1.5
@@ -89,7 +89,7 @@ def test_bear_detection():
 
     # Test 1: FastBearDetector loads
     try:
-        from src.analysis.fast_bear_detector import FastBearDetector, FastBearSignal
+        from common.analysis.fast_bear_detector import FastBearDetector, FastBearSignal
         detector = FastBearDetector()
         print("[PASS] FastBearDetector imports successfully")
         passed += 1
@@ -136,7 +136,7 @@ def test_gpu_signal_model():
 
     # Test 1: GPUSignalModel loads
     try:
-        from src.models.gpu_signal_model import GPUSignalModel
+        from common.models.gpu_signal_model import GPUSignalModel
         model = GPUSignalModel()
         print(f"[PASS] GPUSignalModel loads on device: {model.device}")
         passed += 1
@@ -203,7 +203,7 @@ def test_signal_enhancement():
 
     # Test 1: PenaltiesOnlyCalculator loads (PRODUCTION calculator)
     try:
-        from src.trading.penalties_only_calculator import PenaltiesOnlyCalculator
+        from common.trading.penalties_only_calculator import PenaltiesOnlyCalculator
         prod_calc = PenaltiesOnlyCalculator()
         print(f"[PASS] PenaltiesOnlyCalculator loads ({prod_calc.penalty_count} penalties)")
         passed += 1
@@ -248,7 +248,7 @@ def test_signal_enhancement():
 
     # Test 4: Legacy EnhancedSignalCalculator still works (for backwards compat)
     try:
-        from src.trading.enhanced_signal_calculator import EnhancedSignalCalculator
+        from common.trading.enhanced_signal_calculator import EnhancedSignalCalculator
         legacy_calc = EnhancedSignalCalculator()
         result = legacy_calc.calculate_enhanced_strength(
             ticker='NVDA',
@@ -281,7 +281,7 @@ def test_position_sizing():
 
     # Test 1: PositionSizer loads
     try:
-        from src.trading.position_sizer import PositionSizer
+        from common.trading.position_sizer import PositionSizer
         sizer = PositionSizer(portfolio_value=100000)
         print("[PASS] PositionSizer loads")
         passed += 1
@@ -328,7 +328,7 @@ def test_sector_momentum():
 
     # Test 1: SectorMomentumCalculator loads
     try:
-        from src.trading.sector_momentum import SectorMomentumCalculator
+        from common.trading.sector_momentum import SectorMomentumCalculator
         calc = SectorMomentumCalculator()
         print("[PASS] SectorMomentumCalculator loads")
         passed += 1
@@ -385,7 +385,7 @@ def test_cross_sectional_features():
 
     # Test 1: Module loads
     try:
-        from src.data.features.cross_sectional_features import (
+        from common.data.features.cross_sectional_features import (
             CrossSectionalFeatureEngineer, SECTOR_MAP, SECTOR_ETF_MAP
         )
         engineer = CrossSectionalFeatureEngineer()
@@ -430,7 +430,7 @@ def test_logging_infrastructure():
 
     # Test 1: Logging config loads
     try:
-        from src.utils.logging_config import get_logger, setup_logging
+        from common.utils.logging_config import get_logger, setup_logging
         print("[PASS] Logging config imports")
         passed += 1
     except Exception as e:
@@ -450,7 +450,7 @@ def test_logging_infrastructure():
 
     # Test 3: Log directory exists
     try:
-        from src.utils.logging_config import LOG_DIR
+        from common.utils.logging_config import LOG_DIR
         assert LOG_DIR.exists() or True  # May not exist until first log
         print(f"[PASS] Log directory configured: {LOG_DIR}")
         passed += 1

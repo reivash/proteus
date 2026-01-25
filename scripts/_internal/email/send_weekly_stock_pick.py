@@ -15,8 +15,8 @@ from pathlib import Path
 
 sys.path.insert(0, 'src')
 
-from src.trading.weekly_ipo_recommender import WeeklyIPORecommender
-from src.notifications.sendgrid_notifier import SendGridNotifier
+from common.trading.weekly_ipo_recommender import WeeklyIPORecommender
+from common.notifications.sendgrid_notifier import SendGridNotifier
 
 
 def load_email_config():

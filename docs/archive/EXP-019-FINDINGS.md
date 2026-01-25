@@ -90,7 +90,7 @@ Panic sell on 2024-05-15 → No sentiment data for that date → Use neutral →
 ### What We Built (Production-Ready)
 
 **Created:**
-- `src/experiments/exp019_sentiment_integration.py` (600+ lines)
+- `common/experiments/exp019_sentiment_integration.py` (600+ lines)
 - Sentiment collection integration
 - Signal confidence classification
 - Backtest framework

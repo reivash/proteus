@@ -262,7 +262,7 @@ TREND_METHODS = '''
 '''
 
 def main():
-    with open('src/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'r', encoding='utf-8') as f:
         content = f.read()
 
     # First, remove the incorrectly placed methods (after print_bear_trend function)
@@ -290,7 +290,7 @@ def main():
         print("Could not find insertion point")
         return
 
-    with open('src/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
+    with open('common/analysis/fast_bear_detector.py', 'w', encoding='utf-8') as f:
         f.write(content)
 
     print("Done")

@@ -4,7 +4,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath('.'))
 
-from src.data.sentiment.sentiment_features import SentimentFeaturePipeline
+from common.data.sentiment.sentiment_features import SentimentFeaturePipeline
 
 # Test if pipeline is ready
 pipeline = SentimentFeaturePipeline()

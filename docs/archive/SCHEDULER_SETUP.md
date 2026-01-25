@@ -118,7 +118,7 @@ The script will run daily, but you can configure it to skip weekends:
 6. Set **"Attempt to restart up to: 3 times"**
 
 ### Advanced: Market Calendar Integration
-Create `src/utils/market_calendar.py` to check if today is a trading day:
+Create `common/utils/market_calendar.py` to check if today is a trading day:
 ```python
 import pandas_market_calendars as mcal
 
@@ -200,7 +200,7 @@ Before enabling daily automation:
 
 ## Configuration
 
-Edit `src/trading/daily_runner.py` to adjust:
+Edit `common/trading/daily_runner.py` to adjust:
 - `initial_capital` - Starting capital (default: $100,000)
 - `position_size` - Capital per position (default: 0.1 = 10%)
 - `max_positions` - Max concurrent positions (default: 5)

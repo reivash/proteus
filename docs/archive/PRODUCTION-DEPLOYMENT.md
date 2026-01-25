@@ -282,7 +282,7 @@ netstat -ano | findstr :5000
 taskkill /F /PID <PID>
 
 # Restart dashboard
-python src/web/app.py
+python common/web/app.py
 ```
 
 ### No Email Notifications
@@ -313,18 +313,18 @@ python src/web/app.py
 - **This Guide:** `PRODUCTION-DEPLOYMENT.md`
 
 ### Code Locations
-- **Dashboard:** `src/web/app.py`
-- **Scanner:** `src/trading/signal_scanner.py`
-- **Sentiment:** `src/data/sentiment/`
-- **Experiments:** `src/experiments/exp011_sentiment_enhanced_panic.py`
+- **Dashboard:** `common/web/app.py`
+- **Scanner:** `common/trading/signal_scanner.py`
+- **Sentiment:** `common/data/sentiment/`
+- **Experiments:** `common/experiments/exp011_sentiment_enhanced_panic.py`
 
 ### Testing
 ```bash
 # Test sentiment pipeline
-python src/data/sentiment/sentiment_features.py
+python common/data/sentiment/sentiment_features.py
 
 # Test News API
-python src/data/sentiment/news_collector.py
+python common/data/sentiment/news_collector.py
 
 # Run manual scan
 # Open dashboard, click "Run Manual Scan"

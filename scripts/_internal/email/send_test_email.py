@@ -15,7 +15,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from src.notifications.email_notifier import send_test_notification
+from common.notifications.email_notifier import send_test_notification
 
 if __name__ == '__main__':
     print("=" * 70)

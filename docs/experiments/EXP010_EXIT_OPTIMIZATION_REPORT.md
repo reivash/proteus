@@ -301,16 +301,16 @@ def check_exit_time_decay(entry_price, current_price, hold_days):
 
 ### Code Changes Required
 
-**Update:** `src/models/trading/mean_reversion.py`
+**Update:** `common/models/trading/mean_reversion.py`
 - Modify `MeanReversionBacktester` to support time-decay exits
 - Add `exit_mode` parameter: 'fixed' or 'time_decay'
 - Implement day-based target logic
 
-**Update:** `src/trading/paper_trader.py`
+**Update:** `common/trading/paper_trader.py`
 - Add time-decay exit check to Position class
 - Track hold_days and apply appropriate targets
 
-**Update:** `src/config/mean_reversion_params.py`
+**Update:** `common/config/mean_reversion_params.py`
 - Add global exit strategy config
 - Set `EXIT_STRATEGY = 'time_decay'` for v5.0
 

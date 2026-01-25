@@ -27,7 +27,7 @@ call conda activate proteus 2>nul
 
 REM Run smart scanner with email notification
 echo [1] Running Smart Scanner with Email Notification...
-python src/trading/scheduled_scanner.py --run-once
+python common/trading/scheduled_scanner.py --run-once
 
 if %ERRORLEVEL% NEQ 0 (
     echo [ERROR] Smart scan failed with error code %ERRORLEVEL%

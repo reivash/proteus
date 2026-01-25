@@ -15,7 +15,7 @@ Usage:
 import sys
 sys.path.insert(0, 'src')
 
-from src.trading.ipo_advanced_screener import AdvancedIPOScreener
+from common.trading.ipo_advanced_screener import AdvancedIPOScreener
 from datetime import datetime
 
 
@@ -196,7 +196,7 @@ def main():
     print()
     print("Next steps:")
     print("1. Review the generated report for full details")
-    print("2. Run on full universe: python src/trading/ipo_advanced_screener.py")
+    print("2. Run on full universe: python common/trading/ipo_advanced_screener.py")
     print("3. Customize criteria for your investment strategy")
     print("4. Monitor candidates over time for score changes")
     print()

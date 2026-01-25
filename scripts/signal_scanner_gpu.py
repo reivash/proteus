@@ -43,7 +43,7 @@ def show_bear_warning(pre_scan: bool = False):
         tuple: (bear_score, alert_level) or (0, 'UNKNOWN') if detection fails
     """
     try:
-        from src.analysis.fast_bear_detector import FastBearDetector
+        from common.analysis.fast_bear_detector import FastBearDetector
         detector = FastBearDetector()
         signal = detector.detect()
 
@@ -116,7 +116,7 @@ def show_bear_warning(pre_scan: bool = False):
 
 def run_v2(model: str = 'hybrid', trading_mode: str = 'aggressive', use_sentiment: bool = False):
     """Run SmartScannerV2 (unified modules) with model and mode selection."""
-    from src.trading.smart_scanner_v2 import SmartScannerV2
+    from common.trading.smart_scanner_v2 import SmartScannerV2
 
     # Pre-scan bear check - get early warning before running full scan
     bear_score, alert_level = show_bear_warning(pre_scan=True)
@@ -138,7 +138,7 @@ def run_v2(model: str = 'hybrid', trading_mode: str = 'aggressive', use_sentimen
 
 def run_legacy():
     """Run original SmartScanner."""
-    from src.trading.smart_scanner import run_smart_scan
+    from common.trading.smart_scanner import run_smart_scan
     return run_smart_scan()
 
 

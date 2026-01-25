@@ -48,7 +48,7 @@ Replace:
 Run the test script:
 
 ```bash
-python src/notifications/email_notifier.py
+python common/notifications/email_notifier.py
 ```
 
 You should see:
@@ -112,10 +112,10 @@ Check your inbox for the test email!
 
 The email notifier is already integrated with:
 
-### Web Dashboard (`src/web/app.py`)
+### Web Dashboard (`common/web/app.py`)
 Automatically sends emails after each scheduled scan at 9:30 AM, 1:30 PM, 5:30 PM.
 
-### Daily Runner (`src/trading/daily_runner.py`)
+### Daily Runner (`common/trading/daily_runner.py`)
 Can be configured to send emails after paper trading workflow.
 
 ## Troubleshooting
@@ -143,7 +143,7 @@ Can be configured to send emails after paper trading workflow.
 **Possible causes:**
 1. Check spam/junk folder
 2. Verify recipient email is correct in `email_config.json`
-3. Run test script to check configuration: `python src/notifications/email_notifier.py`
+3. Run test script to check configuration: `python common/notifications/email_notifier.py`
 4. Check terminal output for error messages
 
 ### "SMTPServerDisconnected: Connection unexpectedly closed"
@@ -205,7 +205,7 @@ To see what emails will look like:
 
 ```bash
 # Send test email
-python src/notifications/email_notifier.py
+python common/notifications/email_notifier.py
 ```
 
 This sends a formatted test email showing:

@@ -12,11 +12,11 @@ REM Create logs directory
 if not exist logs\overnight mkdir logs\overnight
 
 echo [1/3] Starting Position Sizing Research...
-start /b cmd /c "cd /d C:\Users\javie\Documents\GitHub\proteus && python src/research/position_sizing_research.py > logs\overnight\position_sizing_%date:~-4,4%%date:~-10,2%%date:~-7,2%.log 2>&1"
+start /b cmd /c "cd /d C:\Users\javie\Documents\GitHub\proteus && python common/research/position_sizing_research.py > logs\overnight\position_sizing_%date:~-4,4%%date:~-10,2%%date:~-7,2%.log 2>&1"
 
 echo [2/3] Starting Extended Backtest (if exists)...
 if exist src\research\extended_backtest.py (
-    start /b cmd /c "cd /d C:\Users\javie\Documents\GitHub\proteus && python src/research/extended_backtest.py > logs\overnight\extended_backtest_%date:~-4,4%%date:~-10,2%%date:~-7,2%.log 2>&1"
+    start /b cmd /c "cd /d C:\Users\javie\Documents\GitHub\proteus && python common/research/extended_backtest.py > logs\overnight\extended_backtest_%date:~-4,4%%date:~-10,2%%date:~-7,2%.log 2>&1"
 ) else (
     echo     Skipping - extended_backtest.py not found
 )

@@ -68,7 +68,7 @@ python scan_ipo_opportunities.py strict
 
 ```
 proteus/
-├── src/
+├── common/
 │   ├── data/
 │   │   ├── fetchers/
 │   │   │   ├── ipo_data_fetcher.py         # IPO data + fundamentals (300 lines)
@@ -123,7 +123,7 @@ RDDT - Reddit, Inc.
 ### Custom Screening
 
 ```python
-from src.trading.ipo_niche_screener import IPONicheScreener
+from common.trading.ipo_niche_screener import IPONicheScreener
 
 # Create custom screener
 screener = IPONicheScreener(
@@ -144,8 +144,8 @@ report = screener.generate_report(candidates, filename="custom_ipo_report.txt")
 ### Individual Company Analysis
 
 ```python
-from src.data.fetchers.ipo_data_fetcher import IPODataFetcher
-from src.data.features.ipo_niche_analyzer import IPONicheAnalyzer
+from common.data.fetchers.ipo_data_fetcher import IPODataFetcher
+from common.data.features.ipo_niche_analyzer import IPONicheAnalyzer
 
 fetcher = IPODataFetcher()
 analyzer = IPONicheAnalyzer()
@@ -167,7 +167,7 @@ print(f"Strong Candidate: {yc_analysis['is_strong_candidate']}")
 
 ### Adding New IPOs
 
-Update `src/data/fetchers/ipo_database.py`:
+Update `common/data/fetchers/ipo_database.py`:
 
 ```python
 IPO_DATABASE = {

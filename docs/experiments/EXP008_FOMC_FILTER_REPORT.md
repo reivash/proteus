@@ -345,8 +345,8 @@ Unlike VIX filter (which had optional use case for risk-averse traders), FOMC fi
 ### Code Created
 
 **Files:**
-1. `src/data/fetchers/fomc_calendar.py` - FOMC meeting calendar (2020-2025)
-2. `src/experiments/exp008_fomc_filter.py` - FOMC filter testing framework
+1. `common/data/fetchers/fomc_calendar.py` - FOMC meeting calendar (2020-2025)
+2. `common/experiments/exp008_fomc_filter.py` - FOMC filter testing framework
 
 **Functionality:**
 - Historical FOMC meeting dates (2020-2025)
@@ -357,7 +357,7 @@ Unlike VIX filter (which had optional use case for risk-averse traders), FOMC fi
 ### Usage Example (Not Recommended)
 
 ```python
-from src.data.fetchers.fomc_calendar import FOMCCalendarFetcher
+from common.data.fetchers.fomc_calendar import FOMCCalendarFetcher
 
 # Initialize FOMC filter (NOT recommended for production)
 fomc_fetcher = FOMCCalendarFetcher(

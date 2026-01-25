@@ -6,8 +6,8 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__))))
 
-from src.trading.signal_scanner import SignalScanner
-from src.trading.paper_trader import PaperTrader
+from common.trading.signal_scanner import SignalScanner
+from common.trading.paper_trader import PaperTrader
 
 def test_limit_orders():
     """Test limit order functionality."""

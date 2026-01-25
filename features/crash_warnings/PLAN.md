@@ -473,10 +473,10 @@ Market regime changes (especially transitions to bear markets) can cause signifi
 
 | File | Purpose |
 |------|---------|
-| `src/analysis/fast_bear_detector.py` | Core detection engine |
-| `src/analysis/unified_regime_detector.py` | Integration with regime system |
-| `src/trading/bearish_alert_service.py` | Alert management |
-| `src/notifications/webhook_notifier.py` | Webhook integrations |
+| `common/analysis/fast_bear_detector.py` | Core detection engine |
+| `common/analysis/unified_regime_detector.py` | Integration with regime system |
+| `common/trading/bearish_alert_service.py` | Alert management |
+| `common/notifications/webhook_notifier.py` | Webhook integrations |
 | `scripts/run_bear_monitor.py` | CLI interface |
 | `scripts/bear_api_server.py` | HTTP API |
 | `config/bear_detection_config.json` | Configuration |
@@ -517,8 +517,8 @@ These ideas were considered but not prioritized:
 ## References
 
 - [BEAR_DETECTION_GUIDE.md](../../BEAR_DETECTION_GUIDE.md) - Full user documentation
-- [UnifiedRegimeDetector](../../src/analysis/unified_regime_detector.py) - Regime integration
-- [Fast Bear Detector](../../src/analysis/fast_bear_detector.py) - Core implementation
+- [UnifiedRegimeDetector](../../common/analysis/unified_regime_detector.py) - Regime integration
+- [Fast Bear Detector](../../common/analysis/fast_bear_detector.py) - Core implementation
 
 ---
 

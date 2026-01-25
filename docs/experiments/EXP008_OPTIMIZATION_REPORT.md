@@ -209,7 +209,7 @@ Testing on complete period including both bull and bear markets:
 
 ### Code Changes
 
-**1. Created `src/data/features/market_regime.py`:**
+**1. Created `common/data/features/market_regime.py`:**
 ```python
 class MarketRegimeDetector:
     def detect_regime(self, df):

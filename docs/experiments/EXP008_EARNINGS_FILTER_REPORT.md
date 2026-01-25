@@ -59,7 +59,7 @@
 
 ### Implementation
 
-Created `src/data/fetchers/earnings_calendar.py`:
+Created `common/data/fetchers/earnings_calendar.py`:
 
 **Key Features:**
 1. Fetches historical earnings dates from yfinance
@@ -426,7 +426,7 @@ EarningsCalendarFetcher(
 
 1. **Import earnings fetcher:**
    ```python
-   from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
+   from common.data.fetchers.earnings_calendar import EarningsCalendarFetcher
    ```
 
 2. **Create fetcher with parameters:**

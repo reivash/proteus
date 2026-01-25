@@ -12,9 +12,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from datetime import datetime
-from src.trading.unified_position_sizer import UnifiedPositionSizer, SignalQuality
-from src.trading.unified_signal_calculator import UnifiedSignalCalculator
-from src.trading.position_rebalancer import PositionRebalancer, ExitReason
+from common.trading.unified_position_sizer import UnifiedPositionSizer, SignalQuality
+from common.trading.unified_signal_calculator import UnifiedSignalCalculator
+from common.trading.position_rebalancer import PositionRebalancer, ExitReason
 
 
 def test_position_sizer():

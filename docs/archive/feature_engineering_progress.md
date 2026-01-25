@@ -100,7 +100,7 @@ To continue this program in next session:
 3. **Follow same methodology**: Test features independently, measure improvement, integrate if validated
 
 **Key Files**:
-- Microstructure features: `src/data/features/microstructure_features.py`
+- Microstructure features: `common/data/features/microstructure_features.py`
 - Experiment results: `logs/experiments/exp082_microstructure_features_phase1.json`
 - Next experiment template: Use EXP-082 as template for EXP-083
 

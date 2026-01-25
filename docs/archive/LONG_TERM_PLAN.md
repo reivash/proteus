@@ -184,7 +184,7 @@ start dashboard.html
 ### System Failure
 1. Check logs: `logs/daily/*.log`
 2. Validate config: `python -c "import json; json.load(open('config/unified_config.json'))"`
-3. Test calculator: `python src/trading/unified_signal_calculator.py`
+3. Test calculator: `python common/trading/unified_signal_calculator.py`
 
 ### Data Issues
 1. Clear cache: `del /q data\cache\*`

@@ -387,7 +387,7 @@ When run on same historical period, paper trading should produce:
 ### Next Steps
 
 1. ✅ **Begin daily paper trading** (starting next trading day)
-2. Run daily workflow: `python src/trading/daily_runner.py`
+2. Run daily workflow: `python common/trading/daily_runner.py`
 3. Monitor performance vs backtest expectations
 4. Document any discrepancies or issues
 5. Week 6: Make go/no-go decision for live deployment

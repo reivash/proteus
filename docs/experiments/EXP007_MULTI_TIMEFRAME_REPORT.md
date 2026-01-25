@@ -354,8 +354,8 @@ Possible explanations:
 ### Files Created
 
 **Core Implementation:**
-- `src/data/features/multi_timeframe_targets.py` - Target generator for multiple horizons
-- `src/experiments/exp007_multi_timeframe.py` - Main experiment runner
+- `common/data/features/multi_timeframe_targets.py` - Target generator for multiple horizons
+- `common/experiments/exp007_multi_timeframe.py` - Main experiment runner
 
 **Data Output:**
 - `logs/experiments/exp007_gspc_multi_timeframe_results.json` - Full results

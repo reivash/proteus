@@ -10,7 +10,7 @@ Usage:
 import sys
 sys.path.insert(0, 'src')
 
-from src.trading.ipo_advanced_screener import AdvancedIPOScreener
+from common.trading.ipo_advanced_screener import AdvancedIPOScreener
 from datetime import datetime
 
 

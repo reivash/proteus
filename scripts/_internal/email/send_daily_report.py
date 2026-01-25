@@ -9,9 +9,9 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from src.trading.signal_scanner import SignalScanner
-from src.trading.performance_tracker import PerformanceTracker
-from src.notifications.email_notifier import EmailNotifier
+from common.trading.signal_scanner import SignalScanner
+from common.trading.performance_tracker import PerformanceTracker
+from common.notifications.email_notifier import EmailNotifier
 
 
 def send_daily_report():

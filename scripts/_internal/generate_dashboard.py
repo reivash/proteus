@@ -75,7 +75,7 @@ def generate_dashboard():
     # If no bear score in scan, detect live
     if bear_score is None:
         try:
-            from src.analysis.fast_bear_detector import FastBearDetector
+            from common.analysis.fast_bear_detector import FastBearDetector
             detector = FastBearDetector()
             bear_signal = detector.detect()
             bear_score = bear_signal.bear_score

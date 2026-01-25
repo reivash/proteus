@@ -450,13 +450,13 @@ Generating reliable trading signals requires synthesizing multiple data sources,
 
 | File | Purpose |
 |------|---------|
-| `src/trading/smart_scanner_v2.py` | Main scanner orchestration |
-| `src/models/hybrid_signal_model.py` | ML ensemble |
-| `src/models/lstm_signal_model.py` | LSTM model |
-| `src/trading/penalties_only_calculator.py` | Signal adjustments |
-| `src/trading/unified_position_sizer.py` | Position sizing |
-| `src/trading/position_rebalancer.py` | Exit management |
-| `src/analysis/unified_regime_detector.py` | Regime detection |
+| `common/trading/smart_scanner_v2.py` | Main scanner orchestration |
+| `common/models/hybrid_signal_model.py` | ML ensemble |
+| `common/models/lstm_signal_model.py` | LSTM model |
+| `common/trading/penalties_only_calculator.py` | Signal adjustments |
+| `common/trading/unified_position_sizer.py` | Position sizing |
+| `common/trading/position_rebalancer.py` | Exit management |
+| `common/analysis/unified_regime_detector.py` | Regime detection |
 | `config/unified_config.json` | All configuration |
 
 ---

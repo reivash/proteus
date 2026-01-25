@@ -30,7 +30,7 @@ def test_scanner_initialization():
 
     # Test 1: Import SmartScannerV2
     try:
-        from src.trading.smart_scanner_v2 import SmartScannerV2
+        from common.trading.smart_scanner_v2 import SmartScannerV2
         print("[PASS] SmartScannerV2 imports")
         passed += 1
     except Exception as e:
@@ -79,7 +79,7 @@ def test_regime_detection_smoke():
 
     # Test: Full regime detection
     try:
-        from src.analysis.unified_regime_detector import UnifiedRegimeDetector
+        from common.analysis.unified_regime_detector import UnifiedRegimeDetector
         detector = UnifiedRegimeDetector()
         result = detector.detect_regime()  # Correct method name
 
@@ -113,7 +113,7 @@ def test_bear_detection_smoke():
 
     # Test: Full bear detection
     try:
-        from src.analysis.fast_bear_detector import FastBearDetector
+        from common.analysis.fast_bear_detector import FastBearDetector
         detector = FastBearDetector()
         signal = detector.detect()
 
@@ -145,7 +145,7 @@ def test_signal_calculation_smoke():
 
     # Test: PenaltiesOnlyCalculator (production)
     try:
-        from src.trading.penalties_only_calculator import PenaltiesOnlyCalculator
+        from common.trading.penalties_only_calculator import PenaltiesOnlyCalculator
         calc = PenaltiesOnlyCalculator()
 
         # Test with various inputs
@@ -180,7 +180,7 @@ def test_gpu_model_smoke():
 
     # Test: GPUSignalModel loads
     try:
-        from src.models.gpu_signal_model import GPUSignalModel
+        from common.models.gpu_signal_model import GPUSignalModel
         model = GPUSignalModel()
         print(f"[PASS] GPU model loaded on {model.device}")
         passed += 1
@@ -215,7 +215,7 @@ def test_position_sizing_smoke():
     failed = 0
 
     try:
-        from src.trading.position_sizer import PositionSizer
+        from common.trading.position_sizer import PositionSizer
 
         sizer = PositionSizer(portfolio_value=100000)
 
@@ -249,7 +249,7 @@ def test_notification_smoke():
 
     # Test 1: Webhook notifier (always available)
     try:
-        from src.notifications.webhook_notifier import WebhookNotifier
+        from common.notifications.webhook_notifier import WebhookNotifier
         notifier = WebhookNotifier()
 
         # Check it has required methods
@@ -262,7 +262,7 @@ def test_notification_smoke():
 
     # Test 2: SendGrid notifier (optional - may not be configured)
     try:
-        from src.notifications.sendgrid_notifier import SendGridNotifier
+        from common.notifications.sendgrid_notifier import SendGridNotifier
         notifier = SendGridNotifier()
         assert hasattr(notifier, 'send_scan_notification')
         print("[PASS] SendGridNotifier loads with send_scan_notification")
@@ -296,7 +296,7 @@ def test_virtual_wallet_smoke():
 
     # Test 1: Import and initialize
     try:
-        from src.trading.virtual_wallet import VirtualWallet
+        from common.trading.virtual_wallet import VirtualWallet
         wallet = VirtualWallet(initial_capital=100000, min_signal_strength=65)
         print("[PASS] VirtualWallet initializes")
         passed += 1
@@ -355,7 +355,7 @@ def test_scanner_runner_smoke():
 
     # Test 1: Import and initialize
     try:
-        from src.trading.scanner_runner import ScannerRunner, HealthCheckResult
+        from common.trading.scanner_runner import ScannerRunner, HealthCheckResult
         runner = ScannerRunner(portfolio_value=100000)
         print("[PASS] ScannerRunner initializes")
         passed += 1
@@ -475,13 +475,13 @@ def test_full_pipeline_dry_run():
 
     # Test: All imports work together
     try:
-        from src.analysis.unified_regime_detector import UnifiedRegimeDetector
-        from src.analysis.fast_bear_detector import FastBearDetector
-        from src.trading.penalties_only_calculator import PenaltiesOnlyCalculator
-        from src.trading.position_sizer import PositionSizer
-        from src.models.gpu_signal_model import GPUSignalModel
-        from src.trading.sector_momentum import SectorMomentumCalculator
-        from src.data.features.cross_sectional_features import CrossSectionalFeatureEngineer
+        from common.analysis.unified_regime_detector import UnifiedRegimeDetector
+        from common.analysis.fast_bear_detector import FastBearDetector
+        from common.trading.penalties_only_calculator import PenaltiesOnlyCalculator
+        from common.trading.position_sizer import PositionSizer
+        from common.models.gpu_signal_model import GPUSignalModel
+        from common.trading.sector_momentum import SectorMomentumCalculator
+        from common.data.features.cross_sectional_features import CrossSectionalFeatureEngineer
 
         # Initialize all
         components = {

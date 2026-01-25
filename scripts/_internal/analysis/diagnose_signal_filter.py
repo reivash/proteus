@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-from src.trading.signal_scanner import SignalScanner
+from common.trading.signal_scanner import SignalScanner
 from datetime import datetime
 
 def diagnose_filters():

@@ -351,8 +351,8 @@ Test VIX filter (VIX > 30 threshold) to protect strategy from tail risk events l
 ### Code Created
 
 **Files:**
-1. `src/data/fetchers/vix_fetcher.py` - VIX data fetching and filtering
-2. `src/experiments/exp008_vix_filter.py` - VIX filter testing framework
+1. `common/data/fetchers/vix_fetcher.py` - VIX data fetching and filtering
+2. `common/experiments/exp008_vix_filter.py` - VIX filter testing framework
 
 **Functionality:**
 - Fetch VIX historical data from Yahoo Finance (^VIX ticker)
@@ -363,7 +363,7 @@ Test VIX filter (VIX > 30 threshold) to protect strategy from tail risk events l
 ### Usage Example
 
 ```python
-from src.data.fetchers.vix_fetcher import VIXFetcher
+from common.data.fetchers.vix_fetcher import VIXFetcher
 
 # Initialize VIX filter with threshold
 vix_fetcher = VIXFetcher(extreme_threshold=30)

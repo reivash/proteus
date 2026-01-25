@@ -36,31 +36,31 @@
 
 **Modules Created:**
 
-1. **`src/data/sentiment/twitter_collector.py`**
+1. **`common/data/sentiment/twitter_collector.py`**
    - Collects tweets mentioning stock tickers
    - Uses Twitter API v2 with tweepy
    - Focuses on original tweets (excludes retweets/replies)
    - Aggregates by day with engagement metrics
 
-2. **`src/data/sentiment/reddit_collector.py`**
+2. **`common/data/sentiment/reddit_collector.py`**
    - Monitors r/wallstreetbets, r/stocks, r/investing, r/StockMarket
    - Uses Reddit API (PRAW)
    - Detects hot/trending posts for real-time panic detection
    - Upvote ratio as consensus indicator
 
-3. **`src/data/sentiment/news_collector.py`**
+3. **`common/data/sentiment/news_collector.py`**
    - Collects financial news headlines
    - Uses Alpha Vantage News API (free tier: 25 calls/day)
    - Pre-scored sentiment from API
    - Filters by relevance score
 
-4. **`src/models/sentiment/finbert_analyzer.py`**
+4. **`common/models/sentiment/finbert_analyzer.py`**
    - FinBERT: Financial-specific BERT model
    - Pre-trained on earnings calls, news, social media
    - 87% accuracy on financial text vs 72% for general models
    - GPU-accelerated inference (~10ms per text)
 
-5. **`src/data/sentiment/sentiment_features.py`**
+5. **`common/data/sentiment/sentiment_features.py`**
    - Combines Twitter + Reddit + News
    - Calculates derived features:
      * Social sentiment (Twitter + Reddit combined)
@@ -71,7 +71,7 @@
 
 ### Phase 2: Enhanced Signal Detection (COMPLETE ✓)
 
-**Enhanced Detector:** `src/experiments/exp011_sentiment_enhanced_panic.py`
+**Enhanced Detector:** `common/experiments/exp011_sentiment_enhanced_panic.py`
 
 **Signal Classification Logic:**
 
@@ -95,7 +95,7 @@ LOW CONFIDENCE (Information-driven - AVOID):
 
 ### Phase 3: Backtesting (IN PROGRESS)
 
-**Experiment File:** `src/experiments/exp011_sentiment_enhanced_panic.py`
+**Experiment File:** `common/experiments/exp011_sentiment_enhanced_panic.py`
 
 **Comparison:**
 - Baseline v5.0: No sentiment filtering
@@ -170,19 +170,19 @@ pip install transformers torch tweepy praw requests
 
 ```bash
 # Test Twitter collector
-python src/data/sentiment/twitter_collector.py
+python common/data/sentiment/twitter_collector.py
 
 # Test Reddit collector
-python src/data/sentiment/reddit_collector.py
+python common/data/sentiment/reddit_collector.py
 
 # Test News collector
-python src/data/sentiment/news_collector.py
+python common/data/sentiment/news_collector.py
 
 # Test FinBERT analyzer (downloads ~440MB model on first run)
-python src/models/sentiment/finbert_analyzer.py
+python common/models/sentiment/finbert_analyzer.py
 
 # Test full pipeline
-python src/data/sentiment/sentiment_features.py
+python common/data/sentiment/sentiment_features.py
 ```
 
 ---
@@ -193,7 +193,7 @@ python src/data/sentiment/sentiment_features.py
 
 ```bash
 # Run full comparison (baseline vs sentiment-enhanced)
-python src/experiments/exp011_sentiment_enhanced_panic.py
+python common/experiments/exp011_sentiment_enhanced_panic.py
 ```
 
 This will:
@@ -205,7 +205,7 @@ This will:
 ### Single Mode Testing
 
 ```python
-from src.experiments.exp011_sentiment_enhanced_panic import run_sentiment_enhanced_backtest
+from common.experiments.exp011_sentiment_enhanced_panic import run_sentiment_enhanced_backtest
 
 # Test baseline only
 baseline_results = run_sentiment_enhanced_backtest(
@@ -256,7 +256,7 @@ sentiment_results = run_sentiment_enhanced_backtest(
 
 ```
 proteus/
-├── src/
+├── common/
 │   ├── data/
 │   │   └── sentiment/
 │   │       ├── __init__.py
@@ -294,7 +294,7 @@ proteus/
 - [ ] A/B test on different time periods
 
 ### Phase 5: Production Integration
-- [ ] Integrate into `src/trading/signal_scanner.py`
+- [ ] Integrate into `common/trading/signal_scanner.py`
 - [ ] Add sentiment features to dashboard UI
 - [ ] Update email notifications with confidence levels
 - [ ] Deploy to paper trading with sentiment filtering

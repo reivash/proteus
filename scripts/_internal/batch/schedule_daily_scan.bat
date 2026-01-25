@@ -13,7 +13,7 @@ REM Activate virtual environment if you have one
 REM call venv\Scripts\activate.bat
 
 REM Run production scanner
-python src/experiments/exp056_production_scanner.py
+python common/experiments/exp056_production_scanner.py
 
 echo.
 echo ================================================

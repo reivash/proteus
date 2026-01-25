@@ -310,7 +310,7 @@ Expand stock universe from 3 stocks to 5+ stocks by applying parameter optimizat
 
 ### Updated Configuration
 
-**Production configuration:** `src/config/mean_reversion_params.py`
+**Production configuration:** `common/config/mean_reversion_params.py`
 
 **New entries added:**
 
@@ -337,7 +337,7 @@ Expand stock universe from 3 stocks to 5+ stocks by applying parameter optimizat
 ### Usage Example
 
 ```python
-from src.config.mean_reversion_params import get_params, get_all_tickers
+from common.config.mean_reversion_params import get_params, get_all_tickers
 
 # Get all tickers in universe
 tickers = get_all_tickers()
@@ -523,7 +523,7 @@ for ticker in tickers:
 - Average return: +13.96%
 - Improved diversification vs 3-stock universe
 
-**Configuration:** `src/config/mean_reversion_params.py` (updated)
+**Configuration:** `common/config/mean_reversion_params.py` (updated)
 
 ### Strategic Impact
 

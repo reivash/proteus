@@ -355,9 +355,9 @@ Position sizing dramatically impacts returns. Too large = excessive risk; too sm
 
 | File | Purpose |
 |------|---------|
-| `src/trading/unified_position_sizer.py` | Main position sizer |
-| `src/trading/position_rebalancer.py` | Exit monitoring |
-| `src/trading/virtual_wallet.py` | Portfolio tracking |
+| `common/trading/unified_position_sizer.py` | Main position sizer |
+| `common/trading/position_rebalancer.py` | Exit monitoring |
+| `common/trading/virtual_wallet.py` | Portfolio tracking |
 | `config/unified_config.json` | All parameters |
 
 ---

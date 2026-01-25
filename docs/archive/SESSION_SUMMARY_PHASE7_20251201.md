@@ -236,7 +236,7 @@ Phase 7 successfully expanded system coverage from 21 IPO-focused companies to 2
   - STRONG (50-64): 13 companies
 - Added EXPANDED_AI_INVESTMENT_GUIDE.md to key files
 
-**src/data/fetchers/ipo_database.py**
+**common/data/fetchers/ipo_database.py**
 - Added FIG (Figma) IPO date: 2025-07-31
 
 ---

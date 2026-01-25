@@ -17,7 +17,7 @@ All research-level optimizations complete. System operating at theoretical maxim
 
 ### 1. Daily Signal Scanner
 
-**File:** `src/experiments/exp056_production_scanner.py`
+**File:** `common/experiments/exp056_production_scanner.py`
 
 **Features:**
 - Scans all 45 stocks for mean reversion signals
@@ -28,7 +28,7 @@ All research-level optimizations complete. System operating at theoretical maxim
 **Manual Run:**
 ```bash
 cd C:\Users\javie\Documents\GitHub\proteus
-python src/experiments/exp056_production_scanner.py
+python common/experiments/exp056_production_scanner.py
 ```
 
 ### 2. Automated Daily Scanning
@@ -243,8 +243,8 @@ When you receive a signal email:
 - **Experiment logs:** `logs/experiments/exp0*.json`
 
 ### Key Files
-- **Scanner:** `src/experiments/exp056_production_scanner.py`
-- **Parameters:** `src/config/mean_reversion_params.py`
+- **Scanner:** `common/experiments/exp056_production_scanner.py`
+- **Parameters:** `common/config/mean_reversion_params.py`
 - **Scheduler:** `schedule_daily_scan.bat`
 
 ---

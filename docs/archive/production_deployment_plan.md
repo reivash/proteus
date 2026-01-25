@@ -15,7 +15,7 @@
 - Average improvement: +12.7pp win rate
 
 **Deployment Method**:
-- Updated `src/config/mean_reversion_params.py` with optimized values
+- Updated `common/config/mean_reversion_params.py` with optimized values
 - Stock-specific parameters: z_score_threshold, volume_multiplier, rsi_oversold, price_drop_threshold
 - All parameters validated via full backtests with regime + earnings + ML filtering
 
@@ -52,7 +52,7 @@
 **Action Items**:
 ```bash
 # Daily monitoring command
-python src/trading/ml_signal_scanner.py --stocks CMCSA,SYK,MO,BK,STZ,ZTS --verbose
+python common/trading/ml_signal_scanner.py --stocks CMCSA,SYK,MO,BK,STZ,ZTS --verbose
 ```
 
 ### Week 2-4: Performance Validation (Days 8-30)
@@ -148,7 +148,7 @@ ELSE:
 ### Data Sources
 
 **Automated Tracking**:
-- `src/data/ml/ml_performance_tracker.py` - ML model validation
+- `common/data/ml/ml_performance_tracker.py` - ML model validation
 - `logs/trading/daily_signals.log` - Signal generation log
 - `logs/trading/trade_executions.log` - Execution tracking
 
@@ -178,7 +178,7 @@ ELSE:
 
 1. **Backup Current State**:
 ```bash
-cp src/config/mean_reversion_params.py src/config/mean_reversion_params_v15.5_EXP072_backup.py
+cp common/config/mean_reversion_params.py common/config/mean_reversion_params_v15.5_EXP072_backup.py
 ```
 
 2. **Revert to Baseline**:
@@ -404,7 +404,7 @@ Next Review: [Date]
 1. **Set Up Monitoring**:
 ```bash
 # Create monitoring script
-python src/utils/create_production_monitor.py
+python common/utils/create_production_monitor.py
 
 # Schedule daily runs
 # (Add to crontab or Task Scheduler)
@@ -413,7 +413,7 @@ python src/utils/create_production_monitor.py
 2. **Initialize Tracking Database**:
 ```bash
 # Create production tracking tables
-python src/data/ml/initialize_production_db.py
+python common/data/ml/initialize_production_db.py
 ```
 
 3. **Configure Alerts**:
@@ -428,7 +428,7 @@ python src/data/ml/initialize_production_db.py
 4. **Document Baseline**:
 ```bash
 # Save current portfolio state
-python src/reporting/snapshot_portfolio.py --label "EXP-072-DEPLOYED"
+python common/reporting/snapshot_portfolio.py --label "EXP-072-DEPLOYED"
 ```
 
 ### Month 1 Milestones

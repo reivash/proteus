@@ -72,19 +72,19 @@ def check_unified_modules():
     print("\nTesting unified modules...")
 
     # Signal calculator
-    from src.trading.unified_signal_calculator import UnifiedSignalCalculator
+    from common.trading.unified_signal_calculator import UnifiedSignalCalculator
     calc = UnifiedSignalCalculator()
     result = calc.calculate('COP', 65.0, 'volatile', is_monday=True)
     print(f"  [OK] Signal calculator: COP 65->  {result.final_signal:.1f}")
 
     # Position sizer
-    from src.trading.unified_position_sizer import UnifiedPositionSizer
+    from common.trading.unified_position_sizer import UnifiedPositionSizer
     sizer = UnifiedPositionSizer(100000)
     rec = sizer.calculate_size('COP', 105.0, 80, 'volatile')
     print(f"  [OK] Position sizer: COP -> {rec.size_pct:.1f}% ({rec.quality.value})")
 
     # Rebalancer
-    from src.trading.position_rebalancer import PositionRebalancer
+    from common.trading.position_rebalancer import PositionRebalancer
     from datetime import datetime
     reb = PositionRebalancer()
     status = reb.check_position('COP', 100.0, 103.5, datetime(2026, 1, 3))
@@ -98,7 +98,7 @@ def check_gpu():
     print("\nChecking GPU model...")
 
     try:
-        from src.models.gpu_signal_model import GPUSignalModel
+        from common.models.gpu_signal_model import GPUSignalModel
         model = GPUSignalModel()
         print(f"  [OK] GPU model loaded on {model.device}")
         return True

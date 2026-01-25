@@ -111,7 +111,7 @@ Regime: BULL or SIDEWAYS (not BEAR)
 Earnings: NOT within ±3 days
 ```
 
-**See `src/config/mean_reversion_params.py` for complete parameters**
+**See `common/config/mean_reversion_params.py` for complete parameters**
 
 ### Exit Rules (Universal)
 
@@ -558,18 +558,18 @@ Earnings: NOT within ±3 days
 ### Key Files
 
 **Strategy configuration:**
-- `src/config/mean_reversion_params.py` - Stock-specific parameters
+- `common/config/mean_reversion_params.py` - Stock-specific parameters
 
 **Data fetchers:**
-- `src/data/fetchers/yahoo_finance.py` - Price data
-- `src/data/fetchers/earnings_calendar.py` - Earnings dates
+- `common/data/fetchers/yahoo_finance.py` - Price data
+- `common/data/fetchers/earnings_calendar.py` - Earnings dates
 
 **Feature engineering:**
-- `src/data/features/technical_indicators.py` - Technical indicators
-- `src/data/features/market_regime.py` - Regime detection
+- `common/data/features/technical_indicators.py` - Technical indicators
+- `common/data/features/market_regime.py` - Regime detection
 
 **Trading logic:**
-- `src/models/trading/mean_reversion.py` - Signal detection & backtesting
+- `common/models/trading/mean_reversion.py` - Signal detection & backtesting
 
 **Documentation:**
 - `EXPERIMENT_RESULTS_SUMMARY.md` - All optimization results
@@ -578,12 +578,12 @@ Earnings: NOT within ±3 days
 ### Usage Example
 
 ```python
-from src.config.mean_reversion_params import get_params
-from src.data.fetchers.yahoo_finance import YahooFinanceFetcher
-from src.data.features.technical_indicators import TechnicalFeatureEngineer
-from src.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
-from src.data.fetchers.earnings_calendar import EarningsCalendarFetcher
-from src.models.trading.mean_reversion import MeanReversionDetector
+from common.config.mean_reversion_params import get_params
+from common.data.fetchers.yahoo_finance import YahooFinanceFetcher
+from common.data.features.technical_indicators import TechnicalFeatureEngineer
+from common.data.features.market_regime import MarketRegimeDetector, add_regime_filter_to_signals
+from common.data.fetchers.earnings_calendar import EarningsCalendarFetcher
+from common.models.trading.mean_reversion import MeanReversionDetector
 
 # Get stock data
 fetcher = YahooFinanceFetcher()
@@ -661,7 +661,7 @@ if today_signal == 1:
 **For questions or issues:**
 - Review experiment reports in `docs/experiments/`
 - Check `EXPERIMENT_RESULTS_SUMMARY.md` for optimization history
-- Consult configuration files in `src/config/`
+- Consult configuration files in `common/config/`
 
 ---
 

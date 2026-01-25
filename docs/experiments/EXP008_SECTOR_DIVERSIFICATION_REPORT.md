@@ -365,7 +365,7 @@ Expand trading universe beyond tech sector to achieve true diversification.
 
 ### Configuration Updated
 
-**File:** `src/config/mean_reversion_params.py`
+**File:** `common/config/mean_reversion_params.py`
 
 **Added 5 stocks:**
 1. JPM - Finance, 80% win, +18.63% return
@@ -379,7 +379,7 @@ Expand trading universe beyond tech sector to achieve true diversification.
 ### Usage Example
 
 ```python
-from src.config.mean_reversion_params import get_all_tickers, get_params
+from common.config.mean_reversion_params import get_all_tickers, get_params
 
 # Get all tickers
 tickers = get_all_tickers()

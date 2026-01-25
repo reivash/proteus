@@ -30,16 +30,16 @@ pip install -r requirements.txt
 ### 2. Verify Components
 
 Make sure you have the following components set up:
-- Signal Scanner (`src/trading/signal_scanner.py`)
-- Paper Trader (`src/trading/paper_trader.py`)
-- Performance Tracker (`src/trading/performance_tracker.py`)
+- Signal Scanner (`common/trading/signal_scanner.py`)
+- Paper Trader (`common/trading/paper_trader.py`)
+- Performance Tracker (`common/trading/performance_tracker.py`)
 
 ## Running the Dashboard
 
 ### Start the Server
 
 ```bash
-python src/web/app.py
+python common/web/app.py
 ```
 
 You should see:

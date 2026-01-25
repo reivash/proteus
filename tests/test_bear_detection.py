@@ -22,7 +22,7 @@ def test_fast_bear_detector():
     print("TEST: FastBearDetector")
     print("=" * 60)
 
-    from src.analysis.fast_bear_detector import FastBearDetector, FastBearSignal
+    from common.analysis.fast_bear_detector import FastBearDetector, FastBearSignal
 
     detector = FastBearDetector()
     passed = 0
@@ -165,7 +165,7 @@ def test_bearish_alert_service():
     print("TEST: BearishAlertService")
     print("=" * 60)
 
-    from src.trading.bearish_alert_service import BearishAlertService, AlertState
+    from common.trading.bearish_alert_service import BearishAlertService, AlertState
 
     passed = 0
     failed = 0
@@ -266,7 +266,7 @@ def test_bear_aware_position_sizing():
     print("TEST: Bear-Aware Position Sizing")
     print("=" * 60)
 
-    from src.trading.unified_position_sizer import UnifiedPositionSizer
+    from common.trading.unified_position_sizer import UnifiedPositionSizer
 
     passed = 0
     failed = 0
@@ -332,7 +332,7 @@ def test_unified_regime_early_warning():
     print("TEST: UnifiedRegimeDetector Early Warning")
     print("=" * 60)
 
-    from src.analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod
+    from common.analysis.unified_regime_detector import UnifiedRegimeDetector, DetectionMethod
 
     passed = 0
     failed = 0
@@ -400,7 +400,7 @@ def test_bear_score_history():
     print("TEST: Bear Score History")
     print("=" * 60)
 
-    from src.analysis.fast_bear_detector import (
+    from common.analysis.fast_bear_detector import (
         FastBearDetector, log_bear_score, get_bear_score_trend
     )
 
@@ -452,7 +452,7 @@ def test_webhook_notifier():
     print("TEST: Webhook Notifier")
     print("=" * 60)
 
-    from src.notifications.webhook_notifier import WebhookNotifier, get_webhook_status
+    from common.notifications.webhook_notifier import WebhookNotifier, get_webhook_status
 
     passed = 0
     failed = 0
@@ -485,7 +485,7 @@ def test_webhook_notifier():
         failed += 1
 
     # Test 4: send_bear_alert returns dict (even if empty)
-    from src.analysis.fast_bear_detector import FastBearDetector
+    from common.analysis.fast_bear_detector import FastBearDetector
     detector = FastBearDetector()
     signal = detector.detect()
     results = notifier.send_bear_alert(signal)
@@ -542,7 +542,7 @@ def test_api_server():
         return passed, failed
 
     # Test 2: Status endpoint data format
-    from src.analysis.fast_bear_detector import FastBearDetector
+    from common.analysis.fast_bear_detector import FastBearDetector
     detector = FastBearDetector()
     signal = detector.detect()
 
@@ -597,7 +597,7 @@ def test_api_server():
         failed += 1
 
     # Test 5: Trend endpoint data
-    from src.analysis.fast_bear_detector import get_bear_score_trend
+    from common.analysis.fast_bear_detector import get_bear_score_trend
     trend = get_bear_score_trend(hours=24)
     if isinstance(trend, dict):
         print(f"[PASS] Trend endpoint returns dict")
@@ -633,7 +633,7 @@ def test_configuration_system():
 
     # Test 1: Config module imports
     try:
-        from src.config.bear_config import (
+        from common.config.bear_config import (
             load_config, get_config, validate_config,
             BearConfig, DEFAULT_CONFIG
         )

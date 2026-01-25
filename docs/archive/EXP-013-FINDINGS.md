@@ -233,7 +233,7 @@ elif stock == 'other':
 
 ## Technical Modules Created (Still Valuable!)
 
-### `src/trading/exits/momentum_detector.py` (360 lines)
+### `common/trading/exits/momentum_detector.py` (360 lines)
 - **MomentumDetector class**: EMA, volume, acceleration analysis
 - **DynamicExitManager**: Switches between time-decay and trailing stops
 - **Production-ready**: Can be repurposed for other strategies
@@ -243,7 +243,7 @@ elif stock == 'other':
 - Day trading with longer holds
 - Options strategies with momentum confirmation
 
-### `src/experiments/exp013_momentum_capture.py` (470 lines)
+### `common/experiments/exp013_momentum_capture.py` (470 lines)
 - **Backtest framework**: Compares exit strategies
 - **Performance metrics**: Full analysis suite
 - **Multi-stock testing**: Validated on NVDA and TSLA

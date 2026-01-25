@@ -399,7 +399,7 @@ python scripts/proteus_recommend.py --output recommendations.json --email
 | `scripts/full_recommendation.py` | Main recommendation generator |
 | `scripts/proteus_recommend.py` | CLI interface |
 | `send_todays_recommendation.py` | Email sender |
-| `src/notifications/sendgrid_notifier.py` | Email delivery |
+| `common/notifications/sendgrid_notifier.py` | Email delivery |
 
 ---
 

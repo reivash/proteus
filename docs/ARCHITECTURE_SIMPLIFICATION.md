@@ -6,9 +6,9 @@
 The Proteus system had accumulated complexity over time:
 
 1. **Triple Position Sizing** - 3 competing modules:
-   - `src/trading/position_sizer.py` (574 lines)
-   - `src/trading/volatility_sizing.py` (411 lines)
-   - `src/config/position_sizing.py` (287 lines) - outdated data
+   - `common/trading/position_sizer.py` (574 lines)
+   - `common/trading/volatility_sizing.py` (411 lines)
+   - `common/config/position_sizing.py` (287 lines) - outdated data
 
 2. **12+ Signal Multipliers** - Multiplicative compounding:
    - 9 separate multipliers applied as `base * m1 * m2 * m3 * ...`
@@ -56,7 +56,7 @@ The Proteus system had accumulated complexity over time:
 
 ### 2. Unified Position Sizer
 
-**File**: `src/trading/unified_position_sizer.py`
+**File**: `common/trading/unified_position_sizer.py`
 
 Consolidates the best of all 3 modules:
 - Kelly-based tier sizing
@@ -76,7 +76,7 @@ rec = sizer.calculate_size('COP', price=105.0, signal_strength=85, regime='volat
 
 ### 3. Simplified Signal Calculator
 
-**File**: `src/trading/unified_signal_calculator.py`
+**File**: `common/trading/unified_signal_calculator.py`
 
 **Before** (9 multiplicative layers):
 ```python
@@ -100,7 +100,7 @@ final = adjusted + monday_boost + rsi_boost + streak_boost + ...  # Additive
 
 ### 4. Position Rebalancer
 
-**File**: `src/trading/position_rebalancer.py`
+**File**: `common/trading/position_rebalancer.py`
 
 Monitors active positions against exit rules:
 - Stop loss triggers
@@ -122,9 +122,9 @@ status = rebalancer.check_position('COP', entry_price=100, current_price=103.5, 
 | File | Purpose | Lines |
 |------|---------|-------|
 | `config/unified_config.json` | Single config source | 175 |
-| `src/trading/unified_position_sizer.py` | Position sizing | 260 |
-| `src/trading/unified_signal_calculator.py` | Signal calculation | 195 |
-| `src/trading/position_rebalancer.py` | Exit monitoring | 220 |
+| `common/trading/unified_position_sizer.py` | Position sizing | 260 |
+| `common/trading/unified_signal_calculator.py` | Signal calculation | 195 |
+| `common/trading/position_rebalancer.py` | Exit monitoring | 220 |
 | `tests/test_unified_system.py` | Validation tests | 180 |
 
 **Total**: ~1,030 lines of clean, modular code
@@ -153,10 +153,10 @@ The old modules are still in place and working. To migrate:
 1. **Gradually replace imports**:
    ```python
    # Old
-   from src.trading.position_sizer import PositionSizer
+   from common.trading.position_sizer import PositionSizer
 
    # New
-   from src.trading.unified_position_sizer import UnifiedPositionSizer
+   from common.trading.unified_position_sizer import UnifiedPositionSizer
    ```
 
 2. **Update SmartScanner** to use unified modules
