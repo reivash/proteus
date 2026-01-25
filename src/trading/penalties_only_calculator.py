@@ -49,8 +49,8 @@ class PenaltiesOnlyCalculator:
 
     def __init__(self, config_path: str = None):
         if config_path is None:
-            # Navigate from src/trading/ to project root/config/
-            config_path = Path(__file__).resolve().parent.parent.parent / 'config' / 'penalties_only_config.json'
+            # Navigate from src/trading/ to project root/features/daily_picks/
+            config_path = Path(__file__).resolve().parent.parent.parent / 'features' / 'daily_picks' / 'config.json'
 
         with open(config_path) as f:
             self.config = json.load(f)

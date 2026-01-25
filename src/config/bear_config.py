@@ -1,7 +1,7 @@
 """
 Bear Detection Configuration Loader
 
-Loads and validates configuration from config/bear_detection_config.json.
+Loads and validates configuration from features/crash_warnings/config.json.
 Falls back to defaults if config file is missing or invalid.
 """
 
@@ -89,15 +89,15 @@ class BearConfig:
 def find_config_file() -> Optional[str]:
     """Find the config file in possible locations."""
     possible_paths = [
-        'config/bear_detection_config.json',
-        '../config/bear_detection_config.json',
-        '../../config/bear_detection_config.json',
+        'features/crash_warnings/config.json',
+        '../features/crash_warnings/config.json',
+        '../../features/crash_warnings/config.json',
     ]
 
     # Also check relative to this file
     this_dir = os.path.dirname(os.path.abspath(__file__))
     project_root = os.path.dirname(os.path.dirname(this_dir))
-    possible_paths.append(os.path.join(project_root, 'config', 'bear_detection_config.json'))
+    possible_paths.append(os.path.join(project_root, 'features', 'crash_warnings', 'config.json'))
 
     for path in possible_paths:
         if os.path.exists(path):
