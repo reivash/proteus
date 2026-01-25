@@ -15,6 +15,7 @@
 | [buy_signals](buy_signals/) | Production | Formats picks into actionable recommendations |
 | [simulation](simulation/) | Production | Practice trading without real money |
 | [reporting](reporting/) | Production | Generates daily email reports |
+| [scheduling](scheduling/) | Production | Automates daily/weekly runs via Windows Task Scheduler |
 | [revival_analysis](revival_analysis/) | Planning | Analyzes if beaten-down stocks will recover |
 
 ---
