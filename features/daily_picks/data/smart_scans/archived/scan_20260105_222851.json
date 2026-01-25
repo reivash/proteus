@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-01-05T22:28:51.765446",
+  "regime": "choppy",
+  "regime_confidence": 0.8,
+  "vix": 14.9,
+  "stats": {
+    "total_scanned": 40,
+    "threshold": 65,
+    "passed": 1,
+    "filtered": 39,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": [
+    {
+      "ticker": "MPC",
+      "timestamp": "2026-01-05 22:28:50",
+      "raw_strength": 66.5,
+      "adjusted_strength": 69.8,
+      "tier": "elite",
+      "regime": "choppy",
+      "size_pct": 15.0,
+      "dollar_size": 14869.9,
+      "shares": 85,
+      "risk_dollars": 446.1,
+      "quality": "moderate",
+      "skip_trade": false,
+      "profit_target_1": 2.0,
+      "profit_target_2": 3.5,
+      "stop_loss": -3.0,
+      "max_hold_days": 5,
+      "price": 174.94000244140625,
+      "sector": "Energy",
+      "sector_momentum": 0.0,
+      "boosts_applied": [],
+      "near_earnings": false,
+      "earnings_warning": ""
+    }
+  ]
+}

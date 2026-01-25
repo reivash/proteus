@@ -88,7 +88,7 @@ class ScannerRunner:
             checks_failed += 1
 
         # Check 2: Data directories
-        data_dirs = ['data/smart_scans', 'data/portfolio', 'data/virtual_wallet']
+        data_dirs = ['features/daily_picks/data/smart_scans', 'data/portfolio', 'features/simulation/data/virtual_wallet']
         for dir_path in data_dirs:
             path = Path(dir_path)
             if not path.exists():

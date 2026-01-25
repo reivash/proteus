@@ -22,7 +22,7 @@ def generate_dashboard(scan_data: Optional[Dict] = None,
     """
     # Load latest scan if not provided
     if scan_data is None:
-        scan_file = "data/smart_scans/latest_scan.json"
+        scan_file = "features/daily_picks/data/smart_scans/latest_scan.json"
         if os.path.exists(scan_file):
             with open(scan_file, 'r') as f:
                 scan_data = json.load(f)

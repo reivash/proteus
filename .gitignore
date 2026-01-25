@@ -90,7 +90,7 @@ dashboard.html
 data/cache/
 data/models/
 data/portfolio/
-data/virtual_wallet/
+features/simulation/data/virtual_wallet/
 data/smart_scans/archived/
 data/research/*.json
 data/research/*.txt

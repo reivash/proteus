@@ -9919,7 +9919,7 @@ class FastBearDetector:
         """
         try:
             # Load historical bear scores
-            history_file = 'data/bear_score_history.json'
+            history_file = 'features/crash_warnings/data/bear_score_history.json'
             if not os.path.exists(history_file):
                 return {
                     'status': 'NO_HISTORY',
@@ -12533,7 +12533,7 @@ class FastBearDetector:
 
     # ==================== HISTORY TRACKING & MARKET TIMING ====================
 
-    def save_bear_score_snapshot(self, history_file: str = 'data/bear_score_history.json') -> Dict:
+    def save_bear_score_snapshot(self, history_file: str = 'features/crash_warnings/data/bear_score_history.json') -> Dict:
         """
         Save current bear score to history file for tracking over time.
 
@@ -12586,7 +12586,7 @@ class FastBearDetector:
         except Exception as e:
             return {'status': 'ERROR', 'message': str(e)}
 
-    def get_bear_score_history(self, days: int = 30, history_file: str = 'data/bear_score_history.json') -> Dict:
+    def get_bear_score_history(self, days: int = 30, history_file: str = 'features/crash_warnings/data/bear_score_history.json') -> Dict:
         """
         Load bear score history for analysis.
 
@@ -15796,7 +15796,7 @@ def print_fast_bear_report():
     print(detector.get_detailed_report())
 
 
-def log_bear_score(signal: FastBearSignal = None, history_file: str = 'data/bear_score_history.json'):
+def log_bear_score(signal: FastBearSignal = None, history_file: str = 'features/crash_warnings/data/bear_score_history.json'):
     """
     Log bear score to history file for trend analysis.
 
@@ -15848,7 +15848,7 @@ def log_bear_score(signal: FastBearSignal = None, history_file: str = 'data/bear
     return entry
 
 
-def get_bear_score_trend(history_file: str = 'data/bear_score_history.json', hours: int = 24) -> Dict:
+def get_bear_score_trend(history_file: str = 'features/crash_warnings/data/bear_score_history.json', hours: int = 24) -> Dict:
     """
     Analyze bear score trend over recent history.
 

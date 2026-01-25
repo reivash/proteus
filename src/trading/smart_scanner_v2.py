@@ -769,7 +769,7 @@ class SmartScannerV2:
 
     def _save_results(self, result: ScanResultV2):
         """Save results to file."""
-        output_dir = "data/smart_scans"
+        output_dir = "features/daily_picks/data/smart_scans"
         os.makedirs(output_dir, exist_ok=True)
 
         output = {

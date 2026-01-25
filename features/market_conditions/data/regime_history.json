@@ -1,0 +1,18 @@
+[
+  {
+    "timestamp": "2026-01-07T09:28:29.064875",
+    "regime": "choppy",
+    "confidence": 0.8,
+    "vix": 14.8,
+    "trend_20d": 1.5,
+    "trend_50d": 2.45
+  },
+  {
+    "timestamp": "2026-01-07T09:28:50.620313",
+    "regime": "choppy",
+    "confidence": 0.8,
+    "vix": 14.8,
+    "trend_20d": 1.5,
+    "trend_50d": 2.45
+  }
+]

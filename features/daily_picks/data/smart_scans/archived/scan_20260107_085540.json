@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-01-07T08:55:40.843294",
+  "regime": {
+    "type": "choppy",
+    "confidence": 0.8,
+    "vix": 14.8,
+    "spy_trend_20d": 1.5,
+    "recommendation": "POOR conditions (Sharpe ~0). Use threshold 65+, reduce size 70%, or skip."
+  },
+  "summary": {
+    "total_scanned": 11,
+    "passed_filter": 0,
+    "filtered_out": 11
+  },
+  "signals": []
+}

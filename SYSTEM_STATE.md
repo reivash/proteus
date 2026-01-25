@@ -196,7 +196,7 @@ python -c "from src.trading.scanner_runner import ScannerRunner; r=ScannerRunner
 
 When starting a new session:
 1. Read this file for context
-2. Check `data/virtual_wallet/wallet_state.json` for current positions
+2. Check `features/simulation/data/virtual_wallet/wallet_state.json` for current positions
 3. Check `data/smart_scans/latest_scan.json` for recent signals
 4. Run smoke tests to verify system health
 5. Review any pending experiments in `src/experiments/`

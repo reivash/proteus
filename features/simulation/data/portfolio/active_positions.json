@@ -1,0 +1,27 @@
+{
+  "last_updated": "2026-01-23T21:47:44.109219",
+  "source": "virtual_wallet",
+  "portfolio_value": 100390.52,
+  "positions": {
+    "NOW": {
+      "entry_price": 125.4000015258789,
+      "entry_date": "2026-01-21",
+      "shares": 31,
+      "cost_basis": 3887.4,
+      "tier": "weak",
+      "signal_strength": 63.2,
+      "high_since_entry": 132.80999755859375,
+      "source": "virtual_wallet"
+    },
+    "CRM": {
+      "entry_price": 220.07000732421875,
+      "entry_date": "2026-01-21",
+      "shares": 18,
+      "cost_basis": 3961.26,
+      "tier": "weak",
+      "signal_strength": 59.2,
+      "high_since_entry": 227.99000549316406,
+      "source": "virtual_wallet"
+    }
+  }
+}

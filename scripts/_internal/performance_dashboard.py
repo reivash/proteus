@@ -32,7 +32,7 @@ class PerformanceDashboard:
     """Track and compare VirtualWallet performance vs SPY."""
 
     def __init__(self):
-        self.data_dir = Path('data/virtual_wallet')
+        self.data_dir = Path('features/simulation/data/virtual_wallet')
         self.benchmark_file = self.data_dir / 'benchmark_history.json'
         self.snapshots_file = self.data_dir / 'daily_snapshots.json'
         self.wallet_file = self.data_dir / 'wallet_state.json'

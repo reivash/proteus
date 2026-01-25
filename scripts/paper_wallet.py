@@ -96,7 +96,7 @@ def show_status(wallet: VirtualWallet):
 
 def reset_wallet():
     """Reset wallet to initial state."""
-    wallet_dir = Path('data/virtual_wallet')
+    wallet_dir = Path('features/simulation/data/virtual_wallet')
 
     # Confirm
     response = input("\nThis will delete all wallet data. Are you sure? (yes/no): ")

@@ -1,0 +1,790 @@
+{
+  "PLTR": {
+    "company_name": "Palantir Technologies Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 81.8,
+        "base_yc_score": 85.25,
+        "competitive_score": 75.0,
+        "trajectory_score": 84.0,
+        "market_cap_b": 401.489821696,
+        "revenue_growth_yoy": 0.628,
+        "total_return_pct": 1673.1578626130754,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 81.8,
+        "base_yc_score": 85.25,
+        "competitive_score": 75.0,
+        "trajectory_score": 84.0,
+        "market_cap_b": 401.489821696,
+        "revenue_growth_yoy": 0.628,
+        "total_return_pct": 1673.1578626130754,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 81.8,
+        "base_yc_score": 85.25,
+        "competitive_score": 75.0,
+        "trajectory_score": 84.0,
+        "market_cap_b": 401.489821696,
+        "revenue_growth_yoy": 0.628,
+        "total_return_pct": 1673.1578626130754,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 81.8,
+        "base_yc_score": 85.25,
+        "competitive_score": 75.0,
+        "trajectory_score": 84.0,
+        "market_cap_b": 401.489821696,
+        "revenue_growth_yoy": 0.628,
+        "total_return_pct": 1673.1578626130754,
+        "scaling_score": 85.0
+      }
+    ]
+  },
+  "ALAB": {
+    "company_name": "Astera Labs, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 70.8,
+        "base_yc_score": 84.0,
+        "competitive_score": 50.0,
+        "trajectory_score": 74.0,
+        "market_cap_b": 26.614145024,
+        "revenue_growth_yoy": 1.039,
+        "total_return_pct": 154.02226410620096,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 70.8,
+        "base_yc_score": 84.0,
+        "competitive_score": 50.0,
+        "trajectory_score": 74.0,
+        "market_cap_b": 26.614145024,
+        "revenue_growth_yoy": 1.039,
+        "total_return_pct": 154.02226410620096,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 70.8,
+        "base_yc_score": 84.0,
+        "competitive_score": 50.0,
+        "trajectory_score": 74.0,
+        "market_cap_b": 26.614145024,
+        "revenue_growth_yoy": 1.039,
+        "total_return_pct": 154.02226410620096,
+        "scaling_score": 85.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 70.8,
+        "base_yc_score": 84.0,
+        "competitive_score": 50.0,
+        "trajectory_score": 74.0,
+        "market_cap_b": 26.614145024,
+        "revenue_growth_yoy": 1.039,
+        "total_return_pct": 154.02226410620096,
+        "scaling_score": 85.0
+      }
+    ]
+  },
+  "CRWV": {
+    "company_name": "CoreWeave, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 65.2,
+        "base_yc_score": 80.5,
+        "competitive_score": 50.0,
+        "trajectory_score": 60.0,
+        "market_cap_b": 36.436975616,
+        "revenue_growth_yoy": 1.337,
+        "total_return_pct": 82.80000686645508,
+        "scaling_score": 75.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 65.2,
+        "base_yc_score": 80.5,
+        "competitive_score": 50.0,
+        "trajectory_score": 60.0,
+        "market_cap_b": 36.436975616,
+        "revenue_growth_yoy": 1.337,
+        "total_return_pct": 82.80000686645508,
+        "scaling_score": 75.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 65.2,
+        "base_yc_score": 80.5,
+        "competitive_score": 50.0,
+        "trajectory_score": 60.0,
+        "market_cap_b": 36.436975616,
+        "revenue_growth_yoy": 1.337,
+        "total_return_pct": 82.80000686645508,
+        "scaling_score": 75.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 65.2,
+        "base_yc_score": 80.5,
+        "competitive_score": 50.0,
+        "trajectory_score": 60.0,
+        "market_cap_b": 36.436975616,
+        "revenue_growth_yoy": 1.337,
+        "total_return_pct": 82.80000686645508,
+        "scaling_score": 75.0
+      }
+    ]
+  },
+  "IONQ": {
+    "company_name": "IonQ, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 54.7,
+        "base_yc_score": 52.75,
+        "competitive_score": 50.0,
+        "trajectory_score": 62.0,
+        "market_cap_b": 17.465982976,
+        "revenue_growth_yoy": 2.215,
+        "total_return_pct": 435.8695680342461,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 54.7,
+        "base_yc_score": 52.75,
+        "competitive_score": 50.0,
+        "trajectory_score": 62.0,
+        "market_cap_b": 17.465982976,
+        "revenue_growth_yoy": 2.215,
+        "total_return_pct": 435.8695680342461,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 54.7,
+        "base_yc_score": 52.75,
+        "competitive_score": 50.0,
+        "trajectory_score": 62.0,
+        "market_cap_b": 17.465982976,
+        "revenue_growth_yoy": 2.215,
+        "total_return_pct": 435.8695680342461,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 54.7,
+        "base_yc_score": 52.75,
+        "competitive_score": 50.0,
+        "trajectory_score": 62.0,
+        "market_cap_b": 17.465982976,
+        "revenue_growth_yoy": 2.215,
+        "total_return_pct": 435.8695680342461,
+        "scaling_score": 30.0
+      }
+    ]
+  },
+  "DDOG": {
+    "company_name": "Datadog, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 45.35,
+        "base_yc_score": 48.36,
+        "competitive_score": 26.67,
+        "trajectory_score": 60.0,
+        "market_cap_b": 56.110825472,
+        "revenue_growth_yoy": 0.284,
+        "total_return_pct": 326.1251604738026,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 45.35,
+        "base_yc_score": 48.36,
+        "competitive_score": 26.67,
+        "trajectory_score": 60.0,
+        "market_cap_b": 56.110825472,
+        "revenue_growth_yoy": 0.284,
+        "total_return_pct": 326.1251604738026,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 45.35,
+        "base_yc_score": 48.36,
+        "competitive_score": 26.67,
+        "trajectory_score": 60.0,
+        "market_cap_b": 56.110825472,
+        "revenue_growth_yoy": 0.284,
+        "total_return_pct": 326.1251604738026,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 45.35,
+        "base_yc_score": 48.36,
+        "competitive_score": 26.67,
+        "trajectory_score": 60.0,
+        "market_cap_b": 56.110825472,
+        "revenue_growth_yoy": 0.284,
+        "total_return_pct": 326.1251604738026,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "ZS": {
+    "company_name": "Zscaler, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 43.25,
+        "base_yc_score": 45.34,
+        "competitive_score": 23.72,
+        "trajectory_score": 60.0,
+        "market_cap_b": 40.107008,
+        "revenue_growth_yoy": 0.255,
+        "total_return_pct": 662.1212121212121,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 43.25,
+        "base_yc_score": 45.34,
+        "competitive_score": 23.72,
+        "trajectory_score": 60.0,
+        "market_cap_b": 40.107008,
+        "revenue_growth_yoy": 0.255,
+        "total_return_pct": 662.1212121212121,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 43.25,
+        "base_yc_score": 45.34,
+        "competitive_score": 23.72,
+        "trajectory_score": 60.0,
+        "market_cap_b": 40.107008,
+        "revenue_growth_yoy": 0.255,
+        "total_return_pct": 662.1212121212121,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 43.25,
+        "base_yc_score": 45.34,
+        "competitive_score": 23.72,
+        "trajectory_score": 60.0,
+        "market_cap_b": 40.107008,
+        "revenue_growth_yoy": 0.255,
+        "total_return_pct": 662.1212121212121,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "CRWD": {
+    "company_name": "CrowdStrike Holdings, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.84,
+        "base_yc_score": 47.08,
+        "competitive_score": 33.36,
+        "trajectory_score": 40.0,
+        "market_cap_b": 127.77631744,
+        "revenue_growth_yoy": 0.213,
+        "total_return_pct": 777.8620752794989,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.84,
+        "base_yc_score": 47.08,
+        "competitive_score": 33.36,
+        "trajectory_score": 40.0,
+        "market_cap_b": 127.77631744,
+        "revenue_growth_yoy": 0.213,
+        "total_return_pct": 777.8620752794989,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.84,
+        "base_yc_score": 47.08,
+        "competitive_score": 33.36,
+        "trajectory_score": 40.0,
+        "market_cap_b": 127.77631744,
+        "revenue_growth_yoy": 0.213,
+        "total_return_pct": 777.8620752794989,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.84,
+        "base_yc_score": 47.08,
+        "competitive_score": 33.36,
+        "trajectory_score": 40.0,
+        "market_cap_b": 127.77631744,
+        "revenue_growth_yoy": 0.213,
+        "total_return_pct": 777.8620752794989,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "GTLB": {
+    "company_name": "GitLab Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.19,
+        "base_yc_score": 36.29,
+        "competitive_score": 55.59,
+        "trajectory_score": 30.0,
+        "market_cap_b": 6.847822848,
+        "revenue_growth_yoy": 0.292,
+        "total_return_pct": -60.47742649483332,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.19,
+        "base_yc_score": 36.29,
+        "competitive_score": 55.59,
+        "trajectory_score": 30.0,
+        "market_cap_b": 6.847822848,
+        "revenue_growth_yoy": 0.292,
+        "total_return_pct": -60.47742649483332,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.19,
+        "base_yc_score": 36.29,
+        "competitive_score": 55.59,
+        "trajectory_score": 30.0,
+        "market_cap_b": 6.847822848,
+        "revenue_growth_yoy": 0.292,
+        "total_return_pct": -60.47742649483332,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 40.19,
+        "base_yc_score": 36.29,
+        "competitive_score": 55.59,
+        "trajectory_score": 30.0,
+        "market_cap_b": 6.847822848,
+        "revenue_growth_yoy": 0.292,
+        "total_return_pct": -60.47742649483332,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "SNOW": {
+    "company_name": "Snowflake Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 36.69,
+        "base_yc_score": 48.97,
+        "competitive_score": 25.0,
+        "trajectory_score": 32.0,
+        "market_cap_b": 85.120114688,
+        "revenue_growth_yoy": 0.318,
+        "total_return_pct": -1.059342047101841,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 36.69,
+        "base_yc_score": 48.97,
+        "competitive_score": 25.0,
+        "trajectory_score": 32.0,
+        "market_cap_b": 85.120114688,
+        "revenue_growth_yoy": 0.318,
+        "total_return_pct": -1.059342047101841,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 36.69,
+        "base_yc_score": 48.97,
+        "competitive_score": 25.0,
+        "trajectory_score": 32.0,
+        "market_cap_b": 85.120114688,
+        "revenue_growth_yoy": 0.318,
+        "total_return_pct": -1.059342047101841,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 36.69,
+        "base_yc_score": 48.97,
+        "competitive_score": 25.0,
+        "trajectory_score": 32.0,
+        "market_cap_b": 85.120114688,
+        "revenue_growth_yoy": 0.318,
+        "total_return_pct": -1.059342047101841,
+        "scaling_score": 30.0
+      }
+    ]
+  },
+  "BILL": {
+    "company_name": "BILL Holdings, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 27.1,
+        "base_yc_score": 36.29,
+        "competitive_score": 21.96,
+        "trajectory_score": 20.0,
+        "market_cap_b": 5.03399936,
+        "revenue_growth_yoy": 0.104,
+        "total_return_pct": 41.26760993205325,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 27.1,
+        "base_yc_score": 36.29,
+        "competitive_score": 21.96,
+        "trajectory_score": 20.0,
+        "market_cap_b": 5.03399936,
+        "revenue_growth_yoy": 0.104,
+        "total_return_pct": 41.26760993205325,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 27.1,
+        "base_yc_score": 36.29,
+        "competitive_score": 21.96,
+        "trajectory_score": 20.0,
+        "market_cap_b": 5.03399936,
+        "revenue_growth_yoy": 0.104,
+        "total_return_pct": 41.26760993205325,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 27.1,
+        "base_yc_score": 36.29,
+        "competitive_score": 21.96,
+        "trajectory_score": 20.0,
+        "market_cap_b": 5.03399936,
+        "revenue_growth_yoy": 0.104,
+        "total_return_pct": 41.26760993205325,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "U": {
+    "company_name": "Unity Software Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 24.78,
+        "base_yc_score": 40.96,
+        "competitive_score": 17.97,
+        "trajectory_score": 10.0,
+        "market_cap_b": 18.194853888,
+        "revenue_growth_yoy": 0.054,
+        "total_return_pct": -37.79078067739425,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 24.78,
+        "base_yc_score": 40.96,
+        "competitive_score": 17.97,
+        "trajectory_score": 10.0,
+        "market_cap_b": 18.194853888,
+        "revenue_growth_yoy": 0.054,
+        "total_return_pct": -37.79078067739425,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 24.78,
+        "base_yc_score": 40.96,
+        "competitive_score": 17.97,
+        "trajectory_score": 10.0,
+        "market_cap_b": 18.194853888,
+        "revenue_growth_yoy": 0.054,
+        "total_return_pct": -37.79078067739425,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 24.78,
+        "base_yc_score": 40.96,
+        "competitive_score": 17.97,
+        "trajectory_score": 10.0,
+        "market_cap_b": 18.194853888,
+        "revenue_growth_yoy": 0.054,
+        "total_return_pct": -37.79078067739425,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "PATH": {
+    "company_name": "UiPath Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 23.76,
+        "base_yc_score": 33.9,
+        "competitive_score": 23.99,
+        "trajectory_score": 10.0,
+        "market_cap_b": 7.415638016,
+        "revenue_growth_yoy": 0.144,
+        "total_return_pct": -79.91304397583008,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 23.76,
+        "base_yc_score": 33.9,
+        "competitive_score": 23.99,
+        "trajectory_score": 10.0,
+        "market_cap_b": 7.415638016,
+        "revenue_growth_yoy": 0.144,
+        "total_return_pct": -79.91304397583008,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 23.76,
+        "base_yc_score": 33.9,
+        "competitive_score": 23.99,
+        "trajectory_score": 10.0,
+        "market_cap_b": 7.415638016,
+        "revenue_growth_yoy": 0.144,
+        "total_return_pct": -79.91304397583008,
+        "scaling_score": 25.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 23.76,
+        "base_yc_score": 33.9,
+        "competitive_score": 23.99,
+        "trajectory_score": 10.0,
+        "market_cap_b": 7.415638016,
+        "revenue_growth_yoy": 0.144,
+        "total_return_pct": -79.91304397583008,
+        "scaling_score": 25.0
+      }
+    ]
+  },
+  "AI": {
+    "company_name": "C3.ai, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 9.48,
+        "base_yc_score": 17.21,
+        "competitive_score": 2.66,
+        "trajectory_score": 6.0,
+        "market_cap_b": 1.991928064,
+        "revenue_growth_yoy": -0.194,
+        "total_return_pct": -84.37668921719639,
+        "scaling_score": 15.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 9.48,
+        "base_yc_score": 17.21,
+        "competitive_score": 2.66,
+        "trajectory_score": 6.0,
+        "market_cap_b": 1.991928064,
+        "revenue_growth_yoy": -0.194,
+        "total_return_pct": -84.37668921719639,
+        "scaling_score": 15.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 9.48,
+        "base_yc_score": 17.21,
+        "competitive_score": 2.66,
+        "trajectory_score": 6.0,
+        "market_cap_b": 1.991928064,
+        "revenue_growth_yoy": -0.194,
+        "total_return_pct": -84.37668921719639,
+        "scaling_score": 15.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 9.48,
+        "base_yc_score": 17.21,
+        "competitive_score": 2.66,
+        "trajectory_score": 6.0,
+        "market_cap_b": 1.991928064,
+        "revenue_growth_yoy": -0.194,
+        "total_return_pct": -84.37668921719639,
+        "scaling_score": 15.0
+      }
+    ]
+  },
+  "ARM": {
+    "company_name": "Arm Holdings plc",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 60.78,
+        "base_yc_score": 66.46,
+        "competitive_score": 50.0,
+        "trajectory_score": 64.0,
+        "market_cap_b": 143.828959232,
+        "revenue_growth_yoy": 0.345,
+        "total_return_pct": 113.17816831783247,
+        "scaling_score": 60.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 60.78,
+        "base_yc_score": 66.46,
+        "competitive_score": 50.0,
+        "trajectory_score": 64.0,
+        "market_cap_b": 143.828959232,
+        "revenue_growth_yoy": 0.345,
+        "total_return_pct": 113.17816831783247,
+        "scaling_score": 60.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 60.78,
+        "base_yc_score": 66.46,
+        "competitive_score": 50.0,
+        "trajectory_score": 64.0,
+        "market_cap_b": 143.828959232,
+        "revenue_growth_yoy": 0.345,
+        "total_return_pct": 113.17816831783247,
+        "scaling_score": 60.0
+      }
+    ]
+  },
+  "TEM": {
+    "company_name": "Tempus AI, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 55.25,
+        "base_yc_score": 63.8,
+        "competitive_score": 57.09,
+        "trajectory_score": 42.0,
+        "market_cap_b": 13.864312832,
+        "revenue_growth_yoy": 0.847,
+        "total_return_pct": 93.61490759049885,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 55.25,
+        "base_yc_score": 63.8,
+        "competitive_score": 57.09,
+        "trajectory_score": 42.0,
+        "market_cap_b": 13.864312832,
+        "revenue_growth_yoy": 0.847,
+        "total_return_pct": 93.61490759049885,
+        "scaling_score": 30.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 55.25,
+        "base_yc_score": 63.8,
+        "competitive_score": 57.09,
+        "trajectory_score": 42.0,
+        "market_cap_b": 13.864312832,
+        "revenue_growth_yoy": 0.847,
+        "total_return_pct": 93.61490759049885,
+        "scaling_score": 30.0
+      }
+    ]
+  },
+  "RBRK": {
+    "company_name": "Rubrik, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 51.33,
+        "base_yc_score": 56.32,
+        "competitive_score": 50.0,
+        "trajectory_score": 46.0,
+        "market_cap_b": 13.687836672,
+        "revenue_growth_yoy": 0.512,
+        "total_return_pct": 87.35135052655194,
+        "scaling_score": 40.0
+      },
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 51.33,
+        "base_yc_score": 56.32,
+        "competitive_score": 50.0,
+        "trajectory_score": 46.0,
+        "market_cap_b": 13.687836672,
+        "revenue_growth_yoy": 0.512,
+        "total_return_pct": 87.35135052655194,
+        "scaling_score": 40.0
+      }
+    ]
+  },
+  "TTAN": {
+    "company_name": "ServiceTitan, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 39.93,
+        "base_yc_score": 42.83,
+        "competitive_score": 50.0,
+        "trajectory_score": 26.0,
+        "market_cap_b": 8.305899008,
+        "revenue_growth_yoy": 0.255,
+        "total_return_pct": -11.524751870939042,
+        "scaling_score": 15.0
+      }
+    ]
+  },
+  "KVYO": {
+    "company_name": "Klaviyo, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 39.88,
+        "base_yc_score": 35.19,
+        "competitive_score": 50.0,
+        "trajectory_score": 36.0,
+        "market_cap_b": 8.623556608,
+        "revenue_growth_yoy": 0.322,
+        "total_return_pct": -12.820509984062344,
+        "scaling_score": 40.0
+      }
+    ]
+  },
+  "OS": {
+    "company_name": "OneStream, Inc.",
+    "scores": [
+      {
+        "date": "2025-12-01",
+        "advanced_yc_score": 32.88,
+        "base_yc_score": 40.2,
+        "competitive_score": 50.0,
+        "trajectory_score": 6.0,
+        "market_cap_b": 5.09351936,
+        "revenue_growth_yoy": 0.195,
+        "total_return_pct": -22.420857997150414,
+        "scaling_score": 15.0
+      }
+    ]
+  }
+}

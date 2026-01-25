@@ -121,7 +121,7 @@ Before risking real money, traders need a way to validate the system with realis
 |------|---------|
 | `common/trading/virtual_wallet.py` | Core wallet logic |
 | `scripts/paper_wallet.py` | Entry point |
-| `data/virtual_wallet/` | State files |
+| `features/simulation/data/virtual_wallet/` | State files |
 
 ---
 

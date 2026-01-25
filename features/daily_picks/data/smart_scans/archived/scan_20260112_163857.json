@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-12T16:38:57.117968",
+  "regime": "bull",
+  "regime_confidence": 0.6400000000000001,
+  "vix": 15.4,
+  "stats": {
+    "total_scanned": 54,
+    "threshold": 50,
+    "passed": 0,
+    "filtered": 54,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

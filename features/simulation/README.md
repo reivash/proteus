@@ -23,7 +23,7 @@ Simulates real trading with:
 |------|---------|
 | `common/trading/virtual_wallet.py` | Core wallet logic |
 | `scripts/paper_wallet.py` | Entry point |
-| `data/virtual_wallet/` | State files |
+| `features/simulation/data/virtual_wallet/` | State files |
 
 ## Usage
 

@@ -59,7 +59,7 @@ class RegimeTransitionDetector:
     - BULL -> CHOPPY: Trend ending, reduce exposure
     """
 
-    HISTORY_FILE = "data/regime_history.json"
+    HISTORY_FILE = "features/market_conditions/data/regime_history.json"
     ALERTS_FILE = "data/regime_alerts.json"
 
     def __init__(self):

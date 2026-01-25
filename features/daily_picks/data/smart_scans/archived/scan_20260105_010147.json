@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-01-05T01:01:47.895387",
+  "regime": "choppy",
+  "regime_confidence": 0.0,
+  "vix": 20.0,
+  "stats": {
+    "total_scanned": 40,
+    "threshold": 70,
+    "passed": 0,
+    "filtered": 40,
+    "sector_removed": 0,
+    "skipped": 0,
+    "already_holding": 0
+  },
+  "rebalance_actions": [],
+  "signals": []
+}

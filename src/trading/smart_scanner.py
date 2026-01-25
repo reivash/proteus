@@ -785,7 +785,7 @@ class SmartScanner:
 
     def _save_results(self, result: ScanResult):
         """Save scan results to file."""
-        output_dir = "data/smart_scans"
+        output_dir = "features/daily_picks/data/smart_scans"
         os.makedirs(output_dir, exist_ok=True)
 
         # Convert to serializable format

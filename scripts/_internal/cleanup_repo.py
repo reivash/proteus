@@ -136,7 +136,7 @@ class RepoCleanup:
             "models/",
             "",
             "# Virtual wallet data (local state)",
-            "data/virtual_wallet/",
+            "features/simulation/data/virtual_wallet/",
             "",
             "# Portfolio data",
             "data/portfolio/",
