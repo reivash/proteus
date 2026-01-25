@@ -43,9 +43,9 @@ data/*.json
 *.pth
 models/saved/
 
-# Logs
-logs/*.log
-logs/experiments/
+# Logs (anywhere in project)
+*.log
+logs/
 
 # Environment
 .env
@@ -114,10 +114,8 @@ bear_prediction_report.txt
 overnight_*.log
 overnight_*.txt
 
-# Log subdirectories
-logs/bear_improvements/
-logs/errors/
-logs/trading/
+# Results (generated)
+results/
 
 # Model directories
 models/
