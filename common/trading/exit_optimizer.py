@@ -32,7 +32,7 @@ class ExitOptimizer:
     """
     Determines optimal exit strategy based on stock tier and signal strength.
 
-    Reads ALL configuration from config/unified_config.json:
+    Reads ALL configuration from features/simulation/config.json:
     - Stock tiers (elite/strong/average/weak/avoid)
     - Exit parameters per tier (targets, stops, hold days, trailing)
 
@@ -43,7 +43,7 @@ class ExitOptimizer:
     4. Stop-losses at -3% preserve more capital than tight stops
     """
 
-    CONFIG_PATH = Path('config/unified_config.json')
+    CONFIG_PATH = Path('features/simulation/config.json')
 
     def __init__(self):
         self.config = self._load_config()

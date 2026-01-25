@@ -39,10 +39,10 @@ class UnifiedSignalCalculator:
     """
     Calculate signal strength using unified configuration.
 
-    All multipliers and boosts read from config/unified_config.json.
+    All multipliers and boosts read from features/daily_picks/config.json.
     """
 
-    CONFIG_PATH = Path('config/unified_config.json')
+    CONFIG_PATH = Path('features/daily_picks/config.json')
 
     def __init__(self):
         self.config = self._load_config()

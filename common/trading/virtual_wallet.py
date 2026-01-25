@@ -35,7 +35,7 @@ class VirtualWallet:
     STATE_FILE = DATA_DIR / 'wallet_state.json'
     HISTORY_FILE = DATA_DIR / 'trade_history.json'
     SNAPSHOTS_FILE = DATA_DIR / 'daily_snapshots.json'
-    CONFIG_FILE = Path('config/unified_config.json')
+    CONFIG_FILE = Path('features/simulation/config.json')
     EMAIL_CONFIG_FILE = Path('email_config.json')
     SCANS_DIR = Path('features/daily_picks/data/smart_scans')
     # Sync positions to scanner's expected location

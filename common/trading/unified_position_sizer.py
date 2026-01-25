@@ -7,7 +7,7 @@ Consolidates logic from:
 - config/position_sizing.py (replaced by unified_config.json)
 - Bear score awareness (Jan 2026: reduce size when bear warnings elevated)
 
-All configuration read from config/unified_config.json.
+All configuration read from features/trade_sizing/config.json.
 """
 
 import json
@@ -53,7 +53,7 @@ class UnifiedPositionSizer:
     4. ATR-based volatility adjustment
     """
 
-    CONFIG_PATH = Path('config/unified_config.json')
+    CONFIG_PATH = Path('features/trade_sizing/config.json')
     POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self, portfolio_value: float = 100000.0, use_bear_adjustment: bool = True):

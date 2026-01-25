@@ -29,7 +29,7 @@ The Proteus system had accumulated complexity over time:
 
 ### 1. Single Configuration Source
 
-**File**: `config/unified_config.json`
+**File**: `features/*/config.json`
 
 ```json
 {
@@ -121,7 +121,7 @@ status = rebalancer.check_position('COP', entry_price=100, current_price=103.5, 
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `config/unified_config.json` | Single config source | 175 |
+| `features/*/config.json` | Single config source | 175 |
 | `common/trading/unified_position_sizer.py` | Position sizing | 260 |
 | `common/trading/unified_signal_calculator.py` | Signal calculation | 195 |
 | `common/trading/position_rebalancer.py` | Exit monitoring | 220 |

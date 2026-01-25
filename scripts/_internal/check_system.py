@@ -37,7 +37,7 @@ def check_config():
     """Verify config loads correctly."""
     print("\nChecking unified_config.json...")
 
-    config_path = Path('config/unified_config.json')
+    config_path = Path('features/daily_picks/config.json')
     if not config_path.exists():
         print("  [FAIL] Config file not found")
         return False

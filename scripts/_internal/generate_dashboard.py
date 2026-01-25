@@ -40,7 +40,7 @@ def load_data():
         data['scan'] = {}
 
     # Config
-    config_file = Path('config/unified_config.json')
+    config_file = Path('features/daily_picks/config.json')
     if config_file.exists():
         with open(config_file) as f:
             data['config'] = json.load(f)

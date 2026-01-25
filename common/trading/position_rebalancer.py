@@ -48,7 +48,7 @@ class PositionRebalancer:
     Check positions against exit rules and recommend actions.
     """
 
-    CONFIG_PATH = Path('config/unified_config.json')
+    CONFIG_PATH = Path('features/simulation/config.json')
     POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self):

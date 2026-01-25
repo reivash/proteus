@@ -68,7 +68,7 @@ class ScannerRunner:
         checks_failed = 0
 
         # Check 1: Config file
-        config_path = Path('config/unified_config.json')
+        config_path = Path('features/daily_picks/config.json')
         if config_path.exists():
             try:
                 import json

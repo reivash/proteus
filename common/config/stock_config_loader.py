@@ -1,7 +1,7 @@
 """
 Stock Configuration Loader
 
-Loads and manages per-stock optimized parameters from config/stock_configs.json.
+Loads and manages per-stock optimized parameters from features/daily_picks/stock_configs.json.
 Merges with existing mean_reversion_params.py for backward compatibility.
 
 Deployed: 2025-11-18
@@ -23,7 +23,7 @@ class StockConfigLoader:
         Initialize config loader.
 
         Args:
-            config_path: Path to stock_configs.json (default: config/stock_configs.json)
+            config_path: Path to stock_configs.json (default: features/daily_picks/stock_configs.json)
         """
         if config_path is None:
             # Default to project root / config / stock_configs.json

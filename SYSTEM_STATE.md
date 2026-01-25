@@ -31,7 +31,7 @@
 | Signals | `common/trading/penalties_only_calculator.py` | Signal adjustments |
 | Models | `common/models/hybrid_signal_model.py` | 3-model ensemble |
 | Wallet | `common/trading/virtual_wallet.py` | Paper trading |
-| Config | `config/unified_config.json` | Stock tiers, exit rules |
+| Config | `features/*/config.json` | Stock tiers, exit rules |
 
 ---
 

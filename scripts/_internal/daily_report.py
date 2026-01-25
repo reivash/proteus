@@ -41,7 +41,7 @@ def load_latest_scan() -> Dict:
 
 def load_config() -> Dict:
     """Load unified config."""
-    config_file = Path('config/unified_config.json')
+    config_file = Path('features/daily_picks/config.json')
     if config_file.exists():
         with open(config_file) as f:
             return json.load(f)

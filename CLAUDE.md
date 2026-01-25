@@ -49,7 +49,7 @@ SmartScannerV2 → UnifiedRegimeDetector → HybridSignalModel → PenaltiesOnly
 | Models | `common/models/hybrid_signal_model.py` | LSTM+Transformer+MLP ensemble |
 | Signals | `common/trading/penalties_only_calculator.py` | Signal adjustments |
 | Wallet | `common/trading/virtual_wallet.py` | Paper trading |
-| Config | `config/unified_config.json` | Stock tiers, exit rules |
+| Config | `features/*/config.json` | Stock tiers, exit rules |
 
 ## Features
 
