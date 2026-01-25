@@ -39,7 +39,7 @@ class VirtualWallet:
     EMAIL_CONFIG_FILE = Path('email_config.json')
     SCANS_DIR = Path('features/daily_picks/data/smart_scans')
     # Sync positions to scanner's expected location
-    SCANNER_POSITIONS_FILE = Path('data/portfolio/active_positions.json')
+    SCANNER_POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self, initial_capital: float = 100000, min_signal_strength: float = 65):
         """

@@ -93,7 +93,7 @@ This creates:
 3. Initial report with all positions
 
 **Files Created:**
-- `data/portfolio_snapshot_[timestamp].json`
+- `features/simulation/data/portfolio_snapshot_[timestamp].json`
 - `results/portfolio_tracking_[timestamp].csv`
 
 **Action:** Open CSV in Excel/Google Sheets and bookmark for quarterly use.
@@ -173,7 +173,7 @@ Modify `portfolio_tracker.py` to load your saved portfolio:
 
 ```python
 # Load existing portfolio
-with open('data/portfolio_snapshot_[your_date].json', 'r') as f:
+with open('features/simulation/data/portfolio_snapshot_[your_date].json', 'r') as f:
     portfolio = json.load(f)
 
 # Update with current prices
@@ -481,7 +481,7 @@ Between quarterly rebalances, you may want to:
 
 **Output:**
 - `results/ai_ml_expanded_analysis_[date].txt` - Latest analysis report
-- `data/portfolio_snapshot_[timestamp].json` - Portfolio state
+- `features/simulation/data/portfolio_snapshot_[timestamp].json` - Portfolio state
 - `results/portfolio_tracking_[timestamp].csv` - Excel/Sheets template
 
 ---

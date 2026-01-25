@@ -640,7 +640,7 @@ ALAB (Astera Labs):
    - `results/ai_ml_expanded_analysis_[latest].txt` - 21-company analysis
    - `data/score_history.json` - Historical score tracking
    - `results/portfolio_tracking_[timestamp].csv` - Portfolio CSV template
-   - `data/portfolio_snapshot_[timestamp].json` - Portfolio state snapshot
+   - `features/simulation/data/portfolio_snapshot_[timestamp].json` - Portfolio state snapshot
 
 8. **Analysis Scripts:**
    - `analyze_ai_ml_ipos_expanded.py` - Main analysis (21 companies)

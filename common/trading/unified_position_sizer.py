@@ -54,7 +54,7 @@ class UnifiedPositionSizer:
     """
 
     CONFIG_PATH = Path('config/unified_config.json')
-    POSITIONS_FILE = Path('data/portfolio/active_positions.json')
+    POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self, portfolio_value: float = 100000.0, use_bear_adjustment: bool = True):
         self.portfolio_value = portfolio_value

@@ -24,7 +24,7 @@ def load_data():
     data = {}
 
     # Positions
-    pos_file = Path('data/portfolio/active_positions.json')
+    pos_file = Path('features/simulation/data/portfolio/active_positions.json')
     if pos_file.exists():
         with open(pos_file) as f:
             data['positions'] = json.load(f)

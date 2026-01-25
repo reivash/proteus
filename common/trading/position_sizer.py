@@ -79,7 +79,7 @@ class PositionSizer:
     Persists positions to disk for tracking across scans.
     """
 
-    POSITIONS_FILE = Path('data/portfolio/active_positions.json')
+    POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self, portfolio_value: float = 100000.0, load_positions: bool = True,
                  use_bear_detection: bool = True):

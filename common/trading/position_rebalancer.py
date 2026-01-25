@@ -49,7 +49,7 @@ class PositionRebalancer:
     """
 
     CONFIG_PATH = Path('config/unified_config.json')
-    POSITIONS_FILE = Path('data/portfolio/active_positions.json')
+    POSITIONS_FILE = Path('features/simulation/data/portfolio/active_positions.json')
 
     def __init__(self):
         self.config = self._load_config()

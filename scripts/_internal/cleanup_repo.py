@@ -139,7 +139,7 @@ class RepoCleanup:
             "features/simulation/data/virtual_wallet/",
             "",
             "# Portfolio data",
-            "data/portfolio/",
+            "features/simulation/data/portfolio/",
             "",
             "# Loose planning docs (keep in separate repo or local)",
             "MORNING_*.md",
