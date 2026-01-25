@@ -151,19 +151,19 @@ Proteus is a **technical/quantitative mean reversion system** for short-term tra
 pip install -r requirements.txt
 
 # Run daily scan (uses GPU for ML inference)
-python scripts/signal_scanner_gpu.py
+python features/daily_picks/run.py
 
 # Check virtual wallet status
-python scripts/paper_wallet.py --status
+python features/simulation/run.py --status
 
 # Get today's recommendations (uses GPU)
-python scripts/recommendations_gpu.py
+python features/buy_signals/run.py
 
 # Check bear market warning
-python scripts/bear_alert.py --status
+python features/crash_warnings/run.py --status
 
 # Generate daily report
-python scripts/daily_report.py
+python features/reporting/run.py
 ```
 
 ---
@@ -172,56 +172,41 @@ python scripts/daily_report.py
 
 ```
 proteus/
-├── README.md                 # This file
-├── QUICKSTART.md             # Detailed setup guide
-├── SYSTEM_STATE.md           # Current system status and architecture
-├── CLAUDE.md                 # AI assistant context
-├── requirements.txt          # Python dependencies
+├── features/                 # Self-contained feature modules
+│   ├── daily_picks/          # Stock buy recommendations
+│   ├── crash_warnings/       # Bear market early warning
+│   ├── market_conditions/    # Regime detection (BULL/BEAR/CHOPPY)
+│   ├── trade_sizing/         # Position sizing calculations
+│   ├── buy_signals/          # Recommendation formatting
+│   ├── simulation/           # Paper trading
+│   └── reporting/            # Daily email reports
 │
-├── scripts/                  # Main entry points (5 core scripts)
-│   ├── signal_scanner_gpu.py        # Daily ML signal scanning (GPU)
-│   ├── paper_wallet.py              # Paper trading wallet management
-│   ├── bear_alert.py                # Bear market early warning
-│   ├── recommendations_gpu.py       # Buy recommendations (GPU)
-│   ├── daily_report.py              # Portfolio status reports
-│   └── _internal/                   # Utility scripts, research, batch files
-│
-├── common/                      # Core library
+├── common/                   # Shared library code
 │   ├── analysis/             # Regime detection, bear detector
-│   ├── data/                 # Data fetchers, features, sentiment
 │   ├── models/               # ML models (LSTM, Transformer, MLP)
 │   ├── trading/              # Scanner, position sizer, signals
-│   └── notifications/        # Email, webhook alerts
+│   └── data/                 # Data fetchers, features
 │
-├── config/                   # Configuration files
-│   └── unified_config.json   # Main config (stocks, thresholds, exits)
-│
-├── data/                     # Runtime data
-│   ├── smart_scans/          # Daily scan results
-│   ├── virtual_wallet/       # Paper trading state
-│   └── earnings_cache/       # Earnings calendar cache
-│
-├── docs/                     # Documentation
-│   ├── project_plans/        # Milestone-based development plans
-│   └── archive/              # Historical docs and summaries
-│
-├── models/                   # Trained ML models
-├── logs/                     # Application logs
-├── tests/                    # Unit tests
-└── research/                 # Research notes
+├── config/                   # Global configuration
+├── data/                     # Global caches and models
+├── docs/                     # System-wide documentation
+├── tests/                    # Integration tests
+└── scripts/_internal/        # Utility scripts
 ```
+
+Each feature contains: `run.py` (entry point), `PLAN.md`, `config.json`, `data/`, `tests/`
 
 ---
 
-## Core Scripts
+## Features
 
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `signal_scanner_gpu.py` | ML-powered signal generation (GPU) | `python scripts/signal_scanner_gpu.py` |
-| `paper_wallet.py` | Paper trading management | `python scripts/paper_wallet.py --full` |
-| `bear_alert.py` | Bear market early warning | `python scripts/bear_alert.py --status` |
-| `recommendations_gpu.py` | Buy recommendations (GPU) | `python scripts/recommendations_gpu.py` |
-| `daily_report.py` | Portfolio status report | `python scripts/daily_report.py` |
+| Feature | Command | What It Does |
+|---------|---------|--------------|
+| Daily Picks | `python features/daily_picks/run.py` | ML-powered stock scanning (GPU) |
+| Crash Warnings | `python features/crash_warnings/run.py --status` | Bear market early warning |
+| Buy Signals | `python features/buy_signals/run.py` | Formatted recommendations |
+| Simulation | `python features/simulation/run.py --full` | Paper trading management |
+| Reporting | `python features/reporting/run.py` | Daily email reports |
 
 ---
 

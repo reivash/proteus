@@ -14,6 +14,7 @@
 | [trade_sizing](trade_sizing/) | Production | Calculates how much to invest per trade |
 | [buy_signals](buy_signals/) | Production | Formats picks into actionable recommendations |
 | [simulation](simulation/) | Production | Practice trading without real money |
+| [reporting](reporting/) | Production | Generates daily email reports |
 | [revival_analysis](revival_analysis/) | Planning | Analyzes if beaten-down stocks will recover |
 
 ---
@@ -24,10 +25,12 @@ Each feature folder contains:
 
 ```
 feature_name/
-├── README.md      # Overview, usage, key files
+├── run.py         # Entry point script
 ├── PLAN.md        # Development roadmap with checkboxes
-├── results/       # Backtest results, analysis outputs
-└── experiments/   # Related experiments
+├── config.json    # Feature-specific config (if needed)
+├── data/          # Feature-specific data
+├── tests/         # Feature-specific tests
+└── results/       # Backtest results, analysis outputs
 ```
 
 ---
@@ -53,11 +56,11 @@ feature_name/
 
 | Question | Command |
 |----------|---------|
-| "What should I buy today?" | `python scripts/signal_scanner_gpu.py` |
-| "Is the market about to crash?" | `python scripts/bear_alert.py --status` |
-| "Give me recommendations" | `python scripts/recommendations_gpu.py` |
-| "How is my portfolio doing?" | `python scripts/paper_wallet.py --status` |
-| "Generate a report" | `python scripts/daily_report.py` |
+| "What should I buy today?" | `python features/daily_picks/run.py` |
+| "Is the market about to crash?" | `python features/crash_warnings/run.py --status` |
+| "Give me recommendations" | `python features/buy_signals/run.py` |
+| "How is my portfolio doing?" | `python features/simulation/run.py --status` |
+| "Generate a report" | `python features/reporting/run.py` |
 
 ---
 

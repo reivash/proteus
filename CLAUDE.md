@@ -12,30 +12,29 @@
 
 ```
 proteus/
-├── scripts/                  # Main entry points (5 core scripts)
-│   ├── signal_scanner_gpu.py        # ML signal scanning (GPU)
-│   ├── paper_wallet.py              # Paper trading wallet
-│   ├── bear_alert.py                # Bear market early warning
-│   ├── recommendations_gpu.py       # Buy recommendations (GPU)
-│   ├── daily_report.py              # Portfolio status reports
-│   └── _internal/                   # Utility scripts, research, batch files
+├── features/                 # Self-contained feature modules
+│   ├── daily_picks/          # Stock buy recommendations
+│   ├── crash_warnings/       # Bear market early warning
+│   ├── market_conditions/    # Regime detection
+│   ├── trade_sizing/         # Position sizing
+│   ├── buy_signals/          # Recommendation formatting
+│   ├── simulation/           # Paper trading
+│   └── reporting/            # Daily email reports
 │
-├── common/                      # Core library
+├── common/                   # Shared library code
 │   ├── analysis/             # Regime detection, bear detector
-│   ├── data/                 # Data fetchers, features, sentiment
 │   ├── models/               # ML models (LSTM, Transformer, MLP)
 │   ├── trading/              # Scanner, position sizer, signals
-│   └── notifications/        # Email, webhook alerts
+│   └── data/                 # Data fetchers, features
 │
-├── config/                   # Configuration files
-├── data/                     # Runtime data (scans, wallet, cache)
-├── docs/                     # Documentation
-│   ├── project_plans/        # Milestone-based development plans
-│   └── archive/              # Historical docs and summaries
-├── models/                   # Trained ML models
-├── logs/                     # Application logs
-└── tests/                    # Unit tests
+├── config/                   # Global configuration
+├── data/                     # Global caches and models
+├── docs/                     # System-wide documentation
+├── tests/                    # Integration tests
+└── scripts/_internal/        # Utility scripts
 ```
+
+Each feature contains: `run.py`, `PLAN.md`, `config.json`, `data/`, `tests/`
 
 ## Key Architecture
 
@@ -52,32 +51,32 @@ SmartScannerV2 → UnifiedRegimeDetector → HybridSignalModel → PenaltiesOnly
 | Wallet | `common/trading/virtual_wallet.py` | Paper trading |
 | Config | `config/unified_config.json` | Stock tiers, exit rules |
 
-## Core Scripts
+## Features
 
-| Script | Purpose | Usage |
-|--------|---------|-------|
-| `signal_scanner_gpu.py` | ML signal scanning (GPU) | `python scripts/signal_scanner_gpu.py` |
-| `paper_wallet.py` | Paper trading management | `python scripts/paper_wallet.py --full` |
-| `bear_alert.py` | Bear market early warning | `python scripts/bear_alert.py --status` |
-| `recommendations_gpu.py` | Buy recommendations (GPU) | `python scripts/recommendations_gpu.py` |
-| `daily_report.py` | Portfolio status report | `python scripts/daily_report.py` |
+| Feature | Command |
+|---------|---------|
+| Daily Picks | `python features/daily_picks/run.py` |
+| Crash Warnings | `python features/crash_warnings/run.py --status` |
+| Buy Signals | `python features/buy_signals/run.py` |
+| Simulation | `python features/simulation/run.py --full` |
+| Reporting | `python features/reporting/run.py` |
 
 ## Key Commands
 
 ```bash
 # Daily workflow
-python scripts/signal_scanner_gpu.py
-python scripts/paper_wallet.py --full
+python features/daily_picks/run.py
+python features/simulation/run.py --full
 
 # Check status
-python scripts/paper_wallet.py --status
-python scripts/bear_alert.py --status
+python features/simulation/run.py --status
+python features/crash_warnings/run.py --status
 
 # Get recommendations
-python scripts/recommendations_gpu.py
+python features/buy_signals/run.py
 
 # Generate report
-python scripts/daily_report.py
+python features/reporting/run.py
 
 # Run tests
 python tests/test_smoke.py
@@ -99,22 +98,10 @@ python tests/test_smoke.py
 | Choppy | 70 |
 | Bear | 75 |
 
-## Project Plans
-
-Milestone-based development plans with checkboxes and DoD criteria:
-
-| Plan | Status | Description |
-|------|--------|-------------|
-| [Phoenix Single Stock Analyzer](docs/project_plans/PHOENIX_SINGLE_STOCK_ANALYZER.md) | Planning | Deep analysis for revival/turnaround stocks |
-| [Bear Detection System](docs/project_plans/BEAR_DETECTION_SYSTEM.md) | Production | Early warning system for market downturns |
-| [Smart Scanner V2](docs/project_plans/SMART_SCANNER_V2.md) | Production | Daily signal generation pipeline |
-| [Position Sizing & Risk](docs/project_plans/POSITION_SIZING_RISK.md) | Production | Kelly-based sizing with regime adjustments |
-| [Recommendations Engine](docs/project_plans/RECOMMENDATIONS_ENGINE.md) | Production | Daily/weekly buy recommendations |
-
 ## Session Checklist
 
-1. Check wallet: `python scripts/paper_wallet.py --status`
-2. Check recent scan: `data/smart_scans/latest_scan.json`
+1. Check wallet: `python features/simulation/run.py --status`
+2. Check recent scan: `features/daily_picks/data/smart_scans/latest_scan.json`
 3. Run smoke tests if making changes: `python tests/test_smoke.py`
 4. Read `SYSTEM_STATE.md` for deeper context if needed
 
